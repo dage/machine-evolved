@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{51318296-e083-49af-8606-e16f40ab7cd5}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>multiple-models.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>CondaEnv|CondaEnv|tensorflow</InterpreterId>
+    <CommandLineArguments>..\estimator-data\debug-test dnn_configs\master.json</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <IsWindowsApplication>False</IsWindowsApplication>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="0_VRDemoSettings.txt" />
+    <Content Include="research\stackoverflow question 01.05.2018.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataGenerator.py" />
+    <Compile Include="Dataset.py" />
+    <Compile Include="DiskCleaner.py" />
+    <Compile Include="experiments\predictor-contrib-custom_estimator.py" />
+    <Compile Include="experiments\predictor-contrib-example-2.py" />
+    <Compile Include="experiments\predictor-contrib-example.py" />
+    <Compile Include="experiments\predictor-example-2.py" />
+    <Compile Include="experiments\predictor-example-3.py" />
+    <Compile Include="experiments\predictor-example.py" />
+    <Compile Include="experiments\scratchpad.py" />
+    <Compile Include="experiments\simple-estimator-example.py" />
+    <Compile Include="experiments\stackoverflow-answer-canned_estimator.py" />
+    <Compile Include="experiments\stackoverflow-answer-custom-estimator.py" />
+    <Compile Include="experiments\_UNUSED-reinforcement-prototype-estimator_-_backup_of_generator_version.py" />
+    <Compile Include="multiple-models-plot-history.py" />
+    <Compile Include="multiple-models-render-best.py" />
+    <Compile Include="multiple-models.py" />
+    <Compile Include="NeuralNet.py" />
+    <Compile Include="PhysicsServerPool.py" />
+    <Compile Include="Plotting.py" />
+    <Compile Include="pybullet-benchmark-multiple-physics-servers.py" />
+    <Compile Include="pybullet-benchmark-multiple-robots-one-physics-server.py" />
+    <Compile Include="Renderer.py" />
+    <Compile Include="RobotFileFactory.py" />
+    <Compile Include="single-model.py" />
+    <Compile Include="test-initial-robot-condition.py" />
+    <Compile Include="test-inner-loop-performance.py" />
+    <Compile Include="test-timing-precisions.py" />
+    <Compile Include="Worker.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="experiments" />
+    <Folder Include="research" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="CondaEnv|CondaEnv|tensorflow" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>

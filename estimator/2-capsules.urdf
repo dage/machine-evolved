@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<robot name="2-capsules">
+  <!-- LINKS -->
+  <link name="capsule-1">
+    <visual>
+      <origin xyz="0 0 -0.5" rpy="0 0 0" />
+      <geometry>
+        <capsule length="0.5" radius="0.25"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.5" rpy="0 0 0" />
+      <geometry>
+        <capsule length="0.5" radius="0.25"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="capsule-2">
+    <visual>
+      <origin xyz="0 0 0.5" rpy="0 0 0" />
+      <geometry>
+        <capsule length="0.5" radius="0.25"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.5" rpy="0 0 0" />
+      <geometry>
+        <capsule length="0.5" radius="0.25"/>
+      </geometry>
+    </collision>
+  </link>
+<!--
+  <link name="capsule-3">
+    <visual>
+      <material name="blue"/>
+      <geometry>
+        <capsule length="0.5" radius="0.25"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <capsule length="0.5" radius="0.25"/>
+      </geometry>
+    </collision>
+  </link>
+-->
+  <!-- JOINTS -->
+  <joint name="capsule-joint-1-2" type="continuous">
+    <parent link="capsule-1"/>
+    <child link="capsule-2"/>
+    <axis xyz="0 0 1"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+  <!--
+  <joint name="capsule-joint-1-2-z" type="continuous">
+    <parent link="capsule-1"/>
+    <child link="capsule-2"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+  -->
+  
+  
+  <!--
+  <joint name="capsule-joint-2-3" type="continuous">
+    <parent link="capsule-2"/>
+    <child link="capsule-3"/>
+    <axis xyz="1 0 0"/>
+    <origin xyz="0 0 1"/>
+  </joint>
+-->
+</robot>

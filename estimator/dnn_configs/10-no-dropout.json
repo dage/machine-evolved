@@ -1,0 +1,8 @@
+{
+  "layers": [
+    {
+      "units": 10,
+      "dropout":  0
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+<mujoco model='capsules'>  
+    <worldbody>
+        <geom name='floor' pos='0 0 0' size='10 10 0.125' type='plane' material="MatPlane" condim='3'/>
+
+        <body name='capsule-1-body' pos='10 10 1'>
+          <geom name='capsule-1' type='capsule' fromto='-.5 0 0 .5 0 0' size='0.5' />
+          
+          <body name='capsule-2-body' pos='0 0 0'>
+            <joint name='capsule-1-2-x' type='hinge' range='-1.57 1.57' limited='true' pos='1 0 0' axis='1 0 0' damping='100000' stiffness='1' armature='1e-5' />
+            <joint name='capsule-1-2-y' type='hinge' range='-1.57 1.57' limited='true' pos='1 0 0' axis='0 1 0' damping='100000' stiffness='1' armature='1e-5' />
+            <joint name='capsule-1-2-z' type='hinge' range='-1.57 1.57' limited='true' pos='1 0 0' axis='0 0 1' damping='100000' stiffness='1' armature='1e-5' />
+            <geom name='capsule-2' type='capsule' fromto='1.5 0 0 2.5 0 0' size='0.5' />
+          </body>
+          
+        </body>
+    </worldbody>
+</mujoco>
