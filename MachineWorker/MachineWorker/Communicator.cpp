@@ -34,6 +34,7 @@ std::string Communicator::getSendResultSerialized(WorkEvaluator::TASK* task) {
 			+ ",\"longestUnsupportedSeconds\":" + std::to_string(motion.longestUnsupportedSeconds)
 			+ ",\"rootSpinRateRadiansPerSecond\":" + std::to_string(motion.rootSpinRate)
 			+ ",\"maxCapsuleRotationRateRadiansPerSecond\":" + std::to_string(motion.maximumCapsuleRotationRate)
+			+ ",\"minJointRotationRateRadiansPerSecond\":" + std::to_string(motion.minimumJointRotationRate)
 			+ ",\"finalToMaxDistanceRatio\":" + std::to_string(motion.finalToMaxDistanceRatio)
 			+ "}}";
 	}

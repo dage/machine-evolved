@@ -24,6 +24,7 @@ public:
 		maxCapsuleRotationRate = objective.get<double>("credibility.maxCapsuleRotationRateRadiansPerSecond", maxSpinRate);
 		maxUnsupportedPathFraction = objective.get<double>("credibility.maxUnsupportedPathFraction", 0.25);
 		minFinalToMaxDistanceRatio = objective.get<double>("credibility.minFinalToMaxDistanceRatio", 0.9);
+		minJointRotationRate = objective.get<double>("credibility.minJointRotationRateRadiansPerSecond", 0.0);
 
 		startingPosition = horizontal(creature->getCenterOfMassPosition());
 		previousPosition = startingPosition;
@@ -32,6 +33,10 @@ public:
 		capsuleRotationRadians.assign(poses.size(), 0.0);
 		for (const auto& pose : poses)
 			previousRotations.push_back(normalized(pose.rotation));
+		jointRotationRadians.assign(poses.size() > 1 ? poses.size() - 1 : 0, 0.0);
+		previousRelativeRotations.reserve(jointRotationRadians.size());
+		for (std::size_t index = 0; index + 1 < previousRotations.size(); ++index)
+			previousRelativeRotations.push_back(relative(previousRotations[index], previousRotations[index + 1]));
 	}
 
 	void tick(CreatureBase* creature)
@@ -57,6 +62,11 @@ public:
 			minimumClearance = std::min(minimumClearance, clearance);
 			capsuleRotationRadians[index] += quaternionTravel(previousRotations[index], rotation);
 			previousRotations[index] = rotation;
+		}
+		for (std::size_t index = 0; index + 1 < previousRotations.size(); ++index) {
+			const btQuaternion currentRelative = relative(previousRotations[index], previousRotations[index + 1]);
+			jointRotationRadians[index] += quaternionTravel(previousRelativeRotations[index], currentRelative);
+			previousRelativeRotations[index] = currentRelative;
 		}
 
 		const bool supported = minimumClearance <= clearanceEpsilon;
@@ -86,11 +96,19 @@ public:
 		maximumCapsuleRotationRate = capsuleRotationRates.empty()
 			? 0.0
 			: *std::max_element(capsuleRotationRates.begin(), capsuleRotationRates.end());
+		jointRotationRates.clear();
+		jointRotationRates.reserve(jointRotationRadians.size());
+		for (const double rotation : jointRotationRadians)
+			jointRotationRates.push_back(simulatedSeconds > 0.0 ? rotation / simulatedSeconds : 0.0);
+		minimumJointRotationRate = jointRotationRates.empty()
+			? 0.0
+			: *std::min_element(jointRotationRates.begin(), jointRotationRates.end());
 		credible = !credibleScoring || (
 			rootSpinRate <= maxSpinRate
 			&& maximumCapsuleRotationRate <= maxCapsuleRotationRate
 			&& unsupportedPathFraction <= maxUnsupportedPathFraction
-			&& finalToMaxDistanceRatio >= minFinalToMaxDistanceRatio);
+			&& finalToMaxDistanceRatio >= minFinalToMaxDistanceRatio
+			&& minimumJointRotationRate >= minJointRotationRate);
 		fitness = credible ? maxDistance : 0.0;
 	}
 
@@ -105,8 +123,10 @@ public:
 	double finalToMaxDistanceRatio = 1.0;
 	double rootSpinRate = 0.0;
 	double maximumCapsuleRotationRate = 0.0;
+	double minimumJointRotationRate = 0.0;
 	double fitness = 0.0;
 	std::vector<double> capsuleRotationRates;
+	std::vector<double> jointRotationRates;
 
 private:
 	static btVector3 horizontal(btVector3 value)
@@ -127,16 +147,24 @@ private:
 		return 2.0 * std::acos(std::max(-1.0, std::min(1.0, dot)));
 	}
 
+	static btQuaternion relative(const btQuaternion& parent, const btQuaternion& child)
+	{
+		return normalized(parent.inverse() * child);
+	}
+
 	double clearanceEpsilon = 2.0;
 	double maxSpinRate = 10.0;
 	double maxCapsuleRotationRate = 10.0;
 	double maxUnsupportedPathFraction = 0.25;
 	double minFinalToMaxDistanceRatio = 0.9;
+	double minJointRotationRate = 0.0;
 	btVector3 startingPosition;
 	btVector3 previousPosition;
 	double unsupportedPath = 0.0;
 	std::vector<btQuaternion> previousRotations;
 	std::vector<double> capsuleRotationRadians;
+	std::vector<btQuaternion> previousRelativeRotations;
+	std::vector<double> jointRotationRadians;
 	int ticks = 0;
 	int nearGroundTicks = 0;
 	int currentUnsupportedTicks = 0;

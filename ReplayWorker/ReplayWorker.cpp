@@ -204,6 +204,7 @@ void writeReplay(
 		<< ",\"longestUnsupportedSeconds\":" << motion.longestUnsupportedSeconds
 		<< ",\"rootSpinRateRadiansPerSecond\":" << motion.rootSpinRate
 		<< ",\"maxCapsuleRotationRateRadiansPerSecond\":" << motion.maximumCapsuleRotationRate
+		<< ",\"minJointRotationRateRadiansPerSecond\":" << motion.minimumJointRotationRate
 		<< ",\"finalToMaxDistanceRatio\":" << motion.finalToMaxDistanceRatio << "},\n"
 		<< " \"displayScale\":" << DISPLAY_SCALE << ",\n"
 		<< " \"sourceCoordinateSystem\":{\"upAxis\":\"z\",\"horizontalAxes\":[\"x\",\"y\"],\"units\":\"simulation-units\"},\n"

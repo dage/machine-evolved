@@ -38,6 +38,17 @@ def quaternion_delta(first, second):
 	return 2 * math.acos(max(-1.0, min(1.0, abs(dot / (first_norm * second_norm)))))
 
 
+def quaternion_multiply(first, second):
+	ax, ay, az, aw = (first[key] for key in ("x", "y", "z", "w"))
+	bx, by, bz, bw = (second[key] for key in ("x", "y", "z", "w"))
+	return {
+		"x": aw * bx + ax * bw + ay * bz - az * by,
+		"y": aw * by - ax * bz + ay * bw + az * bx,
+		"z": aw * bz + ax * by - ay * bx + az * bw,
+		"w": aw * bw - ax * bx - ay * by - az * bz,
+	}
+
+
 def axis_delta(first, second):
 	dot = sum(a * b for a, b in zip(first, second))
 	return math.acos(max(-1.0, min(1.0, abs(dot))))
@@ -55,7 +66,7 @@ def percentile(values, ratio):
 	return ordered[lower] * (upper - position) + ordered[upper] * (position - lower)
 
 
-def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate, max_unsupported_path_fraction):
+def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate, max_unsupported_path_fraction, min_joint_rotation_rate):
 	samples = replay["samples"]
 	if len(samples) < 2:
 		raise ValueError("Replay must contain at least two samples")
@@ -80,6 +91,7 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate,
 	root_rotations = []
 	root_axes = []
 	capsule_rotations = {capsule_id: [] for capsule_id in capsules}
+	joint_rotations = [[] for _ in range(max(0, len(capsules) - 1))]
 	for sample in samples:
 		minimum_clearance = math.inf
 		for capsule_id, definition in capsules.items():
@@ -96,6 +108,12 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate,
 		root_axes.append(quaternion_axis(root_pose["rotation"]))
 		for capsule_id in capsules:
 			capsule_rotations[capsule_id].append(sample["poses"]["parts"][capsule_id]["rotation"])
+		ordered_rotations = [sample["poses"]["parts"][capsule_id]["rotation"] for capsule_id in capsules]
+		for index in range(len(ordered_rotations) - 1):
+			parent = ordered_rotations[index]
+			child = ordered_rotations[index + 1]
+			parent_inverse = {"x": -parent["x"], "y": -parent["y"], "z": -parent["z"], "w": parent["w"]}
+			joint_rotations[index].append(quaternion_multiply(parent_inverse, child))
 		near_ground.append(minimum_clearance <= clearance_epsilon)
 
 	path_length = sum(segments)
@@ -123,6 +141,11 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate,
 		for capsule_id, rotations in capsule_rotations.items()
 	}
 	maximum_capsule_rotation_rate = max(capsule_rotation_rates.values())
+	joint_rotation_rates = [
+		sum(quaternion_delta(a, b) for a, b in zip(rotations, rotations[1:])) / duration
+		for rotations in joint_rotations
+	]
+	minimum_joint_rotation_rate = min(joint_rotation_rates, default=0.0)
 	unsupported_path_fraction = unsupported_path / path_length if path_length else 0.0
 	final_to_max = distances[-1] / max(distances) if max(distances) else 1.0
 	credible = (
@@ -130,6 +153,7 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate,
 		and maximum_capsule_rotation_rate <= max_capsule_rotation_rate
 		and unsupported_path_fraction <= max_unsupported_path_fraction
 		and final_to_max >= 0.9
+		and minimum_joint_rotation_rate >= min_joint_rotation_rate
 	)
 
 	return {
@@ -157,10 +181,13 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate,
 		"rootSpinRateRadiansPerSecond": spin_rate,
 		"capsuleRotationRatesRadiansPerSecond": capsule_rotation_rates,
 		"maxCapsuleRotationRateRadiansPerSecond": maximum_capsule_rotation_rate,
+		"jointRotationRatesRadiansPerSecond": joint_rotation_rates,
+		"minJointRotationRateRadiansPerSecond": minimum_joint_rotation_rate,
 		"credibility": {
 			"passes": credible,
 			"maxSpinRateRadiansPerSecond": max_spin_rate,
 			"maxCapsuleRotationRateRadiansPerSecond": max_capsule_rotation_rate,
+			"minJointRotationRateRadiansPerSecond": min_joint_rotation_rate,
 			"maxUnsupportedPathFraction": max_unsupported_path_fraction,
 			"clearanceEpsilonMeters": clearance_epsilon,
 		},
@@ -174,6 +201,7 @@ def main():
 	parser.add_argument("--clearance-epsilon", type=float, default=0.02)
 	parser.add_argument("--max-spin-rate", type=float, default=10.0)
 	parser.add_argument("--max-capsule-rotation-rate", type=float, default=10.0)
+	parser.add_argument("--min-joint-rotation-rate", type=float, default=0.0)
 	parser.add_argument("--max-unsupported-path-fraction", type=float, default=0.25)
 	parser.add_argument("--require-credible", action="store_true")
 	args = parser.parse_args()
@@ -186,6 +214,7 @@ def main():
 		args.max_spin_rate,
 		args.max_capsule_rotation_rate,
 		args.max_unsupported_path_fraction,
+		args.min_joint_rotation_rate,
 	)
 	serialized = json.dumps(result, indent=2, allow_nan=False) + "\n"
 	if args.output:
