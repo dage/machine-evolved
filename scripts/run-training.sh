@@ -11,6 +11,7 @@ minutes=""
 workers=4
 seed=""
 stall_evaluations=""
+reset_fitness=false
 run_name=""
 trainer_pid=""
 worker_pid=""
@@ -18,7 +19,7 @@ hard_deadline_epoch=""
 deadline_signal_epoch=""
 
 usage() {
-  echo "Usage: $0 --config FILE (--evaluations N | --minutes N) [--workers N] [--seed N] [--stall-evaluations N] [--run-name NAME]"
+  echo "Usage: $0 --config FILE (--evaluations N | --minutes N) [--workers N] [--seed N] [--stall-evaluations N] [--reset-fitness] [--run-name NAME]"
 }
 
 positive_integer() {
@@ -33,6 +34,7 @@ while [[ $# -gt 0 ]]; do
     --workers) workers=${2:-}; shift 2 ;;
     --seed) seed=${2:-}; shift 2 ;;
     --stall-evaluations) stall_evaluations=${2:-}; shift 2 ;;
+    --reset-fitness) reset_fitness=true; shift ;;
     --run-name) run_name=${2:-}; shift 2 ;;
     --help) usage; exit 0 ;;
     *) echo "Unknown argument: $1" >&2; usage >&2; exit 2 ;;
@@ -136,6 +138,9 @@ if [[ -n "$stall_evaluations" ]]; then
 fi
 if [[ -n "$seed" ]]; then
   trainer_args+=(--seed "$seed")
+fi
+if [[ "$reset_fitness" == true ]]; then
+  trainer_args+=(--reset-fitness)
 fi
 trainer_args+=("$run_dir/config.json")
 
