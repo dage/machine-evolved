@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from Trainer import GeneticAlgorithm
+from Trainer import GeneticAlgorithm, wallClockLimitReached
 
 
 class GeneticAlgorithmTest(unittest.TestCase):
@@ -75,6 +75,11 @@ class GeneticAlgorithmTest(unittest.TestCase):
 				copy.deepcopy(self.config["structure"]),
 				{ "saveState": lambda: None },
 			)
+
+	def test_wall_clock_limit_uses_elapsed_seconds(self):
+		self.assertFalse(wallClockLimitReached(10.0, None, 100.0))
+		self.assertFalse(wallClockLimitReached(10.0, 30.0, 39.999))
+		self.assertTrue(wallClockLimitReached(10.0, 30.0, 40.0))
 
 
 if __name__ == "__main__":

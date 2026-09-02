@@ -34,6 +34,19 @@ checks that a finite fitness was persisted, and cleans up. The fixed seed makes
 the default single-worker result deterministic. It does not start a
 multi-generation training run.
 
+For a wall-clock-bounded run, use `--minutes` instead of `--evaluations`. The
+runner sends the trainer a graceful interrupt at the deadline so its latest
+population is saved before the worker exits:
+
+```sh
+scripts/run-training.sh \
+  --config machine-evolved-trainer/configs/reproduction-three-capsule-distance-pilot.json \
+  --minutes 30 \
+  --workers 6 \
+  --seed 3 \
+  --run-name three-capsule-distance-seed-3-30m
+```
+
 The reconstructed smoke configuration uses three capsules and a
 `50 inputs -> 50 tanh -> 10 tanh -> 6 linear outputs` controller. The topology
 comes from the recovered project notes and the input/output counts agree with

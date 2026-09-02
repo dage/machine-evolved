@@ -13,6 +13,13 @@ from pprint import pprint
 import sys
 import signal
 
+def wallClockLimitReached(startTime, limitSeconds, currentTime=None):
+	if limitSeconds is None:
+		return False
+	if currentTime is None:
+		currentTime = time.time()
+	return currentTime - startTime >= limitSeconds
+
 class GeneticAlgorithm():
 	FITNESS = 0		# Key into individuals item tuple
 	CREATURE = 1	# Key into individuals item tuple
@@ -306,6 +313,7 @@ class Trainer():
 				sys.exit("Only algorithm type 'GeneticAlgorithm' currently implemented. Got '" + algorithmType + "'");
 
 		self.config = config
+		self.startTime = time.time()
 		self.experimentId = str(uuid.uuid4())
 		self.statistics = { "accumulatedSimulatedTime": 0, "accumulatedFitness": {}, "accumulatedSimulatedCreatures": {}, "timeStamp": time.time() }
 		self.statistics["timeStamp"] = time.time()
@@ -389,7 +397,11 @@ class Trainer():
 			self.saveState()
 			self.communicator.stop()
 		
-		if self.config["terminateStallEvaluations"] and self.algorithm.populationConfig["evaluations"] - self.bestFitnessEvaluation >= self.config["terminateStallEvaluations"]:
+		elif wallClockLimitReached(self.startTime, self.config["terminateSeconds"]):
+			print("Exiting since the wall-clock training limit has been reached. terminate-seconds={}.".format(self.config["terminateSeconds"]))
+			self.saveState()
+			self.communicator.stop()
+		elif self.config["terminateStallEvaluations"] and self.algorithm.populationConfig["evaluations"] - self.bestFitnessEvaluation >= self.config["terminateStallEvaluations"]:
 			print("Exiting since no new best creature has been found for terminate-stall-evaluations={}.".format(self.config["terminateStallEvaluations"]))
 			self.saveState()
 			self.communicator.stop()
@@ -503,6 +515,7 @@ def getJson():
 						help='Filename of json file configuring the simulation.')
 		parser.add_argument('--reset-fitness', dest="resetFitness", const="resetFitness", action='store_const', help='specify to reset fitness of all creatures of loaded population (default: re-use fitness values)')
 		parser.add_argument("--terminate-evaluations", type=int, help="terminate after this many fitness evaluations have been performed. if not specified, never terminate.")
+		parser.add_argument("--terminate-seconds", type=float, help="terminate after this many wall-clock seconds and save the latest population. if not specified, never terminate.")
 		parser.add_argument("--terminate-stall-evaluations", type=int, help="terminate after this many fitness evaluations that didn't cause the best fitness to improve. if not specified, never terminate.")
 		parser.add_argument("--result-filename", help="If specified, append the result of the simulation to csv file specified here. Default: Do not write results to file.")
 		parser.add_argument("--seed", type=int, help="seed Python's random generator and persist it in the experiment configuration")
@@ -510,6 +523,8 @@ def getJson():
 		return parser.parse_args()
 
 	args = parseCommandLineArguments()
+	if args.terminate_seconds is not None and args.terminate_seconds <= 0:
+		raise ValueError("--terminate-seconds must be greater than zero")
 
 	filename = args.config.name
 	resetFitness = True if args.resetFitness else False
@@ -522,7 +537,7 @@ def getJson():
 	if seed is not None:
 		experiment["seed"] = seed
 
-	return {"resultFilename": args.result_filename, "seed": seed, "terminateEvaluations": args.terminate_evaluations, "terminateStallEvaluations": args.terminate_stall_evaluations, "filename": filename, "json": loadedJson, "resetFitness": resetFitness}
+	return {"resultFilename": args.result_filename, "seed": seed, "terminateEvaluations": args.terminate_evaluations, "terminateSeconds": args.terminate_seconds, "terminateStallEvaluations": args.terminate_stall_evaluations, "filename": filename, "json": loadedJson, "resetFitness": resetFitness}
 
 def writeResult(trainer, filename):
 	generator = config["json"]["structure"]["generator"]

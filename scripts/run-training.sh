@@ -7,6 +7,7 @@ repo_dir=$(cd "$script_dir/.." && pwd)
 build_dir="$repo_dir/build"
 config=""
 evaluations=""
+minutes=""
 workers=4
 seed=""
 run_name=""
@@ -14,7 +15,7 @@ trainer_pid=""
 worker_pid=""
 
 usage() {
-  echo "Usage: $0 --config FILE --evaluations N [--workers N] [--seed N] [--run-name NAME]"
+  echo "Usage: $0 --config FILE (--evaluations N | --minutes N) [--workers N] [--seed N] [--run-name NAME]"
 }
 
 positive_integer() {
@@ -25,6 +26,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --config) config=${2:-}; shift 2 ;;
     --evaluations) evaluations=${2:-}; shift 2 ;;
+    --minutes) minutes=${2:-}; shift 2 ;;
     --workers) workers=${2:-}; shift 2 ;;
     --seed) seed=${2:-}; shift 2 ;;
     --run-name) run_name=${2:-}; shift 2 ;;
@@ -37,8 +39,24 @@ if [[ -z "$config" || ! -f "$config" ]]; then
   echo "--config must identify an existing JSON file." >&2
   exit 2
 fi
-if [[ -z "$evaluations" ]] || ! positive_integer "$evaluations"; then
-  echo "--evaluations is required and must be a positive integer." >&2
+if [[ -n "$evaluations" ]] && ! positive_integer "$evaluations"; then
+  echo "--evaluations must be a positive integer." >&2
+  exit 2
+fi
+if [[ -n "$minutes" && ! "$minutes" =~ ^([0-9]+([.][0-9]*)?|[.][0-9]+)$ ]]; then
+  echo "--minutes must be a positive number." >&2
+  exit 2
+fi
+if [[ -n "$minutes" ]] && ! awk -v value="$minutes" 'BEGIN { exit !(value > 0) }'; then
+  echo "--minutes must be greater than zero." >&2
+  exit 2
+fi
+if [[ -z "$evaluations" && -z "$minutes" ]]; then
+  echo "Either --evaluations or --minutes is required." >&2
+  exit 2
+fi
+if [[ -n "$evaluations" && -n "$minutes" ]]; then
+  echo "Use either --evaluations or --minutes, not both." >&2
   exit 2
 fi
 if ! positive_integer "$workers"; then
@@ -97,8 +115,14 @@ cp "$config" "$run_dir/config.json"
 
 trainer_args=(
   python3 -u "$repo_dir/machine-evolved-trainer/Trainer.py"
-  --terminate-evaluations "$evaluations"
 )
+if [[ -n "$evaluations" ]]; then
+  trainer_args+=(--terminate-evaluations "$evaluations")
+fi
+if [[ -n "$minutes" ]]; then
+  duration_seconds=$(awk -v value="$minutes" 'BEGIN { printf "%.3f", value * 60 }')
+  trainer_args+=(--terminate-seconds "$duration_seconds")
+fi
 if [[ -n "$seed" ]]; then
   trainer_args+=(--seed "$seed")
 fi
