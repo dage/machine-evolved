@@ -413,7 +413,7 @@ class Trainer():
 		return json.dumps(response)
 
 	def getWorkBatch(self, data):
-		return json.dumps(getWorkBatchUnserialized(data))
+		return json.dumps(self.getWorkBatchUnserialized(data))
 
 	def getWorkBatchUnserialized(self, data):
 		remaining = data["maxWorkUnits"]

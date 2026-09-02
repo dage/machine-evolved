@@ -1,0 +1,98 @@
+{
+  "algorithm": {
+    "type": "GeneticAlgorithm",
+    "arguments": {
+      "population": {
+        "size": 2,
+        "generation": 0,
+        "evaluations": 0
+      },
+      "crossover": {
+        "rate": 0,
+        "competitionSize": {
+          "reproduce": 1,
+          "eliminate": 1
+        },
+        "numParameterChangedRatioRange": "0-0",
+        "changeRatioRange": "0-0"
+      },
+      "mutation": {
+        "rate": 0,
+        "competitionSize": {
+          "reproduce": 1,
+          "eliminate": 1
+        },
+        "config": {
+          "numParameterChangedRatioRange": "0-0",
+          "offsetRange": "0;0",
+          "offsetExponent": 1,
+          "randomizeSign": "yes"
+        }
+      }
+    }
+  },
+  "structure": {
+    "generator": {
+      "capsuleRadiusRange": "10-20",
+      "capsuleInnerHeightRange": "50-100",
+      "numCapsules": 3,
+      "motors": {
+        "x-rotation": {
+          "range": "-0.5;0.5"
+        },
+        "y-rotation": {
+          "range": "-0.5;0.5"
+        },
+        "z-rotation": {
+          "range": "-0.5;0.5"
+        }
+      },
+      "feedbacks": 0,
+      "oscillators": {
+        "start": 0.1,
+        "multiplier": 2.0,
+        "count": 9
+      },
+      "inputs": {
+        "root-orientation-x": 1,
+        "root-orientation-y": 1,
+        "root-orientation-z": 1,
+        "root-orientation-w": 1,
+        "z-position": 1,
+        "velocity-x": 1,
+        "velocity-y": 1,
+        "velocity-z": 1,
+        "oscillators": 1,
+        "capsule-position-x": 1,
+        "capsule-position-y": 1,
+        "capsule-position-z": 1,
+        "capsule-velocity-x": 1,
+        "capsule-velocity-y": 1,
+        "capsule-velocity-z": 1,
+        "capsule-angular-velocity-x": 1,
+        "capsule-angular-velocity-y": 1,
+        "capsule-angular-velocity-z": 1,
+        "motor-angle-x": 1,
+        "motor-angle-y": 1,
+        "motor-angle-z": 1,
+        "feedbacks": 0
+      },
+      "motorController": {
+        "layers": [
+          {
+            "neurons": 50,
+            "activation": "tanh"
+          },
+          {
+            "neurons": 10,
+            "activation": "tanh"
+          },
+          {
+            "activation": "linear"
+          }
+        ]
+      }
+    },
+    "creatures": []
+  }
+}

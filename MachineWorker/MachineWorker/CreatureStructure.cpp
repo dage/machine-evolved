@@ -31,8 +31,8 @@ CreatureStructure::CreatureStructure(pt::ptree serialized) {
 	inputs.velocityZ = serialized.get<int>("inputs.velocity-z") == 1;
 	inputs.zPosition = serialized.get<int>("inputs.z-position") == 1;
 
-	for (pt::ptree::value_type &capsule : serialized.get_child("capsules")) {
-		auto item = capsule.second;
+	for (pt::ptree::value_type &capsuleData : serialized.get_child("capsules")) {
+		auto item = capsuleData.second;
 		auto capsule = new CAPSULE();
 
 		capsule->id = item.get<std::string>("id");
@@ -135,4 +135,3 @@ CreatureStructure::CAPSULE* CreatureStructure::getCapsule(std::string id) {
 void CreatureStructure::addCapsule(CAPSULE* capsule) {
 	capsules.push_back(capsule);
 }
-

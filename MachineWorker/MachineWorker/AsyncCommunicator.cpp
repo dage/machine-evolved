@@ -1,5 +1,9 @@
 #include "AsyncCommunicator.h"
 
+#include <algorithm>
+#include <cstdio>
+#include <vector>
+
 AsyncCommunicator::AsyncCommunicator()
 {
 }
@@ -9,80 +13,89 @@ AsyncCommunicator::~AsyncCommunicator()
 }
 
 void AsyncCommunicator::run() {
-	while (!stopped) {
-		// Transfer results into concatenated json array results string
+	int failedFlushAttempts = 0;
+	while (true) {
+		std::vector<std::string> pendingResults;
+		{
+			std::lock_guard<std::mutex> resultsLock(resultMutex);
+			pendingResults.assign(resultsQueue.begin(), resultsQueue.end());
+		}
+
+		if (stopRequested && pendingResults.empty())
+			break;
+
+		std::size_t queuedWork = 0;
+		{
+			std::lock_guard<std::mutex> workLock(workMutex);
+			queuedWork = workQueue.size();
+		}
+
+		// Submit completed evaluations and refill the work queue in one request.
 		std::string request = "{\"results\": [";
-		std::unique_lock<std::mutex> resultsLock(resultMutex, std::defer_lock);
-		resultsLock.lock();
-		int numResults = resultsQueue.size();
-		while (!resultsQueue.empty()) {
-			auto result = resultsQueue.top();
-			resultsQueue.pop();
-			request += result;
-			if (!resultsQueue.empty()) // more to go?
+		for (std::size_t index = 0; index < pendingResults.size(); ++index) {
+			request += pendingResults[index];
+			if (index + 1 < pendingResults.size())
 				request += ",";
 		}
 		request += "]";
-		resultsLock.unlock();
 
-		if (numResults == targetWorkQueueSize && workQueue.size() == 0) {
+		if (static_cast<int>(pendingResults.size()) == targetWorkQueueSize && queuedWork == 0) {
 			printf("Increasing queue sizes from %i to %i.\n", targetWorkQueueSize, targetWorkQueueSize * 2);
 			targetWorkQueueSize *= 2;
 		}
 
-		request += ",\"maxWorkUnits\":" + std::to_string(targetWorkQueueSize - workQueue.size()) + "}";
+		const int maxWorkUnits = std::max(0, targetWorkQueueSize - static_cast<int>(queuedWork));
+		request += ",\"maxWorkUnits\":" + std::to_string(stopRequested ? 0 : maxWorkUnits) + "}";
 
 		auto response = communicator.doStepBatch(request);
 
-
 		if (!response.empty()) {
-			std::unique_lock<std::mutex> workLock(workMutex, std::defer_lock);
-			workLock.lock();
-			for (pt::ptree::value_type &workUnit : response.get_child("workUnits")) {
-				workQueue.push_back(workUnit.second);
+			failedFlushAttempts = 0;
+			if (!pendingResults.empty()) {
+				std::lock_guard<std::mutex> resultsLock(resultMutex);
+				for (std::size_t index = 0; index < pendingResults.size() && !resultsQueue.empty(); ++index)
+					resultsQueue.pop_front();
 			}
-			workLock.unlock();
 
-			serverStatus = response.get<std::string>("status");
+			if (!stopRequested) {
+				std::lock_guard<std::mutex> workLock(workMutex);
+				for (pt::ptree::value_type &workUnit : response.get_child("workUnits"))
+					workQueue.push_back(workUnit.second);
+			}
+
+			{
+				std::lock_guard<std::mutex> statusLock(statusMutex);
+				serverStatus = response.get<std::string>("status", "");
+			}
+		}
+		else if (stopRequested && !pendingResults.empty()) {
+			failedFlushAttempts++;
+			if (failedFlushAttempts >= 20) {
+				std::fprintf(stderr, "Unable to flush %zu queued result(s); the trainer is unavailable.\n", pendingResults.size());
+				break;
+			}
 		}
 
-		// TODO: Get work units - ensure inserted so that existing elements are removed first ("time to live" validation on server)
-		// TODO: Get server status
-		// TODO: Remove old code
-
-
-		// Get new work:
-/*		int numWorkUnitsRequested = 0;	// avoid situation where results are never sent because workers are quicker than server
-		bool isServerExhausted = false;
-		while (workQueue.size() != WORK_QUEUE_SIZE && numWorkUnitsRequested++ < 1000 && !isServerExhausted) {
-			auto work = communicator.getWork();
-
-			if (!work.empty() && work.get<std::string>("status") != "NO_WORK") {
-				std::unique_lock<std::mutex> lock(workMutex, std::defer_lock);
-				lock.lock();
-				workQueue.push_back(work);
-				lock.unlock();
-			}
-			else
-				// TODO: Check returned json status and chill if status="NO_WORK"
-				isServerExhausted = true;
-		}
-
-		// Get server status:
-		serverStatus = communicator.getServerStatus();
-*/
-		// Chill:
-		std::this_thread::sleep_for(std::chrono::seconds(1));	// No work ==> sleep a little bit to give server some time
+		std::unique_lock<std::mutex> wakeLock(wakeMutex);
+		wakeCondition.wait_for(wakeLock, std::chrono::milliseconds(100), [this]() {
+			return stopRequested.load();
+		});
 	}
+	stopped = true;
 }
 
 std::string AsyncCommunicator::getServerStatus() {
-	//return communicator.getServerStatus();
+	std::lock_guard<std::mutex> statusLock(statusMutex);
 	return serverStatus;
 }
 
 void AsyncCommunicator::stop() {
-	stopped = true;
+	stopRequested = true;
+	wakeCondition.notify_all();
+}
+
+bool AsyncCommunicator::isStopped() const {
+	return stopped;
 }
 
 pt::ptree AsyncCommunicator::getBestCreature() {
@@ -94,16 +107,13 @@ pt::ptree AsyncCommunicator::getWork() {
 
 	pt::ptree jsonObject;
 
-	std::unique_lock<std::mutex> lock(workMutex, std::defer_lock);
-	lock.lock();
+	std::lock_guard<std::mutex> lock(workMutex);
 	if (workQueue.empty()) {
-		lock.unlock();
 		return jsonObject;
 	}
 
 	jsonObject = workQueue.front();
 	workQueue.pop_front();
-	lock.unlock();
 	return jsonObject;
 }
 
@@ -111,8 +121,9 @@ void AsyncCommunicator::sendResult(WorkEvaluator::TASK* task) {
 	//communicator.sendResult(task);		// uncomment to instead use synchronous blocking version
 	//return;								// uncomment to instead use synchronous blocking version
 
-	std::unique_lock<std::mutex> lock(resultMutex, std::defer_lock);
-	lock.lock();
-	resultsQueue.push(communicator.getSendResultSerialized(task));
-	lock.unlock();
+	{
+		std::lock_guard<std::mutex> lock(resultMutex);
+		resultsQueue.push_back(communicator.getSendResultSerialized(task));
+	}
+	wakeCondition.notify_all();
 }

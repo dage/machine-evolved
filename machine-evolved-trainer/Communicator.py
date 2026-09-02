@@ -4,6 +4,10 @@ import sys
 import time
 from pprint import pprint
 
+class TrainerTCPServer(socketserver.ThreadingTCPServer):
+	allow_reuse_address = True
+	daemon_threads = True
+
 # Handles all communication with clients, serving workloads, getting results.
 class Communicator():
 	def __init__(self, getWorkCallback, getWorkBatchCallback, doStepBatchCallback, registerResultCallback, getServerStatusCallback, getBestCreatureCallback):
@@ -11,8 +15,7 @@ class Communicator():
 		self.PORT = 9999
 		self.isStopped = False
 		
-		self.server = socketserver.ThreadingTCPServer((self.HOST, self.PORT), RequestHandler)
-		#self.server = socketserver.TCPServer((self.HOST, self.PORT), RequestHandler)
+		self.server = TrainerTCPServer((self.HOST, self.PORT), RequestHandler)
 		self.server.callbacks = { "getWork": getWorkCallback, "getWorkBatch": getWorkBatchCallback, "doStepBatch": doStepBatchCallback, "registerResult": registerResultCallback, "getServerStatus" : getServerStatusCallback, "getBestCreature": getBestCreatureCallback }
 
 	def start(self):
@@ -22,6 +25,7 @@ class Communicator():
 	def stop(self):
 		self.isStopped = True
 		self.server.shutdown()
+		self.server.server_close()
 
 class RequestHandler(socketserver.BaseRequestHandler):
 	def handle(self):

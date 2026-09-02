@@ -9,34 +9,32 @@
 #include <locale>
 #include <mutex>
 
-#include "WorkEvaluator.h"
+#include "ICommunicator.h"
 
-
-#define ASIO_STANDALONE 
-#include <asio.hpp>
-
+#include <boost/asio.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-using asio::ip::tcp;
+namespace asio = boost::asio;
+using boost::asio::ip::tcp;
 namespace pt = boost::property_tree;
 
 /**
  * Handles all socket communication with the server.
  */
-class Communicator
+class Communicator : public ICommunicator
 {
 public:
 	enum TYPE { PING, GET_WORK, GET_WORK_BATCH, RESULT, GET_SERVER_STATUS, GET_BEST_CREATURE, STEP_BATCH };
 
 	Communicator();
-	~Communicator();
+	~Communicator() override;
 
 	static std::string getTypeAsString(TYPE type);
 
-	virtual pt::ptree getWork();
-	virtual void sendResult(WorkEvaluator::TASK* task);
-	virtual std::string getServerStatus();
+	pt::ptree getWork() override;
+	void sendResult(WorkEvaluator::TASK* task) override;
+	std::string getServerStatus() override;
 	
 	void sendResult(std::string resultSerialized);
 	pt::ptree getWorkBatch(int maxWorkUnits);

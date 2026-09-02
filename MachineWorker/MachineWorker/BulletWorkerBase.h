@@ -4,13 +4,15 @@
 #include <ratio>
 #include <thread>
 #include <chrono>
+#include <atomic>
+#include <limits>
 #include <stack>
 
 #include "BulletInterface.h"
 #include "CreatureBase.h"
 #include "WorkEvaluator.h"
 #include "Communicator.h"
-#include "AsyncCommunicator.h"
+#include "ICommunicator.h"
 
 /**
  * Base class for worker. Independent of UE4.
@@ -18,21 +20,22 @@
 class BulletWorkerBase
 {
 public:
-	BulletWorkerBase(AsyncCommunicator* communicator = nullptr);
+	BulletWorkerBase(ICommunicator* communicator = nullptr);
 	~BulletWorkerBase();
 
 	int id;
-	static int indexCounter;
+	static std::atomic<int> indexCounter;
 	
-	int runBlocking(int numCreatures = 2147483647);
+	int runBlocking(int numCreatures = std::numeric_limits<int>::max());
 
 	void terminate();
 	
 
 protected:
-	bool isTerminated = false;
+	std::atomic<bool> isTerminated{ false };
 
-	Communicator* communicator;
+	ICommunicator* communicator;
+	bool ownsCommunicator = false;
 	BulletInterface bullet;
 	WorkEvaluator workEvaluator = WorkEvaluator();
 

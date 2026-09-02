@@ -1,8 +1,11 @@
 #pragma once
 
 #include "Communicator.h"
-#include "WorkEvaluator.h"
+#include "ICommunicator.h"
 
+#include <atomic>
+#include <condition_variable>
+#include <deque>
 #include <stack>
 #include <mutex>
 
@@ -12,20 +15,21 @@ namespace pt = boost::property_tree;
  * An async version of Communicator. Requests are sent and received in an own thread and is handled internally as queues for maximum overall application performance.
  * Based on https://wiki.unrealengine.com/Multi-Threading:_How_to_Create_Threads_in_UE4
  */
-class AsyncCommunicator
+class AsyncCommunicator : public ICommunicator
 {
 public:
 	AsyncCommunicator();
-	~AsyncCommunicator();
+	~AsyncCommunicator() override;
 
-	virtual pt::ptree getWork();
-	virtual void sendResult(WorkEvaluator::TASK* task);
-	virtual std::string getServerStatus();
+	pt::ptree getWork() override;
+	void sendResult(WorkEvaluator::TASK* task) override;
+	std::string getServerStatus() override;
 
 	pt::ptree getBestCreature();
 
 	void run();
 	void stop();
+	bool isStopped() const;
 
 private:
 	int targetWorkQueueSize = 16;	// Attempt to fill work queue up to this size
@@ -33,9 +37,13 @@ private:
 	Communicator communicator = Communicator();
 	std::mutex workMutex;
 	std::mutex resultMutex;
+	std::mutex statusMutex;
+	std::mutex wakeMutex;
+	std::condition_variable wakeCondition;
 
 	std::deque<pt::ptree> workQueue;
-	std::stack<std::string> resultsQueue;
+	std::deque<std::string> resultsQueue;
 	std::string serverStatus = "";
-	bool stopped = false;
+	std::atomic<bool> stopRequested{ false };
+	std::atomic<bool> stopped{ false };
 };

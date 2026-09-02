@@ -102,14 +102,13 @@ std::string Communicator::sendRequest(TYPE type, std::string jsonData) {
 	try
 	{
 		// Set up
-		asio::io_service io_service;
-		tcp::resolver resolver(io_service);
-		tcp::resolver::query query(HOST, PORT);
-		tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
+			asio::io_context io_service;
+			tcp::resolver resolver(io_service);
+			auto endpoints = resolver.resolve(HOST, PORT);
 
-		// Connect
-		tcp::socket socket(io_service);
-		asio::connect(socket, endpoint_iterator);
+			// Connect
+			tcp::socket socket(io_service);
+			asio::connect(socket, endpoints);
 
 		// Send
 		std::string typeString = getTypeAsString(type);
@@ -118,7 +117,7 @@ std::string Communicator::sendRequest(TYPE type, std::string jsonData) {
 			requestString += ",\"data\":" + jsonData + "}";
 		else
 			requestString += "}";
-		asio::error_code ignored_error;
+			boost::system::error_code ignored_error;
 
 		asio::write(socket, asio::buffer(requestString), ignored_error);
 		
@@ -133,7 +132,7 @@ std::string Communicator::sendRequest(TYPE type, std::string jsonData) {
 		
 		while(true) {
 			std::vector<char> buf(128);
-			asio::error_code error;
+				boost::system::error_code error;
 
 			size_t len = socket.read_some(asio::buffer(buf), error);
 			
@@ -154,7 +153,7 @@ std::string Communicator::sendRequest(TYPE type, std::string jsonData) {
 			if (error == asio::error::eof || bracketCount == 0)
 				break; // Connection closed cleanly by peer.
 			else if (error)
-				throw asio::system_error(error); // Some other error.
+					throw boost::system::system_error(error); // Some other error.
 		}
 
 		//printf("\n\n\n\n\nRequest: %s\n\n", requestString.c_str());

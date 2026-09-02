@@ -1,21 +1,28 @@
 #include "BulletWorkerBase.h"
 
+#include <list>
+
 /**
 * Runs the physics simulation. Independent of UE4.
 */
 
-BulletWorkerBase::BulletWorkerBase(AsyncCommunicator* communicator)
+BulletWorkerBase::BulletWorkerBase(ICommunicator* communicator)
 {
 	id = ++indexCounter;
 
-	if (communicator)
-		this->communicator = (Communicator*)communicator;
-	else
+	if (communicator) {
+		this->communicator = communicator;
+	}
+	else {
 		this->communicator = new Communicator();
+		ownsCommunicator = true;
+	}
 }
 
 BulletWorkerBase::~BulletWorkerBase()
 {
+	if (ownsCommunicator)
+		delete communicator;
 }
 
 double BulletWorkerBase::getCurrentTime() {
@@ -112,4 +119,4 @@ void BulletWorkerBase::terminate() {
 	isTerminated = true;
 }
 
-int BulletWorkerBase::indexCounter = 0;
+std::atomic<int> BulletWorkerBase::indexCounter{ 0 };
