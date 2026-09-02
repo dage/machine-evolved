@@ -101,18 +101,23 @@ def rolling_discount_config(replay, override=None):
 	config = dict(source)
 	config.setdefault("enabled", motion.get("rollingDiscountEnabled", False))
 	config.setdefault("lambda", motion.get("rollingDiscountLambda", 1.0))
+	config.setdefault("power", motion.get("rollingDiscountPower", 1.0))
 	config.setdefault("epsilonSimulationUnits", motion.get("rollingDiscountEpsilonSimulationUnits", 1e-6))
 	if override:
 		config.update(override)
 	rolling_lambda = float(config.get("lambda", 1.0))
+	power = float(config.get("power", 1.0))
 	epsilon = float(config.get("epsilonSimulationUnits", 1e-6))
 	if not math.isfinite(rolling_lambda) or rolling_lambda < 0.0:
 		rolling_lambda = 1.0
+	if not math.isfinite(power) or power <= 0.0:
+		power = 1.0
 	if not math.isfinite(epsilon) or epsilon < 0.0:
 		epsilon = 1e-6
 	return {
 		"enabled": bool(config.get("enabled", motion.get("rollingDiscountEnabled", False))),
 		"lambda": rolling_lambda,
+		"power": power,
 		"epsilonSimulationUnits": epsilon,
 	}
 
@@ -273,8 +278,8 @@ def analyze(
 	raw_max_distance_simulation_units = float(replay["measuredMaxDistanceSimulationUnits"])
 	selected_fitness_simulation_units = 0.0
 	if credible:
-		discount_multiplier = 1.0 - discount["lambda"] * rolling_explained_fraction if discount["enabled"] else 1.0
-		selected_fitness_simulation_units = raw_max_distance_simulation_units * max(0.0, discount_multiplier)
+		discount_base = max(0.0, 1.0 - discount["lambda"] * rolling_explained_fraction) if discount["enabled"] else 1.0
+		selected_fitness_simulation_units = raw_max_distance_simulation_units * discount_base ** discount["power"]
 
 	return {
 		"schemaVersion": 1,
@@ -308,6 +313,7 @@ def analyze(
 		"rollingExplainedFraction": rolling_explained_fraction,
 		"rollingDiscountEnabled": discount["enabled"],
 		"rollingDiscountLambda": discount["lambda"],
+		"rollingDiscountPower": discount["power"],
 		"rollingDiscountEpsilonSimulationUnits": discount["epsilonSimulationUnits"],
 		"rollingDiscountConfig": discount,
 		"rollingSignatureEnabled": rolling["enabled"],
@@ -350,6 +356,7 @@ def main():
 	parser.add_argument("--rolling-min-active-segment-simulation-units", type=float)
 	parser.add_argument("--enable-rolling-discount", action="store_true")
 	parser.add_argument("--rolling-discount-lambda", type=float)
+	parser.add_argument("--rolling-discount-power", type=float)
 	parser.add_argument("--rolling-discount-epsilon-simulation-units", type=float)
 	parser.add_argument("--require-credible", action="store_true")
 	args = parser.parse_args()
@@ -371,6 +378,7 @@ def main():
 	rolling_discount_override = {"enabled": True} if args.enable_rolling_discount else {}
 	for option, key in (
 		(args.rolling_discount_lambda, "lambda"),
+		(args.rolling_discount_power, "power"),
 		(args.rolling_discount_epsilon_simulation_units, "epsilonSimulationUnits"),
 	):
 		if option is not None:

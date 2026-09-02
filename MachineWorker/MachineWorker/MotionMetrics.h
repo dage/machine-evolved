@@ -28,17 +28,21 @@ public:
 		minJointRotationRate = objective.get<double>("credibility.minJointRotationRateRadiansPerSecond", 0.0);
 		rollingDiscountEnabled = false;
 		rollingDiscountLambda = 1.0;
+		rollingDiscountPower = 1.0;
 		rollingDiscountEpsilon = 1e-6;
 		if (credibleScoring) {
 			if (auto configuredRollingDiscount = objective.get_child_optional("credibility.rollingDiscount")) {
 				const pt::ptree& rolling = configuredRollingDiscount.get();
 				rollingDiscountEnabled = rolling.get<bool>("enabled", true);
 				rollingDiscountLambda = configuredDouble(rolling, "lambda", 1.0);
+				rollingDiscountPower = configuredDouble(rolling, "power", 1.0);
 				rollingDiscountEpsilon = configuredDouble(rolling, "epsilonSimulationUnits", 1e-6);
 			}
 		}
 		if (!std::isfinite(rollingDiscountLambda) || rollingDiscountLambda < 0.0)
 			rollingDiscountLambda = 1.0;
+		if (!std::isfinite(rollingDiscountPower) || rollingDiscountPower <= 0.0)
+			rollingDiscountPower = 1.0;
 		if (!std::isfinite(rollingDiscountEpsilon) || rollingDiscountEpsilon < 0.0)
 			rollingDiscountEpsilon = 1e-6;
 
@@ -244,7 +248,9 @@ public:
 		if (!credible)
 			fitness = 0.0;
 		else if (rollingDiscountEnabled)
-			fitness = maxDistance * std::max(0.0, 1.0 - rollingDiscountLambda * rollingExplainedFraction);
+			fitness = maxDistance * std::pow(
+				std::max(0.0, 1.0 - rollingDiscountLambda * rollingExplainedFraction),
+				rollingDiscountPower);
 		else
 			fitness = maxDistance;
 	}
@@ -279,6 +285,7 @@ public:
 	double rollingSignatureMinActiveSegment = 0.0;
 	bool rollingDiscountEnabled = false;
 	double rollingDiscountLambda = 1.0;
+	double rollingDiscountPower = 1.0;
 	double rollingDiscountEpsilon = 1e-6;
 	std::vector<double> capsuleRotationRates;
 	std::vector<double> jointRotationRates;

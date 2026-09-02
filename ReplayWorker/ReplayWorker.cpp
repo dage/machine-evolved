@@ -207,9 +207,11 @@ void writeReplay(
 		<< ",\"rollingExplainedFraction\":" << motion.rollingExplainedFraction
 		<< ",\"rollingDiscountEnabled\":" << (motion.rollingDiscountEnabled ? "true" : "false")
 		<< ",\"rollingDiscountLambda\":" << motion.rollingDiscountLambda
+		<< ",\"rollingDiscountPower\":" << motion.rollingDiscountPower
 		<< ",\"rollingDiscountEpsilonSimulationUnits\":" << motion.rollingDiscountEpsilon
 		<< ",\"rollingDiscountConfig\":{\"enabled\":" << (motion.rollingDiscountEnabled ? "true" : "false")
 		<< ",\"lambda\":" << motion.rollingDiscountLambda
+		<< ",\"power\":" << motion.rollingDiscountPower
 		<< ",\"epsilonSimulationUnits\":" << motion.rollingDiscountEpsilon << '}'
 		<< ",\"rootSpinRateRadiansPerSecond\":" << motion.rootSpinRate
 		<< ",\"rootRotationRadians\":" << motion.rootRotationRadians

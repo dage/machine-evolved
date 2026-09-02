@@ -37,9 +37,11 @@ std::string Communicator::getSendResultSerialized(WorkEvaluator::TASK* task) {
 			+ ",\"rollingExplainedFraction\":" + std::to_string(motion.rollingExplainedFraction)
 			+ ",\"rollingDiscountEnabled\":" + std::string(motion.rollingDiscountEnabled ? "true" : "false")
 			+ ",\"rollingDiscountLambda\":" + std::to_string(motion.rollingDiscountLambda)
+			+ ",\"rollingDiscountPower\":" + std::to_string(motion.rollingDiscountPower)
 			+ ",\"rollingDiscountEpsilonSimulationUnits\":" + std::to_string(motion.rollingDiscountEpsilon)
 			+ ",\"rollingDiscountConfig\":{\"enabled\":" + std::string(motion.rollingDiscountEnabled ? "true" : "false")
 			+ ",\"lambda\":" + std::to_string(motion.rollingDiscountLambda)
+			+ ",\"power\":" + std::to_string(motion.rollingDiscountPower)
 			+ ",\"epsilonSimulationUnits\":" + std::to_string(motion.rollingDiscountEpsilon) + "}"
 				+ ",\"rootSpinRateRadiansPerSecond\":" + std::to_string(motion.rootSpinRate)
 				+ ",\"rootRollingCoupling\":" + std::to_string(motion.rootRollingCoupling)

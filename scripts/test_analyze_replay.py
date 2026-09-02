@@ -101,19 +101,21 @@ class RollingSignatureTest(unittest.TestCase):
 		self.assertAlmostEqual(result["rollingExplainedFraction"], 0.0, places=12)
 		self.assertAlmostEqual(result["selectedFitnessSimulationUnits"], result["rawMaxDistanceSimulationUnits"])
 
-	def test_replay_discount_config_preserves_nondefault_lambda(self):
+	def test_replay_discount_config_preserves_nondefault_lambda_and_power(self):
 		replay = rolling_replay()
 		replay["motionMetrics"] = {
 			"rollingDiscountEnabled": True,
 			"rollingDiscountLambda": 0.25,
+			"rollingDiscountPower": 4.0,
 			"rollingDiscountEpsilonSimulationUnits": 1e-6,
 		}
 		result = self.analyze(replay)
 		self.assertTrue(result["rollingDiscountEnabled"])
 		self.assertAlmostEqual(result["rollingDiscountLambda"], 0.25)
+		self.assertAlmostEqual(result["rollingDiscountPower"], 4.0)
 		self.assertAlmostEqual(
 			result["selectedFitnessSimulationUnits"],
-			result["rawMaxDistanceSimulationUnits"] * (1.0 - 0.25 * result["rollingExplainedFraction"]),
+			result["rawMaxDistanceSimulationUnits"] * (1.0 - 0.25 * result["rollingExplainedFraction"]) ** 4.0,
 			places=12,
 		)
 
