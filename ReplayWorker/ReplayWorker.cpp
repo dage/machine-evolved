@@ -203,6 +203,21 @@ void writeReplay(
 		<< ",\"nearGroundTimeFraction\":" << motion.nearGroundTimeFraction
 		<< ",\"longestUnsupportedSeconds\":" << motion.longestUnsupportedSeconds
 		<< ",\"rootSpinRateRadiansPerSecond\":" << motion.rootSpinRate
+		<< ",\"rootRotationRadians\":" << motion.rootRotationRadians
+		<< ",\"rootAxisRotationRadians\":" << motion.rootAxisRotationRadians
+		<< ",\"rootRollingCoupling\":" << motion.rootRollingCoupling
+		<< ",\"rootTransverseTravelFraction\":" << motion.rootTransverseTravelFraction
+		<< ",\"rootAxisStability\":" << motion.rootAxisStability
+		<< ",\"rollingSignatureEnabled\":" << (motion.rollingSignatureEnabled ? "true" : "false")
+		<< ",\"rollingSignature\":" << (motion.rollingSignature ? "true" : "false")
+		<< ",\"rollingSignatureConfig\":{\"enabled\":" << (motion.rollingSignatureEnabled ? "true" : "false")
+		<< ",\"minSpinRateRadiansPerSecond\":" << motion.rollingSignatureMinSpinRate
+		<< ",\"minRootRollingCoupling\":" << motion.rollingSignatureMinCoupling
+		<< ",\"maxRootRollingCoupling\":" << motion.rollingSignatureMaxCoupling
+		<< ",\"minRootTransverseTravelFraction\":" << motion.rollingSignatureMinTransverseTravelFraction
+		<< ",\"maxRootAxisStability\":" << motion.rollingSignatureMaxAxisStability
+		<< ",\"maxRootTravelAlignment\":" << motion.rollingSignatureMaxTravelAlignment
+		<< ",\"minActiveSegmentSimulationUnits\":" << motion.rollingSignatureMinActiveSegment << '}'
 		<< ",\"maxCapsuleRotationRateRadiansPerSecond\":" << motion.maximumCapsuleRotationRate
 		<< ",\"minJointRotationRateRadiansPerSecond\":" << motion.minimumJointRotationRate
 		<< ",\"finalToMaxDistanceRatio\":" << motion.finalToMaxDistanceRatio << "},\n"

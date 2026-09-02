@@ -66,7 +66,39 @@ def percentile(values, ratio):
 	return ordered[lower] * (upper - position) + ordered[upper] * (position - lower)
 
 
-def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate, max_unsupported_path_fraction, min_joint_rotation_rate):
+def rolling_signature_config(replay, override=None):
+	"""Resolve the optional rolling gate without changing legacy replays."""
+	motion = replay.get("motionMetrics", {})
+	source = motion.get("rollingSignatureConfig")
+	if source is None:
+		source = replay.get("objective", {}).get("credibility", {}).get("rollingSignature", {})
+	if not isinstance(source, dict):
+		source = {}
+	config = dict(source)
+	if override:
+		config.update(override)
+	enabled = bool(config.get("enabled", motion.get("rollingSignatureEnabled", False)))
+	return {
+		"enabled": enabled,
+		"minSpinRateRadiansPerSecond": float(config.get("minSpinRateRadiansPerSecond", 1.0)),
+		"minRootRollingCoupling": float(config.get("minRootRollingCoupling", 0.8)),
+		"maxRootRollingCoupling": float(config.get("maxRootRollingCoupling", 1.2)),
+		"minRootTransverseTravelFraction": float(config.get("minRootTransverseTravelFraction", 0.8)),
+		"maxRootAxisStability": float(config.get("maxRootAxisStability", 0.2)),
+		"maxRootTravelAlignment": float(config.get("maxRootTravelAlignment", 0.25)),
+		"minActiveSegmentSimulationUnits": float(config.get("minActiveSegmentSimulationUnits", 0.0)),
+	}
+
+
+def analyze(
+	replay,
+	clearance_epsilon,
+	max_spin_rate,
+	max_capsule_rotation_rate,
+	max_unsupported_path_fraction,
+	min_joint_rotation_rate,
+	rolling_signature=None,
+):
 	samples = replay["samples"]
 	if len(samples) < 2:
 		raise ValueError("Replay must contain at least two samples")
@@ -74,8 +106,9 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate,
 	sample_hz = float(replay["sampleHz"])
 	delta_time = 1.0 / sample_hz
 	first = samples[0]["poses"]["body"]["translation"]
-	distances = [horizontal_distance(first, sample["poses"]["body"]["translation"]) for sample in samples]
-	heights = [sample["poses"]["body"]["translation"]["y"] for sample in samples]
+	body_positions = [sample["poses"]["body"]["translation"] for sample in samples]
+	distances = [horizontal_distance(first, position) for position in body_positions]
+	heights = [position["y"] for position in body_positions]
 	segments = []
 	for previous, current in zip(samples, samples[1:]):
 		previous_position = previous["poses"]["body"]["translation"]
@@ -136,6 +169,29 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate,
 	full_rotation = sum(quaternion_delta(a, b) for a, b in zip(root_rotations, root_rotations[1:]))
 	axis_rotation = sum(axis_delta(a, b) for a, b in zip(root_axes, root_axes[1:]))
 	spin_rate = full_rotation / duration
+	rolling = rolling_signature_config(replay, rolling_signature)
+	root_radius = float(replay["capsules"][0]["radius"])
+	min_active_segment = rolling["minActiveSegmentSimulationUnits"] * float(replay.get("displayScale", 0.01))
+	transverse_travel = 0.0
+	active_path_length = 0.0
+	for index, segment in enumerate(segments):
+		if segment <= min_active_segment:
+			continue
+		active_path_length += segment
+		axis = root_axes[index + 1]
+		axis_length = math.hypot(axis[0], axis[2])
+		previous_position = body_positions[index]
+		current_position = body_positions[index + 1]
+		travel_x = current_position["x"] - previous_position["x"]
+		travel_z = current_position["z"] - previous_position["z"]
+		travel_length = math.hypot(travel_x, travel_z)
+		if axis_length and travel_length:
+			alignment = abs(axis[0] * travel_x + axis[2] * travel_z) / (axis_length * travel_length)
+			if alignment <= rolling["maxRootTravelAlignment"]:
+				transverse_travel += segment
+	root_rolling_coupling = path_length / (full_rotation * root_radius) if full_rotation and root_radius else 0.0
+	root_transverse_travel_fraction = transverse_travel / active_path_length if active_path_length else 0.0
+	root_axis_stability = axis_rotation / full_rotation if full_rotation else 0.0
 	capsule_rotation_rates = {
 		capsule_id: sum(quaternion_delta(a, b) for a, b in zip(rotations, rotations[1:])) / duration
 		for capsule_id, rotations in capsule_rotations.items()
@@ -148,12 +204,20 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate,
 	minimum_joint_rotation_rate = min(joint_rotation_rates, default=0.0)
 	unsupported_path_fraction = unsupported_path / path_length if path_length else 0.0
 	final_to_max = distances[-1] / max(distances) if max(distances) else 1.0
+	rolling_signature_match = (
+		rolling["enabled"]
+		and spin_rate >= rolling["minSpinRateRadiansPerSecond"]
+		and rolling["minRootRollingCoupling"] <= root_rolling_coupling <= rolling["maxRootRollingCoupling"]
+		and root_transverse_travel_fraction >= rolling["minRootTransverseTravelFraction"]
+		and root_axis_stability <= rolling["maxRootAxisStability"]
+	)
 	credible = (
 		spin_rate <= max_spin_rate
 		and maximum_capsule_rotation_rate <= max_capsule_rotation_rate
 		and unsupported_path_fraction <= max_unsupported_path_fraction
 		and final_to_max >= 0.9
 		and minimum_joint_rotation_rate >= min_joint_rotation_rate
+		and not rolling_signature_match
 	)
 
 	return {
@@ -179,6 +243,12 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate,
 		"rootRotationRadians": full_rotation,
 		"rootAxisRotationRadians": axis_rotation,
 		"rootSpinRateRadiansPerSecond": spin_rate,
+		"rootRollingCoupling": root_rolling_coupling,
+		"rootTransverseTravelFraction": root_transverse_travel_fraction,
+		"rootAxisStability": root_axis_stability,
+		"rollingSignatureEnabled": rolling["enabled"],
+		"rollingSignature": rolling_signature_match,
+		"rollingSignatureConfig": rolling,
 		"capsuleRotationRatesRadiansPerSecond": capsule_rotation_rates,
 		"maxCapsuleRotationRateRadiansPerSecond": maximum_capsule_rotation_rate,
 		"jointRotationRatesRadiansPerSecond": joint_rotation_rates,
@@ -203,11 +273,31 @@ def main():
 	parser.add_argument("--max-capsule-rotation-rate", type=float, default=10.0)
 	parser.add_argument("--min-joint-rotation-rate", type=float, default=0.0)
 	parser.add_argument("--max-unsupported-path-fraction", type=float, default=0.25)
+	parser.add_argument("--enable-rolling-signature", action="store_true")
+	parser.add_argument("--rolling-min-spin-rate", type=float)
+	parser.add_argument("--rolling-min-coupling", type=float)
+	parser.add_argument("--rolling-max-coupling", type=float)
+	parser.add_argument("--rolling-min-transverse-fraction", type=float)
+	parser.add_argument("--rolling-max-axis-stability", type=float)
+	parser.add_argument("--rolling-max-travel-alignment", type=float)
+	parser.add_argument("--rolling-min-active-segment-simulation-units", type=float)
 	parser.add_argument("--require-credible", action="store_true")
 	args = parser.parse_args()
 
 	with args.replay.open() as source:
 		replay = json.load(source)
+	rolling_override = {"enabled": True} if args.enable_rolling_signature else {}
+	for option, key in (
+		(args.rolling_min_spin_rate, "minSpinRateRadiansPerSecond"),
+		(args.rolling_min_coupling, "minRootRollingCoupling"),
+		(args.rolling_max_coupling, "maxRootRollingCoupling"),
+		(args.rolling_min_transverse_fraction, "minRootTransverseTravelFraction"),
+		(args.rolling_max_axis_stability, "maxRootAxisStability"),
+		(args.rolling_max_travel_alignment, "maxRootTravelAlignment"),
+		(args.rolling_min_active_segment_simulation_units, "minActiveSegmentSimulationUnits"),
+	):
+		if option is not None:
+			rolling_override[key] = option
 	result = analyze(
 		replay,
 		args.clearance_epsilon,
@@ -215,6 +305,7 @@ def main():
 		args.max_capsule_rotation_rate,
 		args.max_unsupported_path_fraction,
 		args.min_joint_rotation_rate,
+		rolling_override or None,
 	)
 	serialized = json.dumps(result, indent=2, allow_nan=False) + "\n"
 	if args.output:
