@@ -90,6 +90,33 @@ def rolling_signature_config(replay, override=None):
 	}
 
 
+def rolling_discount_config(replay, override=None):
+	"""Resolve the optional continuous rolling discount without changing legacy replays."""
+	motion = replay.get("motionMetrics", {})
+	source = motion.get("rollingDiscountConfig")
+	if source is None:
+		source = replay.get("objective", {}).get("credibility", {}).get("rollingDiscount", {})
+	if not isinstance(source, dict):
+		source = {}
+	config = dict(source)
+	config.setdefault("enabled", motion.get("rollingDiscountEnabled", False))
+	config.setdefault("lambda", motion.get("rollingDiscountLambda", 1.0))
+	config.setdefault("epsilonSimulationUnits", motion.get("rollingDiscountEpsilonSimulationUnits", 1e-6))
+	if override:
+		config.update(override)
+	rolling_lambda = float(config.get("lambda", 1.0))
+	epsilon = float(config.get("epsilonSimulationUnits", 1e-6))
+	if not math.isfinite(rolling_lambda) or rolling_lambda < 0.0:
+		rolling_lambda = 1.0
+	if not math.isfinite(epsilon) or epsilon < 0.0:
+		epsilon = 1e-6
+	return {
+		"enabled": bool(config.get("enabled", motion.get("rollingDiscountEnabled", False))),
+		"lambda": rolling_lambda,
+		"epsilonSimulationUnits": epsilon,
+	}
+
+
 def analyze(
 	replay,
 	clearance_epsilon,
@@ -98,6 +125,7 @@ def analyze(
 	max_unsupported_path_fraction,
 	min_joint_rotation_rate,
 	rolling_signature=None,
+	rolling_discount=None,
 ):
 	samples = replay["samples"]
 	if len(samples) < 2:
@@ -170,11 +198,31 @@ def analyze(
 	axis_rotation = sum(axis_delta(a, b) for a, b in zip(root_axes, root_axes[1:]))
 	spin_rate = full_rotation / duration
 	rolling = rolling_signature_config(replay, rolling_signature)
+	discount = rolling_discount_config(replay, rolling_discount)
 	root_radius = float(replay["capsules"][0]["radius"])
 	min_active_segment = rolling["minActiveSegmentSimulationUnits"] * float(replay.get("displayScale", 0.01))
 	transverse_travel = 0.0
 	active_path_length = 0.0
+	rolling_explained_distance = 0.0
 	for index, segment in enumerate(segments):
+		if segment > 0.0:
+			axis = root_axes[index + 1]
+			axis_length = math.hypot(axis[0], axis[2])
+			previous_position = body_positions[index]
+			current_position = body_positions[index + 1]
+			travel_x = current_position["x"] - previous_position["x"]
+			travel_z = current_position["z"] - previous_position["z"]
+			travel_length = math.hypot(travel_x, travel_z)
+			if axis_length and travel_length:
+				alignment = abs(axis[0] * travel_x + axis[2] * travel_z) / (axis_length * travel_length)
+				transverse_weight = max(0.0, 1.0 - alignment * alignment)
+				rolling_displacement = root_radius * quaternion_delta(
+					root_rotations[index], root_rotations[index + 1]
+				) * axis_length * transverse_weight
+				explained = segment * (1.0 - math.exp(
+					-rolling_displacement / (segment + discount["epsilonSimulationUnits"] * float(replay.get("displayScale", 0.01)))
+				))
+				rolling_explained_distance += explained if math.isfinite(explained) else 0.0
 		if segment <= min_active_segment:
 			continue
 		active_path_length += segment
@@ -204,6 +252,9 @@ def analyze(
 	minimum_joint_rotation_rate = min(joint_rotation_rates, default=0.0)
 	unsupported_path_fraction = unsupported_path / path_length if path_length else 0.0
 	final_to_max = distances[-1] / max(distances) if max(distances) else 1.0
+	rolling_explained_fraction = (
+		max(0.0, min(1.0, rolling_explained_distance / path_length)) if path_length else 0.0
+	)
 	rolling_signature_match = (
 		rolling["enabled"]
 		and spin_rate >= rolling["minSpinRateRadiansPerSecond"]
@@ -219,12 +270,20 @@ def analyze(
 		and minimum_joint_rotation_rate >= min_joint_rotation_rate
 		and not rolling_signature_match
 	)
+	raw_max_distance_simulation_units = float(replay["measuredMaxDistanceSimulationUnits"])
+	selected_fitness_simulation_units = 0.0
+	if credible:
+		discount_multiplier = 1.0 - discount["lambda"] * rolling_explained_fraction if discount["enabled"] else 1.0
+		selected_fitness_simulation_units = raw_max_distance_simulation_units * max(0.0, discount_multiplier)
 
 	return {
 		"schemaVersion": 1,
 		"configuredFitnessSimulationUnits": replay["configuredFitness"],
 		"replayedFitnessSimulationUnits": replay.get("measuredFitness", replay["measuredMaxDistanceSimulationUnits"]),
 		"rawMaxDistanceSimulationUnits": replay["measuredMaxDistanceSimulationUnits"],
+		"undiscountedRawDistanceSimulationUnits": raw_max_distance_simulation_units,
+		"selectedFitnessSimulationUnits": selected_fitness_simulation_units,
+		"discountedFitnessSimulationUnits": selected_fitness_simulation_units,
 		"maxDistanceMeters": max(distances),
 		"finalDistanceMeters": distances[-1],
 		"finalToMaxDistanceRatio": final_to_max,
@@ -246,6 +305,11 @@ def analyze(
 		"rootRollingCoupling": root_rolling_coupling,
 		"rootTransverseTravelFraction": root_transverse_travel_fraction,
 		"rootAxisStability": root_axis_stability,
+		"rollingExplainedFraction": rolling_explained_fraction,
+		"rollingDiscountEnabled": discount["enabled"],
+		"rollingDiscountLambda": discount["lambda"],
+		"rollingDiscountEpsilonSimulationUnits": discount["epsilonSimulationUnits"],
+		"rollingDiscountConfig": discount,
 		"rollingSignatureEnabled": rolling["enabled"],
 		"rollingSignature": rolling_signature_match,
 		"rollingSignatureConfig": rolling,
@@ -260,6 +324,9 @@ def analyze(
 			"minJointRotationRateRadiansPerSecond": min_joint_rotation_rate,
 			"maxUnsupportedPathFraction": max_unsupported_path_fraction,
 			"clearanceEpsilonMeters": clearance_epsilon,
+			"rollingDiscountEnabled": discount["enabled"],
+			"rollingDiscountLambda": discount["lambda"],
+			"rollingExplainedFraction": rolling_explained_fraction,
 		},
 	}
 
@@ -281,6 +348,9 @@ def main():
 	parser.add_argument("--rolling-max-axis-stability", type=float)
 	parser.add_argument("--rolling-max-travel-alignment", type=float)
 	parser.add_argument("--rolling-min-active-segment-simulation-units", type=float)
+	parser.add_argument("--enable-rolling-discount", action="store_true")
+	parser.add_argument("--rolling-discount-lambda", type=float)
+	parser.add_argument("--rolling-discount-epsilon-simulation-units", type=float)
 	parser.add_argument("--require-credible", action="store_true")
 	args = parser.parse_args()
 
@@ -298,6 +368,13 @@ def main():
 	):
 		if option is not None:
 			rolling_override[key] = option
+	rolling_discount_override = {"enabled": True} if args.enable_rolling_discount else {}
+	for option, key in (
+		(args.rolling_discount_lambda, "lambda"),
+		(args.rolling_discount_epsilon_simulation_units, "epsilonSimulationUnits"),
+	):
+		if option is not None:
+			rolling_discount_override[key] = option
 	result = analyze(
 		replay,
 		args.clearance_epsilon,
@@ -306,6 +383,7 @@ def main():
 		args.max_unsupported_path_fraction,
 		args.min_joint_rotation_rate,
 		rolling_override or None,
+		rolling_discount_override or None,
 	)
 	serialized = json.dumps(result, indent=2, allow_nan=False) + "\n"
 	if args.output:

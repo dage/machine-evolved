@@ -26,6 +26,21 @@ public:
 		maxUnsupportedPathFraction = objective.get<double>("credibility.maxUnsupportedPathFraction", 0.25);
 		minFinalToMaxDistanceRatio = objective.get<double>("credibility.minFinalToMaxDistanceRatio", 0.9);
 		minJointRotationRate = objective.get<double>("credibility.minJointRotationRateRadiansPerSecond", 0.0);
+		rollingDiscountEnabled = false;
+		rollingDiscountLambda = 1.0;
+		rollingDiscountEpsilon = 1e-6;
+		if (credibleScoring) {
+			if (auto configuredRollingDiscount = objective.get_child_optional("credibility.rollingDiscount")) {
+				const pt::ptree& rolling = configuredRollingDiscount.get();
+				rollingDiscountEnabled = rolling.get<bool>("enabled", true);
+				rollingDiscountLambda = configuredDouble(rolling, "lambda", 1.0);
+				rollingDiscountEpsilon = configuredDouble(rolling, "epsilonSimulationUnits", 1e-6);
+			}
+		}
+		if (!std::isfinite(rollingDiscountLambda) || rollingDiscountLambda < 0.0)
+			rollingDiscountLambda = 1.0;
+		if (!std::isfinite(rollingDiscountEpsilon) || rollingDiscountEpsilon < 0.0)
+			rollingDiscountEpsilon = 1e-6;
 
 		// The rolling signature is deliberately opt-in.  Existing distance-only
 		// and credible campaigns without this block retain their prior behavior.
@@ -66,6 +81,8 @@ public:
 		rootRollingCoupling = 0.0;
 		rootTransverseTravelFraction = 0.0;
 		rootAxisStability = 0.0;
+		rollingExplainedDistance = 0.0;
+		rollingExplainedFraction = 0.0;
 		maximumCapsuleRotationRate = 0.0;
 		minimumJointRotationRate = 0.0;
 		fitness = 0.0;
@@ -115,6 +132,7 @@ public:
 			throw std::runtime_error("Capsule count changed while collecting motion metrics.");
 		double minimumClearance = std::numeric_limits<double>::infinity();
 		btVector3 currentRootAxis = previousRootAxis;
+		double rootRotationStep = 0.0;
 		for (std::size_t index = 0; index < poses.size(); ++index) {
 			const btQuaternion rotation = normalized(poses[index].rotation);
 			const btVector3 axis = capsuleAxis(rotation);
@@ -124,7 +142,8 @@ public:
 			minimumClearance = std::min(minimumClearance, clearance);
 			capsuleRotationRadians[index] += quaternionTravel(previousRotations[index], rotation);
 			if (index == 0) {
-				rootRotationRadians += quaternionTravel(previousRotations[index], rotation);
+				rootRotationStep = quaternionTravel(previousRotations[index], rotation);
+				rootRotationRadians += rootRotationStep;
 				rootAxisRotationRadians += axisTravel(previousRootAxis, axis);
 				currentRootAxis = axis;
 			}
@@ -142,6 +161,17 @@ public:
 			const btVector3 horizontalTravel(position.x() - previousPosition.x(), position.y() - previousPosition.y(), 0);
 			const double axisLength = static_cast<double>(horizontalAxis.length());
 			const double travelLength = static_cast<double>(horizontalTravel.length());
+			if (segment > 0.0 && axisLength > 0.0 && travelLength > 0.0) {
+				const double alignment = std::abs(static_cast<double>(horizontalAxis.dot(horizontalTravel)))
+					/ (axisLength * travelLength);
+				const double transverseWeight = std::max(0.0, 1.0 - alignment * alignment);
+				const double rollingDisplacement = rootRadius
+					* rootRotationStep
+					* axisLength * transverseWeight;
+				const double explained = segment
+					* (1.0 - std::exp(-rollingDisplacement / (segment + rollingDiscountEpsilon)));
+				rollingExplainedDistance += std::isfinite(explained) ? explained : 0.0;
+			}
 			if (activeSegment > 0.0 && axisLength > 0.0 && travelLength > 0.0) {
 				const double alignment = std::abs(static_cast<double>(horizontalAxis.dot(horizontalTravel)))
 					/ (axisLength * travelLength);
@@ -195,6 +225,9 @@ public:
 		rootAxisStability = rootRotationRadians > 0.0
 			? rootAxisRotationRadians / rootRotationRadians
 			: 0.0;
+		rollingExplainedFraction = pathLength > 0.0
+			? std::max(0.0, std::min(1.0, rollingExplainedDistance / pathLength))
+			: 0.0;
 		rollingSignature = rollingSignatureEnabled &&
 			rootSpinRate >= rollingSignatureMinSpinRate &&
 			rootRollingCoupling >= rollingSignatureMinCoupling &&
@@ -208,7 +241,12 @@ public:
 			&& finalToMaxDistanceRatio >= minFinalToMaxDistanceRatio
 			&& minimumJointRotationRate >= minJointRotationRate
 			&& !rollingSignature);
-		fitness = credible ? maxDistance : 0.0;
+		if (!credible)
+			fitness = 0.0;
+		else if (rollingDiscountEnabled)
+			fitness = maxDistance * std::max(0.0, 1.0 - rollingDiscountLambda * rollingExplainedFraction);
+		else
+			fitness = maxDistance;
 	}
 
 	bool credibleScoring = false;
@@ -226,6 +264,7 @@ public:
 	double rootRollingCoupling = 0.0;
 	double rootTransverseTravelFraction = 0.0;
 	double rootAxisStability = 0.0;
+	double rollingExplainedFraction = 0.0;
 	double maximumCapsuleRotationRate = 0.0;
 	double minimumJointRotationRate = 0.0;
 	double fitness = 0.0;
@@ -238,6 +277,9 @@ public:
 	double rollingSignatureMaxAxisStability = 0.2;
 	double rollingSignatureMaxTravelAlignment = 0.25;
 	double rollingSignatureMinActiveSegment = 0.0;
+	bool rollingDiscountEnabled = false;
+	double rollingDiscountLambda = 1.0;
+	double rollingDiscountEpsilon = 1e-6;
 	std::vector<double> capsuleRotationRates;
 	std::vector<double> jointRotationRates;
 
@@ -316,6 +358,7 @@ private:
 	double unsupportedPath = 0.0;
 	double transverseTravel = 0.0;
 	double activePathLength = 0.0;
+	double rollingExplainedDistance = 0.0;
 	std::vector<btQuaternion> previousRotations;
 	std::vector<double> capsuleRotationRadians;
 	std::vector<btQuaternion> previousRelativeRotations;

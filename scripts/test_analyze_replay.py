@@ -45,9 +45,19 @@ def rolling_replay():
 	}
 
 
+def nonrolling_replay():
+	replay = rolling_replay()
+	fixed_rotation = replay["samples"][0]["poses"]["body"]["rotation"]
+	for sample in replay["samples"]:
+		position = sample["poses"]["body"]["translation"]
+		pose = {"translation": position, "rotation": fixed_rotation}
+		sample["poses"] = {"body": pose, "parts": {"root": pose}}
+	return replay
+
+
 class RollingSignatureTest(unittest.TestCase):
-	def analyze(self, replay, rolling=None):
-		return ANALYZER.analyze(replay, 0.02, 200.0, 200.0, 1.0, 0.0, rolling)
+	def analyze(self, replay, rolling=None, discount=None):
+		return ANALYZER.analyze(replay, 0.02, 200.0, 200.0, 1.0, 0.0, rolling, discount)
 
 	def test_signature_is_disabled_without_opt_in(self):
 		result = self.analyze(rolling_replay())
@@ -57,6 +67,8 @@ class RollingSignatureTest(unittest.TestCase):
 		self.assertFalse(result["rollingSignatureEnabled"])
 		self.assertFalse(result["rollingSignature"])
 		self.assertTrue(result["credibility"]["passes"])
+		self.assertFalse(result["rollingDiscountEnabled"])
+		self.assertAlmostEqual(result["selectedFitnessSimulationUnits"], result["rawMaxDistanceSimulationUnits"])
 
 	def test_opted_in_signature_rejects_circumference_matched_roll(self):
 		result = self.analyze(rolling_replay(), {"enabled": True})
@@ -70,6 +82,40 @@ class RollingSignatureTest(unittest.TestCase):
 		result = self.analyze(replay)
 		self.assertTrue(result["rollingSignature"])
 		self.assertFalse(result["credibility"]["passes"])
+
+	def test_opted_in_discount_reduces_pure_transverse_roll(self):
+		result = self.analyze(rolling_replay(), discount={"enabled": True})
+		self.assertTrue(result["rollingDiscountEnabled"])
+		self.assertAlmostEqual(result["rollingDiscountLambda"], 1.0)
+		self.assertGreater(result["rollingExplainedFraction"], 0.5)
+		self.assertLess(result["selectedFitnessSimulationUnits"], result["rawMaxDistanceSimulationUnits"])
+		self.assertAlmostEqual(
+			result["selectedFitnessSimulationUnits"],
+			result["rawMaxDistanceSimulationUnits"] * (1.0 - result["rollingExplainedFraction"]),
+			places=12,
+		)
+
+	def test_opted_in_discount_retains_nonrolling_travel(self):
+		result = self.analyze(nonrolling_replay(), discount={"enabled": True})
+		self.assertTrue(result["rollingDiscountEnabled"])
+		self.assertAlmostEqual(result["rollingExplainedFraction"], 0.0, places=12)
+		self.assertAlmostEqual(result["selectedFitnessSimulationUnits"], result["rawMaxDistanceSimulationUnits"])
+
+	def test_replay_discount_config_preserves_nondefault_lambda(self):
+		replay = rolling_replay()
+		replay["motionMetrics"] = {
+			"rollingDiscountEnabled": True,
+			"rollingDiscountLambda": 0.25,
+			"rollingDiscountEpsilonSimulationUnits": 1e-6,
+		}
+		result = self.analyze(replay)
+		self.assertTrue(result["rollingDiscountEnabled"])
+		self.assertAlmostEqual(result["rollingDiscountLambda"], 0.25)
+		self.assertAlmostEqual(
+			result["selectedFitnessSimulationUnits"],
+			result["rawMaxDistanceSimulationUnits"] * (1.0 - 0.25 * result["rollingExplainedFraction"]),
+			places=12,
+		)
 
 
 if __name__ == "__main__":

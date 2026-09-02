@@ -202,6 +202,15 @@ void writeReplay(
 		<< ",\"unsupportedPathFraction\":" << motion.unsupportedPathFraction
 		<< ",\"nearGroundTimeFraction\":" << motion.nearGroundTimeFraction
 		<< ",\"longestUnsupportedSeconds\":" << motion.longestUnsupportedSeconds
+		<< ",\"rawMaxDistanceSimulationUnits\":" << motion.maxDistance
+		<< ",\"discountedFitnessSimulationUnits\":" << motion.fitness
+		<< ",\"rollingExplainedFraction\":" << motion.rollingExplainedFraction
+		<< ",\"rollingDiscountEnabled\":" << (motion.rollingDiscountEnabled ? "true" : "false")
+		<< ",\"rollingDiscountLambda\":" << motion.rollingDiscountLambda
+		<< ",\"rollingDiscountEpsilonSimulationUnits\":" << motion.rollingDiscountEpsilon
+		<< ",\"rollingDiscountConfig\":{\"enabled\":" << (motion.rollingDiscountEnabled ? "true" : "false")
+		<< ",\"lambda\":" << motion.rollingDiscountLambda
+		<< ",\"epsilonSimulationUnits\":" << motion.rollingDiscountEpsilon << '}'
 		<< ",\"rootSpinRateRadiansPerSecond\":" << motion.rootSpinRate
 		<< ",\"rootRotationRadians\":" << motion.rootRotationRadians
 		<< ",\"rootAxisRotationRadians\":" << motion.rootAxisRotationRadians
