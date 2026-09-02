@@ -170,9 +170,11 @@ void writeReplay(
 	const std::filesystem::path outputPath(options.output);
 	if (!outputPath.parent_path().empty())
 		std::filesystem::create_directories(outputPath.parent_path());
-	std::ofstream output(outputPath, std::ios::out | std::ios::trunc);
+	std::filesystem::path temporaryPath = outputPath;
+	temporaryPath += ".tmp";
+	std::ofstream output(temporaryPath, std::ios::out | std::ios::trunc);
 	if (!output)
-		throw std::runtime_error("Unable to open replay output: " + options.output);
+		throw std::runtime_error("Unable to open temporary replay output: " + temporaryPath.string());
 	output << std::setprecision(9);
 	const auto& experiment = config.get_child("experiment");
 	const auto& physics = experiment.get_child("physics");
@@ -188,13 +190,22 @@ void writeReplay(
 		<< " \"durationSeconds\":" << static_cast<double>(horizonTicks) / FIXED_STEP_HZ << ",\n"
 		<< " \"configuredFitness\":" << configuredFitness << ",\n"
 		<< " \"measuredMaxDistanceSimulationUnits\":" << measuredDistance << ",\n"
+		<< " \"fitnessParity\":{\"absoluteError\":" << std::abs(configuredFitness - measuredDistance)
+		<< ",\"verified\":true},\n"
 		<< " \"displayScale\":" << DISPLAY_SCALE << ",\n"
 		<< " \"sourceCoordinateSystem\":{\"upAxis\":\"z\",\"horizontalAxes\":[\"x\",\"y\"],\"units\":\"simulation-units\"},\n"
 		<< " \"coordinateSystem\":{\"upAxis\":\"y\",\"horizontalAxes\":[\"x\",\"z\"],\"units\":\"m\"},\n"
 		<< " \"objective\":{\"id\":\"distance-only-v1\",\"metric\":\"max-horizontal-distance\",\"penalties\":[]},\n"
 		<< " \"physics\":{\"gravityZ\":" << physics.get<double>("gravityZ")
 		<< ",\"groundFriction\":" << physics.get<double>("groundFriction")
-		<< ",\"motorMaxForce\":" << physics.get<double>("motorMaxForce") << "},\n"
+		<< ",\"capsuleFriction\":" << physics.get<double>("capsuleFriction", 0.5)
+		<< ",\"capsuleRollingFriction\":" << physics.get<double>("capsuleRollingFriction", 0.0)
+		<< ",\"capsuleSpinningFriction\":" << physics.get<double>("capsuleSpinningFriction", 0.0)
+		<< ",\"capsuleLinearDamping\":" << physics.get<double>("capsuleLinearDamping", 0.0)
+		<< ",\"capsuleAngularDamping\":" << physics.get<double>("capsuleAngularDamping", 0.0)
+		<< ",\"capsuleMassScale\":" << physics.get<double>("capsuleMassScale", 0.0001)
+		<< ",\"motorMaxForce\":" << physics.get<double>("motorMaxForce")
+		<< ",\"motorTargetVelocityLimit\":" << physics.get<double>("motorTargetVelocityLimit", 0.0) << "},\n"
 		<< " \"capsules\":[";
 	bool first = true;
 	for (const pt::ptree::value_type& item : capsules) {
@@ -224,6 +235,8 @@ void writeReplay(
 	output.flush();
 	if (!output)
 		throw std::runtime_error("Failed while writing replay output: " + options.output);
+	output.close();
+	std::filesystem::rename(temporaryPath, outputPath);
 }
 
 pt::ptree bestCreature(const pt::ptree& config, double& bestFitness)
@@ -231,7 +244,10 @@ pt::ptree bestCreature(const pt::ptree& config, double& bestFitness)
 	bestFitness = -std::numeric_limits<double>::infinity();
 	pt::ptree selected;
 	for (const pt::ptree::value_type& entry : config.get_child("structure.creatures")) {
-		const double fitness = entry.second.get<double>("fitness");
+		const std::string serializedFitness = entry.second.get<std::string>("fitness", "");
+		if (serializedFitness.empty() || serializedFitness == "null")
+			continue;
+		const double fitness = std::stod(serializedFitness);
 		if (std::isfinite(fitness) && fitness > bestFitness) {
 			bestFitness = fitness;
 			selected = entry.second.get_child("data");
@@ -263,7 +279,8 @@ int main(int argc, char* argv[])
 			&bullet,
 			btVector3(0, 0, 0),
 			creatureData,
-			physics.get<float>("motorMaxForce", 2000.f));
+			physics.get<float>("motorMaxForce", 2000.f),
+			physics.get<float>("motorTargetVelocityLimit", 0.f));
 
 		const btVector3 startingPosition = creature.getCenterOfMassPosition();
 		double measuredDistance = 0;
@@ -280,6 +297,14 @@ int main(int argc, char* argv[])
 			if (tick % sampleInterval == 0)
 				samples.push_back(ReplaySample{ tick, position, creature.getCapsulePoses() });
 		}
+
+		const double parityTolerance = 1e-3 + std::abs(configuredFitness) * 1e-7;
+		const double parityError = std::abs(configuredFitness - measuredDistance);
+		if (parityError > parityTolerance)
+			throw std::runtime_error(
+				"Saved fitness does not match deterministic replay. configured=" + std::to_string(configuredFitness) +
+				", measured=" + std::to_string(measuredDistance) +
+				", absoluteError=" + std::to_string(parityError));
 
 		writeReplay(
 			options,

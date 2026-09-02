@@ -57,9 +57,10 @@ int BulletWorkerBase::runBlocking(int numCreatures) {
 				auto physics = jsonObject.get_child_optional("physics");
 				if (physics)
 					bullet.configure(*physics);
-				btVector3 position = btVector3(0.*(numCompleted%NUM_IN_FLIGHT), 0, 0);	// prevent crashing
-				const float motorMaxForce = jsonObject.get<float>("physics.motorMaxForce", 2000.f);
-				CreatureBase* creature = new CreatureBase(&bullet, position, jsonObject.get_child("creature"), motorMaxForce);
+					btVector3 position = btVector3(0.*(numCompleted%NUM_IN_FLIGHT), 0, 0);	// prevent crashing
+					const float motorMaxForce = jsonObject.get<float>("physics.motorMaxForce", 2000.f);
+					const float motorTargetVelocityLimit = jsonObject.get<float>("physics.motorTargetVelocityLimit", 0.f);
+					CreatureBase* creature = new CreatureBase(&bullet, position, jsonObject.get_child("creature"), motorMaxForce, motorTargetVelocityLimit);
 				workEvaluator.add(jsonObject.get_child("task"), creature);
 				creatures.push_back(creature);
 			}

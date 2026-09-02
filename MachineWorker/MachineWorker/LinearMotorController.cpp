@@ -1,9 +1,12 @@
 #include "LinearMotorController.h"
 
+#include <stdexcept>
+
 LinearMotorController::LinearMotorController(int numInputs, int numOutputs, pt::ptree serialized)
 {
 	this->numInputs = numInputs;
 	this->numOutputs = numOutputs;
+	this->schemaVersion = serialized.get<int>("schemaVersion", 1);
 
 	int layersIndex = 0;
 	auto layersPtree = serialized.get_child("layers");
@@ -44,14 +47,18 @@ std::vector<float> LinearMotorController::multiplyMatrix(const std::vector<float
 
 	int outputSize = matrix.size() / inputVector.size();
 	int inputSize = inputVector.size();
+	if (schemaVersion >= 2 && biases.size() != static_cast<std::size_t>(outputSize))
+		throw std::runtime_error("Malformed v2 neural layer: expected one bias per output neuron.");
 	std::vector<float> outputVector = std::vector<float>(outputSize);
 
 
 	// Manually perform vector matrix multiplication
 	for (int i = 0; i < outputSize; i++) {
-		outputVector[i] = 0.;
+		outputVector[i] = schemaVersion >= 2 ? biases[i] : 0.;
 		for (int j = 0; j < inputSize; j++) {
-			outputVector[i] += inputVector[j] * matrix[i*inputSize + j] + biases[i*inputSize + j];
+			outputVector[i] += inputVector[j] * matrix[i*inputSize + j];
+			if (schemaVersion < 2)
+				outputVector[i] += biases[i*inputSize + j];
 		}
 	}
 

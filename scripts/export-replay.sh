@@ -35,6 +35,13 @@ with path.open() as source:
     replay = json.load(source)
 assert replay["schemaVersion"] == 1
 assert replay["kind"] == "machine-evolved-capsules-v1"
+assert replay["fitnessParity"]["verified"] is True
+assert math.isclose(
+    replay["configuredFitness"],
+    replay["measuredMaxDistanceSimulationUnits"],
+    rel_tol=1e-7,
+    abs_tol=1e-3,
+)
 assert len(replay["capsules"]) == 3
 assert replay["samples"]
 assert all(math.isfinite(value) for sample in replay["samples"] for pose in [

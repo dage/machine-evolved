@@ -10,12 +10,15 @@ evaluations=""
 minutes=""
 workers=4
 seed=""
+stall_evaluations=""
 run_name=""
 trainer_pid=""
 worker_pid=""
+hard_deadline_epoch=""
+deadline_signal_epoch=""
 
 usage() {
-  echo "Usage: $0 --config FILE (--evaluations N | --minutes N) [--workers N] [--seed N] [--run-name NAME]"
+  echo "Usage: $0 --config FILE (--evaluations N | --minutes N) [--workers N] [--seed N] [--stall-evaluations N] [--run-name NAME]"
 }
 
 positive_integer() {
@@ -29,6 +32,7 @@ while [[ $# -gt 0 ]]; do
     --minutes) minutes=${2:-}; shift 2 ;;
     --workers) workers=${2:-}; shift 2 ;;
     --seed) seed=${2:-}; shift 2 ;;
+    --stall-evaluations) stall_evaluations=${2:-}; shift 2 ;;
     --run-name) run_name=${2:-}; shift 2 ;;
     --help) usage; exit 0 ;;
     *) echo "Unknown argument: $1" >&2; usage >&2; exit 2 ;;
@@ -65,6 +69,10 @@ if ! positive_integer "$workers"; then
 fi
 if [[ -n "$seed" && ! "$seed" =~ ^[0-9]+$ ]]; then
   echo "--seed must be a non-negative integer." >&2
+  exit 2
+fi
+if [[ -n "$stall_evaluations" ]] && ! positive_integer "$stall_evaluations"; then
+  echo "--stall-evaluations must be a positive integer." >&2
   exit 2
 fi
 if [[ -z "$run_name" ]]; then
@@ -123,6 +131,9 @@ if [[ -n "$minutes" ]]; then
   duration_seconds=$(awk -v value="$minutes" 'BEGIN { printf "%.3f", value * 60 }')
   trainer_args+=(--terminate-seconds "$duration_seconds")
 fi
+if [[ -n "$stall_evaluations" ]]; then
+  trainer_args+=(--terminate-stall-evaluations "$stall_evaluations")
+fi
 if [[ -n "$seed" ]]; then
   trainer_args+=(--seed "$seed")
 fi
@@ -130,6 +141,9 @@ trainer_args+=("$run_dir/config.json")
 
 "${trainer_args[@]}" >"$run_dir/trainer.log" 2>&1 &
 trainer_pid=$!
+if [[ -n "$minutes" ]]; then
+  hard_deadline_epoch=$(awk -v start="$(date +%s)" -v duration="$duration_seconds" 'BEGIN { printf "%.0f", start + duration + 30 }')
+fi
 
 python3 -c 'import json, socket, sys, time
 deadline = time.time() + 10
@@ -152,6 +166,17 @@ fi
 worker_pid=$!
 
 while kill -0 "$trainer_pid" 2>/dev/null && kill -0 "$worker_pid" 2>/dev/null; do
+  if [[ -n "$hard_deadline_epoch" ]]; then
+    now_epoch=$(date +%s)
+    if [[ -z "$deadline_signal_epoch" && "$now_epoch" -ge "$hard_deadline_epoch" ]]; then
+      echo "Trainer exceeded the wall-clock deadline plus grace period; requesting an interrupt-safe checkpoint." >&2
+      kill -INT "$trainer_pid" 2>/dev/null || true
+      deadline_signal_epoch=$now_epoch
+    elif [[ -n "$deadline_signal_epoch" && "$now_epoch" -ge $((deadline_signal_epoch + 15)) ]]; then
+      echo "Trainer did not exit after SIGINT; sending SIGTERM." >&2
+      kill -TERM "$trainer_pid" 2>/dev/null || true
+    fi
+  fi
   sleep 0.1
 done
 
@@ -171,7 +196,15 @@ fi
 wait "$trainer_pid"
 trainer_pid=""
 if [[ -n "$worker_pid" ]]; then
-  wait "$worker_pid"
+  worker_exit_deadline=$((SECONDS + 20))
+  while kill -0 "$worker_pid" 2>/dev/null && [[ "$SECONDS" -lt "$worker_exit_deadline" ]]; do
+    sleep 0.1
+  done
+  if kill -0 "$worker_pid" 2>/dev/null; then
+    echo "ShellWorker did not exit within 20 seconds of trainer shutdown; sending SIGTERM." >&2
+    kill -TERM "$worker_pid" 2>/dev/null || true
+  fi
+  wait "$worker_pid" || true
   worker_pid=""
 fi
 

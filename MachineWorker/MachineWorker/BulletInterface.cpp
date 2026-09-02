@@ -38,6 +38,13 @@ void BulletInterface::configure(pt::ptree config) {
 		config.get<float>("gravityY", 0.f),
 		config.get<float>("gravityZ", -200.f)));
 	groundRigidBody->setFriction(config.get<float>("groundFriction", 4.f));
+	capsuleFriction = config.get<float>("capsuleFriction", 0.5f);
+	capsuleRollingFriction = config.get<float>("capsuleRollingFriction", 0.f);
+	capsuleSpinningFriction = config.get<float>("capsuleSpinningFriction", 0.f);
+	capsuleRestitution = config.get<float>("capsuleRestitution", 0.f);
+	capsuleLinearDamping = config.get<float>("capsuleLinearDamping", 0.f);
+	capsuleAngularDamping = config.get<float>("capsuleAngularDamping", 0.f);
+	capsuleMassScale = config.get<float>("capsuleMassScale", 0.0001f);
 }
 
 void BulletInterface::removeConstraint(btTypedConstraint* constraint) {
@@ -63,14 +70,19 @@ btRigidBody* BulletInterface::addCapsule(float innerHeight, float radius, btVect
 	btScalar mass = PI * radius * radius * innerHeight +	// formula for volume of a cylinder
 		4 * 3 / PI * radius*radius*radius;					// formula for volume of a sphere (two half spheres at end of capsule)
 
-	mass *= 0.0001;	// For debugging constraint problems.
+	mass *= capsuleMassScale;
 
 	//UE_LOG(LogTemp, Warning, TEXT("Capsule with mass %f added."), mass);
 
 	btVector3 fallInertia(0, 0, 0);
 	fallShape->calculateLocalInertia(mass, fallInertia);
 	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass, fallMotionState, fallShape, fallInertia);
+	fallRigidBodyCI.m_friction = capsuleFriction;
+	fallRigidBodyCI.m_restitution = capsuleRestitution;
 	btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
+	fallRigidBody->setRollingFriction(capsuleRollingFriction);
+	fallRigidBody->setSpinningFriction(capsuleSpinningFriction);
+	fallRigidBody->setDamping(capsuleLinearDamping, capsuleAngularDamping);
 	dynamicsWorld->addRigidBody(fallRigidBody);
 	
 	return fallRigidBody;

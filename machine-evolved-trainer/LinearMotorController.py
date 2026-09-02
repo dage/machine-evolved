@@ -6,37 +6,46 @@ import math
 class LinearMotorController():
 	# generatorJson: 
 	def __init__(self, numInputs, numOutputs, stateJson = None, generatorJson = None):
-		def createRandomizedWeights(num):
+		def createRandomizedWeights(num, inputSize, outputSize):
+			standardDeviation = math.sqrt(2.0 / (inputSize + outputSize))
 			weights = []
 			for i in range(0, num):
-				weights.append(random.gauss(0, 1))
+				weights.append(random.gauss(0, standardDeviation))
 			return weights
 
 		self.layers = []
 		if stateJson == None:
+			self.schemaVersion = int(generatorJson.get("schemaVersion", 1))
 			# Create new randomized
 			currentNumInputs = numInputs
 			for layerConfig in generatorJson["layers"]:
 				outputSize = layerConfig["neurons"] if "neurons" in layerConfig else numOutputs	# hidden layer neurons or output layer output
-				layerState = { "activation": layerConfig["activation"], "weights": createRandomizedWeights(currentNumInputs*outputSize), "biases": createRandomizedWeights(currentNumInputs*outputSize) }
+				if self.schemaVersion >= 2:
+					weights = createRandomizedWeights(currentNumInputs * outputSize, currentNumInputs, outputSize)
+					biases = [0.0] * outputSize
+				else:
+					weights = [random.gauss(0, 1) for _ in range(currentNumInputs * outputSize)]
+					biases = [random.gauss(0, 1) for _ in range(currentNumInputs * outputSize)]
+				layerState = { "activation": layerConfig["activation"], "weights": weights, "biases": biases }
 
 				self.layers.append(layerState)
 				currentNumInputs = outputSize
 		else:
+			self.schemaVersion = int(stateJson.get("schemaVersion", 1))
 			for i in range(0, len(stateJson["layers"])):
 				self.layers.append(stateJson["layers"][i])
 
 	def getJson(self):
-		return { "name": "LinearMotorController", "layers": self.layers }
+		return { "name": "LinearMotorController", "schemaVersion": self.schemaVersion, "layers": self.layers }
 
 	def serialize(self):
 		return json.dumps(getJson())
 
 	# Returns list of (layerIndex, weightIndex, key)
 	def getWeightIndices(self, numParametersRatio):
-		numParametersToChange = int(numParametersRatio * 2*self.getNumWeights())
+		numParametersToChange = int(numParametersRatio * self.getNumParameters())
 
-		indices = list(range(0, 2*self.getNumWeights()))
+		indices = list(range(0, self.getNumParameters()))
 		random.shuffle(indices)
 		layerWeightIndices = []
 		for i in indices[:numParametersToChange]:
@@ -49,15 +58,18 @@ class LinearMotorController():
 		for key in ("weights", "biases"):
 			for i in range(0, len(self.layers)):
 				l = self.layers[i]
-				if weightIndex >= weightStart and weightIndex < weightStart + len(l["weights"]):
+				if weightIndex >= weightStart and weightIndex < weightStart + len(l[key]):
 					return (i, weightIndex - weightStart, key)
-				weightStart += len(l["weights"])
+				weightStart += len(l[key])
 
 	def getNumWeights(self):
 		num = 0
 		for l in self.layers:
 			num += len(l["weights"])
 		return num
+
+	def getNumParameters(self):
+		return sum(len(layer["weights"]) + len(layer["biases"]) for layer in self.layers)
 
 	def crossover(self, partnerCreature, configJson):
 		numWeightsToChangeRatio = self.pickRandomNumberFromRange(configJson["numParameterChangedRatioRange"], "-")

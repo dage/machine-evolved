@@ -28,7 +28,7 @@ public:
 		btQuaternion rotation;
 	};
 
-	CreatureBase(BulletInterface* bullet, btVector3 position, pt::ptree jsonObject, float motorMaxForce = 2000.f);
+	CreatureBase(BulletInterface* bullet, btVector3 position, pt::ptree jsonObject, float motorMaxForce = 2000.f, float motorTargetVelocityLimit = 0.f);
 	~CreatureBase();
 
 	btVector3 getCenterOfMassPosition();
@@ -45,4 +45,5 @@ protected:
 
 private:
 	void applyMotorForces();
+	float motorTargetVelocityLimit = 0.f;
 };

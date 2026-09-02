@@ -1,7 +1,10 @@
 #include "CreatureBase.h"
 
-CreatureBase::CreatureBase(BulletInterface* bullet, btVector3 position, pt::ptree jsonObject, float motorMaxForce)
+#include <algorithm>
+
+CreatureBase::CreatureBase(BulletInterface* bullet, btVector3 position, pt::ptree jsonObject, float motorMaxForce, float motorTargetVelocityLimit)
 {
+	this->motorTargetVelocityLimit = motorTargetVelocityLimit;
 	// Structure:
 	structure = new CreatureStructure(jsonObject.get_child("structure"));
 
@@ -66,7 +69,10 @@ void CreatureBase::applyMotorForces() {
 
 	for (int i = 0; i < motors.size(); i++) {
 		btRotationalLimitMotor* motor = motors[i];
-		motor->m_targetVelocity = outputs[i];
+		float targetVelocity = outputs[i];
+		if (motorTargetVelocityLimit > 0.f)
+			targetVelocity = std::max(-motorTargetVelocityLimit, std::min(motorTargetVelocityLimit, targetVelocity));
+		motor->m_targetVelocity = targetVelocity;
 	}
 
 	std::vector<float> updatedFeedbacks;

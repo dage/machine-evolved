@@ -42,6 +42,13 @@ private:
 	btCollisionShape* groundShape;
 	btDefaultMotionState* groundMotionState;
 	btRigidBody* groundRigidBody;
+	float capsuleFriction = 0.5f;
+	float capsuleRollingFriction = 0.f;
+	float capsuleSpinningFriction = 0.f;
+	float capsuleRestitution = 0.f;
+	float capsuleLinearDamping = 0.f;
+	float capsuleAngularDamping = 0.f;
+	float capsuleMassScale = 0.0001f;
 
 	std::vector<float> getRange(std::string range, std::string seperator = ";");
 };

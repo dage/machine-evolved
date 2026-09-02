@@ -17,7 +17,7 @@ def wallClockLimitReached(startTime, limitSeconds, currentTime=None):
 	if limitSeconds is None:
 		return False
 	if currentTime is None:
-		currentTime = time.time()
+		currentTime = time.monotonic()
 	return currentTime - startTime >= limitSeconds
 
 class GeneticAlgorithm():
@@ -35,7 +35,7 @@ class GeneticAlgorithm():
 		self.crossoverConfig = crossoverConfig
 		self.mutationConfig = mutationConfig
 		self.structureConfig = structureConfig
-		self.saveStateTimestamp = time.time()
+		self.saveStateTimestamp = time.monotonic()
 		self.callbacks = callbacks
 		self.validateConfiguration()
 
@@ -51,7 +51,8 @@ class GeneticAlgorithm():
 			creatures = structureConfig["creatures"]
 			for i in range(0, len(creatures)):
 				creatureJson = creatures[i]["data"]
-				fitness = float(creatures[i]["fitness"])
+				rawFitness = creatures[i].get("fitness")
+				fitness = float("nan") if rawFitness is None else float(rawFitness)
 				creature = Creature(creatureJson, structureConfig["generator"])
 				self.individuals.append([fitness, creature, float("nan")])
 				self.creatureIndexLookup[creature.id] = i
@@ -89,7 +90,8 @@ class GeneticAlgorithm():
 	def getCreaturesWithFitnessJson(self):
 		output = []
 		for i in self.individuals:
-			output.append({ "fitness": i[self.FITNESS], "data": i[self.CREATURE].getJson() })
+			fitness = i[self.FITNESS]
+			output.append({ "fitness": None if math.isnan(fitness) else fitness, "data": i[self.CREATURE].getJson() })
 		return output
 	
 	def getIndexBestCreature(self):
@@ -133,7 +135,7 @@ class GeneticAlgorithm():
 		#print("maintain: numMissing=" + str(numMissingFitness))
 
 		for i in self.indicesInFlight:
-			timeInFlight = time.time() -  self.individuals[i][self.IN_FLIGHT]
+			timeInFlight = time.monotonic() - self.individuals[i][self.IN_FLIGHT]
 		#	print("maintain: timeInFlight=" + str(timeInFlight))
 			if timeInFlight > evaluationTimeoutSeconds:
 				indicesPutBackFromFlight.append(i)
@@ -146,8 +148,8 @@ class GeneticAlgorithm():
 		if len(self.indicesMissingFitness) == 0:
 			self.proceedToNextGeneration()
 
-		if time.time() - self.saveStateTimestamp > 60*60:	# 1hr. TODO: Make command-line configurable
-			self.saveStateTimestamp = time.time()
+		if time.monotonic() - self.saveStateTimestamp > float(self.populationConfig.get("checkpointIntervalSeconds", 60 * 60)):
+			self.saveStateTimestamp = time.monotonic()
 			self.callbacks["saveState"]()
 
 	# Returns a list of indices into individuals
@@ -246,7 +248,7 @@ class GeneticAlgorithm():
 		picked = None
 		for i in self.indicesMissingFitness:
 			if math.isnan(self.individuals[i][self.IN_FLIGHT]):
-				self.individuals[i][self.IN_FLIGHT] = time.time()
+				self.individuals[i][self.IN_FLIGHT] = time.monotonic()
 				self.indicesInFlight.append(i)
 				picked = self.individuals[i][self.CREATURE]
 				break
@@ -293,7 +295,7 @@ class Trainer():
 		def startAlgorithm():
 			def resetFitness(creatures):
 				for creature in creatures:
-					creature["fitness"] = float("NaN")
+					creature["fitness"] = None
 
 			algorithmType = config["json"]["algorithm"]["type"]
 			if algorithmType == "GeneticAlgorithm":
@@ -313,10 +315,11 @@ class Trainer():
 				sys.exit("Only algorithm type 'GeneticAlgorithm' currently implemented. Got '" + algorithmType + "'");
 
 		self.config = config
-		self.startTime = time.time()
+		self.startTime = time.monotonic()
 		self.experimentId = str(uuid.uuid4())
-		self.statistics = { "accumulatedSimulatedTime": 0, "accumulatedFitness": {}, "accumulatedSimulatedCreatures": {}, "timeStamp": time.time() }
-		self.statistics["timeStamp"] = time.time()
+		self.stopReason = None
+		self.stopFinalized = False
+		self.statistics = { "accumulatedSimulatedTime": 0, "accumulatedFitness": {}, "accumulatedSimulatedCreatures": {}, "timeStamp": time.monotonic() }
 		self.lastStatus = "...waiting..."
 
 		startAlgorithm()
@@ -328,17 +331,18 @@ class Trainer():
 			self.communicator = Communicator(self.getWork, self.getWorkBatch, self.doStepBatch, self.registerResult, self.getServerStatus, self.getBestCreature)
 			self.communicator.start()
 		except KeyboardInterrupt:
+			self.requestStop("signal", "Exiting after an interrupt signal.")
 			self.saveState()
 		except Exception as e:
 			print(e)
-			pass
+			raise
 
 	def saveState(self):
 		creatures = self.algorithm.getCreaturesWithFitnessJson()
 		if(creatures != None and len(creatures)>0):
 			self.config["json"]["structure"]["creatures"] = creatures
 
-		serialized = json.dumps(self.config["json"], indent=1, separators=(',', ': '))
+		serialized = json.dumps(self.config["json"], indent=1, separators=(',', ': '), allow_nan=False)
 		#serialized = json.dumps(config["json"])
 			
 		temporaryFilename = self.config["filename"] + ".tmp"
@@ -352,7 +356,33 @@ class Trainer():
 	def terminateSession(self):
 		print("terminate!!")
 
-	def registerResult(self, data):
+	def requestStop(self, reason, message):
+		if self.stopReason is None:
+			self.stopReason = reason
+			print(message)
+
+	def updateStopReason(self):
+		if self.config["terminateEvaluations"] and self.algorithm.populationConfig["evaluations"] >= self.config["terminateEvaluations"]:
+			self.requestStop(
+				"evaluation-limit",
+				"Exiting since max number of fitness evaluations has been performed. terminate-evaluations={}.".format(self.config["terminateEvaluations"]))
+		elif wallClockLimitReached(self.startTime, self.config["terminateSeconds"]):
+			self.requestStop(
+				"wall-clock-limit",
+				"Exiting since the wall-clock training limit has been reached. terminate-seconds={}.".format(self.config["terminateSeconds"]))
+		elif self.config["terminateStallEvaluations"] and self.algorithm.populationConfig["evaluations"] - self.bestFitnessEvaluation >= self.config["terminateStallEvaluations"]:
+			self.requestStop(
+				"fitness-stall",
+				"Exiting since no new best creature has been found for terminate-stall-evaluations={}.".format(self.config["terminateStallEvaluations"]))
+
+	def finalizeStop(self):
+		if self.stopReason is None or self.stopFinalized:
+			return
+		self.stopFinalized = True
+		self.saveState()
+		self.communicator.stop()
+
+	def registerResult(self, data, finalizeStop=True):
 		experimentId = data["experimentId"]
 		if experimentId != self.experimentId:
 			print("Ignoring this result since experimentId of returned result does not match current experimentId.")
@@ -371,8 +401,6 @@ class Trainer():
 		#print("fitness={}".format(fitness))
 
 		simulatedTime = data["simulatedTime"]
-		currentTime = time.time()
-
 		# print(data["type"] + ": " + creatureId + ", fitness=" + str(fitness) + ", best=" + str(self.bestFitness))
 
 		if not creature.generatorType in self.statistics["accumulatedFitness"]:
@@ -392,19 +420,9 @@ class Trainer():
 			self.bestFitnessEvaluation = self.algorithm.populationConfig["evaluations"]
 			print("--> new best creature found through {}! Fitness={}".format(creature.generatorType, fitness))
 
-		if self.config["terminateEvaluations"] and self.algorithm.populationConfig["evaluations"] >= self.config["terminateEvaluations"]:
-			print("Exiting since max number of fitness evaluations has been performed. terminate-evaluations={}.".format(self.config["terminateEvaluations"]))
-			self.saveState()
-			self.communicator.stop()
-		
-		elif wallClockLimitReached(self.startTime, self.config["terminateSeconds"]):
-			print("Exiting since the wall-clock training limit has been reached. terminate-seconds={}.".format(self.config["terminateSeconds"]))
-			self.saveState()
-			self.communicator.stop()
-		elif self.config["terminateStallEvaluations"] and self.algorithm.populationConfig["evaluations"] - self.bestFitnessEvaluation >= self.config["terminateStallEvaluations"]:
-			print("Exiting since no new best creature has been found for terminate-stall-evaluations={}.".format(self.config["terminateStallEvaluations"]))
-			self.saveState()
-			self.communicator.stop()
+		self.updateStopReason()
+		if finalizeStop:
+			self.finalizeStop()
 
 		return "OK"		# Notify client request handled successfully
 
@@ -413,7 +431,7 @@ class Trainer():
 	
 	def getServerStatusUnserialized(self):
 		# This code only works where there is a single client (can have multiple worker threads)
-		currentTime = time.time()
+		currentTime = time.monotonic()
 		deltaTime = currentTime - self.statistics["timeStamp"]
 		if deltaTime > 2:
 			accumulatedFitness = 0
@@ -446,12 +464,11 @@ class Trainer():
 		return self.getWork(True)
 
 	def doStepBatch(self, data):
-		maxNewWorkUnits = data["maxWorkUnits"]
-		index = 0
-		while index < len(data["results"]) and not self.communicator.isStopped:
-			result = data["results"][index]
-			self.registerResult(result)	
-			index += 1
+		for result in data["results"]:
+			self.registerResult(result, finalizeStop=False)
+
+		self.updateStopReason()
+		self.finalizeStop()
 
 		if self.communicator.isStopped:
 			response = { "workUnits": [] }
@@ -466,6 +483,10 @@ class Trainer():
 		return json.dumps(self.getWorkBatchUnserialized(data))
 
 	def getWorkBatchUnserialized(self, data):
+		self.updateStopReason()
+		if self.stopReason is not None:
+			return { "workUnits": [] }
+
 		remaining = data["maxWorkUnits"]
 		workUnits = []
 		noWork = False
@@ -484,6 +505,9 @@ class Trainer():
 		if getBestForPlayback:
 			creature = self.algorithm.getBestCreature()
 		else:
+			self.updateStopReason()
+			if self.stopReason is not None:
+				return { "status": "NO_WORK" }
 			self.algorithm.maintainPopulation()
 			creature = self.algorithm.getForFitness()
 
@@ -601,6 +625,11 @@ def writeResult(trainer, filename):
 		print("Created new results file " + filename + " and wrote results.")
 
 if __name__ == "__main__":
+	def interruptHandler(signum, frame):
+		raise KeyboardInterrupt()
+
+	signal.signal(signal.SIGINT, interruptHandler)
+	signal.signal(signal.SIGTERM, interruptHandler)
 	config = getJson()
 	if config["seed"] is not None:
 		random.seed(config["seed"])

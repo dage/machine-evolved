@@ -31,6 +31,7 @@ public:
 private:
 	int numInputs;
 	int numOutputs;
+	int schemaVersion = 1;
 
 	std::vector<float> multiplyMatrix(const std::vector<float> inputVector, const std::vector<float> matrix, const std::vector<float> biases, const std::string activation);
 

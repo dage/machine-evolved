@@ -1,4 +1,5 @@
 import socketserver
+import socket
 import json
 import sys
 import time
@@ -31,6 +32,7 @@ class Communicator():
 
 class RequestHandler(socketserver.BaseRequestHandler):
 	def handle(self):
+		self.request.settimeout(10)
 		def receiveJson():
 			BLOCK_SIZE = 4096
 			allBlocks = ""
@@ -56,7 +58,11 @@ class RequestHandler(socketserver.BaseRequestHandler):
 			return allBlocks
 		
 		# receive request:
-		self.data = receiveJson()
+		try:
+			self.data = receiveJson()
+		except socket.timeout:
+			print("Timed out while receiving a trainer request.")
+			return
 
 		#print("<-- received {} bytes (of {}) from {}: {}".format(len(self.data), str(self.PACKET_SIZE), self.client_address[0], self.data))
 		#print("<-- received {} bytes (of {}) from {}".format(len(self.data), str(self.PACKET_SIZE), self.client_address[0]))

@@ -27,7 +27,7 @@ cleanup() {
 trap cleanup EXIT
 
 cmake -S "$repo_dir" -B "$build_dir" -DCMAKE_BUILD_TYPE=Release
-cmake --build "$build_dir" --target shellworker --parallel
+cmake --build "$build_dir" --target shellworker replayworker --parallel
 
 python3 -c 'import socket, sys
 try:
@@ -72,12 +72,19 @@ python3 -c 'import json, math, sys
 with open(sys.argv[1]) as source:
     config = json.load(source)
 population = config["algorithm"]["arguments"]["population"]
+evaluations = population["evaluations"]
 creatures = config["structure"]["creatures"]
-finite = [item["fitness"] for item in creatures if math.isfinite(item["fitness"])]
-assert population["evaluations"] == 1, population
-assert len(finite) == 1, finite
+finite = [item["fitness"] for item in creatures if item["fitness"] is not None and math.isfinite(item["fitness"])]
+missing = [item for item in creatures if item["fitness"] is None]
+assert evaluations >= 1, population
+if int(sys.argv[2]) == 1:
+    assert evaluations == 1, population
+assert len(finite) == evaluations, (finite, population)
+assert len(missing) == len(creatures) - len(finite), len(missing)
 assert len(creatures[0]["data"]["structure"]["capsules"]) == 3
-print(f"Training smoke passed: evaluations=1, finite_fitness={finite[0]:.6f}")' "$run_dir/smoke.json"
+print(f"Training smoke passed: evaluations={evaluations}, best_fitness={max(finite):.6f}")' "$run_dir/smoke.json" "$worker_threads"
+
+"$repo_dir/scripts/export-replay.sh" "$run_dir/smoke.json" "$run_dir/replay.json" 20
 
 if [[ "$worker_threads" == "1" ]]; then
   grep -F "Completed 1 evaluation." "$run_dir/shellworker.log" >/dev/null

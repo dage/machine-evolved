@@ -23,7 +23,7 @@ def main():
 	fitnesses = [
 		float(creature["fitness"])
 		for creature in creatures
-		if math.isfinite(float(creature["fitness"]))
+		if creature.get("fitness") is not None and math.isfinite(float(creature["fitness"]))
 	]
 	summary = {
 		"schemaVersion": 1,
@@ -45,7 +45,7 @@ def main():
 
 	temporary = args.output + ".tmp"
 	with open(temporary, "w") as destination:
-		json.dump(summary, destination, indent=2)
+		json.dump(summary, destination, indent=2, allow_nan=False)
 		destination.write("\n")
 		destination.flush()
 		os.fsync(destination.fileno())

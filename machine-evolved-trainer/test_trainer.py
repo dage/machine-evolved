@@ -81,6 +81,24 @@ class GeneticAlgorithmTest(unittest.TestCase):
 		self.assertFalse(wallClockLimitReached(10.0, 30.0, 39.999))
 		self.assertTrue(wallClockLimitReached(10.0, 30.0, 40.0))
 
+	def test_missing_fitness_serializes_as_null_and_reloads(self):
+		algorithm = self.createAlgorithm()
+		serialized = algorithm.getCreaturesWithFitnessJson()
+		self.assertEqual([item["fitness"] for item in serialized], [None, None])
+		json.dumps(serialized, allow_nan=False)
+
+		arguments = copy.deepcopy(self.config["algorithm"]["arguments"])
+		structure = copy.deepcopy(self.config["structure"])
+		structure["creatures"] = serialized
+		reloaded = GeneticAlgorithm(
+			arguments["population"],
+			arguments["crossover"],
+			arguments["mutation"],
+			structure,
+			{ "saveState": lambda: None },
+		)
+		self.assertEqual(reloaded.indicesMissingFitness, [0, 1])
+
 
 if __name__ == "__main__":
 	unittest.main()
