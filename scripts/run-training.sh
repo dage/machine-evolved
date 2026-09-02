@@ -191,7 +191,14 @@ if ! kill -0 "$worker_pid" 2>/dev/null && kill -0 "$trainer_pid" 2>/dev/null; th
   worker_status=$?
   set -e
   worker_pid=""
-  sleep 0.5
+  # A clean worker exits as soon as the trainer starts shutting down, while
+  # the trainer may still be atomically writing a large final checkpoint.
+  # Give that normal lifecycle a bounded grace period before calling it a
+  # worker failure.
+  trainer_exit_deadline=$((SECONDS + 10))
+  while kill -0 "$trainer_pid" 2>/dev/null && [[ "$SECONDS" -lt "$trainer_exit_deadline" ]]; do
+    sleep 0.1
+  done
   if kill -0 "$trainer_pid" 2>/dev/null; then
     echo "ShellWorker exited with status $worker_status while the trainer was still running." >&2
     exit 1
