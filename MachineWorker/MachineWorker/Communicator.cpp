@@ -19,7 +19,23 @@ std::string Communicator::getSendResultSerialized(WorkEvaluator::TASK* task) {
 		
 		//printf("fitness=%f\n", moveFarTask->maxDistance);
 
-		resultSerialized = "{\"id\":\"" + task->id + "\",\"experimentId\":\"" + task->experimentId + "\",\"evaluationId\":\"" + task->evaluationId + "\",\"maxDistance\":" + std::to_string(moveFarTask->maxDistance) + ", \"simulatedTime\": " + std::to_string(moveFarTask->numberOfTicks / 60.) + "}";
+		const MotionMetrics& motion = moveFarTask->motion;
+		resultSerialized = "{\"id\":\"" + task->id
+			+ "\",\"experimentId\":\"" + task->experimentId
+			+ "\",\"evaluationId\":\"" + task->evaluationId
+			+ "\",\"maxDistance\":" + std::to_string(moveFarTask->maxDistance)
+			+ ",\"fitness\":" + std::to_string(moveFarTask->fitness)
+			+ ",\"simulatedTime\":" + std::to_string(moveFarTask->numberOfTicks / 60.)
+			+ ",\"motion\":{\"credible\":" + std::string(motion.credible ? "true" : "false")
+			+ ",\"finalDistance\":" + std::to_string(motion.finalDistance)
+			+ ",\"pathLength\":" + std::to_string(motion.pathLength)
+			+ ",\"unsupportedPathFraction\":" + std::to_string(motion.unsupportedPathFraction)
+			+ ",\"nearGroundTimeFraction\":" + std::to_string(motion.nearGroundTimeFraction)
+			+ ",\"longestUnsupportedSeconds\":" + std::to_string(motion.longestUnsupportedSeconds)
+			+ ",\"rootSpinRateRadiansPerSecond\":" + std::to_string(motion.rootSpinRate)
+			+ ",\"maxCapsuleRotationRateRadiansPerSecond\":" + std::to_string(motion.maximumCapsuleRotationRate)
+			+ ",\"finalToMaxDistanceRatio\":" + std::to_string(motion.finalToMaxDistanceRatio)
+			+ "}}";
 	}
 	return resultSerialized;
 }

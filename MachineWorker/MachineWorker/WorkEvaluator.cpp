@@ -28,9 +28,12 @@ void WorkEvaluator::add(pt::ptree jsonObject, CreatureBase* creatureToTrack) {
 	TASK* taskInfo = new TASK(name, id, experimentId, evaluationId, creatureToTrack);
 	if (name == "MOVE_FAR") {
 		int numberOfTicks = jsonObject.get<int>("horizonTicks", 60 * 60);
+		pt::ptree objective;
+		if (auto configuredObjective = jsonObject.get_child_optional("objective"))
+			objective = *configuredObjective;
 		btVector3 startingPosition = creatureToTrack->getCenterOfMassPosition();
 		startingPosition.setZ(0);
-		MOVE_FAR_TASK* moveFarTask = new MOVE_FAR_TASK(taskInfo, startingPosition, 0., numberOfTicks);
+		MOVE_FAR_TASK* moveFarTask = new MOVE_FAR_TASK(taskInfo, startingPosition, 0., numberOfTicks, objective);
 		delete taskInfo;
 		tasks.push_back(moveFarTask);
 	}
@@ -48,15 +51,14 @@ std::vector<WorkEvaluator::TASK*> WorkEvaluator::tick() {
 		if (task->name == "MOVE_FAR") {
 			MOVE_FAR_TASK* moveFarTask = (MOVE_FAR_TASK*)task;
 
-			btVector3 position = moveFarTask->creature->getCenterOfMassPosition();
-			position.setZ(0);
+			moveFarTask->motion.tick(moveFarTask->creature);
+			moveFarTask->maxDistance = moveFarTask->motion.maxDistance;
 
-			double distance = (position - moveFarTask->startingPosition).length();
-			if (distance > moveFarTask->maxDistance)
-				moveFarTask->maxDistance = distance;
-
-			if (--moveFarTask->remainingTicks<=0) 
+			if (--moveFarTask->remainingTicks<=0) {
+				moveFarTask->motion.finalize(static_cast<double>(moveFarTask->numberOfTicks) / 60.0);
+				moveFarTask->fitness = moveFarTask->motion.fitness;
 				removedTasks.push_back(task);
+			}
 			else
 				keptTasks.push_back(task);
 		}

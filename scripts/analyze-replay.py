@@ -55,7 +55,7 @@ def percentile(values, ratio):
 	return ordered[lower] * (upper - position) + ordered[upper] * (position - lower)
 
 
-def analyze(replay, clearance_epsilon, max_spin_rate, max_unsupported_path_fraction):
+def analyze(replay, clearance_epsilon, max_spin_rate, max_capsule_rotation_rate, max_unsupported_path_fraction):
 	samples = replay["samples"]
 	if len(samples) < 2:
 		raise ValueError("Replay must contain at least two samples")
@@ -79,6 +79,7 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_unsupported_path_fract
 	near_ground = []
 	root_rotations = []
 	root_axes = []
+	capsule_rotations = {capsule_id: [] for capsule_id in capsules}
 	for sample in samples:
 		minimum_clearance = math.inf
 		for capsule_id, definition in capsules.items():
@@ -93,6 +94,8 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_unsupported_path_fract
 		root_pose = sample["poses"]["parts"][root_id]
 		root_rotations.append(root_pose["rotation"])
 		root_axes.append(quaternion_axis(root_pose["rotation"]))
+		for capsule_id in capsules:
+			capsule_rotations[capsule_id].append(sample["poses"]["parts"][capsule_id]["rotation"])
 		near_ground.append(minimum_clearance <= clearance_epsilon)
 
 	path_length = sum(segments)
@@ -115,10 +118,16 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_unsupported_path_fract
 	full_rotation = sum(quaternion_delta(a, b) for a, b in zip(root_rotations, root_rotations[1:]))
 	axis_rotation = sum(axis_delta(a, b) for a, b in zip(root_axes, root_axes[1:]))
 	spin_rate = full_rotation / duration
+	capsule_rotation_rates = {
+		capsule_id: sum(quaternion_delta(a, b) for a, b in zip(rotations, rotations[1:])) / duration
+		for capsule_id, rotations in capsule_rotations.items()
+	}
+	maximum_capsule_rotation_rate = max(capsule_rotation_rates.values())
 	unsupported_path_fraction = unsupported_path / path_length if path_length else 0.0
 	final_to_max = distances[-1] / max(distances) if max(distances) else 1.0
 	credible = (
 		spin_rate <= max_spin_rate
+		and maximum_capsule_rotation_rate <= max_capsule_rotation_rate
 		and unsupported_path_fraction <= max_unsupported_path_fraction
 		and final_to_max >= 0.9
 	)
@@ -126,7 +135,8 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_unsupported_path_fract
 	return {
 		"schemaVersion": 1,
 		"configuredFitnessSimulationUnits": replay["configuredFitness"],
-		"replayedFitnessSimulationUnits": replay["measuredMaxDistanceSimulationUnits"],
+		"replayedFitnessSimulationUnits": replay.get("measuredFitness", replay["measuredMaxDistanceSimulationUnits"]),
+		"rawMaxDistanceSimulationUnits": replay["measuredMaxDistanceSimulationUnits"],
 		"maxDistanceMeters": max(distances),
 		"finalDistanceMeters": distances[-1],
 		"finalToMaxDistanceRatio": final_to_max,
@@ -145,9 +155,12 @@ def analyze(replay, clearance_epsilon, max_spin_rate, max_unsupported_path_fract
 		"rootRotationRadians": full_rotation,
 		"rootAxisRotationRadians": axis_rotation,
 		"rootSpinRateRadiansPerSecond": spin_rate,
+		"capsuleRotationRatesRadiansPerSecond": capsule_rotation_rates,
+		"maxCapsuleRotationRateRadiansPerSecond": maximum_capsule_rotation_rate,
 		"credibility": {
 			"passes": credible,
 			"maxSpinRateRadiansPerSecond": max_spin_rate,
+			"maxCapsuleRotationRateRadiansPerSecond": max_capsule_rotation_rate,
 			"maxUnsupportedPathFraction": max_unsupported_path_fraction,
 			"clearanceEpsilonMeters": clearance_epsilon,
 		},
@@ -160,13 +173,20 @@ def main():
 	parser.add_argument("--output", type=Path)
 	parser.add_argument("--clearance-epsilon", type=float, default=0.02)
 	parser.add_argument("--max-spin-rate", type=float, default=10.0)
+	parser.add_argument("--max-capsule-rotation-rate", type=float, default=10.0)
 	parser.add_argument("--max-unsupported-path-fraction", type=float, default=0.25)
 	parser.add_argument("--require-credible", action="store_true")
 	args = parser.parse_args()
 
 	with args.replay.open() as source:
 		replay = json.load(source)
-	result = analyze(replay, args.clearance_epsilon, args.max_spin_rate, args.max_unsupported_path_fraction)
+	result = analyze(
+		replay,
+		args.clearance_epsilon,
+		args.max_spin_rate,
+		args.max_capsule_rotation_rate,
+		args.max_unsupported_path_fraction,
+	)
 	serialized = json.dumps(result, indent=2, allow_nan=False) + "\n"
 	if args.output:
 		args.output.parent.mkdir(parents=True, exist_ok=True)

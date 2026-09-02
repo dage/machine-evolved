@@ -12,6 +12,7 @@ import argparse
 from pprint import pprint
 import sys
 import signal
+import threading
 
 def wallClockLimitReached(startTime, limitSeconds, currentTime=None):
 	if limitSeconds is None:
@@ -56,7 +57,7 @@ class GeneticAlgorithm():
 				creature = Creature(creatureJson, structureConfig["generator"])
 				self.individuals.append([fitness, creature, float("nan")])
 				self.creatureIndexLookup[creature.id] = i
-				
+
 				if math.isnan(fitness):
 					self.indicesMissingFitness.append(i)
 
@@ -315,6 +316,11 @@ class Trainer():
 				sys.exit("Only algorithm type 'GeneticAlgorithm' currently implemented. Got '" + algorithmType + "'");
 
 		self.config = config
+		# ThreadingTCPServer dispatches requests concurrently.  All callbacks
+		# below share the genetic algorithm state, so serialize that boundary.
+		# RLock is intentional because batch callbacks call registerResult and
+		# population maintenance can call saveState.
+		self.stateLock = threading.RLock()
 		self.startTime = time.monotonic()
 		self.experimentId = str(uuid.uuid4())
 		self.stopReason = None
@@ -332,36 +338,45 @@ class Trainer():
 			self.communicator.start()
 		except KeyboardInterrupt:
 			self.requestStop("signal", "Exiting after an interrupt signal.")
-			self.saveState()
+			self.finalizeStop()
 		except Exception as e:
 			print(e)
 			raise
 
 	def saveState(self):
-		creatures = self.algorithm.getCreaturesWithFitnessJson()
-		if(creatures != None and len(creatures)>0):
-			self.config["json"]["structure"]["creatures"] = creatures
+		with self.stateLock:
+			creatures = self.algorithm.getCreaturesWithFitnessJson()
+			if(creatures != None and len(creatures)>0):
+				self.config["json"]["structure"]["creatures"] = creatures
 
-		serialized = json.dumps(self.config["json"], indent=1, separators=(',', ': '), allow_nan=False)
-		#serialized = json.dumps(config["json"])
-			
-		temporaryFilename = self.config["filename"] + ".tmp"
-		with open(temporaryFilename, "w") as file:
-			bytesWritten = file.write(serialized)
-			file.flush()
-			os.fsync(file.fileno())
-		os.replace(temporaryFilename, self.config["filename"])
-		print(str(bytesWritten) + " bytes written to " + self.config["filename"] + ". ")
+			serialized = json.dumps(self.config["json"], indent=1, separators=(',', ': '), allow_nan=False)
+			#serialized = json.dumps(config["json"])
+
+			temporaryFilename = self.config["filename"] + ".tmp"
+			with open(temporaryFilename, "w") as file:
+				bytesWritten = file.write(serialized)
+				file.flush()
+				os.fsync(file.fileno())
+			os.replace(temporaryFilename, self.config["filename"])
+			print(str(bytesWritten) + " bytes written to " + self.config["filename"] + ". ")
 
 	def terminateSession(self):
 		print("terminate!!")
 
 	def requestStop(self, reason, message):
+		with self.stateLock:
+			self._requestStop(reason, message)
+
+	def _requestStop(self, reason, message):
 		if self.stopReason is None:
 			self.stopReason = reason
 			print(message)
 
 	def updateStopReason(self):
+		with self.stateLock:
+			self._updateStopReason()
+
+	def _updateStopReason(self):
 		if self.config["terminateEvaluations"] and self.algorithm.populationConfig["evaluations"] >= self.config["terminateEvaluations"]:
 			self.requestStop(
 				"evaluation-limit",
@@ -376,13 +391,18 @@ class Trainer():
 				"Exiting since no new best creature has been found for terminate-stall-evaluations={}.".format(self.config["terminateStallEvaluations"]))
 
 	def finalizeStop(self):
-		if self.stopReason is None or self.stopFinalized:
-			return
-		self.stopFinalized = True
-		self.saveState()
-		self.communicator.stop()
+		with self.stateLock:
+			if self.stopReason is None or self.stopFinalized:
+				return
+			self.stopFinalized = True
+			self.saveState()
+			self.communicator.stop()
 
 	def registerResult(self, data, finalizeStop=True):
+		with self.stateLock:
+			return self._registerResult(data, finalizeStop)
+
+	def _registerResult(self, data, finalizeStop=True):
 		experimentId = data["experimentId"]
 		if experimentId != self.experimentId:
 			print("Ignoring this result since experimentId of returned result does not match current experimentId.")
@@ -396,11 +416,19 @@ class Trainer():
 			print("Ignoring stale or duplicate evaluation result for creature {}.".format(creatureId))
 			return "FAIL"
 
-		fitness = data["maxDistance"]
+		try:
+			rawDistance = float(data["maxDistance"])
+			fitness = float(data.get("fitness", rawDistance))
+			simulatedTime = float(data["simulatedTime"])
+		except (KeyError, TypeError, ValueError, OverflowError):
+			print("Ignoring evaluation result for creature {} because its distance, fitness, or simulated time is not numeric.".format(creatureId))
+			return "FAIL"
+		if not math.isfinite(rawDistance) or not math.isfinite(fitness) or not math.isfinite(simulatedTime):
+			print("Ignoring evaluation result for creature {} because its distance, fitness, or simulated time is not finite.".format(creatureId))
+			return "FAIL"
 
 		#print("fitness={}".format(fitness))
 
-		simulatedTime = data["simulatedTime"]
 		# print(data["type"] + ": " + creatureId + ", fitness=" + str(fitness) + ", best=" + str(self.bestFitness))
 
 		if not creature.generatorType in self.statistics["accumulatedFitness"]:
@@ -427,7 +455,8 @@ class Trainer():
 		return "OK"		# Notify client request handled successfully
 
 	def getServerStatus(self):
-		return json.dumps(self.getServerStatusUnserialized())
+		with self.stateLock:
+			return json.dumps(self.getServerStatusUnserialized())
 	
 	def getServerStatusUnserialized(self):
 		# This code only works where there is a single client (can have multiple worker threads)
@@ -461,9 +490,14 @@ class Trainer():
 		return { "status": self.lastStatus }
 
 	def getBestCreature(self):
-		return self.getWork(True)
+		with self.stateLock:
+			return self.getWork(True)
 
 	def doStepBatch(self, data):
+		with self.stateLock:
+			return self._doStepBatch(data)
+
+	def _doStepBatch(self, data):
 		for result in data["results"]:
 			self.registerResult(result, finalizeStop=False)
 
@@ -480,11 +514,13 @@ class Trainer():
 		return json.dumps(response)
 
 	def getWorkBatch(self, data):
-		return json.dumps(self.getWorkBatchUnserialized(data))
+		with self.stateLock:
+			return json.dumps(self.getWorkBatchUnserialized(data))
 
 	def getWorkBatchUnserialized(self, data):
 		self.updateStopReason()
 		if self.stopReason is not None:
+			self.finalizeStop()
 			return { "workUnits": [] }
 
 		remaining = data["maxWorkUnits"]
@@ -507,6 +543,7 @@ class Trainer():
 		else:
 			self.updateStopReason()
 			if self.stopReason is not None:
+				self.finalizeStop()
 				return { "status": "NO_WORK" }
 			self.algorithm.maintainPopulation()
 			creature = self.algorithm.getForFitness()
@@ -521,6 +558,7 @@ class Trainer():
 				"experimentId": self.experimentId,
 				"evaluationId": self.algorithm.startEvaluation(creature.id),
 				"horizonTicks": int(objective.get("horizonTicks", 60 * 60)),
+				"objective": objective,
 			}
 			work = { "status": "OK", "task": taskJson, "creature": creature.getJson(), "physics": physics }
 		else:
@@ -530,7 +568,8 @@ class Trainer():
 
 
 	def getWork(self, getBestForPlayback = False):
-		return json.dumps(self.getWorkUnserialized(getBestForPlayback))
+		with self.stateLock:
+			return json.dumps(self.getWorkUnserialized(getBestForPlayback))
 
 def getJson():
 	def parseCommandLineArguments():

@@ -38,7 +38,7 @@ assert replay["kind"] == "machine-evolved-capsules-v1"
 assert replay["fitnessParity"]["verified"] is True
 assert math.isclose(
     replay["configuredFitness"],
-    replay["measuredMaxDistanceSimulationUnits"],
+    replay["measuredFitness"],
     rel_tol=1e-7,
     abs_tol=1e-3,
 )

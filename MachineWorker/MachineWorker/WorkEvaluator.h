@@ -4,6 +4,7 @@
 #include <functional>
 
 #include "CreatureBase.h"
+#include "MotionMetrics.h"
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
@@ -38,14 +39,17 @@ public:
 
 	class MOVE_FAR_TASK : public TASK {
 		public:
-			MOVE_FAR_TASK(TASK* task, btVector3 startingPosition, double maxDistance, int numberOfTicks) : TASK(task->name, task->id, task->experimentId, task->evaluationId, task->creature) {
+			MOVE_FAR_TASK(TASK* task, btVector3 startingPosition, double maxDistance, int numberOfTicks, const pt::ptree& objective) : TASK(task->name, task->id, task->experimentId, task->evaluationId, task->creature) {
 				this->startingPosition = startingPosition;
 				this->maxDistance = maxDistance;
 				this->numberOfTicks = numberOfTicks;
 				this->remainingTicks = numberOfTicks;
+				motion.initialize(task->creature, objective);
 			}
 			btVector3 startingPosition;
 			double maxDistance;
+			double fitness = 0.;
+			MotionMetrics motion;
 			int numberOfTicks;
 			int remainingTicks;
 	};

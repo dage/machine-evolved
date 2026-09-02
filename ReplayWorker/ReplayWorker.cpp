@@ -17,6 +17,7 @@
 
 #include "BulletInterface.h"
 #include "CreatureBase.h"
+#include "MotionMetrics.h"
 
 namespace pt = boost::property_tree;
 
@@ -164,6 +165,8 @@ void writeReplay(
 	const pt::ptree& creatureData,
 	double configuredFitness,
 	double measuredDistance,
+	double measuredFitness,
+	const MotionMetrics& motion,
 	int horizonTicks,
 	const std::vector<ReplaySample>& samples)
 {
@@ -190,17 +193,31 @@ void writeReplay(
 		<< " \"durationSeconds\":" << static_cast<double>(horizonTicks) / FIXED_STEP_HZ << ",\n"
 		<< " \"configuredFitness\":" << configuredFitness << ",\n"
 		<< " \"measuredMaxDistanceSimulationUnits\":" << measuredDistance << ",\n"
-		<< " \"fitnessParity\":{\"absoluteError\":" << std::abs(configuredFitness - measuredDistance)
+		<< " \"measuredFitness\":" << measuredFitness << ",\n"
+		<< " \"fitnessParity\":{\"absoluteError\":" << std::abs(configuredFitness - measuredFitness)
 		<< ",\"verified\":true},\n"
+		<< " \"motionMetrics\":{\"credible\":" << (motion.credible ? "true" : "false")
+		<< ",\"finalDistanceSimulationUnits\":" << motion.finalDistance
+		<< ",\"pathLengthSimulationUnits\":" << motion.pathLength
+		<< ",\"unsupportedPathFraction\":" << motion.unsupportedPathFraction
+		<< ",\"nearGroundTimeFraction\":" << motion.nearGroundTimeFraction
+		<< ",\"longestUnsupportedSeconds\":" << motion.longestUnsupportedSeconds
+		<< ",\"rootSpinRateRadiansPerSecond\":" << motion.rootSpinRate
+		<< ",\"maxCapsuleRotationRateRadiansPerSecond\":" << motion.maximumCapsuleRotationRate
+		<< ",\"finalToMaxDistanceRatio\":" << motion.finalToMaxDistanceRatio << "},\n"
 		<< " \"displayScale\":" << DISPLAY_SCALE << ",\n"
 		<< " \"sourceCoordinateSystem\":{\"upAxis\":\"z\",\"horizontalAxes\":[\"x\",\"y\"],\"units\":\"simulation-units\"},\n"
 		<< " \"coordinateSystem\":{\"upAxis\":\"y\",\"horizontalAxes\":[\"x\",\"z\"],\"units\":\"m\"},\n"
-		<< " \"objective\":{\"id\":\"distance-only-v1\",\"metric\":\"max-horizontal-distance\",\"penalties\":[]},\n"
-		<< " \"physics\":{\"gravityZ\":" << physics.get<double>("gravityZ")
+		<< " \"objective\":{\"id\":" << jsonString(experiment.get<std::string>("objective.id", "max-horizontal-distance-v1"))
+		<< ",\"metric\":\"max-horizontal-distance\"},\n"
+		<< " \"physics\":{\"gravityX\":" << physics.get<double>("gravityX", 0.0)
+		<< ",\"gravityY\":" << physics.get<double>("gravityY", 0.0)
+		<< ",\"gravityZ\":" << physics.get<double>("gravityZ")
 		<< ",\"groundFriction\":" << physics.get<double>("groundFriction")
 		<< ",\"capsuleFriction\":" << physics.get<double>("capsuleFriction", 0.5)
 		<< ",\"capsuleRollingFriction\":" << physics.get<double>("capsuleRollingFriction", 0.0)
 		<< ",\"capsuleSpinningFriction\":" << physics.get<double>("capsuleSpinningFriction", 0.0)
+		<< ",\"capsuleRestitution\":" << physics.get<double>("capsuleRestitution", 0.0)
 		<< ",\"capsuleLinearDamping\":" << physics.get<double>("capsuleLinearDamping", 0.0)
 		<< ",\"capsuleAngularDamping\":" << physics.get<double>("capsuleAngularDamping", 0.0)
 		<< ",\"capsuleMassScale\":" << physics.get<double>("capsuleMassScale", 0.0001)
@@ -269,6 +286,7 @@ int main(int argc, char* argv[])
 		pt::ptree creatureData = bestCreature(config, configuredFitness);
 		const auto& experiment = config.get_child("experiment");
 		const auto& physics = experiment.get_child("physics");
+		const auto& objective = experiment.get_child("objective");
 		const int horizonTicks = experiment.get<int>("objective.horizonTicks");
 		const int sampleInterval = FIXED_STEP_HZ / options.sampleHz;
 
@@ -282,28 +300,29 @@ int main(int argc, char* argv[])
 			physics.get<float>("motorMaxForce", 2000.f),
 			physics.get<float>("motorTargetVelocityLimit", 0.f));
 
-		const btVector3 startingPosition = creature.getCenterOfMassPosition();
-		double measuredDistance = 0;
+		MotionMetrics motion;
+		motion.initialize(&creature, objective);
 		std::vector<ReplaySample> samples;
 		samples.reserve(static_cast<std::size_t>(horizonTicks / sampleInterval + 1));
-		samples.push_back(ReplaySample{ 0, startingPosition, creature.getCapsulePoses() });
+		samples.push_back(ReplaySample{ 0, creature.getCenterOfMassPosition(), creature.getCapsulePoses() });
 		for (int tick = 1; tick <= horizonTicks; ++tick) {
 			bullet.tick(1.f / FIXED_STEP_HZ);
 			creature.tick();
+			motion.tick(&creature);
 			btVector3 position = creature.getCenterOfMassPosition();
-			btVector3 horizontalDelta = position - startingPosition;
-			horizontalDelta.setZ(0);
-			measuredDistance = std::max(measuredDistance, static_cast<double>(horizontalDelta.length()));
 			if (tick % sampleInterval == 0)
 				samples.push_back(ReplaySample{ tick, position, creature.getCapsulePoses() });
 		}
+		motion.finalize(static_cast<double>(horizonTicks) / FIXED_STEP_HZ);
+		const double measuredDistance = motion.maxDistance;
+		const double measuredFitness = motion.fitness;
 
 		const double parityTolerance = 1e-3 + std::abs(configuredFitness) * 1e-7;
-		const double parityError = std::abs(configuredFitness - measuredDistance);
+		const double parityError = std::abs(configuredFitness - measuredFitness);
 		if (parityError > parityTolerance)
 			throw std::runtime_error(
 				"Saved fitness does not match deterministic replay. configured=" + std::to_string(configuredFitness) +
-				", measured=" + std::to_string(measuredDistance) +
+				", measured=" + std::to_string(measuredFitness) +
 				", absoluteError=" + std::to_string(parityError));
 
 		writeReplay(
@@ -312,6 +331,8 @@ int main(int argc, char* argv[])
 			creatureData,
 			configuredFitness,
 			measuredDistance,
+			measuredFitness,
+			motion,
 			horizonTicks,
 			samples);
 		creature.terminate();
@@ -319,7 +340,8 @@ int main(int argc, char* argv[])
 		std::cout << "Replay exported: " << options.output
 			<< " (samples=" << samples.size()
 			<< ", configuredFitness=" << configuredFitness
-			<< ", measuredDistance=" << measuredDistance << ")\n";
+			<< ", measuredDistance=" << measuredDistance
+			<< ", measuredFitness=" << measuredFitness << ")\n";
 		return 0;
 	}
 	catch (const std::exception& exception) {

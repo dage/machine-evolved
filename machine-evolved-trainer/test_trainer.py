@@ -1,13 +1,16 @@
 import copy
 import json
+import math
 import random
 import sys
+import threading
+import time
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from Trainer import GeneticAlgorithm, wallClockLimitReached
+from Trainer import GeneticAlgorithm, Trainer, wallClockLimitReached
 
 
 class GeneticAlgorithmTest(unittest.TestCase):
@@ -98,6 +101,95 @@ class GeneticAlgorithmTest(unittest.TestCase):
 			{ "saveState": lambda: None },
 		)
 		self.assertEqual(reloaded.indicesMissingFitness, [0, 1])
+
+	def createBareTrainer(self, terminateSeconds=None):
+		algorithm = self.createAlgorithm()
+		trainer = Trainer.__new__(Trainer)
+		trainer.algorithm = algorithm
+		trainer.config = {
+			"terminateEvaluations": None,
+			"terminateSeconds": terminateSeconds,
+			"terminateStallEvaluations": None,
+		}
+		trainer.stateLock = threading.RLock()
+		trainer.startTime = time.monotonic()
+		trainer.experimentId = "test-experiment"
+		trainer.stopReason = None
+		trainer.stopFinalized = False
+		trainer.bestFitness = float("nan")
+		trainer.bestFitnessEvaluation = 0
+		trainer.statistics = {
+			"accumulatedSimulatedTime": 0,
+			"accumulatedFitness": {},
+			"accumulatedSimulatedCreatures": {},
+			"timeStamp": time.monotonic(),
+		}
+
+		class FakeCommunicator:
+			isStopped = False
+
+			def __init__(self):
+				self.stopCalls = 0
+
+			def stop(self):
+				self.stopCalls += 1
+				self.isStopped = True
+
+		trainer.communicator = FakeCommunicator()
+		trainer.saveState = lambda: None
+		return trainer
+
+	def test_non_finite_result_is_rejected_before_ga_mutation(self):
+		for invalidField, invalidValue in (("maxDistance", math.nan), ("fitness", math.inf), ("simulatedTime", math.inf)):
+			with self.subTest(invalidField=invalidField):
+				trainer = self.createBareTrainer()
+				creature = trainer.algorithm.getForFitness()
+				evaluationId = trainer.algorithm.startEvaluation(creature.id)
+				result = {
+					"experimentId": trainer.experimentId,
+					"id": creature.id,
+					"evaluationId": evaluationId,
+					"maxDistance": 1.0,
+					"fitness": 1.0,
+					"simulatedTime": 1.0,
+				}
+				result[invalidField] = invalidValue
+
+				self.assertEqual(trainer.registerResult(result, finalizeStop=False), "FAIL")
+				self.assertEqual(trainer.algorithm.populationConfig["evaluations"], 0)
+				self.assertEqual(len(trainer.algorithm.indicesInFlight), 1)
+				self.assertTrue(math.isnan(trainer.algorithm.getBestFitness()))
+
+	def test_selected_fitness_is_used_when_worker_supplies_it(self):
+		trainer = self.createBareTrainer()
+		creature = trainer.algorithm.getForFitness()
+		evaluationId = trainer.algorithm.startEvaluation(creature.id)
+		result = {
+			"experimentId": trainer.experimentId,
+			"id": creature.id,
+			"evaluationId": evaluationId,
+			"maxDistance": 123.0,
+			"fitness": 0.0,
+			"simulatedTime": 1.0,
+		}
+
+		self.assertEqual(trainer.registerResult(result, finalizeStop=False), "OK")
+		self.assertEqual(trainer.algorithm.getBestFitness(), 0.0)
+
+	def test_work_requests_finalize_an_already_reached_stop(self):
+		for request in (
+			lambda trainer: trainer.getWork(),
+			lambda trainer: trainer.getWorkBatch({"maxWorkUnits": 1}),
+		):
+			trainer = self.createBareTrainer(terminateSeconds=0)
+			response = json.loads(request(trainer))
+			if "status" in response:
+				self.assertEqual(response["status"], "NO_WORK")
+			else:
+				self.assertEqual(response["workUnits"], [])
+			self.assertEqual(trainer.stopReason, "wall-clock-limit")
+			self.assertTrue(trainer.stopFinalized)
+			self.assertEqual(trainer.communicator.stopCalls, 1)
 
 
 if __name__ == "__main__":

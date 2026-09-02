@@ -63,6 +63,8 @@ class RequestHandler(socketserver.BaseRequestHandler):
 		except socket.timeout:
 			print("Timed out while receiving a trainer request.")
 			return
+		if not self.data:
+			return
 
 		#print("<-- received {} bytes (of {}) from {}: {}".format(len(self.data), str(self.PACKET_SIZE), self.client_address[0], self.data))
 		#print("<-- received {} bytes (of {}) from {}".format(len(self.data), str(self.PACKET_SIZE), self.client_address[0]))
