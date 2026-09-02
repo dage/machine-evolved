@@ -28,6 +28,27 @@ btVector3 CreatureBase::getCenterOfMassPosition() {
 	return bulletCreature->getCenterOfMassPosition();
 }
 
+std::vector<CreatureBase::CapsulePose> CreatureBase::getCapsulePoses() {
+	auto definitions = structure->getCapsules();
+	auto bodies = bulletCreature->getCapsules();
+	if (definitions.size() != bodies.size())
+		throw std::runtime_error("Creature capsule definitions and Bullet bodies do not match.");
+
+	std::vector<CapsulePose> poses;
+	poses.reserve(definitions.size());
+	for (std::size_t index = 0; index < definitions.size(); ++index) {
+		const btTransform& transform = bodies[index]->getWorldTransform();
+		poses.push_back(CapsulePose{
+			definitions[index]->id,
+			definitions[index]->innerHeight,
+			definitions[index]->radius,
+			transform.getOrigin(),
+			transform.getRotation(),
+		});
+	}
+	return poses;
+}
+
 void CreatureBase::tick() {
 	numTicks++;
 	applyMotorForces();

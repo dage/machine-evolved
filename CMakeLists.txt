@@ -78,14 +78,37 @@ target_include_directories(
 )
 target_link_libraries(shellworker PRIVATE ${MACHINE_EVOLVED_BULLET_LINK_TARGETS} Threads::Threads)
 
+add_executable(
+  replayworker
+  ReplayWorker/ReplayWorker.cpp
+  ${MACHINE_WORKER_SOURCE_DIR}/BulletCreature.cpp
+  ${MACHINE_WORKER_SOURCE_DIR}/BulletInterface.cpp
+  ${MACHINE_WORKER_SOURCE_DIR}/CreatureBase.cpp
+  ${MACHINE_WORKER_SOURCE_DIR}/CreatureStructure.cpp
+  ${MACHINE_WORKER_SOURCE_DIR}/IMotorController.cpp
+  ${MACHINE_WORKER_SOURCE_DIR}/LinearMotorController.cpp
+)
+target_compile_features(replayworker PRIVATE cxx_std_17)
+target_include_directories(
+  replayworker
+  PRIVATE
+    ${MACHINE_WORKER_SOURCE_DIR}
+    ${bullet_SOURCE_DIR}/src
+    ${Boost_INCLUDE_DIRS}
+)
+target_link_libraries(replayworker PRIVATE ${MACHINE_EVOLVED_BULLET_LINK_TARGETS} Threads::Threads)
+
 if(MSVC)
   target_compile_options(shellworker PRIVATE /W4)
+  target_compile_options(replayworker PRIVATE /W4)
 else()
   target_compile_options(shellworker PRIVATE -Wall -Wextra -Wpedantic)
+  target_compile_options(replayworker PRIVATE -Wall -Wextra -Wpedantic)
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     # The recovered Visual Studio worker used strict floating-point evaluation
     # with SIMD extensions disabled. Preserve that numerical mode for parity.
     target_compile_options(shellworker PRIVATE -ffp-model=strict -ffp-contract=off -U__ARM_NEON__)
+    target_compile_options(replayworker PRIVATE -ffp-model=strict -ffp-contract=off -U__ARM_NEON__)
     foreach(bullet_target IN LISTS MACHINE_EVOLVED_BULLET_TARGETS)
       target_compile_options(${bullet_target} PRIVATE -ffp-model=strict -ffp-contract=off -U__ARM_NEON__)
     endforeach()

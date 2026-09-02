@@ -47,3 +47,21 @@ distance result, see
 [`docs/three-capsule-distance-reproduction.md`](docs/three-capsule-distance-reproduction.md).
 The calibrated pilot exceeded the recovered video's fitness target in two
 independent seeds without starting a population-1000 training round.
+
+## Browser replay export
+
+`replayworker` replays the highest-fitness creature in a saved training config
+with the same 60 Hz Bullet step order as `shellworker`. It writes sampled capsule
+poses converted from the historical Z-up simulation units to Three.js Y-up
+metres, together with the objective and physics metadata used by Creature Lab.
+
+```sh
+scripts/export-replay.sh \
+  training-runs/calibrated-profile-v2-seed-1-e32/config.json \
+  /path/to/best-replay.json \
+  20
+```
+
+The exporter does not train or mutate the saved population. Its reported
+measured distance should match the selected creature's saved fitness under the
+strict floating-point build profile.

@@ -9,6 +9,9 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
+#include <string>
+#include <vector>
+
 namespace pt = boost::property_tree;
 
 /**
@@ -17,10 +20,19 @@ namespace pt = boost::property_tree;
 class CreatureBase
 {
 public:
+	struct CapsulePose {
+		std::string id;
+		float innerHeight;
+		float radius;
+		btVector3 position;
+		btQuaternion rotation;
+	};
+
 	CreatureBase(BulletInterface* bullet, btVector3 position, pt::ptree jsonObject, float motorMaxForce = 2000.f);
 	~CreatureBase();
 
 	btVector3 getCenterOfMassPosition();
+	std::vector<CapsulePose> getCapsulePoses();
 	void tick();
 	void terminate();
 
