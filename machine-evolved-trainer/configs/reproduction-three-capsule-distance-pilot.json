@@ -2,6 +2,7 @@
   "experiment": {
     "schemaVersion": 1,
     "backend": "machine-evolved-bullet-v1",
+    "profile": "historical-video-2017-10-10-calibrated-v2",
     "seed": 1,
     "coordinateSystem": {
       "upAxis": "z",
@@ -10,7 +11,7 @@
     },
     "objective": {
       "id": "max-horizontal-distance-v1",
-      "horizonTicks": 3600,
+      "horizonTicks": 7200,
       "fixedStepHz": 60,
       "penalties": []
     },
@@ -19,38 +20,48 @@
       "version": "2.86",
       "gravityX": 0,
       "gravityY": 0,
-      "gravityZ": -200,
-      "groundFriction": 4,
-      "motorMaxForce": 2000
-    }
+      "gravityZ": -100,
+      "groundFriction": 0.5,
+      "motorMaxForce": 5000
+    },
+    "historicalTarget": {
+      "populationSize": 1000,
+      "bestFitness": 4817.5,
+      "averageFitness": 1937.9
+    },
+    "hypotheses": [
+      "motor ranges -1 to 1 rotations, calibrated from bounded reproduction sweeps",
+      "oscillators start 0.1 multiplier 2 count 9",
+      "pilot genetic algorithm rates"
+    ]
   },
   "algorithm": {
     "type": "GeneticAlgorithm",
     "arguments": {
       "population": {
-        "size": 2,
+        "size": 16,
         "generation": 0,
         "evaluations": 0,
-        "evaluationTimeoutSeconds": 30
+        "evaluationTimeoutSeconds": 60
       },
       "crossover": {
-        "rate": 0,
+        "rate": 0.25,
         "competitionSize": {
-          "reproduce": 1,
-          "eliminate": 1
+          "reproduce": 4,
+          "eliminate": 4
         },
-        "numParameterChangedRatioRange": "0-0",
-        "changeRatioRange": "0-0"
+        "numParameterChangedRatioRange": "0.1-0.5",
+        "changeRatioRange": "0.25-0.75"
       },
       "mutation": {
-        "rate": 0,
+        "rate": 0.25,
         "competitionSize": {
-          "reproduce": 1,
-          "eliminate": 1
+          "reproduce": 4,
+          "eliminate": 4
         },
         "config": {
-          "numParameterChangedRatioRange": "0-0",
-          "offsetRange": "0;0",
+          "numParameterChangedRatioRange": "0.001-0.01",
+          "offsetRange": "0.01;0.5",
           "offsetExponent": 1,
           "randomizeSign": "yes"
         }
@@ -63,15 +74,9 @@
       "capsuleInnerHeightRange": "50-100",
       "numCapsules": 3,
       "motors": {
-        "x-rotation": {
-          "range": "-0.5;0.5"
-        },
-        "y-rotation": {
-          "range": "-0.5;0.5"
-        },
-        "z-rotation": {
-          "range": "-0.5;0.5"
-        }
+        "x-rotation": { "range": "-1;1" },
+        "y-rotation": { "range": "-1;1" },
+        "z-rotation": { "range": "-1;1" }
       },
       "feedbacks": 0,
       "oscillators": {
@@ -105,17 +110,9 @@
       },
       "motorController": {
         "layers": [
-          {
-            "neurons": 50,
-            "activation": "tanh"
-          },
-          {
-            "neurons": 10,
-            "activation": "tanh"
-          },
-          {
-            "activation": "linear"
-          }
+          { "neurons": 50, "activation": "tanh" },
+          { "neurons": 10, "activation": "tanh" },
+          { "activation": "linear" }
         ]
       }
     },

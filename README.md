@@ -30,7 +30,8 @@ scripts/smoke-training.sh
 
 The smoke test copies its configuration to a temporary directory, starts the
 trainer, performs exactly one physics evaluation with one worker thread,
-checks that a finite fitness was persisted, and cleans up. It does not start a
+checks that a finite fitness was persisted, and cleans up. The fixed seed makes
+the default single-worker result deterministic. It does not start a
 multi-generation training run.
 
 The reconstructed smoke configuration uses three capsules and a
@@ -40,3 +41,9 @@ the trainer's structure generator. The original saved population and exact
 training configuration were not recovered; oscillator settings and motor
 ranges in this smoke configuration are therefore plausible reconstruction
 choices, not a claim of exact historical reproduction.
+
+For the bounded historical-profile runner and the calibrated three-capsule
+distance result, see
+[`docs/three-capsule-distance-reproduction.md`](docs/three-capsule-distance-reproduction.md).
+The calibrated pilot exceeded the recovered video's fitness target in two
+independent seeds without starting a population-1000 training round.

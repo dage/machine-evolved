@@ -5,6 +5,7 @@ set -euo pipefail
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 repo_dir=$(cd "$script_dir/.." && pwd)
 build_dir=${1:-"$repo_dir/build"}
+worker_threads=${SMOKE_WORKER_THREADS:-1}
 run_dir=$(mktemp -d "${TMPDIR:-/tmp}/machine-evolved-training-smoke.XXXXXX")
 trainer_pid=""
 
@@ -28,9 +29,17 @@ trap cleanup EXIT
 cmake -S "$repo_dir" -B "$build_dir" -DCMAKE_BUILD_TYPE=Release
 cmake --build "$build_dir" --target shellworker --parallel
 
+python3 -c 'import socket, sys
+try:
+    with socket.create_connection(("127.0.0.1", 9999), timeout=0.2):
+        sys.exit("TCP port 9999 is already in use; refusing to attach the smoke worker to an unrelated trainer")
+except OSError:
+    pass'
+
 cp "$repo_dir/machine-evolved-trainer/configs/smoke-three-capsule.json" "$run_dir/smoke.json"
 
 python3 "$repo_dir/machine-evolved-trainer/Trainer.py" \
+  --seed 1 \
   --terminate-evaluations 1 \
   "$run_dir/smoke.json" \
   >"$run_dir/trainer.log" 2>&1 &
@@ -49,7 +58,11 @@ while time.time() < deadline:
         time.sleep(0.05)
 sys.exit("trainer did not listen on 127.0.0.1:9999 within 10 seconds")'
 
-"$build_dir/shellworker" --threads 1 --max-creatures-per-worker 1 \
+if ! kill -0 "$trainer_pid" 2>/dev/null; then
+  wait "$trainer_pid"
+fi
+
+"$build_dir/shellworker" --threads "$worker_threads" --max-creatures-per-worker 1 \
   >"$run_dir/shellworker.log" 2>&1
 
 wait "$trainer_pid"
@@ -66,7 +79,11 @@ assert len(finite) == 1, finite
 assert len(creatures[0]["data"]["structure"]["capsules"]) == 3
 print(f"Training smoke passed: evaluations=1, finite_fitness={finite[0]:.6f}")' "$run_dir/smoke.json"
 
-grep -F "Completed 1 evaluation." "$run_dir/shellworker.log" >/dev/null
+if [[ "$worker_threads" == "1" ]]; then
+  grep -F "Completed 1 evaluation." "$run_dir/shellworker.log" >/dev/null
+else
+  grep -E "Completed [1-9][0-9]* evaluations?\." "$run_dir/shellworker.log" >/dev/null
+fi
 grep -F "Exiting since max number of fitness evaluations has been performed." "$run_dir/trainer.log" >/dev/null
 
 sed -n '1,160p' "$run_dir/shellworker.log"

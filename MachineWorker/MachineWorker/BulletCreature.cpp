@@ -1,8 +1,9 @@
 #include "BulletCreature.h"
 #include <map>
 
-BulletCreature::BulletCreature(BulletInterface* bullet, CreatureStructure* creatureStructure, btVector3 position)
+BulletCreature::BulletCreature(BulletInterface* bullet, CreatureStructure* creatureStructure, btVector3 position, float motorMaxForce)
 {
+	this->motorMaxForce = motorMaxForce;
 	std::map<CreatureStructure::CAPSULE*, btRigidBody*> constraintsMap;
 
 	structure = creatureStructure;
@@ -58,7 +59,7 @@ void BulletCreature::createMotors(btGeneric6DofConstraint* constraint, bool xRot
 		motor->m_normalCFM = 0.f;
 		motor->m_stopCFM = 0.f;
 
-		motor->m_maxMotorForce = 2000.f;		// 2017-10-12 v1: 5000.f
+		motor->m_maxMotorForce = motorMaxForce;
 		motor->m_maxLimitForce = 100000.f;
 		motor->m_enableMotor = true;
 		motors.push_back(MotorWithDimension{ i==0?'x':i==1?'y':'z', motor });

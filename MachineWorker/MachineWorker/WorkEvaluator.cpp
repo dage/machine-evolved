@@ -23,12 +23,14 @@ void WorkEvaluator::add(pt::ptree jsonObject, CreatureBase* creatureToTrack) {
 	std::string name = jsonObject.get<std::string>("name");
 	std::string id = jsonObject.get<std::string>("id");
 	std::string experimentId = jsonObject.get<std::string>("experimentId");
+	std::string evaluationId = jsonObject.get<std::string>("evaluationId", "");
 
-	TASK* taskInfo = new TASK(name, id, experimentId, creatureToTrack);
+	TASK* taskInfo = new TASK(name, id, experimentId, evaluationId, creatureToTrack);
 	if (name == "MOVE_FAR") {
+		int numberOfTicks = jsonObject.get<int>("horizonTicks", 60 * 60);
 		btVector3 startingPosition = creatureToTrack->getCenterOfMassPosition();
 		startingPosition.setZ(0);
-		MOVE_FAR_TASK* moveFarTask = new MOVE_FAR_TASK(taskInfo, startingPosition, 0.);
+		MOVE_FAR_TASK* moveFarTask = new MOVE_FAR_TASK(taskInfo, startingPosition, 0., numberOfTicks);
 		delete taskInfo;
 		tasks.push_back(moveFarTask);
 	}
@@ -63,4 +65,3 @@ std::vector<WorkEvaluator::TASK*> WorkEvaluator::tick() {
 	tasks = keptTasks;
 	return removedTasks;
 }
-

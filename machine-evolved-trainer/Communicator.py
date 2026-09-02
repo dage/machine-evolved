@@ -16,16 +16,18 @@ class Communicator():
 		self.isStopped = False
 		
 		self.server = TrainerTCPServer((self.HOST, self.PORT), RequestHandler)
+		self.server.communicator = self
 		self.server.callbacks = { "getWork": getWorkCallback, "getWorkBatch": getWorkBatchCallback, "doStepBatch": doStepBatchCallback, "registerResult": registerResultCallback, "getServerStatus" : getServerStatusCallback, "getBestCreature": getBestCreatureCallback }
 
 	def start(self):
 		print("Listening on " + self.HOST + ":" + str(self.PORT))
-		self.server.serve_forever()
+		try:
+			self.server.serve_forever()
+		finally:
+			self.server.server_close()
 
 	def stop(self):
 		self.isStopped = True
-		self.server.shutdown()
-		self.server.server_close()
 
 class RequestHandler(socketserver.BaseRequestHandler):
 	def handle(self):
@@ -87,3 +89,9 @@ class RequestHandler(socketserver.BaseRequestHandler):
 
 		if data["type"] != "RESULT":
 			self.request.sendall(response.encode("utf-8"))
+
+		# A bounded run marks itself stopped while constructing its final response.
+		# Shut down only after that acknowledgement has reached the worker, so the
+		# final persisted result is not mistaken for a failed network flush.
+		if self.server.communicator.isStopped:
+			self.server.shutdown()

@@ -19,7 +19,7 @@ std::string Communicator::getSendResultSerialized(WorkEvaluator::TASK* task) {
 		
 		//printf("fitness=%f\n", moveFarTask->maxDistance);
 
-		resultSerialized = "{\"id\":\"" + task->id + "\",\"experimentId\":\"" + task->experimentId + "\",\"maxDistance\":" + std::to_string(moveFarTask->maxDistance) + ", \"simulatedTime\": " + std::to_string(WorkEvaluator::MOVE_FAR_TASK::NUMBER_OF_TICKS / 60) + "}";
+		resultSerialized = "{\"id\":\"" + task->id + "\",\"experimentId\":\"" + task->experimentId + "\",\"evaluationId\":\"" + task->evaluationId + "\",\"maxDistance\":" + std::to_string(moveFarTask->maxDistance) + ", \"simulatedTime\": " + std::to_string(moveFarTask->numberOfTicks / 60.) + "}";
 	}
 	return resultSerialized;
 }
@@ -39,6 +39,10 @@ std::string Communicator::getServerStatus() {
 		return "SERVER DOWN";
 
 	return response.get<std::string>("status");
+}
+
+bool Communicator::shouldStopWorkers() const {
+	return false;
 }
 
 pt::ptree Communicator::sendRequestReturnJson(Communicator::TYPE type, std::string data) {

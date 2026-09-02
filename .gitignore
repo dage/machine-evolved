@@ -1,3 +1,4 @@
 private-research
 /build/
 /cmake-build-*/
+/training-runs/

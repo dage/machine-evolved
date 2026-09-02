@@ -16,4 +16,5 @@ public:
 	virtual pt::ptree getWork() = 0;
 	virtual void sendResult(WorkEvaluator::TASK* task) = 0;
 	virtual std::string getServerStatus() = 0;
+	virtual bool shouldStopWorkers() const = 0;
 };

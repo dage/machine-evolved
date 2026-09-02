@@ -29,6 +29,17 @@ void BulletInterface::init() {
 	isInitialized = true;
 }
 
+void BulletInterface::configure(pt::ptree config) {
+	if (!isInitialized)
+		return;
+
+	dynamicsWorld->setGravity(btVector3(
+		config.get<float>("gravityX", 0.f),
+		config.get<float>("gravityY", 0.f),
+		config.get<float>("gravityZ", -200.f)));
+	groundRigidBody->setFriction(config.get<float>("groundFriction", 4.f));
+}
+
 void BulletInterface::removeConstraint(btTypedConstraint* constraint) {
 	dynamicsWorld->removeConstraint(constraint);
 	delete constraint;

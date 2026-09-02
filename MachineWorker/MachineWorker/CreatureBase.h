@@ -17,7 +17,7 @@ namespace pt = boost::property_tree;
 class CreatureBase
 {
 public:
-	CreatureBase(BulletInterface* bullet, btVector3 position, pt::ptree jsonObject);
+	CreatureBase(BulletInterface* bullet, btVector3 position, pt::ptree jsonObject, float motorMaxForce = 2000.f);
 	~CreatureBase();
 
 	btVector3 getCenterOfMassPosition();

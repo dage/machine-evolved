@@ -14,6 +14,7 @@ AsyncCommunicator::~AsyncCommunicator()
 
 void AsyncCommunicator::run() {
 	int failedFlushAttempts = 0;
+	int consecutiveCommunicationFailures = 0;
 	while (true) {
 		std::vector<std::string> pendingResults;
 		{
@@ -21,7 +22,7 @@ void AsyncCommunicator::run() {
 			pendingResults.assign(resultsQueue.begin(), resultsQueue.end());
 		}
 
-		if (stopRequested && pendingResults.empty())
+		if ((stopRequested && pendingResults.empty()) || trainerStopped)
 			break;
 
 		std::size_t queuedWork = 0;
@@ -51,13 +52,16 @@ void AsyncCommunicator::run() {
 
 		if (!response.empty()) {
 			failedFlushAttempts = 0;
+			consecutiveCommunicationFailures = 0;
 			if (!pendingResults.empty()) {
 				std::lock_guard<std::mutex> resultsLock(resultMutex);
 				for (std::size_t index = 0; index < pendingResults.size() && !resultsQueue.empty(); ++index)
 					resultsQueue.pop_front();
 			}
 
-			if (!stopRequested) {
+			trainerStopped = response.get<bool>("stopped", false);
+
+			if (!stopRequested && !trainerStopped) {
 				std::lock_guard<std::mutex> workLock(workMutex);
 				for (pt::ptree::value_type &workUnit : response.get_child("workUnits"))
 					workQueue.push_back(workUnit.second);
@@ -68,11 +72,18 @@ void AsyncCommunicator::run() {
 				serverStatus = response.get<std::string>("status", "");
 			}
 		}
-		else if (stopRequested && !pendingResults.empty()) {
-			failedFlushAttempts++;
-			if (failedFlushAttempts >= 20) {
-				std::fprintf(stderr, "Unable to flush %zu queued result(s); the trainer is unavailable.\n", pendingResults.size());
-				break;
+		else {
+			consecutiveCommunicationFailures++;
+			if (stopRequested && !pendingResults.empty()) {
+				failedFlushAttempts++;
+				if (failedFlushAttempts >= 20) {
+					std::fprintf(stderr, "Unable to flush %zu queued result(s); the trainer is unavailable.\n", pendingResults.size());
+					break;
+				}
+			}
+			else if (!stopRequested && consecutiveCommunicationFailures >= 50) {
+				std::fprintf(stderr, "Trainer unavailable after 50 consecutive requests; stopping workers.\n");
+				trainerStopped = true;
 			}
 		}
 
@@ -96,6 +107,10 @@ void AsyncCommunicator::stop() {
 
 bool AsyncCommunicator::isStopped() const {
 	return stopped;
+}
+
+bool AsyncCommunicator::shouldStopWorkers() const {
+	return trainerStopped;
 }
 
 pt::ptree AsyncCommunicator::getBestCreature() {

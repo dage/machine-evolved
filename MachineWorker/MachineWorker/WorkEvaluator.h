@@ -21,29 +21,33 @@ public:
 
 	class TASK {	// base 
 		public:
-			TASK(std::string name, std::string id, std::string experimentId, CreatureBase* creature) {
+			TASK(std::string name, std::string id, std::string experimentId, std::string evaluationId, CreatureBase* creature) {
 				this->name = name;
 				this->id = id;
 				this->experimentId = experimentId;
+				this->evaluationId = evaluationId;
 				this->creature = creature;
 			}
 			std::string name;
 			std::string id;
 			std::string experimentId;
+			std::string evaluationId;
 			CreatureBase* creature;
 			double startTime;
 	};
 
 	class MOVE_FAR_TASK : public TASK {
 		public:
-			MOVE_FAR_TASK(TASK* task, btVector3 startingPosition, double maxDistance) : TASK(task->name, task->id, task->experimentId, task->creature) {
+			MOVE_FAR_TASK(TASK* task, btVector3 startingPosition, double maxDistance, int numberOfTicks) : TASK(task->name, task->id, task->experimentId, task->evaluationId, task->creature) {
 				this->startingPosition = startingPosition;
 				this->maxDistance = maxDistance;
+				this->numberOfTicks = numberOfTicks;
+				this->remainingTicks = numberOfTicks;
 			}
-			static const int NUMBER_OF_TICKS = 60*60*1;
 			btVector3 startingPosition;
 			double maxDistance;
-			int remainingTicks = NUMBER_OF_TICKS;	// 3600 = 60*60 = 60 FPS/s * 60 secs = 1 minutte
+			int numberOfTicks;
+			int remainingTicks;
 	};
 
 	void add(pt::ptree jsonObject, CreatureBase* creatureToTrack);

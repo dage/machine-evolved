@@ -24,6 +24,7 @@ public:
 	pt::ptree getWork() override;
 	void sendResult(WorkEvaluator::TASK* task) override;
 	std::string getServerStatus() override;
+	bool shouldStopWorkers() const override;
 
 	pt::ptree getBestCreature();
 
@@ -46,4 +47,5 @@ private:
 	std::string serverStatus = "";
 	std::atomic<bool> stopRequested{ false };
 	std::atomic<bool> stopped{ false };
+	std::atomic<bool> trainerStopped{ false };
 };

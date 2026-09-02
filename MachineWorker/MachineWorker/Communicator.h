@@ -35,6 +35,7 @@ public:
 	pt::ptree getWork() override;
 	void sendResult(WorkEvaluator::TASK* task) override;
 	std::string getServerStatus() override;
+	bool shouldStopWorkers() const override;
 	
 	void sendResult(std::string resultSerialized);
 	pt::ptree getWorkBatch(int maxWorkUnits);

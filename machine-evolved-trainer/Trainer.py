@@ -14,22 +14,23 @@ import sys
 import signal
 
 class GeneticAlgorithm():
-	individuals = []
 	FITNESS = 0		# Key into individuals item tuple
 	CREATURE = 1	# Key into individuals item tuple
 	IN_FLIGHT = 2	# Key into individuals item tuple
 
-	indicesMissingFitness = []
-	indicesInFlight = []
-	creatureIndexLookup = {}	# A dictionary that maps creature.id to index into individuals.
-
 	def __init__(self, populationConfig, crossoverConfig, mutationConfig, structureConfig, callbacks):
+		self.individuals = []
+		self.indicesMissingFitness = []
+		self.indicesInFlight = []
+		self.creatureIndexLookup = {}	# Maps creature.id to its index in individuals.
+		self.activeEvaluationIds = {}
 		self.populationConfig = populationConfig
 		self.crossoverConfig = crossoverConfig
 		self.mutationConfig = mutationConfig
 		self.structureConfig = structureConfig
 		self.saveStateTimestamp = time.time()
 		self.callbacks = callbacks
+		self.validateConfiguration()
 
 		if not structureConfig["creatures"]:
 			# Create new creatures
@@ -51,6 +52,23 @@ class GeneticAlgorithm():
 				if math.isnan(fitness):
 					self.indicesMissingFitness.append(i)
 
+	def validateConfiguration(self):
+		populationSize = int(self.populationConfig["size"])
+		competitionSizes = [
+			int(self.crossoverConfig["competitionSize"]["reproduce"]),
+			int(self.crossoverConfig["competitionSize"]["eliminate"]),
+			int(self.mutationConfig["competitionSize"]["reproduce"]),
+			int(self.mutationConfig["competitionSize"]["eliminate"]),
+		]
+		if populationSize < 1 or min(competitionSizes) < 1 or max(competitionSizes) > populationSize:
+			raise ValueError("Population and tournament sizes must be positive, and tournaments cannot exceed the population.")
+		numChildren = int(float(self.crossoverConfig["rate"]) * populationSize)
+		numChildren += int(float(self.mutationConfig["rate"]) * populationSize)
+		if numChildren > populationSize - max(competitionSizes) + 1:
+			raise ValueError(
+				"Crossover and mutation replace too much of the evaluated population for the configured tournament sizes."
+			)
+
 	def getAverageFitness(self):
 		count = 0
 		fitnessSum = 0
@@ -68,10 +86,10 @@ class GeneticAlgorithm():
 		return output
 	
 	def getIndexBestCreature(self):
-		bestFitness = self.individuals[0][self.FITNESS]
-		bestIndex = -1
+		bestIndex = 0
+		bestFitness = self.individuals[bestIndex][self.FITNESS]
 
-		for j in range(0, len(self.individuals)):
+		for j in range(1, len(self.individuals)):
 			i = self.individuals[j]
 			if math.isnan(bestFitness) or (not math.isnan(i[self.FITNESS]) and i[self.FITNESS] > bestFitness):
 				bestFitness = i[self.FITNESS]
@@ -102,15 +120,15 @@ class GeneticAlgorithm():
 
 	def maintainPopulation(self):
 		# Re-live individuals lost in flight
-		numMissingFitness = len(self.indicesMissingFitness)
 		indicesPutBackFromFlight = []
+		evaluationTimeoutSeconds = float(self.populationConfig.get("evaluationTimeoutSeconds", 300))
 
 		#print("maintain: numMissing=" + str(numMissingFitness))
 
 		for i in self.indicesInFlight:
 			timeInFlight = time.time() -  self.individuals[i][self.IN_FLIGHT]
 		#	print("maintain: timeInFlight=" + str(timeInFlight))
-			if((numMissingFitness < 10 and timeInFlight > 1) or timeInFlight > 10):
+			if timeInFlight > evaluationTimeoutSeconds:
 				indicesPutBackFromFlight.append(i)
 
 		for i in indicesPutBackFromFlight:
@@ -127,13 +145,13 @@ class GeneticAlgorithm():
 
 	# Returns a list of indices into individuals
 	def pickIndividuals(self, numToPick):
-		picked = []
-		while len(picked) < numToPick:
-			i = int(random.random() * len(self.individuals))
-			if not math.isnan(self.individuals[i][self.FITNESS]) and not i in picked:
-				picked.append(i)
-
-		return picked
+		eligible = [
+			index for index, individual in enumerate(self.individuals)
+			if not math.isnan(individual[self.FITNESS])
+		]
+		if numToPick > len(eligible):
+			raise RuntimeError("Not enough evaluated individuals for tournament selection.")
+		return random.sample(eligible, numToPick)
 
 	def proceedToNextGeneration(self):
 		def findReproduceIndex(competitionSize):
@@ -227,6 +245,14 @@ class GeneticAlgorithm():
 				break
 
 		return picked
+
+	def startEvaluation(self, creatureId):
+		evaluationId = str(uuid.uuid4())
+		self.activeEvaluationIds[creatureId] = evaluationId
+		return evaluationId
+
+	def isCurrentEvaluation(self, creatureId, evaluationId):
+		return self.activeEvaluationIds.get(creatureId) == evaluationId
 			
 
 	def setCreatureFitness(self, creatureId, fitness):
@@ -252,6 +278,7 @@ class GeneticAlgorithm():
 			self.indicesMissingFitness.remove(i)
 
 		self.individuals[i][self.IN_FLIGHT] = float("nan")
+		self.activeEvaluationIds.pop(creatureId, None)
 		
 		
 class Trainer():	
@@ -306,9 +333,13 @@ class Trainer():
 		serialized = json.dumps(self.config["json"], indent=1, separators=(',', ': '))
 		#serialized = json.dumps(config["json"])
 			
-		with open(self.config["filename"], "w") as file:
+		temporaryFilename = self.config["filename"] + ".tmp"
+		with open(temporaryFilename, "w") as file:
 			bytesWritten = file.write(serialized)
-			print(str(bytesWritten) + " bytes written to " + self.config["filename"] + ". ")
+			file.flush()
+			os.fsync(file.fileno())
+		os.replace(temporaryFilename, self.config["filename"])
+		print(str(bytesWritten) + " bytes written to " + self.config["filename"] + ". ")
 
 	def terminateSession(self):
 		print("terminate!!")
@@ -322,6 +353,9 @@ class Trainer():
 		creatureId = data["id"]
 		creature = self.algorithm.getCreature(creatureId)
 		if not creature:
+			return "FAIL"
+		if not self.algorithm.isCurrentEvaluation(creatureId, data.get("evaluationId")):
+			print("Ignoring stale or duplicate evaluation result for creature {}.".format(creatureId))
 			return "FAIL"
 
 		fitness = data["maxDistance"]
@@ -407,8 +441,12 @@ class Trainer():
 			self.registerResult(result)	
 			index += 1
 
-		response = self.getWorkBatchUnserialized(data)
+		if self.communicator.isStopped:
+			response = { "workUnits": [] }
+		else:
+			response = self.getWorkBatchUnserialized(data)
 		response["status"] = self.getServerStatusUnserialized()["status"]
+		response["stopped"] = self.communicator.isStopped
 
 		return json.dumps(response)
 
@@ -438,8 +476,17 @@ class Trainer():
 			creature = self.algorithm.getForFitness()
 
 		if creature :
-			taskJson = { "name": "MOVE_FAR", "id": creature.id, "experimentId": self.experimentId }
-			work = { "status": "OK", "task": taskJson, "creature": creature.getJson() }
+			experiment = self.config["json"].get("experiment", {})
+			objective = experiment.get("objective", {})
+			physics = experiment.get("physics", {})
+			taskJson = {
+				"name": "MOVE_FAR",
+				"id": creature.id,
+				"experimentId": self.experimentId,
+				"evaluationId": self.algorithm.startEvaluation(creature.id),
+				"horizonTicks": int(objective.get("horizonTicks", 60 * 60)),
+			}
+			work = { "status": "OK", "task": taskJson, "creature": creature.getJson(), "physics": physics }
 		else:
 			work = { "status": "NO_WORK" }
 		
@@ -458,6 +505,7 @@ def getJson():
 		parser.add_argument("--terminate-evaluations", type=int, help="terminate after this many fitness evaluations have been performed. if not specified, never terminate.")
 		parser.add_argument("--terminate-stall-evaluations", type=int, help="terminate after this many fitness evaluations that didn't cause the best fitness to improve. if not specified, never terminate.")
 		parser.add_argument("--result-filename", help="If specified, append the result of the simulation to csv file specified here. Default: Do not write results to file.")
+		parser.add_argument("--seed", type=int, help="seed Python's random generator and persist it in the experiment configuration")
 		
 		return parser.parse_args()
 
@@ -467,7 +515,14 @@ def getJson():
 	resetFitness = True if args.resetFitness else False
 
 	with open(filename) as file:
-		return {"resultFilename": args.result_filename, "terminateEvaluations": args.terminate_evaluations, "terminateStallEvaluations": args.terminate_stall_evaluations, "filename": filename, "json": json.load(file), "resetFitness": resetFitness}
+		loadedJson = json.load(file)
+
+	experiment = loadedJson.setdefault("experiment", {})
+	seed = args.seed if args.seed is not None else experiment.get("seed")
+	if seed is not None:
+		experiment["seed"] = seed
+
+	return {"resultFilename": args.result_filename, "seed": seed, "terminateEvaluations": args.terminate_evaluations, "terminateStallEvaluations": args.terminate_stall_evaluations, "filename": filename, "json": loadedJson, "resetFitness": resetFitness}
 
 def writeResult(trainer, filename):
 	generator = config["json"]["structure"]["generator"]
@@ -532,6 +587,8 @@ def writeResult(trainer, filename):
 
 if __name__ == "__main__":
 	config = getJson()
+	if config["seed"] is not None:
+		random.seed(config["seed"])
 	trainer = Trainer(config)
 
 	if(config["resultFilename"]):

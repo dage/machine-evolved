@@ -21,6 +21,7 @@ public:
 	~BulletInterface();
 
 	void init();
+	void configure(pt::ptree config);
 	void destroy();
 	void tick(float);
 

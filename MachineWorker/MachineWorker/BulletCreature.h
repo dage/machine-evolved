@@ -17,7 +17,7 @@ public:
 		btRotationalLimitMotor* motor;
 	};
 
-	BulletCreature(BulletInterface* bullet, CreatureStructure* structure, btVector3 position);
+	BulletCreature(BulletInterface* bullet, CreatureStructure* structure, btVector3 position, float motorMaxForce = 2000.f);
 	~BulletCreature();
 
 	CreatureStructure* structure;
@@ -40,6 +40,7 @@ private:
 	std::vector<btRigidBody*> capsules;
 	std::vector<btGeneric6DofConstraint*> constraints;
 	BulletInterface* bulletInterface;
+	float motorMaxForce;
 
 	//std::vector<float> stateCalibrationWeightSum;
 	//int stateCalibrationNumAdded = 0;

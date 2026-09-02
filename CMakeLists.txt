@@ -42,6 +42,14 @@ else()
   set(MACHINE_EVOLVED_BULLET_LINK_TARGETS BulletDynamics BulletCollision LinearMath)
 endif()
 
+# Bullet 2.86's optional quick profiler keeps process-global bookkeeping that
+# is unsafe when ShellWorker evaluates multiple independent worlds on parallel
+# threads. Training does not consume those timing counters, so compile them out
+# while retaining the physics code and strict floating-point settings.
+foreach(bullet_target IN LISTS MACHINE_EVOLVED_BULLET_TARGETS)
+  target_compile_definitions(${bullet_target} PUBLIC BT_NO_PROFILE=1)
+endforeach()
+
 set(MACHINE_WORKER_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/MachineWorker/MachineWorker")
 
 add_executable(

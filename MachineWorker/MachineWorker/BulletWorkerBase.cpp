@@ -54,8 +54,12 @@ int BulletWorkerBase::runBlocking(int numCreatures) {
 				std::this_thread::sleep_for(std::chrono::microseconds(200));	// No work ==> sleep a little bit to give server some time
 			}
 			else {
+				auto physics = jsonObject.get_child_optional("physics");
+				if (physics)
+					bullet.configure(*physics);
 				btVector3 position = btVector3(0.*(numCompleted%NUM_IN_FLIGHT), 0, 0);	// prevent crashing
-				CreatureBase* creature = new CreatureBase(&bullet, position, jsonObject.get_child("creature"));
+				const float motorMaxForce = jsonObject.get<float>("physics.motorMaxForce", 2000.f);
+				CreatureBase* creature = new CreatureBase(&bullet, position, jsonObject.get_child("creature"), motorMaxForce);
 				workEvaluator.add(jsonObject.get_child("task"), creature);
 				creatures.push_back(creature);
 			}
@@ -107,7 +111,23 @@ int BulletWorkerBase::runBlocking(int numCreatures) {
 		}
 #endif // SHELL
 
-	} while (!isTerminated && numCompleted < numCreatures);
+	} while (!isTerminated && !communicator->shouldStopWorkers() && numCompleted < numCreatures);
+
+	// A bounded trainer can stop while other workers still own in-flight
+	// simulations. Those results are intentionally abandoned, but their Bullet
+	// bodies and task allocations still need the normal teardown path.
+	for (auto task : workEvaluator.tasks) {
+		creatures.remove(task->creature);
+		task->creature->terminate();
+		delete task->creature;
+		delete task;
+	}
+	workEvaluator.tasks.clear();
+	for (auto creature : creatures) {
+		creature->terminate();
+		delete creature;
+	}
+	creatures.clear();
 
 	bullet.destroy();
 

@@ -1,12 +1,12 @@
 #include "CreatureBase.h"
 
-CreatureBase::CreatureBase(BulletInterface* bullet, btVector3 position, pt::ptree jsonObject)
+CreatureBase::CreatureBase(BulletInterface* bullet, btVector3 position, pt::ptree jsonObject, float motorMaxForce)
 {
 	// Structure:
 	structure = new CreatureStructure(jsonObject.get_child("structure"));
 
 	// Physics:
-	bulletCreature = new BulletCreature(bullet, structure, position);
+	bulletCreature = new BulletCreature(bullet, structure, position, motorMaxForce);
 
 	//printf("inputs=%i, outputs=%i\n", structure->getNumInputs(), structure->getNumOutputs());
 
