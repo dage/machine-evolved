@@ -220,7 +220,7 @@ while kill -0 "$trainer_pid" 2>/dev/null && kill -0 "$worker_pid" 2>/dev/null; d
       echo "Trainer exceeded the wall-clock deadline plus grace period; requesting an interrupt-safe checkpoint." >&2
       kill -INT "$trainer_pid" 2>/dev/null || true
       deadline_signal_epoch=$now_epoch
-    elif [[ -n "$deadline_signal_epoch" && "$now_epoch" -ge $((deadline_signal_epoch + 15)) ]]; then
+    elif [[ -n "$deadline_signal_epoch" && "$now_epoch" -ge $((deadline_signal_epoch + 120)) ]]; then
       echo "Trainer did not exit after SIGINT; sending SIGTERM." >&2
       kill -TERM "$trainer_pid" 2>/dev/null || true
     fi

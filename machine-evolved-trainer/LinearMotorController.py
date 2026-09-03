@@ -4,6 +4,11 @@ import sys
 import math
 
 class LinearMotorController():
+	SHARED_OFFSET_MODE = "shared-offset-v1"
+	INDEPENDENT_OFFSET_MODE = "independent-offset-v1"
+	UNIFORM_OFFSET_SAMPLING = "uniform-v1"
+	LOG_UNIFORM_OFFSET_SAMPLING = "log-uniform-v1"
+
 	# generatorJson: 
 	def __init__(self, numInputs, numOutputs, stateJson = None, generatorJson = None):
 		def createRandomizedWeights(num, inputSize, outputSize):
@@ -86,17 +91,47 @@ class LinearMotorController():
 		rangeNumeric = rangeStr.split(seperator)
 		return random.uniform(float(rangeNumeric[0]), float(rangeNumeric[1]))
 
-	def mutate(self, configJson):
-		numWeightsToChangeRatio = self.pickRandomNumberFromRange(configJson["numParameterChangedRatioRange"], "-")
-
-		offset = self.pickRandomNumberFromRange(configJson["offsetRange"], ";")
+	def _sampleMutationOffset(self, configJson):
+		offsetSampling = configJson.get("offsetSampling", self.UNIFORM_OFFSET_SAMPLING)
+		if offsetSampling == self.UNIFORM_OFFSET_SAMPLING:
+			offset = self.pickRandomNumberFromRange(configJson["offsetRange"], ";")
+		elif offsetSampling == self.LOG_UNIFORM_OFFSET_SAMPLING:
+			rangeNumeric = configJson["offsetRange"].split(";")
+			minimum = float(rangeNumeric[0])
+			maximum = float(rangeNumeric[1])
+			if minimum <= 0 or maximum < minimum:
+				raise ValueError("log-uniform-v1 offsetRange must contain positive ascending bounds")
+			offset = math.exp(random.uniform(math.log(minimum), math.log(maximum)))
+		else:
+			raise ValueError("Unknown offset sampling: {}".format(offsetSampling))
 		offset = math.pow(offset, int(configJson["offsetExponent"]))
 		if "randomizeSign" in configJson and configJson["randomizeSign"] == "yes" and random.random() < .5:
-			offset = offset * (-1);
+			offset = offset * (-1)
+		return offset
 
-		for lw in self.getWeightIndices(numWeightsToChangeRatio):
+	def mutate(self, configJson):
+		numWeightsToChangeRatio = self.pickRandomNumberFromRange(configJson["numParameterChangedRatioRange"], "-")
+		mode = configJson.get("mode", self.SHARED_OFFSET_MODE)
+		if mode not in (self.SHARED_OFFSET_MODE, self.INDEPENDENT_OFFSET_MODE):
+			raise ValueError("Unknown mutation mode: {}".format(mode))
+
+		if mode == self.SHARED_OFFSET_MODE:
+			# This is the original mutation behavior: one magnitude and sign are
+			# sampled for the whole mutation. Keep this branch as the default so
+			# existing configurations remain seed-compatible.
+			offset = self._sampleMutationOffset(configJson)
+			weightIndices = self.getWeightIndices(numWeightsToChangeRatio)
+		else:
+			# Independent mode keeps the selected coordinate count, but samples a
+			# fresh magnitude and sign for every changed coordinate.
+			offset = None
+			weightIndices = self.getWeightIndices(numWeightsToChangeRatio)
+
+		for lw in weightIndices:
 			layerIndex = lw[0]
 			weightIndex = lw[1]
 			key = lw[2]
+			if mode == self.INDEPENDENT_OFFSET_MODE:
+				offset = self._sampleMutationOffset(configJson)
 
 			self.layers[layerIndex][key][weightIndex] += offset

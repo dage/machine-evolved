@@ -21,6 +21,23 @@ def wallClockLimitReached(startTime, limitSeconds, currentTime=None):
 		currentTime = time.monotonic()
 	return currentTime - startTime >= limitSeconds
 
+def randomStateFromJson(value):
+	"""Convert JSON arrays back to the tuples required by random.setstate()."""
+	if isinstance(value, list):
+		return tuple(randomStateFromJson(item) for item in value)
+	return value
+
+def restoreRandomState(config):
+	trainerState = config["json"].get("experiment", {}).get("trainerState", {})
+	serializedState = trainerState.get("pythonRandomState")
+	if serializedState is not None:
+		random.setstate(randomStateFromJson(serializedState))
+		return "checkpoint"
+	if config["seed"] is not None:
+		random.seed(config["seed"])
+		return "seed"
+	return "system"
+
 class GeneticAlgorithm():
 	FITNESS = 0		# Key into individuals item tuple
 	CREATURE = 1	# Key into individuals item tuple
@@ -78,17 +95,32 @@ class GeneticAlgorithm():
 
 	def validateConfiguration(self):
 		populationSize = int(self.populationConfig["size"])
+		eliteCount = int(self.populationConfig.get("eliteCount", 0))
 		competitionSizes = [
 			int(self.crossoverConfig["competitionSize"]["reproduce"]),
 			int(self.crossoverConfig["competitionSize"]["eliminate"]),
 			int(self.mutationConfig["competitionSize"]["reproduce"]),
 			int(self.mutationConfig["competitionSize"]["eliminate"]),
 		]
-		if populationSize < 1 or min(competitionSizes) < 1 or max(competitionSizes) > populationSize:
+		if populationSize < 1 or eliteCount < 0 or eliteCount >= populationSize:
+			raise ValueError("Population size must be positive and eliteCount must leave at least one replaceable individual.")
+		if min(competitionSizes) < 1 or max(competitionSizes) > populationSize:
 			raise ValueError("Population and tournament sizes must be positive, and tournaments cannot exceed the population.")
 		numChildren = int(float(self.crossoverConfig["rate"]) * populationSize)
 		numChildren += int(float(self.mutationConfig["rate"]) * populationSize)
-		if numChildren > populationSize - max(competitionSizes) + 1:
+		largestReproductionTournament = max(
+			int(self.crossoverConfig["competitionSize"]["reproduce"]),
+			int(self.mutationConfig["competitionSize"]["reproduce"]),
+		)
+		largestEliminationTournament = max(
+			int(self.crossoverConfig["competitionSize"]["eliminate"]),
+			int(self.mutationConfig["competitionSize"]["eliminate"]),
+		)
+		maxChildren = min(
+			populationSize - largestReproductionTournament + 1,
+			populationSize - eliteCount - largestEliminationTournament + 1,
+		)
+		if numChildren > maxChildren:
 			raise ValueError(
 				"Crossover and mutation replace too much of the evaluated population for the configured tournament sizes."
 			)
@@ -169,39 +201,51 @@ class GeneticAlgorithm():
 			self.callbacks["saveState"]()
 
 	# Returns a list of indices into individuals
-	def pickIndividuals(self, numToPick):
+	def getEliteIndices(self):
+		eliteCount = int(self.populationConfig.get("eliteCount", 0))
+		if eliteCount == 0:
+			return set()
 		eligible = [
 			index for index, individual in enumerate(self.individuals)
 			if not math.isnan(individual[self.FITNESS])
+		]
+		return set(sorted(
+			eligible,
+			key=lambda index: self.individuals[index][self.FITNESS],
+			reverse=True,
+		)[:eliteCount])
+
+	def pickIndividuals(self, numToPick, excludedIndices=None):
+		excludedIndices = excludedIndices or set()
+		eligible = [
+			index for index, individual in enumerate(self.individuals)
+			if not math.isnan(individual[self.FITNESS]) and index not in excludedIndices
 		]
 		if numToPick > len(eligible):
 			raise RuntimeError("Not enough evaluated individuals for tournament selection.")
 		return random.sample(eligible, numToPick)
 
+	def _findReproduceIndex(self, competitionSize):
+		reproduce = self.pickIndividuals(competitionSize)
+		return max(reproduce, key=lambda index: self.individuals[index][self.FITNESS])
+
+	def _findMutationParentIndex(self, competitionSize):
+		parentSelection = self.mutationConfig.get("parentSelection", "tournament-v1")
+		if parentSelection == "tournament-v1":
+			return self._findReproduceIndex(competitionSize)
+		if parentSelection == "elite-v1":
+			eligible = [
+				index for index, individual in enumerate(self.individuals)
+				if not math.isnan(individual[self.FITNESS])
+			]
+			return max(eligible, key=lambda index: self.individuals[index][self.FITNESS])
+		raise ValueError("Unknown mutation parent selection: {}".format(parentSelection))
+
+	def _findEliminateIndex(self, competitionSize):
+		eliminate = self.pickIndividuals(competitionSize, self.getEliteIndices())
+		return min(eliminate, key=lambda index: self.individuals[index][self.FITNESS])
+
 	def proceedToNextGeneration(self):
-		def findReproduceIndex(competitionSize):
-			reproduce = self.pickIndividuals(competitionSize)
-			bestIndex = 0
-			bestFitness = 0
-			for i in reproduce:
-				fitness = self.individuals[i][self.FITNESS]
-				if(fitness > bestFitness):
-					bestFitness = fitness
-					bestIndex = i
-
-			return bestIndex
-
-		def findEliminateIndex(competitionSize):			
-			eliminate = self.pickIndividuals(competitionSize)
-			worstIndex = 0
-			worstFitness = 10000000000
-			for i in eliminate:
-				fitness = self.individuals[i][self.FITNESS]
-				if(fitness < worstFitness):
-					worstFitness = fitness
-					worstIndex = i
-
-			return worstIndex
 
 		def replaceIndividual(atIndex, newCreature):
 			del self.creatureIndexLookup[self.individuals[atIndex][self.CREATURE].id]
@@ -219,8 +263,8 @@ class GeneticAlgorithm():
 		while crossoverRatio > 0.00001 and numCrossoverChildren < int(crossoverRatio*len(self.individuals)):
 			numCrossoverChildren = numCrossoverChildren + 1
 
-			i1 = findReproduceIndex(reproduceCrossoverSize)
-			i2 = findReproduceIndex(reproduceCrossoverSize)
+			i1 = self._findReproduceIndex(reproduceCrossoverSize)
+			i2 = self._findReproduceIndex(reproduceCrossoverSize)
 			reproduceCreature1 = self.individuals[i1][self.CREATURE]
 			reproduceCreature2 = self.individuals[i2][self.CREATURE]
 			child = copy.deepcopy(reproduceCreature1)
@@ -228,7 +272,7 @@ class GeneticAlgorithm():
 
 			#child.nextFitnessLog = "Crossover between " + str(self.individuals[i1][self.FITNESS]) + " and " + str(self.individuals[i2][self.FITNESS]) + "."
 			
-			replaceIndividual(findEliminateIndex(eliminateCrossoverSize), child)
+			replaceIndividual(self._findEliminateIndex(eliminateCrossoverSize), child)
 
 
 		# Create children with mutation
@@ -241,12 +285,12 @@ class GeneticAlgorithm():
 		while mutationRatio > 0.00001 and numMutateChildren < int(mutationRatio*len(self.individuals)):
 			numMutateChildren = numMutateChildren + 1
 
-			i1 = findReproduceIndex(reproduceMutationSize)
+			i1 = self._findMutationParentIndex(reproduceMutationSize)
 			reproduceCreature = self.individuals[i1][self.CREATURE]
 			child = copy.deepcopy(reproduceCreature)
 			child.mutate(self.mutationConfig["config"])
 			
-			replaceIndividual(findEliminateIndex(eliminateMutationSize), child)
+			replaceIndividual(self._findEliminateIndex(eliminateMutationSize), child)
 
 		self.populationConfig["generation"] += 1
 		
@@ -346,7 +390,11 @@ class Trainer():
 		startAlgorithm()
 
 		self.bestFitness = self.algorithm.getBestFitness()
-		self.bestFitnessEvaluation = self.algorithm.populationConfig["evaluations"]
+		currentEvaluations = int(self.algorithm.populationConfig["evaluations"])
+		trainerState = self.config["json"].get("experiment", {}).get("trainerState", {})
+		self.bestFitnessEvaluation = int(trainerState.get("bestFitnessEvaluation", currentEvaluations))
+		if self.bestFitnessEvaluation < 0 or self.bestFitnessEvaluation > currentEvaluations:
+			self.bestFitnessEvaluation = currentEvaluations
 
 		try:
 			self.communicator = Communicator(self.getWork, self.getWorkBatch, self.doStepBatch, self.registerResult, self.getServerStatus, self.getBestCreature)
@@ -363,6 +411,11 @@ class Trainer():
 			creatures = self.algorithm.getCreaturesWithFitnessJson()
 			if(creatures != None and len(creatures)>0):
 				self.config["json"]["structure"]["creatures"] = creatures
+
+			trainerState = self.config["json"].setdefault("experiment", {}).setdefault("trainerState", {})
+			trainerState["schemaVersion"] = 1
+			trainerState["pythonRandomState"] = random.getstate()
+			trainerState["bestFitnessEvaluation"] = self.bestFitnessEvaluation
 
 			serialized = json.dumps(self.config["json"], indent=1, separators=(',', ': '), allow_nan=False)
 			#serialized = json.dumps(config["json"])
@@ -685,8 +738,7 @@ if __name__ == "__main__":
 	signal.signal(signal.SIGINT, interruptHandler)
 	signal.signal(signal.SIGTERM, interruptHandler)
 	config = getJson()
-	if config["seed"] is not None:
-		random.seed(config["seed"])
+	restoreRandomState(config)
 	trainer = Trainer(config)
 
 	if(config["resultFilename"]):

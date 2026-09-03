@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "startedAtUtc": "2026-09-03T06:41:35Z",
+  "scheduledCloseoutAtUtc": "2026-09-03T08:41:35Z",
+  "source": {
+    "repository": "https://github.com/dage/machine-evolved.git",
+    "branch": "codex/machine-evolved-credible-training",
+    "startingCommit": "e63632c186018e8428d16fac3dc588fa4cd5e89e"
+  },
+  "baseline": {
+    "run": "wheel-jump-large8192-seed85",
+    "checkpointPath": "training-runs/wheel-jump-large8192-seed85/config.json",
+    "checkpointSha256": "1ba8984c685d7c144c8c0bcfbd8204a4837a2a9e300783504784181ed32e61cc",
+    "checkpointBytes": 1514303963,
+    "checkpointGeneration": 109,
+    "checkpointEvaluations": 539012,
+    "populationSize": 8192,
+    "bestRawSimulationUnits": 119876.359375,
+    "bestScaledDisplayUnits": 1198.76359375,
+    "controllerAndMorphologyPath": "artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+    "controllerAndMorphologySha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa"
+  },
+  "fixedExperimentContract": {
+    "backend": "machine-evolved-bullet-v1",
+    "objective": "max-horizontal-distance-v1",
+    "horizonTicks": 7200,
+    "fixedStepHz": 60,
+    "workers": 6,
+    "morphologyFrozen": true,
+    "physicsFrozen": true,
+    "locomotionClassificationOnly": ["rolling", "spinning", "jumping", "airtime", "joint activity"]
+  },
+  "binariesAndSource": {
+    "trainerSha256": "b82c16b63815441d41ce791567e45b23b69a579dd52caa119f34a5f3b3493068",
+    "shellworkerSha256": "2e0275623040eb042ac3d6a34b4f93429470bed9ac2bf5c044465ecabcda2e12",
+    "replayworkerSha256": "79f68beb8add9ca2e4494ba62f8cb8b729b0b1d3e37fe491563fcbd29e5ec367"
+  },
+  "baselineParity": {
+    "replayA": "artifacts/codex/machine-evolved-two-hour-final/baseline-replay-a-60hz.json",
+    "replayB": "artifacts/codex/machine-evolved-two-hour-final/baseline-replay-b-60hz.json",
+    "sha256": "47a8d7fb2a66cbfd9f78d28520d8cce668ac728f4cbc2b566d91e9409f0716f1",
+    "byteIdentical": true,
+    "fitnessParityVerified": true
+  },
+  "baselineFreeze": {
+    "atomicCheckpointPreserved": true,
+    "activeProcessesStopped": true,
+    "stopLifecycleFinding": "SIGINT initiated a final save, but the wrapper delivered another termination signal during JSON serialization. The already completed 13:45 checkpoint remained intact and is the immutable fallback."
+  },
+  "twoHourSearch": {
+    "resultsPath": "artifacts/codex/machine-evolved-two-hour-final/two-hour-run-results.json",
+    "resultsSha256": "e9d1a9bdb5116209bed020e2a8cb16a9979479165e87bc03b811cc7b889449a1",
+    "optimizationRuns": 11,
+    "trainerAcceptedSearchEvaluations": 65439,
+    "wallSecondsProxy": 1276.8537454605103,
+    "bestRun": "two-hour-shared-offset-seed202-e5000",
+    "bestFitnessRawSimulationUnits": 122526.125,
+    "absoluteGainRawSimulationUnits": 2649.765625,
+    "percentGain": 2.2104154971131162,
+    "classification": "exact-condition-only-improvement"
+  },
+  "finalChampion": {
+    "canonicalConfig": "machine-evolved-trainer/configs/two-hour-best-three-capsule-v1.json",
+    "canonicalConfigSha256": "20f0b85efd8b52782bc9320753a4863935054b8085cf12b25bbbd31a2505eb29",
+    "replayA": "artifacts/codex/machine-evolved-two-hour-final/final-best-replay-a-60hz.json",
+    "replayB": "artifacts/codex/machine-evolved-two-hour-final/final-best-replay-b-60hz.json",
+    "replaySha256": "a99bf37ad3df1e52f8629f62962f751b8b382535051e96dc54f3ef20dd34fcd7",
+    "byteIdentical": true,
+    "fitnessParityVerified": true,
+    "motionAnalysis": "artifacts/codex/machine-evolved-two-hour-final/final-best-motion-analysis.json",
+    "motionAnalysisSha256": "e8adbe62061d98472d935fa9a24d27dca47b6682dc58d4bd7e15672a2af99b3c"
+  },
+  "robustness": {
+    "validationEvaluations": 1418,
+    "gravityMinus1Percent": 98470.265625,
+    "gravityPlus1Percent": 111024.546875,
+    "frictionMinus2Percent": 23175.738281,
+    "frictionPlus2Percent": 41710.355469,
+    "massMinus1Percent": 112901.632812,
+    "massPlus1Percent": 25785.611328,
+    "top64Sweep": "artifacts/codex/machine-evolved-two-hour-final/population-robustness-top64.json",
+    "top64SweepSha256": "90f3845935040db931208054169e4d7f7372c1d4b1913ff098e23555bd79336f",
+    "robustAlternative": {
+      "canonicalConfig": "machine-evolved-trainer/configs/two-hour-robust-alternative-three-capsule-v1.json",
+      "canonicalConfigSha256": "66e575767c3a39cc4cef8076fa532db3f9de8272a4579d17e95e53a56e44cc28",
+      "baselineFitness": 121637.1875,
+      "worstCaseFitness": 60058.480469,
+      "meanPerturbedFitness": 104527.00976583334,
+      "worstCaseRetention": 0.4937509794773905,
+      "motionAnalysis": "artifacts/codex/machine-evolved-two-hour-final/robust-alternative-motion-analysis.json",
+      "motionAnalysisSha256": "116898fb789381ba0e87bdfe12c6f87059c49fd4cbd24391c20d5e85825b853b"
+    }
+  },
+  "codeEvidence": {
+    "trainerSha256": "820e7e7f8e3ed8d2dff250b67120c2f47e806cd2e43dec268965c3ae4f66540c",
+    "controllerSha256": "177038de1fb26c22cc149987ecf968e12f97e9a9ff0403042acd92eb16d8689d",
+    "unitTests": 23,
+    "trainingSmokePassed": true,
+    "replayParityPassed": true
+  }
+}

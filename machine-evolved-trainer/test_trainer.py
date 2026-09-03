@@ -3,6 +3,7 @@ import json
 import math
 import random
 import sys
+import tempfile
 import threading
 import time
 import unittest
@@ -10,7 +11,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from Trainer import GeneticAlgorithm, Trainer, wallClockLimitReached
+from Trainer import GeneticAlgorithm, Trainer, randomStateFromJson, restoreRandomState, wallClockLimitReached
 
 
 class GeneticAlgorithmTest(unittest.TestCase):
@@ -20,8 +21,10 @@ class GeneticAlgorithmTest(unittest.TestCase):
 		with configPath.open() as source:
 			cls.config = json.load(source)
 
-	def createAlgorithm(self):
+	def createAlgorithm(self, populationSize=None):
 		arguments = copy.deepcopy(self.config["algorithm"]["arguments"])
+		if populationSize is not None:
+			arguments["population"]["size"] = populationSize
 		structure = copy.deepcopy(self.config["structure"])
 		return GeneticAlgorithm(
 			arguments["population"],
@@ -51,6 +54,120 @@ class GeneticAlgorithmTest(unittest.TestCase):
 		algorithm.individuals[1][algorithm.FITNESS] = 5.0
 
 		self.assertEqual(algorithm.getIndexBestCreature(), 0)
+
+	def test_reproduction_winner_is_selected_from_the_sampled_tournament(self):
+		algorithm = self.createAlgorithm(populationSize=3)
+		algorithm.individuals[0][algorithm.FITNESS] = 100.0
+		algorithm.individuals[1][algorithm.FITNESS] = -10.0
+		algorithm.individuals[2][algorithm.FITNESS] = -5.0
+		algorithm.pickIndividuals = lambda competitionSize, excludedIndices=None: [1, 2]
+
+		selected = algorithm._findReproduceIndex(2)
+
+		self.assertEqual(selected, 2)
+		self.assertIn(selected, [1, 2])
+
+	def test_elimination_loser_is_selected_from_the_sampled_tournament(self):
+		algorithm = self.createAlgorithm(populationSize=3)
+		algorithm.individuals[0][algorithm.FITNESS] = -100.0
+		algorithm.individuals[1][algorithm.FITNESS] = 100000000001.0
+		algorithm.individuals[2][algorithm.FITNESS] = 100000000002.0
+		algorithm.pickIndividuals = lambda competitionSize, excludedIndices=None: [1, 2]
+
+		selected = algorithm._findEliminateIndex(2)
+
+		self.assertEqual(selected, 1)
+		self.assertIn(selected, [1, 2])
+
+	def test_elimination_never_selects_a_configured_elite(self):
+		arguments = copy.deepcopy(self.config["algorithm"]["arguments"])
+		arguments["population"]["size"] = 5
+		arguments["population"]["eliteCount"] = 1
+		arguments["mutation"]["competitionSize"]["eliminate"] = 2
+		algorithm = GeneticAlgorithm(
+			arguments["population"],
+			arguments["crossover"],
+			arguments["mutation"],
+			copy.deepcopy(self.config["structure"]),
+			{ "saveState": lambda: None },
+		)
+		for index, individual in enumerate(algorithm.individuals):
+			individual[algorithm.FITNESS] = float(index)
+
+		for seed in range(50):
+			random.seed(seed)
+			self.assertNotEqual(algorithm._findEliminateIndex(2), 4)
+
+	def test_elite_mutation_parent_selection_uses_global_best(self):
+		algorithm = self.createAlgorithm(populationSize=4)
+		algorithm.mutationConfig["parentSelection"] = "elite-v1"
+		for index, fitness in enumerate((-10.0, 7.0, 3.0, 6.0)):
+			algorithm.individuals[index][algorithm.FITNESS] = fitness
+
+		self.assertEqual(algorithm._findMutationParentIndex(2), 1)
+
+	def test_checkpointed_random_state_reproduces_the_next_generation(self):
+		algorithm = self.createAlgorithm(populationSize=8)
+		algorithm.populationConfig["generation"] = 11
+		algorithm.crossoverConfig["rate"] = 0.25
+		algorithm.crossoverConfig["competitionSize"] = { "reproduce": 2, "eliminate": 2 }
+		algorithm.mutationConfig["rate"] = 0.5
+		algorithm.mutationConfig["competitionSize"] = { "reproduce": 2, "eliminate": 2 }
+		algorithm.mutationConfig["config"] = {
+			"mode": "independent-offset-v1",
+			"numParameterChangedRatioRange": "0.1-0.4",
+			"offsetRange": "0.01;0.2",
+			"offsetExponent": 1,
+			"randomizeSign": "yes",
+		}
+		for index, individual in enumerate(algorithm.individuals):
+			individual[algorithm.FITNESS] = float(index - 4)
+
+		checkpointCreatures = copy.deepcopy(algorithm.getCreaturesWithFitnessJson())
+		checkpointState = json.loads(json.dumps(random.getstate()))
+		algorithm.proceedToNextGeneration()
+		expected = json.dumps(algorithm.getCreaturesWithFitnessJson(), sort_keys=True)
+
+		arguments = copy.deepcopy(self.config["algorithm"]["arguments"])
+		arguments["population"] = copy.deepcopy(algorithm.populationConfig)
+		arguments["population"]["generation"] = 11
+		arguments["crossover"] = copy.deepcopy(algorithm.crossoverConfig)
+		arguments["mutation"] = copy.deepcopy(algorithm.mutationConfig)
+		structure = copy.deepcopy(self.config["structure"])
+		structure["creatures"] = checkpointCreatures
+		reloaded = GeneticAlgorithm(
+			arguments["population"],
+			arguments["crossover"],
+			arguments["mutation"],
+			structure,
+			{ "saveState": lambda: None },
+		)
+		random.setstate(randomStateFromJson(checkpointState))
+		reloaded.proceedToNextGeneration()
+		actual = json.dumps(reloaded.getCreaturesWithFitnessJson(), sort_keys=True)
+
+		self.assertEqual(actual, expected)
+
+	def test_save_and_restore_persists_rng_and_stall_counter(self):
+		trainer = self.createBareTrainer()
+		trainer.bestFitnessEvaluation = 17
+		trainer.algorithm.populationConfig["evaluations"] = 23
+		trainer.config["json"] = copy.deepcopy(self.config)
+		with tempfile.TemporaryDirectory() as directory:
+			trainer.config["filename"] = str(Path(directory) / "checkpoint.json")
+			random.seed(712)
+			expectedNextValue = random.random()
+			random.seed(712)
+			Trainer.saveState(trainer)
+
+			with open(trainer.config["filename"]) as source:
+				saved = json.load(source)
+			trainerState = saved["experiment"]["trainerState"]
+			self.assertEqual(trainerState["bestFitnessEvaluation"], 17)
+
+			random.random()
+			restoreRandomState({ "json": saved, "seed": None })
+			self.assertEqual(random.random(), expectedNextValue)
 
 	def test_reissued_evaluation_invalidates_the_previous_token(self):
 		algorithm = self.createAlgorithm()
