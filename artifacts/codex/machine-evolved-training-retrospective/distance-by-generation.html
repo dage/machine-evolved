@@ -1,0 +1,83 @@
+<div id="machine-evolved-generation-chart" aria-label="Machine Evolved best distance by generation">
+  <style>
+    #machine-evolved-generation-chart { color: var(--foreground); font: 12px system-ui, sans-serif; width: 100%; position: relative; }
+    #machine-evolved-generation-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+    #machine-evolved-generation-chart text { fill: var(--foreground); font-size: 12px; }
+    #machine-evolved-generation-chart .grid { stroke: var(--border); stroke-opacity: .45; stroke-width: 1; }
+    #machine-evolved-generation-chart .frame { fill: none; stroke: var(--border); stroke-width: 1; }
+    #machine-evolved-generation-chart .series { fill: none; stroke: var(--viz-series-1); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+    #machine-evolved-generation-chart .point { fill: var(--viz-series-1); }
+    #machine-evolved-generation-chart .improvement { fill: var(--viz-series-2); stroke: var(--foreground); stroke-width: 1; }
+    #machine-evolved-generation-chart .live { fill: var(--viz-series-3); stroke: var(--foreground); stroke-width: 1.5; }
+    #machine-evolved-generation-chart .live-guide { stroke: var(--viz-series-3); stroke-width: 1; stroke-dasharray: 4 4; }
+    #machine-evolved-generation-chart .value { font-weight: 650; }
+    #machine-evolved-generation-chart .note { opacity: .78; }
+    #machine-evolved-generation-chart .hit { fill: transparent; pointer-events: all; cursor: crosshair; }
+    #machine-evolved-generation-chart .tooltip { position: absolute; pointer-events: none; display: none; padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--background); color: var(--foreground); font-size: 12px; white-space: nowrap; z-index: 2; }
+  </style>
+  <div class="tooltip" data-tooltip></div>
+  <svg role="img" viewBox="0 0 736 430" preserveAspectRatio="xMidYMid meet">
+    <title>Machine Evolved best distance by generation</title>
+    <desc>Best horizontal distance rose from 646.904 metres at generation zero to 1,134.389 metres by generation 59. The latest improvement was generation 59; the current flat span is 0 generations.</desc>
+    <g data-chart-frame></g><g data-series></g><g data-axes></g><g data-annotations></g><g data-hit-layer></g>
+  </svg>
+  <script>
+    (() => {
+      const root = document.getElementById('machine-evolved-generation-chart');
+      const svg = root.querySelector('svg');
+      const frame = root.querySelector('[data-chart-frame]');
+      const series = root.querySelector('[data-series]');
+      const axes = root.querySelector('[data-axes]');
+      const annotations = root.querySelector('[data-annotations]');
+      const hitLayer = root.querySelector('[data-hit-layer]');
+      const tooltip = root.querySelector('[data-tooltip]');
+      const values = [[0,646.904,true],[1,681.198,true],[2,743.411,true],[3,833.199062,true],[4,833.199062,false],[5,841.816,true],[6,842.038,true],[7,842.038,false],[8,842.038,false],[9,903.460234,true],[10,934.611,true],[11,965.427188,true],[12,965.427188,false],[13,965.427188,false],[14,965.427188,false],[15,1064.04,true],[16,1064.04,false],[17,1064.04,false],[18,1064.04,false],[19,1064.04,false],[20,1064.04,false],[21,1064.04,false],[22,1076.105156,true],[23,1076.105156,false],[24,1076.105156,false],[25,1092.010313,true],[26,1092.010313,false],[27,1092.010313,false],[28,1092.010313,false],[29,1092.010313,false],[30,1092.010313,false],[31,1092.010313,false],[32,1092.010313,false],[33,1092.010313,false],[34,1092.010313,false],[35,1092.010313,false],[36,1092.010313,false],[37,1092.010313,false],[38,1092.010313,false],[39,1099.234,true],[40,1099.234,false],[41,1099.234,false],[42,1099.234,false],[43,1099.234,false],[44,1099.234,false],[45,1099.234,false],[46,1099.234,false],[47,1099.733,true],[48,1099.733,false],[49,1112.914062,true],[50,1112.914062,false],[51,1112.914062,false],[52,1112.914062,false],[53,1112.914062,false],[54,1112.914062,false],[55,1112.914062,false],[56,1112.914062,false],[57,1112.914062,false],[58,1119.543203,true],[59,1134.389453,true]];
+      const latestGeneration = 59;
+      const latestDistance = 1134.389453;
+      const margin = { top: 44, right: 18, bottom: 58, left: 68 };
+      const maxY = Math.ceil(Math.max(...values.map(d => d[1])) / 200) * 200;
+      const el = (name, attrs = {}) => {
+        const node = document.createElementNS('http://www.w3.org/2000/svg', name);
+        for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+        return node;
+      };
+      const draw = () => {
+        const width = Math.max(360, root.clientWidth || 736);
+        const height = width < 480 ? 390 : 430;
+        svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        const plot = { x: margin.left, y: margin.top, w: width - margin.left - margin.right, h: height - margin.top - margin.bottom };
+        const x = generation => plot.x + (generation / latestGeneration) * plot.w;
+        const y = distance => plot.y + plot.h - (distance / maxY) * plot.h;
+        const yTicks = [0, .25, .5, .75, 1].map(f => Math.round(maxY * f));
+        const xTicks = width < 480 ? [0, Math.round(latestGeneration / 3), Math.round(latestGeneration * 2 / 3), latestGeneration] : [0, 10, 20, 30, 40, 50, latestGeneration].filter((v, i, a) => v <= latestGeneration && a.indexOf(v) === i);
+        frame.replaceChildren(el('rect', { class: 'frame', x: plot.x, y: plot.y, width: plot.w, height: plot.h }));
+        series.replaceChildren(); axes.replaceChildren(); annotations.replaceChildren(); hitLayer.replaceChildren();
+        for (const tick of yTicks) {
+          const yy = y(tick); axes.append(el('line', { class: 'grid', x1: plot.x, x2: plot.x + plot.w, y1: yy, y2: yy }));
+          const label = el('text', { x: plot.x - 10, y: yy + 4, 'text-anchor': 'end' }); label.textContent = tick.toLocaleString(); axes.append(label);
+        }
+        for (const tick of xTicks) {
+          const xx = x(tick); const label = el('text', { x: xx, y: plot.y + plot.h + 22, 'text-anchor': tick === 0 ? 'start' : tick === latestGeneration ? 'end' : 'middle' }); label.textContent = tick; axes.append(label);
+        }
+        const path = values.map(([generation, distance], index) => `${index ? 'L' : 'M'} ${x(generation)} ${y(distance)}`).join(' ');
+        series.append(el('path', { class: 'series', d: path }));
+        for (const [generation, distance, improved] of values) {
+          series.append(el('circle', { class: generation === latestGeneration ? 'live' : improved ? 'improvement' : 'point', cx: x(generation), cy: y(distance), r: generation === latestGeneration ? 5 : improved ? 3.5 : 2 }));
+        }
+        const xTitle = el('text', { x: plot.x + plot.w / 2, y: height - 10, 'text-anchor': 'middle' }); xTitle.textContent = 'Generation'; axes.append(xTitle);
+        const yTitle = el('text', { x: 16, y: plot.y + plot.h / 2, transform: `rotate(-90 16 ${plot.y + plot.h / 2})`, 'text-anchor': 'middle' }); yTitle.textContent = 'Best distance (m)'; axes.append(yTitle);
+        const liveX = x(latestGeneration); annotations.append(el('line', { class: 'live-guide', x1: liveX, x2: liveX, y1: plot.y, y2: plot.y + plot.h }));
+        const liveLabel = el('text', { class: 'value', x: liveX - 8, y: y(latestDistance) - 12, 'text-anchor': 'end' }); liveLabel.textContent = '1,134.389 m · snapshot'; annotations.append(liveLabel);
+        const plateau = el('text', { class: 'note', x: liveX - 8, y: y(latestDistance) + 22, 'text-anchor': 'end' }); plateau.textContent = 'latest gain: gen 59 · flat for 0 generations'; annotations.append(plateau);
+        const hit = el('rect', { class: 'hit', x: plot.x, y: plot.y, width: plot.w, height: plot.h });
+        hit.addEventListener('pointermove', event => {
+          const rect = svg.getBoundingClientRect(); const localX = (event.clientX - rect.left) * (width / rect.width); const generation = Math.max(0, Math.min(latestGeneration, Math.round((localX - plot.x) / plot.w * latestGeneration))); const datum = values[generation];
+          tooltip.textContent = `Generation ${datum[0]}: ${datum[1].toLocaleString(undefined, {minimumFractionDigits: 3, maximumFractionDigits: 3})} m${datum[2] ? ' · improvement' : ''}`;
+          tooltip.style.display = 'block'; tooltip.style.left = `${Math.min(root.clientWidth - tooltip.offsetWidth - 4, Math.max(4, event.clientX - root.getBoundingClientRect().left + 12))}px`; tooltip.style.top = `${Math.max(4, event.clientY - root.getBoundingClientRect().top - 34)}px`;
+        });
+        hit.addEventListener('pointerleave', () => tooltip.style.display = 'none'); hitLayer.append(hit);
+      };
+      draw(); new ResizeObserver(draw).observe(root);
+    })();
+  </script>
+</div>
