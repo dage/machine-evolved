@@ -28,7 +28,14 @@ public:
 		btQuaternion rotation;
 	};
 
-	CreatureBase(BulletInterface* bullet, btVector3 position, pt::ptree jsonObject, float motorMaxForce = 2000.f, float motorTargetVelocityLimit = 0.f);
+	CreatureBase(
+		BulletInterface* bullet,
+		btVector3 position,
+		pt::ptree jsonObject,
+		float motorMaxForce = 2000.f,
+		float motorTargetVelocityLimit = 0.f,
+		bool v2Physics = false,
+		int controlRateHz = 60);
 	~CreatureBase();
 
 	btVector3 getCenterOfMassPosition();
@@ -46,4 +53,13 @@ protected:
 private:
 	void applyMotorForces();
 	float motorTargetVelocityLimit = 0.f;
+	bool v2Physics = false;
+	int controlRateHz = 60;
+	std::string commandMode = "target-velocity-v1";
+	float servoAngleRange = 0.9f * static_cast<float>(PI);
+	float servoKp = 10.f;
+	float servoKd = 0.75f;
+	int settlingTicks = 0;
+	int rampTicks = 0;
+	std::vector<float> previousMotorPositions;
 };

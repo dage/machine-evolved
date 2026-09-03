@@ -24,7 +24,7 @@ public:
 
 	std::vector<btRigidBody*> getCapsules();		// For rendering
 	std::vector<btRotationalLimitMotor*> getMotors();
-	std::vector<float> getState(int tick);
+	std::vector<float> getState(int tick, int controlRateHz = 60);
 	btVector3 getCenterOfMassPosition();
 
 	void setFeedbacks(std::vector<float> newFeedbackValues);

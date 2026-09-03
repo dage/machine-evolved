@@ -71,6 +71,7 @@ public:
 	float oscillatorStart;
 	float oscillatorMultiplier;
 	int oscillatorCount;
+	std::string oscillatorMode = "sin-v1";
 	INPUTS inputs;
 
 private:

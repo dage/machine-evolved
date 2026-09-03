@@ -25,7 +25,7 @@ std::string Communicator::getSendResultSerialized(WorkEvaluator::TASK* task) {
 			+ "\",\"evaluationId\":\"" + task->evaluationId
 			+ "\",\"maxDistance\":" + std::to_string(moveFarTask->maxDistance)
 			+ ",\"fitness\":" + std::to_string(moveFarTask->fitness)
-			+ ",\"simulatedTime\":" + std::to_string(moveFarTask->numberOfTicks / 60.)
+			+ ",\"simulatedTime\":" + std::to_string(static_cast<double>(moveFarTask->numberOfTicks) / moveFarTask->controlRateHz)
 			+ ",\"motion\":{\"credible\":" + std::string(motion.credible ? "true" : "false")
 			+ ",\"finalDistance\":" + std::to_string(motion.finalDistance)
 			+ ",\"pathLength\":" + std::to_string(motion.pathLength)

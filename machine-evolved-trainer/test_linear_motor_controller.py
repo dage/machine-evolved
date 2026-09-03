@@ -122,6 +122,19 @@ class LinearMotorControllerTest(unittest.TestCase):
 		with self.assertRaisesRegex(ValueError, "positive ascending bounds"):
 			controller._sampleMutationOffset(config)
 
+	def test_target_angle_metadata_round_trips_for_harmonic_controller(self):
+		generator = {
+			"schemaVersion": 2,
+			"commandMode": "target-angle-servo-v1",
+			"servo": {"targetAngleRangeRadians": 2.8, "kp": 10, "kd": 0.75},
+			"layers": [{"activation": "tanh"}],
+		}
+		controller = LinearMotorController(32, 6, generatorJson=generator)
+		self.assertEqual(controller.getNumParameters(), 198)
+		serialized = controller.getJson()
+		restored = LinearMotorController(32, 6, stateJson=serialized)
+		self.assertEqual(restored.getJson(), serialized)
+
 
 if __name__ == "__main__":
 	unittest.main()

@@ -33,6 +33,21 @@ void BulletInterface::configure(pt::ptree config) {
 	if (!isInitialized)
 		return;
 
+	const std::string backend = config.get<std::string>("backend", "machine-evolved-bullet-v1");
+	v2Physics = backend == "machine-evolved-bullet-v2";
+	if (backend != "machine-evolved-bullet-v1" && !v2Physics)
+		throw std::runtime_error("Unknown Bullet backend: " + backend);
+	controlRateHz = v2Physics ? config.get<int>("controlRateHz", 60) : 60;
+	physicsRateHz = v2Physics ? config.get<int>("physicsRateHz", 120) : 60;
+	if (controlRateHz <= 0 || physicsRateHz < controlRateHz || physicsRateHz % controlRateHz != 0)
+		throw std::runtime_error("physicsRateHz must be an integer multiple of controlRateHz");
+	physicsSubsteps = physicsRateHz / controlRateHz;
+	dynamicsWorld->getSolverInfo().m_numIterations = v2Physics
+		? config.get<int>("solverIterations", 20)
+		: dynamicsWorld->getSolverInfo().m_numIterations;
+	if (v2Physics)
+		dynamicsWorld->getSolverInfo().m_splitImpulse = config.get<bool>("splitImpulse", true);
+
 	dynamicsWorld->setGravity(btVector3(
 		config.get<float>("gravityX", 0.f),
 		config.get<float>("gravityY", 0.f),
@@ -45,6 +60,9 @@ void BulletInterface::configure(pt::ptree config) {
 	capsuleLinearDamping = config.get<float>("capsuleLinearDamping", 0.f);
 	capsuleAngularDamping = config.get<float>("capsuleAngularDamping", 0.f);
 	capsuleMassScale = config.get<float>("capsuleMassScale", 0.0001f);
+	capsuleCcdEnabled = v2Physics && config.get<bool>("capsuleCcdEnabled", true);
+	ccdMotionThresholdRadiusRatio = config.get<float>("ccdMotionThresholdRadiusRatio", 0.25f);
+	ccdSweptSphereRadiusRatio = config.get<float>("ccdSweptSphereRadiusRatio", 0.2f);
 }
 
 void BulletInterface::removeConstraint(btTypedConstraint* constraint) {
@@ -67,8 +85,13 @@ btRigidBody* BulletInterface::addCapsule(float innerHeight, float radius, btVect
 
 	btCollisionShape* fallShape = new btCapsuleShapeZ(radius, innerHeight);
 	btDefaultMotionState* fallMotionState = new btDefaultMotionState(transform);
-	btScalar mass = PI * radius * radius * innerHeight +	// formula for volume of a cylinder
-		4 * 3 / PI * radius*radius*radius;					// formula for volume of a sphere (two half spheres at end of capsule)
+	btScalar mass;
+	if (v2Physics)
+		mass = PI * radius * radius * innerHeight +
+			4. * PI * radius * radius * radius / 3.;
+	else
+		mass = PI * radius * radius * innerHeight +	// Preserve Bullet-v1's exact floating-point evaluation order.
+			4 * 3 / PI * radius*radius*radius;
 
 	mass *= capsuleMassScale;
 
@@ -83,6 +106,10 @@ btRigidBody* BulletInterface::addCapsule(float innerHeight, float radius, btVect
 	fallRigidBody->setRollingFriction(capsuleRollingFriction);
 	fallRigidBody->setSpinningFriction(capsuleSpinningFriction);
 	fallRigidBody->setDamping(capsuleLinearDamping, capsuleAngularDamping);
+	if (capsuleCcdEnabled) {
+		fallRigidBody->setCcdMotionThreshold(ccdMotionThresholdRadiusRatio * radius);
+		fallRigidBody->setCcdSweptSphereRadius(ccdSweptSphereRadiusRatio * radius);
+	}
 	dynamicsWorld->addRigidBody(fallRigidBody);
 	
 	return fallRigidBody;
@@ -139,9 +166,27 @@ void BulletInterface::tick(float deltaTime) {
 	if (!isInitialized)
 		return;
 
-	double frameTime = 1. / 60.;
-	int timeSteps = 1;
-	dynamicsWorld->stepSimulation(frameTime, timeSteps, frameTime / timeSteps);
+	if (!v2Physics) {
+		double frameTime = 1. / 60.;
+		int timeSteps = 1;
+		dynamicsWorld->stepSimulation(frameTime, timeSteps, frameTime / timeSteps);
+		return;
+	}
+	const btScalar controlStep = 1. / static_cast<btScalar>(controlRateHz);
+	const btScalar physicsStep = 1. / static_cast<btScalar>(physicsRateHz);
+	dynamicsWorld->stepSimulation(controlStep, physicsSubsteps, physicsStep);
+}
+
+bool BulletInterface::usesV2Physics() const {
+	return v2Physics;
+}
+
+int BulletInterface::getControlRateHz() const {
+	return controlRateHz;
+}
+
+int BulletInterface::getPhysicsRateHz() const {
+	return physicsRateHz;
 }
 
 void BulletInterface::destroy() {

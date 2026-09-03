@@ -1,5 +1,6 @@
 from Communicator import Communicator
 from Creature import Creature
+from MapElites import MapElitesAlgorithm
 import json
 import uuid
 import time
@@ -61,7 +62,12 @@ class GeneticAlgorithm():
 			# Create new creatures
 			self.indicesMissingFitness = list(range(0, int(self.populationConfig["size"])))
 			for i in self.indicesMissingFitness:
-				creature = Creature(None, structureConfig["generator"])
+				templates = structureConfig.get("templates", [])
+				if templates:
+					template = templates[i % len(templates)]
+					creature = Creature(None, structureConfig["generator"], template["structure"], template["id"])
+				else:
+					creature = Creature(None, structureConfig["generator"])
 				self.individuals.append([float("nan"), creature, float("nan")])
 				self.creatureIndexLookup[creature.id] = i
 		else:
@@ -322,6 +328,9 @@ class GeneticAlgorithm():
 
 	def isCurrentEvaluation(self, creatureId, evaluationId):
 		return self.activeEvaluationIds.get(creatureId) == evaluationId
+
+	def continueEvaluation(self, creatureId):
+		self.activeEvaluationIds.pop(creatureId, None)
 			
 
 	def setCreatureFitness(self, creatureId, fitness):
@@ -371,8 +380,19 @@ class Trainer():
 					arguments["mutation"],
 					structure,
 					{ "saveState": self.saveState })
+			elif algorithmType == "MapElites":
+				arguments = config["json"]["algorithm"]["arguments"]
+				structure = config["json"]["structure"]
+				if config["resetFitness"]:
+					structure["creatures"] = []
+				self.algorithm = MapElitesAlgorithm(
+					arguments["population"],
+					arguments["mutation"],
+					structure,
+					arguments["archive"],
+					{ "saveState": self.saveState })
 			else:
-				sys.exit("Only algorithm type 'GeneticAlgorithm' currently implemented. Got '" + algorithmType + "'");
+				sys.exit("Algorithm type must be 'GeneticAlgorithm' or 'MapElites'. Got '" + algorithmType + "'");
 
 		self.config = config
 		# ThreadingTCPServer dispatches requests concurrently.  All callbacks
@@ -384,6 +404,12 @@ class Trainer():
 		self.experimentId = str(uuid.uuid4())
 		self.stopReason = None
 		self.stopFinalized = False
+		trainerState = self.config["json"].get("experiment", {}).get("trainerState", {})
+		self.domainProgress = copy.deepcopy(trainerState.get("domainProgress", {}))
+		self.domainQueue = list(self.domainProgress.keys())
+		self.evaluationContexts = {}
+		self.evaluationHistory = list(trainerState.get("evaluationHistory", []))
+		self.evaluationSimulations = int(trainerState.get("evaluationSimulations", 0))
 		self.statistics = { "accumulatedSimulatedTime": 0, "accumulatedFitness": {}, "accumulatedSimulatedCreatures": {}, "timeStamp": time.monotonic() }
 		self.lastStatus = "...waiting..."
 
@@ -416,6 +442,9 @@ class Trainer():
 			trainerState["schemaVersion"] = 1
 			trainerState["pythonRandomState"] = random.getstate()
 			trainerState["bestFitnessEvaluation"] = self.bestFitnessEvaluation
+			trainerState["domainProgress"] = getattr(self, "domainProgress", {})
+			trainerState["evaluationHistory"] = getattr(self, "evaluationHistory", [])[-10000:]
+			trainerState["evaluationSimulations"] = getattr(self, "evaluationSimulations", 0)
 
 			serialized = json.dumps(self.config["json"], indent=1, separators=(',', ': '), allow_nan=False)
 			#serialized = json.dumps(config["json"])
@@ -507,14 +536,65 @@ class Trainer():
 		self.statistics["accumulatedSimulatedCreatures"][creature.generatorType] += 1
 		
 		self.statistics["accumulatedSimulatedTime"] += simulatedTime
+		self.evaluationSimulations = getattr(self, "evaluationSimulations", 0) + 1
 
+		if not hasattr(self, "evaluationContexts"):
+			self.evaluationContexts = {}
+		if not hasattr(self, "domainProgress"):
+			self.domainProgress = {}
+		if not hasattr(self, "domainQueue"):
+			self.domainQueue = []
+		if not hasattr(self, "evaluationHistory"):
+			self.evaluationHistory = []
+		context = self.evaluationContexts.pop(data.get("evaluationId"), {})
+		domains = self.config.get("json", {}).get("experiment", {}).get("evaluationDomains", [])
+		if not domains:
+			domains = [{"id": "nominal"}]
+		progress = self.domainProgress.setdefault(creatureId, {"results": []})
+		motion = data.get("motion", {})
+		progress["results"].append({
+			"domainId": context.get("domainId", domains[len(progress["results"])]["id"]),
+			"distance": rawDistance,
+			"fitness": fitness,
+			"motion": motion,
+		})
+		if len(progress["results"]) < len(domains):
+			self.algorithm.continueEvaluation(creatureId)
+			if creatureId not in self.domainQueue:
+				self.domainQueue.append(creatureId)
+			return "OK"
+
+		results = progress["results"]
+		domainScores = [float(result["fitness"]) for result in results]
+		if any(score < 0 for score in domainScores):
+			robustFitness = min(domainScores)
+		else:
+			geometricMean = math.prod(domainScores) ** (1.0 / len(domainScores))
+			robustFitness = 0.5 * (min(domainScores) + geometricMean)
+		nominalMotion = results[0].get("motion", {})
+		behavior = {
+			"airborneFraction": max(0.0, min(1.0, 1.0 - float(nominalMotion.get("nearGroundTimeFraction", 1.0)))),
+			"rotationParticipation": max(0.0, min(1.0, float(nominalMotion.get("rollingExplainedFraction", 0.0)))),
+		}
+		self.domainProgress.pop(creatureId, None)
 		self.algorithm.populationConfig["evaluations"] += 1
-		self.algorithm.setCreatureFitness(creatureId, fitness)
+		if hasattr(self.algorithm, "setCreatureEvaluation"):
+			self.algorithm.setCreatureEvaluation(creatureId, robustFitness, behavior, domainScores)
+		else:
+			self.algorithm.setCreatureFitness(creatureId, robustFitness)
+		self.evaluationHistory.append({
+			"evaluation": self.algorithm.populationConfig["evaluations"],
+			"creatureId": creatureId,
+			"morphologyId": creature.morphologyId,
+			"robustFitness": robustFitness,
+			"domainScores": domainScores,
+			"behavior": behavior,
+		})
 		
-		if fitness > self.bestFitness or math.isnan(self.bestFitness):
-			self.bestFitness = fitness
+		if robustFitness > self.bestFitness or math.isnan(self.bestFitness):
+			self.bestFitness = robustFitness
 			self.bestFitnessEvaluation = self.algorithm.populationConfig["evaluations"]
-			print("--> new best creature found through {}! Fitness={}".format(creature.generatorType, fitness))
+			print("--> new robust best creature found through {}! Fitness={} domains={}".format(creature.generatorType, robustFitness, domainScores))
 
 		self.updateStopReason()
 		if finalizeStop:
@@ -614,18 +694,35 @@ class Trainer():
 				self.finalizeStop()
 				return { "status": "NO_WORK" }
 			self.algorithm.maintainPopulation()
-			creature = self.algorithm.getForFitness()
+			creature = None
+			while self.domainQueue and creature is None:
+				creatureId = self.domainQueue.pop(0)
+				creature = self.algorithm.getCreature(creatureId)
+			if creature is None:
+				creature = self.algorithm.getForFitness()
 
 		if creature :
 			experiment = self.config["json"].get("experiment", {})
-			objective = experiment.get("objective", {})
-			physics = experiment.get("physics", {})
+			objective = copy.deepcopy(experiment.get("objective", {}))
+			physics = copy.deepcopy(experiment.get("physics", {}))
+			domains = experiment.get("evaluationDomains", [])
+			progress = self.domainProgress.get(creature.id, {"results": []})
+			domainIndex = 0 if getBestForPlayback or not domains else len(progress["results"])
+			domain = domains[domainIndex] if domains else {"id": "nominal"}
+			physics.update(domain.get("physics", {}))
+			objective.update(domain.get("objective", {}))
+			physics["backend"] = experiment.get("backend", "machine-evolved-bullet-v1")
+			controlRateHz = int(physics.get("controlRateHz", objective.get("fixedStepHz", 60)))
+			evaluationId = self.algorithm.startEvaluation(creature.id)
+			self.evaluationContexts[evaluationId] = {"creatureId": creature.id, "domainId": domain.get("id", "nominal")}
 			taskJson = {
 				"name": "MOVE_FAR",
 				"id": creature.id,
 				"experimentId": self.experimentId,
-				"evaluationId": self.algorithm.startEvaluation(creature.id),
+				"evaluationId": evaluationId,
+				"domainId": domain.get("id", "nominal"),
 				"horizonTicks": int(objective.get("horizonTicks", 60 * 60)),
+				"controlRateHz": controlRateHz,
 				"objective": objective,
 			}
 			work = { "status": "OK", "task": taskJson, "creature": creature.getJson(), "physics": physics }

@@ -39,10 +39,11 @@ public:
 
 	class MOVE_FAR_TASK : public TASK {
 		public:
-			MOVE_FAR_TASK(TASK* task, btVector3 startingPosition, double maxDistance, int numberOfTicks, const pt::ptree& objective) : TASK(task->name, task->id, task->experimentId, task->evaluationId, task->creature) {
+			MOVE_FAR_TASK(TASK* task, btVector3 startingPosition, double maxDistance, int numberOfTicks, int controlRateHz, const pt::ptree& objective) : TASK(task->name, task->id, task->experimentId, task->evaluationId, task->creature) {
 				this->startingPosition = startingPosition;
 				this->maxDistance = maxDistance;
 				this->numberOfTicks = numberOfTicks;
+				this->controlRateHz = controlRateHz;
 				this->remainingTicks = numberOfTicks;
 				motion.initialize(task->creature, objective);
 			}
@@ -51,6 +52,7 @@ public:
 			double fitness = 0.;
 			MotionMetrics motion;
 			int numberOfTicks;
+			int controlRateHz;
 			int remainingTicks;
 	};
 

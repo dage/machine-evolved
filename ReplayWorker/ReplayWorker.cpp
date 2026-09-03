@@ -23,7 +23,6 @@ namespace pt = boost::property_tree;
 
 namespace
 {
-constexpr int FIXED_STEP_HZ = 60;
 constexpr double DISPLAY_SCALE = 0.01;
 
 struct Options
@@ -83,8 +82,6 @@ Options parseOptions(int argc, char* argv[])
 	}
 	if (options.config.empty() || options.output.empty())
 		throw std::runtime_error("--config and --output are required.");
-	if (options.sampleHz > FIXED_STEP_HZ || FIXED_STEP_HZ % options.sampleHz != 0)
-		throw std::runtime_error("--sample-hz must divide the fixed 60 Hz simulation rate.");
 	return options;
 }
 
@@ -162,12 +159,14 @@ void writePose(std::ostream& output, const btVector3& position, const btQuaterni
 void writeReplay(
 	const Options& options,
 	const pt::ptree& config,
-	const pt::ptree& creatureData,
-	double configuredFitness,
+		const pt::ptree& creatureData,
+		double selectionFitness,
+		double configuredFitness,
 	double measuredDistance,
 	double measuredFitness,
 	const MotionMetrics& motion,
 	int horizonTicks,
+	int controlRateHz,
 	const std::vector<ReplaySample>& samples)
 {
 	const std::filesystem::path outputPath(options.output);
@@ -190,7 +189,10 @@ void writeReplay(
 		<< " \"creatureId\":\"machine-evolved-three-capsule-v1\",\n"
 		<< " \"displayName\":\"Machine Evolved · Three Capsule Distance\",\n"
 		<< " \"sampleHz\":" << options.sampleHz << ",\n"
-		<< " \"durationSeconds\":" << static_cast<double>(horizonTicks) / FIXED_STEP_HZ << ",\n"
+		<< " \"durationSeconds\":" << static_cast<double>(horizonTicks) / controlRateHz << ",\n"
+		<< (experiment.get<std::string>("backend", "machine-evolved-bullet-v1") == "machine-evolved-bullet-v2"
+			? " \"selectionFitness\":" + std::to_string(selectionFitness) + ",\n"
+			: "")
 		<< " \"configuredFitness\":" << configuredFitness << ",\n"
 		<< " \"measuredMaxDistanceSimulationUnits\":" << measuredDistance << ",\n"
 		<< " \"measuredFitness\":" << measuredFitness << ",\n"
@@ -283,21 +285,27 @@ void writeReplay(
 	std::filesystem::rename(temporaryPath, outputPath);
 }
 
-pt::ptree bestCreature(const pt::ptree& config, double& bestFitness)
+pt::ptree bestCreature(const pt::ptree& config, double& selectionFitness, double& replayFitness)
 {
-	bestFitness = -std::numeric_limits<double>::infinity();
+	selectionFitness = -std::numeric_limits<double>::infinity();
+	replayFitness = -std::numeric_limits<double>::infinity();
 	pt::ptree selected;
 	for (const pt::ptree::value_type& entry : config.get_child("structure.creatures")) {
 		const std::string serializedFitness = entry.second.get<std::string>("fitness", "");
 		if (serializedFitness.empty() || serializedFitness == "null")
 			continue;
 		const double fitness = std::stod(serializedFitness);
-		if (std::isfinite(fitness) && fitness > bestFitness) {
-			bestFitness = fitness;
+		if (std::isfinite(fitness) && fitness > selectionFitness) {
+			selectionFitness = fitness;
+			replayFitness = fitness;
+			if (auto domainScores = entry.second.get_child_optional("evaluation.domainScores")) {
+				if (!domainScores->empty())
+					replayFitness = domainScores->front().second.get_value<double>();
+			}
 			selected = entry.second.get_child("data");
 		}
 	}
-	if (!std::isfinite(bestFitness) || selected.empty())
+	if (!std::isfinite(selectionFitness) || !std::isfinite(replayFitness) || selected.empty())
 		throw std::runtime_error("The configuration does not contain a finite saved creature.");
 	return selected;
 }
@@ -309,23 +317,30 @@ int main(int argc, char* argv[])
 		const Options options = parseOptions(argc, argv);
 		pt::ptree config;
 		pt::read_json(options.config, config);
+		double selectionFitness = 0;
 		double configuredFitness = 0;
-		pt::ptree creatureData = bestCreature(config, configuredFitness);
+		pt::ptree creatureData = bestCreature(config, selectionFitness, configuredFitness);
 		const auto& experiment = config.get_child("experiment");
-		const auto& physics = experiment.get_child("physics");
+		pt::ptree physics = experiment.get_child("physics");
+		physics.put("backend", experiment.get<std::string>("backend", "machine-evolved-bullet-v1"));
 		const auto& objective = experiment.get_child("objective");
 		const int horizonTicks = experiment.get<int>("objective.horizonTicks");
-		const int sampleInterval = FIXED_STEP_HZ / options.sampleHz;
 
 		BulletInterface bullet;
 		bullet.init();
 		bullet.configure(physics);
+		const int controlRateHz = bullet.getControlRateHz();
+		if (options.sampleHz > controlRateHz || controlRateHz % options.sampleHz != 0)
+			throw std::runtime_error("--sample-hz must divide the configured control rate.");
+		const int sampleInterval = controlRateHz / options.sampleHz;
 		CreatureBase creature(
 			&bullet,
 			btVector3(0, 0, 0),
 			creatureData,
 			physics.get<float>("motorMaxForce", 2000.f),
-			physics.get<float>("motorTargetVelocityLimit", 0.f));
+			physics.get<float>("motorTargetVelocityLimit", 0.f),
+			bullet.usesV2Physics(),
+			controlRateHz);
 
 		MotionMetrics motion;
 		motion.initialize(&creature, objective);
@@ -333,14 +348,20 @@ int main(int argc, char* argv[])
 		samples.reserve(static_cast<std::size_t>(horizonTicks / sampleInterval + 1));
 		samples.push_back(ReplaySample{ 0, creature.getCenterOfMassPosition(), creature.getCapsulePoses() });
 		for (int tick = 1; tick <= horizonTicks; ++tick) {
-			bullet.tick(1.f / FIXED_STEP_HZ);
-			creature.tick();
+			if (bullet.usesV2Physics()) {
+				creature.tick();
+				bullet.tick(1.f / controlRateHz);
+			}
+			else {
+				bullet.tick(1.f / controlRateHz);
+				creature.tick();
+			}
 			motion.tick(&creature);
 			btVector3 position = creature.getCenterOfMassPosition();
 			if (tick % sampleInterval == 0)
 				samples.push_back(ReplaySample{ tick, position, creature.getCapsulePoses() });
 		}
-		motion.finalize(static_cast<double>(horizonTicks) / FIXED_STEP_HZ);
+		motion.finalize(static_cast<double>(horizonTicks) / controlRateHz);
 		const double measuredDistance = motion.maxDistance;
 		const double measuredFitness = motion.fitness;
 
@@ -356,11 +377,13 @@ int main(int argc, char* argv[])
 			options,
 			config,
 			creatureData,
+			selectionFitness,
 			configuredFitness,
 			measuredDistance,
 			measuredFitness,
 			motion,
 			horizonTicks,
+			controlRateHz,
 			samples);
 		creature.terminate();
 		bullet.destroy();

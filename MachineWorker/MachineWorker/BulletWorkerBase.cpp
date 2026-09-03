@@ -60,7 +60,14 @@ int BulletWorkerBase::runBlocking(int numCreatures) {
 					btVector3 position = btVector3(0.*(numCompleted%NUM_IN_FLIGHT), 0, 0);	// prevent crashing
 					const float motorMaxForce = jsonObject.get<float>("physics.motorMaxForce", 2000.f);
 					const float motorTargetVelocityLimit = jsonObject.get<float>("physics.motorTargetVelocityLimit", 0.f);
-					CreatureBase* creature = new CreatureBase(&bullet, position, jsonObject.get_child("creature"), motorMaxForce, motorTargetVelocityLimit);
+					CreatureBase* creature = new CreatureBase(
+						&bullet,
+						position,
+						jsonObject.get_child("creature"),
+						motorMaxForce,
+						motorTargetVelocityLimit,
+						bullet.usesV2Physics(),
+						bullet.getControlRateHz());
 				workEvaluator.add(jsonObject.get_child("task"), creature);
 				creatures.push_back(creature);
 			}
@@ -86,9 +93,16 @@ int BulletWorkerBase::runBlocking(int numCreatures) {
 		}
 		*/
 
-		bullet.tick(1 / 60.f);
-		for (auto creature : creatures)
-			creature->tick();
+		if (bullet.usesV2Physics()) {
+			for (auto creature : creatures)
+				creature->tick();
+			bullet.tick(1.f / bullet.getControlRateHz());
+		}
+		else {
+			bullet.tick(1 / 60.f);
+			for (auto creature : creatures)
+				creature->tick();
+		}
 
 		std::vector<WorkEvaluator::TASK*> removedTasks = workEvaluator.tick();
 		for (auto task : removedTasks) {

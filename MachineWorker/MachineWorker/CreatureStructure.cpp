@@ -7,6 +7,9 @@ CreatureStructure::CreatureStructure(pt::ptree serialized) {
 	oscillatorStart = serialized.get<float>("oscillators.start");
 	oscillatorMultiplier = serialized.get<float>("oscillators.multiplier");
 	oscillatorCount = serialized.get<int>("oscillators.count");
+	oscillatorMode = serialized.get<std::string>("oscillators.mode", "sin-v1");
+	if (oscillatorMode != "sin-v1" && oscillatorMode != "sin-cos-v1")
+		throw std::runtime_error("Unknown oscillator mode: " + oscillatorMode);
 	
 	inputs.capsuleAngularVelocityX = serialized.get<int>("inputs.capsule-angular-velocity-x") == 1;
 	inputs.capsuleAngularVelocityY = serialized.get<int>("inputs.capsule-angular-velocity-y") == 1;
@@ -68,7 +71,9 @@ int CreatureStructure::getNumInputs() {
 	numPerCreature += inputs.velocityX ? 1 : 0;
 	numPerCreature += inputs.velocityY ? 1 : 0;
 	numPerCreature += inputs.velocityZ ? 1 : 0;
-	numPerCreature += inputs.oscillators ? oscillatorCount : 0;
+	numPerCreature += inputs.oscillators
+		? oscillatorCount * (oscillatorMode == "sin-cos-v1" ? 2 : 1)
+		: 0;
 
 	// Per capsule:
 	int numPerCapsule = 0;

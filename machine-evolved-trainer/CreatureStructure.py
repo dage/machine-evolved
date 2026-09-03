@@ -30,12 +30,18 @@ class CreatureStructure:
 
 	def setOscillatorCount(self, count):
 		self.oscillatorCount = count
+
+	def setOscillatorMode(self, mode):
+		if mode not in ("sin-v1", "sin-cos-v1"):
+			raise ValueError("Unknown oscillator mode: {}".format(mode))
+		self.oscillatorMode = mode
 		
 	def buildFromJson(self, jsonData):
 		self.numFeedbacks = jsonData["feedbacks"]
 		self.oscillatorStart = jsonData["oscillators"]["start"]
 		self.oscillatorMultiplier = jsonData["oscillators"]["multiplier"]
 		self.oscillatorCount = jsonData["oscillators"]["count"]
+		self.setOscillatorMode(jsonData["oscillators"].get("mode", "sin-v1"))
 		self.inputs = jsonData["inputs"]
 
 		for item in jsonData["capsules"]:
@@ -87,6 +93,8 @@ class CreatureStructure:
 			capsules.append(capsuleDictionary)
 
 		oscillators = { "start": self.oscillatorStart, "multiplier": self.oscillatorMultiplier, "count": self.oscillatorCount }
+		if getattr(self, "oscillatorMode", "sin-v1") != "sin-v1":
+			oscillators["mode"] = self.oscillatorMode
 
 		return { "capsules": capsules, "feedbacks": self.numFeedbacks, "oscillators": oscillators, "inputs": self.inputs }
 
@@ -101,7 +109,7 @@ class CreatureStructure:
 			if self.inputs[key] == 1:
 				numPerCreature += 1
 		if self.inputs["oscillators"] == 1:
-			numPerCreature += self.oscillatorCount
+			numPerCreature += self.oscillatorCount * (2 if getattr(self, "oscillatorMode", "sin-v1") == "sin-cos-v1" else 1)
 
 		# Per capsule:
 		numPerCapsule = 0

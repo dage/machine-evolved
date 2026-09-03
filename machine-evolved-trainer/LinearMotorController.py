@@ -21,6 +21,8 @@ class LinearMotorController():
 		self.layers = []
 		if stateJson == None:
 			self.schemaVersion = int(generatorJson.get("schemaVersion", 1))
+			self.commandMode = generatorJson.get("commandMode", "target-velocity-v1")
+			self.servo = generatorJson.get("servo")
 			# Create new randomized
 			currentNumInputs = numInputs
 			for layerConfig in generatorJson["layers"]:
@@ -37,11 +39,18 @@ class LinearMotorController():
 				currentNumInputs = outputSize
 		else:
 			self.schemaVersion = int(stateJson.get("schemaVersion", 1))
+			self.commandMode = stateJson.get("commandMode", "target-velocity-v1")
+			self.servo = stateJson.get("servo")
 			for i in range(0, len(stateJson["layers"])):
 				self.layers.append(stateJson["layers"][i])
 
 	def getJson(self):
-		return { "name": "LinearMotorController", "schemaVersion": self.schemaVersion, "layers": self.layers }
+		result = { "name": "LinearMotorController", "schemaVersion": self.schemaVersion, "layers": self.layers }
+		if self.commandMode != "target-velocity-v1":
+			result["commandMode"] = self.commandMode
+		if self.servo is not None:
+			result["servo"] = self.servo
+		return result
 
 	def serialize(self):
 		return json.dumps(getJson())

@@ -24,6 +24,9 @@ public:
 	void configure(pt::ptree config);
 	void destroy();
 	void tick(float);
+	bool usesV2Physics() const;
+	int getControlRateHz() const;
+	int getPhysicsRateHz() const;
 
 	btRigidBody* addCapsule(float innerHeight, float radius, btVector3 position, btQuaternion rotation);
 	btGeneric6DofConstraint* addConstraint(float offsetA, float offsetB, btRigidBody* bodyA, btRigidBody* bodyB, pt::ptree config);
@@ -49,6 +52,13 @@ private:
 	float capsuleLinearDamping = 0.f;
 	float capsuleAngularDamping = 0.f;
 	float capsuleMassScale = 0.0001f;
+	bool v2Physics = false;
+	bool capsuleCcdEnabled = false;
+	float ccdMotionThresholdRadiusRatio = 0.25f;
+	float ccdSweptSphereRadiusRatio = 0.2f;
+	int controlRateHz = 60;
+	int physicsRateHz = 60;
+	int physicsSubsteps = 1;
 
 	std::vector<float> getRange(std::string range, std::string seperator = ";");
 };

@@ -119,7 +119,7 @@ void BulletCreature::terminate() {
 	//printf("length = %f, samples=%i \n", length, stateCalibrationNumAdded);
 }
 
-std::vector<float> BulletCreature::getState(int tick) {
+std::vector<float> BulletCreature::getState(int tick, int controlRateHz) {
 	// Have been manually edited (so approximately match sin/cos) so that the different state elements are pretty close together, based on a simple in-efficient creature. TODO: Revisit this later
 	const float CALIBRATION_Z_POSITION = 5; // 50.;
 	const float CALIBRATION_VELOCITY = 7; //  50.;
@@ -166,11 +166,16 @@ std::vector<float> BulletCreature::getState(int tick) {
 	if (structure->inputs.velocityZ) state[stateIndex++] = velocityAccumulated.z()*CALIBRATION_VELOCITY;
 
 	if (structure->inputs.oscillators) {
-		float time = 1. / 60. * tick;
+		float time;
+		if (structure->oscillatorMode == "sin-v1" && controlRateHz == 60)
+			time = 1. / 60. * tick; // Preserve Bullet-v1's exact floating-point evaluation order.
+		else
+			time = 1.f / static_cast<float>(controlRateHz) * tick;
 		float current = structure->oscillatorStart;
 		for (int oscillatorIndex = 0; oscillatorIndex < structure->oscillatorCount; oscillatorIndex++) {
-			float oscillator = sin(current * time);
-			state[stateIndex++] = oscillator;
+			state[stateIndex++] = sin(current * time);
+			if (structure->oscillatorMode == "sin-cos-v1")
+				state[stateIndex++] = cos(current * time);
 
 			current *= structure->oscillatorMultiplier;
 		}

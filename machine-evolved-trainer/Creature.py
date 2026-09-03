@@ -5,24 +5,30 @@ from math import sqrt
 import random
 import json
 import uuid
+import copy
 
 class Creature():
 	# structureJson: Object hierarchy of actuall structure (capsules etc) if it exists from before
 	# generatorJson: Configuration for generator
-	def __init__(self, structureJson = None, generatorJson = None):
+	def __init__(self, structureJson = None, generatorJson = None, structureTemplate = None, morphologyId = None):
 		self.generatorJson = generatorJson
+		self.morphologyId = morphologyId
 		motorsJson = None
 		if structureJson:
 			self.structure = CreatureStructure(structureJson["structure"])
 			motorsJson = structureJson["motorController"]
+			self.morphologyId = structureJson.get("metadata", {}).get("morphologyId", morphologyId)
 			self.generatorType = "loaded"
+		elif structureTemplate:
+			self.structure = CreatureStructure(copy.deepcopy(structureTemplate))
+			self.generatorType = "template-{}".format(morphologyId or "unnamed")
 		else:
 			self.structure = self.createStructure()
 			self.generatorType = "randomized"
 		
 		self.motorController = LinearMotorController(self.structure.getNumInputs(), self.structure.getNumOutputs(), motorsJson, generatorJson["motorController"])
 
-		self.id = str(uuid.uuid4())
+		self.id = structureJson.get("metadata", {}).get("creatureId", str(uuid.uuid4())) if structureJson else str(uuid.uuid4())
 		self.nextFitnessLog = ""
 
 	# Picks a random number in a rangeStr (which is on format "FROM-TO")
@@ -32,7 +38,10 @@ class Creature():
 		return random.uniform(float(rangeNumeric[0]), float(rangeNumeric[1]))
 
 	def getJson(self):
-		return { "structure": self.structure.getJson(), "motorController": self.motorController.getJson() }
+		result = { "structure": self.structure.getJson(), "motorController": self.motorController.getJson() }
+		if self.morphologyId is not None:
+			result["metadata"] = { "morphologyId": self.morphologyId }
+		return result
 
 	def serialize(self):
 		return json.dumps(self.getJson())
@@ -55,6 +64,7 @@ class Creature():
 		structure.setOscillatorStart(self.generatorJson["oscillators"]["start"])
 		structure.setOscillatorMultiplier(self.generatorJson["oscillators"]["multiplier"])
 		structure.setOscillatorCount(self.generatorJson["oscillators"]["count"])
+		structure.setOscillatorMode(self.generatorJson["oscillators"].get("mode", "sin-v1"))
 
 		capsule = CAPSULE(
 			str(uuid.uuid4()),

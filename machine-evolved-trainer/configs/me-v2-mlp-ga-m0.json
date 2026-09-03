@@ -1,0 +1,283 @@
+{
+  "algorithm": {
+    "type": "GeneticAlgorithm",
+    "arguments": {
+      "population": {
+        "size": 96,
+        "generation": 0,
+        "evaluations": 0,
+        "eliteCount": 4,
+        "evaluationTimeoutSeconds": 180,
+        "checkpointIntervalSeconds": 60
+      },
+      "crossover": {
+        "rate": 0.1,
+        "competitionSize": {
+          "reproduce": 3,
+          "eliminate": 3
+        },
+        "numParameterChangedRatioRange": "0.05-0.3",
+        "changeRatioRange": "0.25-0.75"
+      },
+      "mutation": {
+        "rate": 0.5,
+        "competitionSize": {
+          "reproduce": 3,
+          "eliminate": 3
+        },
+        "parentSelection": "tournament-v1",
+        "config": {
+          "mode": "shared-offset-v1",
+          "numParameterChangedRatioRange": "0.01-0.15",
+          "offsetRange": "0.001;0.2",
+          "offsetSampling": "log-uniform-v1",
+          "offsetExponent": 1,
+          "randomizeSign": "yes"
+        }
+      }
+    }
+  },
+  "experiment": {
+    "schemaVersion": 2,
+    "backend": "machine-evolved-bullet-v2",
+    "profile": "me-v2-mlp-ga-m0",
+    "seed": 240903,
+    "coordinateSystem": {
+      "upAxis": "z",
+      "horizontalAxes": [
+        "x",
+        "y"
+      ],
+      "units": "simulation-units"
+    },
+    "objective": {
+      "id": "max-horizontal-distance-v1",
+      "horizonTicks": 3600,
+      "fixedStepHz": 60,
+      "penalties": []
+    },
+    "physics": {
+      "engine": "Bullet",
+      "version": "2.86-v2",
+      "controlRateHz": 60,
+      "physicsRateHz": 120,
+      "solverIterations": 20,
+      "splitImpulse": true,
+      "gravityX": 0,
+      "gravityY": 0,
+      "gravityZ": -100,
+      "groundFriction": 0.8,
+      "motorMaxForce": 5000,
+      "motorTargetVelocityLimit": 100,
+      "capsuleFriction": 0.8,
+      "capsuleRollingFriction": 0.02,
+      "capsuleSpinningFriction": 0.02,
+      "capsuleRestitution": 0,
+      "capsuleLinearDamping": 0,
+      "capsuleAngularDamping": 0,
+      "capsuleMassScale": 0.0001,
+      "capsuleCcdEnabled": true,
+      "ccdMotionThresholdRadiusRatio": 0.25,
+      "ccdSweptSphereRadiusRatio": 0.2
+    },
+    "evaluationDomains": [
+      {
+        "id": "nominal",
+        "physics": {}
+      },
+      {
+        "id": "slick",
+        "physics": {
+          "groundFriction": 0.45,
+          "capsuleFriction": 0.45
+        }
+      },
+      {
+        "id": "rough",
+        "physics": {
+          "groundFriction": 1.2,
+          "capsuleFriction": 1.2
+        }
+      }
+    ],
+    "robustAggregation": "half-min-plus-geometric-mean-v1",
+    "intent": [
+      "maximize robust horizontal distance",
+      "permit rolling and jump-assisted propulsion",
+      "reject only numerical invalidity"
+    ]
+  },
+  "structure": {
+    "generator": {
+      "capsuleRadiusRange": "10-20",
+      "capsuleInnerHeightRange": "50-100",
+      "numCapsules": 3,
+      "motors": {
+        "x-rotation": {
+          "range": "-1;1"
+        },
+        "y-rotation": {
+          "range": "-1;1"
+        },
+        "z-rotation": {
+          "range": "-1;1"
+        }
+      },
+      "feedbacks": 0,
+      "oscillators": {
+        "start": 0.1,
+        "multiplier": 2,
+        "count": 9
+      },
+      "inputs": {
+        "root-orientation-x": 1,
+        "root-orientation-y": 1,
+        "root-orientation-z": 1,
+        "root-orientation-w": 1,
+        "z-position": 1,
+        "velocity-x": 1,
+        "velocity-y": 1,
+        "velocity-z": 1,
+        "oscillators": 1,
+        "capsule-position-x": 1,
+        "capsule-position-y": 1,
+        "capsule-position-z": 1,
+        "capsule-velocity-x": 1,
+        "capsule-velocity-y": 1,
+        "capsule-velocity-z": 1,
+        "capsule-angular-velocity-x": 1,
+        "capsule-angular-velocity-y": 1,
+        "capsule-angular-velocity-z": 1,
+        "motor-angle-x": 1,
+        "motor-angle-y": 1,
+        "motor-angle-z": 1,
+        "feedbacks": 0
+      },
+      "motorController": {
+        "schemaVersion": 2,
+        "commandMode": "target-angle-servo-v1",
+        "servo": {
+          "targetAngleRangeRadians": 2.827433388,
+          "kp": 10,
+          "kd": 0.75,
+          "settlingSeconds": 1,
+          "rampSeconds": 1
+        },
+        "layers": [
+          {
+            "neurons": 50,
+            "activation": "tanh"
+          },
+          {
+            "neurons": 10,
+            "activation": "tanh"
+          },
+          {
+            "activation": "tanh"
+          }
+        ]
+      }
+    },
+    "templates": [
+      {
+        "id": "m0-champion-proportions",
+        "structure": {
+          "capsules": [
+            {
+              "id": "m0-champion-proportions-capsule-0",
+              "innerHeight": 82.7521957076658,
+              "radius": 18.78795045398938,
+              "positionX": 0.0,
+              "positionY": 0.0,
+              "positionZ": 22.0,
+              "quaternionX": 0.7071067811865475,
+              "quaternionY": 0.0,
+              "quaternionZ": 0.0,
+              "quaternionW": 0.7071067811865475,
+              "constraint": ""
+            },
+            {
+              "id": "m0-champion-proportions-capsule-1",
+              "innerHeight": 87.04240976588804,
+              "radius": 10.421538124883625,
+              "positionX": 0.0,
+              "positionY": -114.10679131564993,
+              "positionZ": 22.0,
+              "quaternionX": 0.7071067811865475,
+              "quaternionY": 0.0,
+              "quaternionZ": 0.0,
+              "quaternionW": 0.7071067811865475,
+              "constraint": {
+                "parentId": "m0-champion-proportions-capsule-0",
+                "x-rotation": {
+                  "range": "-1;1"
+                },
+                "y-rotation": {
+                  "range": "-1;1"
+                },
+                "z-rotation": {
+                  "range": "-1;1"
+                }
+              }
+            },
+            {
+              "id": "m0-champion-proportions-capsule-2",
+              "innerHeight": 60.50323125672853,
+              "radius": 10.996259171105123,
+              "positionX": 0.0,
+              "positionY": -209.29740912294696,
+              "positionZ": 22.0,
+              "quaternionX": 0.7071067811865475,
+              "quaternionY": 0.0,
+              "quaternionZ": 0.0,
+              "quaternionW": 0.7071067811865475,
+              "constraint": {
+                "parentId": "m0-champion-proportions-capsule-1",
+                "x-rotation": {
+                  "range": "-1;1"
+                },
+                "y-rotation": {
+                  "range": "-1;1"
+                },
+                "z-rotation": {
+                  "range": "-1;1"
+                }
+              }
+            }
+          ],
+          "feedbacks": 0,
+          "oscillators": {
+            "start": 0.1,
+            "multiplier": 2,
+            "count": 9
+          },
+          "inputs": {
+            "root-orientation-x": 1,
+            "root-orientation-y": 1,
+            "root-orientation-z": 1,
+            "root-orientation-w": 1,
+            "z-position": 1,
+            "velocity-x": 1,
+            "velocity-y": 1,
+            "velocity-z": 1,
+            "oscillators": 1,
+            "capsule-position-x": 1,
+            "capsule-position-y": 1,
+            "capsule-position-z": 1,
+            "capsule-velocity-x": 1,
+            "capsule-velocity-y": 1,
+            "capsule-velocity-z": 1,
+            "capsule-angular-velocity-x": 1,
+            "capsule-angular-velocity-y": 1,
+            "capsule-angular-velocity-z": 1,
+            "motor-angle-x": 1,
+            "motor-angle-y": 1,
+            "motor-angle-z": 1,
+            "feedbacks": 0
+          }
+        }
+      }
+    ],
+    "creatures": []
+  }
+}
