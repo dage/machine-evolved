@@ -1,6 +1,15 @@
 #include "CreatureBase.h"
 
 #include <algorithm>
+#include <cmath>
+
+namespace {
+float wrapAngle(float value) {
+	if (!std::isfinite(value))
+		return 0.f;
+	return std::remainder(value, 2.f * static_cast<float>(PI));
+}
+}
 
 CreatureBase::CreatureBase(
 	BulletInterface* bullet,
@@ -94,16 +103,15 @@ void CreatureBase::applyMotorForces() {
 		float targetVelocity = outputs[i];
 		if (commandMode == "target-angle-servo-v1") {
 			const float currentPosition = motor->m_currentPosition;
-			float delta = currentPosition - previousMotorPositions[i];
-			while (delta > static_cast<float>(PI)) delta -= 2.f * static_cast<float>(PI);
-			while (delta < -static_cast<float>(PI)) delta += 2.f * static_cast<float>(PI);
+			const float delta = wrapAngle(currentPosition - previousMotorPositions[i]);
 			const float relativeVelocity = delta * controlRateHz;
-			previousMotorPositions[i] = currentPosition;
+			previousMotorPositions[i] = std::isfinite(currentPosition) ? currentPosition : 0.f;
 
-			const float targetAngle = std::max(-1.f, std::min(1.f, outputs[i])) * servoAngleRange;
-			float error = targetAngle - currentPosition;
-			while (error > static_cast<float>(PI)) error -= 2.f * static_cast<float>(PI);
-			while (error < -static_cast<float>(PI)) error += 2.f * static_cast<float>(PI);
+			const float normalizedOutput = std::isfinite(outputs[i])
+				? std::max(-1.f, std::min(1.f, outputs[i]))
+				: 0.f;
+			const float targetAngle = normalizedOutput * servoAngleRange;
+			const float error = wrapAngle(targetAngle - currentPosition);
 			targetVelocity = servoKp * error - servoKd * relativeVelocity;
 
 			const int activeTick = numTicks - settlingTicks;
