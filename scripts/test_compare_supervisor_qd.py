@@ -11,11 +11,13 @@ SCRIPT = Path(__file__).with_name("compare-supervisor-qd.py")
 SPEC = importlib.util.spec_from_file_location("compare_supervisor_qd", SCRIPT)
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
+MISSING = object()
 
 
 def sample(timestamp, route_id="adaptive", route_label="Adaptive route", evaluations=10,
-           simulations=30, qd_score=5.0, occupied=2, best=4.0):
-    return {
+           simulations=30, qd_score=5.0, occupied=2, best=4.0,
+           measurement=MISSING):
+    result = {
         "capturedAt": f"2026-09-04T00:{int(timestamp) % 60:02d}:00+00:00",
         "capturedAtEpochSeconds": timestamp,
         "activeRouteId": route_id,
@@ -30,6 +32,9 @@ def sample(timestamp, route_id="adaptive", route_label="Adaptive route", evaluat
             "normalizedQdScore": 0.999,
         },
     }
+    if measurement is not MISSING:
+        result["measurementEpochSeconds"] = measurement
+    return result
 
 
 class CompareSupervisorQdTests(unittest.TestCase):
@@ -91,6 +96,12 @@ class CompareSupervisorQdTests(unittest.TestCase):
             self.assertEqual(route["finalPrimaryMetrics"]["candidateEvaluations"], 20.0)
             self.assertEqual(route["finalPrimaryMetrics"]["domainSimulations"], 30.0)
             self.assertEqual(route["finalPrimaryMetrics"]["elapsedWallSeconds"], 90.0)
+            self.assertEqual(route["finalPrimaryMetrics"]["measurementEpochSeconds"], 190)
+            self.assertEqual(
+                route["finalPrimaryMetrics"]["measurementTimeSource"],
+                "capturedAtEpochSeconds",
+            )
+            self.assertEqual(source["provenanceCounts"]["measurementTimeFallback"], 6)
             self.assertNotIn("generation", json.dumps(route).lower())
             self.assertEqual(len(routes), 1)
 
@@ -98,27 +109,86 @@ class CompareSupervisorQdTests(unittest.TestCase):
         points, exclusions = MODULE.monotonic_axis([
             {
                 "capturedAtEpochSeconds": 10.0,
+                "measurementEpochSeconds": 10.0,
                 "evaluations": 4,
                 "domainSimulations": 12,
                 "rawQdScore": 2.0,
+                "line": 1,
             },
             {
                 "capturedAtEpochSeconds": 20.0,
+                "measurementEpochSeconds": 20.0,
                 "evaluations": 4,
                 "domainSimulations": 12,
                 "rawQdScore": 3.0,
+                "line": 2,
             },
             {
                 "capturedAtEpochSeconds": 30.0,
+                "measurementEpochSeconds": 30.0,
                 "evaluations": 8,
                 "domainSimulations": 24,
                 "rawQdScore": 5.0,
+                "line": 3,
             },
         ], "candidateEvaluations")
         self.assertEqual([point["x"] for point in points], [4.0, 8.0])
         self.assertEqual(points[0]["rawQdScore"], 3.0)
         self.assertEqual(exclusions, {"duplicateXReplaced": 1})
         self.assertEqual(MODULE.trapezoidal_auc(points), 16.0)
+
+    def test_late_final_backfill_uses_measurement_time_not_append_time(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = self.write_source(directory, [
+                sample(100, evaluations=10, simulations=30, qd_score=5),
+                sample(200, evaluations=10, simulations=30, qd_score=5),
+                sample(
+                    250,
+                    evaluations=20,
+                    simulations=60,
+                    qd_score=9,
+                    measurement=150,
+                ),
+            ])
+            report, routes = MODULE.build_report_data(
+                [MODULE.parse_source(f"nightly={path}")],
+                [MODULE.parse_route_selector("adaptive=Adaptive QD")],
+                generated_at="2026-09-04T01:00:00+00:00",
+            )
+
+            route = report["routes"][0]
+            candidate = route["rawQdAuc"]["candidateEvaluations"]
+            domain = route["rawQdAuc"]["domainSimulations"]
+            elapsed = route["rawQdAuc"]["elapsedWallSeconds"]
+            self.assertEqual(candidate["trapezoidalRawQdAuc"], 70.0)
+            self.assertEqual(candidate["exclusions"], {"staleX": 1})
+            self.assertEqual(domain["trapezoidalRawQdAuc"], 210.0)
+            self.assertEqual(domain["exclusions"], {"staleX": 1})
+            self.assertEqual(elapsed["xEnd"], 50.0)
+            self.assertEqual(elapsed["trapezoidalRawQdAuc"], 350.0)
+            self.assertEqual(elapsed["exclusions"], {"laterRegressiveProgress": 1})
+            final = route["finalPrimaryMetrics"]
+            self.assertEqual(final["rawQdScore"], 9.0)
+            self.assertEqual(final["candidateEvaluations"], 20.0)
+            self.assertEqual(final["domainSimulations"], 60.0)
+            self.assertEqual(final["elapsedWallSeconds"], 50.0)
+            self.assertEqual(final["measurementEpochSeconds"], 150)
+            self.assertEqual(final["capturedAtEpochSeconds"], 250)
+            self.assertEqual(final["sourceLine"], 3)
+            self.assertEqual(final["captureDelaySeconds"], 100)
+            self.assertEqual(final["measurementTimeSource"], "measurementEpochSeconds")
+            self.assertEqual(
+                report["elapsedWallTimeBasis"]["fallbackSourceField"],
+                "capturedAtEpochSeconds",
+            )
+            self.assertEqual(
+                report["sourceCounts"][0]["provenanceCounts"],
+                {"measurementTimeFallback": 2, "outOfOrderMeasurement": 1},
+            )
+            self.assertEqual(
+                routes[0]["axes"]["elapsedWallSeconds"][-1]["measurementEpochSeconds"],
+                150.0,
+            )
 
     def test_cli_writes_three_offline_charts_and_json_summary(self):
         with tempfile.TemporaryDirectory() as directory:

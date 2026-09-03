@@ -128,6 +128,7 @@ def selector_for(
 
 def sample_signature(sample: dict[str, Any]) -> tuple[Any, ...]:
     return (
+        sample["measurementEpochSeconds"],
         sample["capturedAtEpochSeconds"],
         sample["evaluations"],
         sample["domainSimulations"],
@@ -147,6 +148,7 @@ def load_source(
         "path": str(path),
         "lineCounts": {"total": 0, "blank": 0, "decodedObjects": 0},
         "includedCoreSamples": 0,
+        "provenanceCounts": {},
         "exclusions": {},
     }
     grouped: dict[str, dict[str, Any]] = {}
@@ -183,6 +185,19 @@ def load_source(
             if raw_qd is None:
                 increment(source_summary["exclusions"], "missingOrInvalidRawQd")
                 continue
+            if "measurementEpochSeconds" in raw:
+                measurement_epoch = finite_number(raw.get("measurementEpochSeconds"))
+                if measurement_epoch is None or measurement_epoch < 0:
+                    increment(source_summary["exclusions"], "invalidMeasurementEpoch")
+                    continue
+                measurement_time_source = "measurementEpochSeconds"
+            else:
+                measurement_epoch = captured_epoch
+                measurement_time_source = "capturedAtEpochSeconds"
+                increment(source_summary["provenanceCounts"], "measurementTimeFallback")
+            if measurement_epoch > captured_epoch:
+                increment(source_summary["exclusions"], "measurementAfterCapture")
+                continue
 
             identity = route_id or f"label:{route_label}"
             group = grouped.setdefault(identity, {
@@ -190,13 +205,20 @@ def load_source(
                 "routeLabel": route_label,
                 "displayRouteLabel": selected["label"] if selected else (route_label or route_id),
                 "samples": [],
+                "provenanceCounts": {},
                 "exclusions": {},
+                "lastCapturedAtEpochSeconds": None,
+                "maxMeasurementEpochSeconds": None,
             })
             if route_label and group["routeLabel"] is None:
                 group["routeLabel"] = route_label
+            if measurement_time_source == "capturedAtEpochSeconds":
+                increment(group["provenanceCounts"], "measurementTimeFallback")
             sample = {
                 "capturedAt": raw.get("capturedAt"),
                 "capturedAtEpochSeconds": captured_epoch,
+                "measurementEpochSeconds": measurement_epoch,
+                "measurementTimeSource": measurement_time_source,
                 "evaluations": nonnegative_count(raw.get("evaluations")),
                 "domainSimulations": nonnegative_count(raw.get("domainSimulations")),
                 "rawQdScore": raw_qd,
@@ -205,23 +227,49 @@ def load_source(
                 "line": line_number,
             }
             samples = group["samples"]
-            if samples and captured_epoch < samples[-1]["capturedAtEpochSeconds"]:
+            last_capture = group["lastCapturedAtEpochSeconds"]
+            if last_capture is not None and captured_epoch < last_capture:
                 increment(group["exclusions"], "staleCapturedAt")
                 increment(source_summary["exclusions"], "staleCapturedAt")
                 continue
-            if samples and captured_epoch == samples[-1]["capturedAtEpochSeconds"]:
-                if sample_signature(sample) == sample_signature(samples[-1]):
-                    reason = "duplicateSample"
-                else:
-                    reason = "duplicateCapturedAtReplaced"
-                    samples[-1] = sample
-                increment(group["exclusions"], reason)
-                increment(source_summary["exclusions"], reason)
-                continue
+            group["lastCapturedAtEpochSeconds"] = captured_epoch
+            max_measurement = group["maxMeasurementEpochSeconds"]
+            if max_measurement is not None and measurement_epoch < max_measurement:
+                increment(group["provenanceCounts"], "outOfOrderMeasurement")
+                increment(source_summary["provenanceCounts"], "outOfOrderMeasurement")
+            group["maxMeasurementEpochSeconds"] = (
+                measurement_epoch
+                if max_measurement is None
+                else max(measurement_epoch, max_measurement)
+            )
             samples.append(sample)
 
     groups = []
     for identity, group in grouped.items():
+        ordered_samples = []
+        for sample in sorted(
+            group["samples"],
+            key=lambda item: (
+                item["measurementEpochSeconds"],
+                item["capturedAtEpochSeconds"],
+                item["line"],
+            ),
+        ):
+            if (
+                ordered_samples
+                and sample["measurementEpochSeconds"]
+                == ordered_samples[-1]["measurementEpochSeconds"]
+            ):
+                if sample_signature(sample) == sample_signature(ordered_samples[-1]):
+                    reason = "duplicateSample"
+                else:
+                    reason = "duplicateMeasurementReplaced"
+                ordered_samples[-1] = sample
+                increment(group["exclusions"], reason)
+                increment(source_summary["exclusions"], reason)
+                continue
+            ordered_samples.append(sample)
+        group["samples"] = ordered_samples
         source_summary["includedCoreSamples"] += len(group["samples"])
         group.update({
             "identity": identity,
@@ -248,10 +296,10 @@ def monotonic_axis(
     axis = AXES[axis_name]
     exclusions: dict[str, int] = {}
     points: list[dict[str, float]] = []
-    origin = samples[0]["capturedAtEpochSeconds"] if samples else 0.0
+    origin = samples[0]["measurementEpochSeconds"] if samples else 0.0
     for sample in samples:
         if axis["sampleKey"] is None:
-            x_value = sample["capturedAtEpochSeconds"] - origin
+            x_value = sample["measurementEpochSeconds"] - origin
         else:
             x_value = sample[axis["sampleKey"]]
             if x_value is None:
@@ -260,7 +308,9 @@ def monotonic_axis(
         point = {
             "x": float(x_value),
             "rawQdScore": float(sample["rawQdScore"]),
+            "measurementEpochSeconds": float(sample["measurementEpochSeconds"]),
             "capturedAtEpochSeconds": float(sample["capturedAtEpochSeconds"]),
+            "line": sample["line"],
         }
         if points and point["x"] < points[-1]["x"]:
             increment(exclusions, "staleX")
@@ -268,12 +318,27 @@ def monotonic_axis(
         if points and point["x"] == points[-1]["x"]:
             if point["rawQdScore"] == points[-1]["rawQdScore"]:
                 increment(exclusions, "duplicateX")
+                points[-1] = point
             else:
                 increment(exclusions, "duplicateXReplaced")
                 points[-1] = point
             continue
         points.append(point)
     return points, exclusions
+
+
+def regressive_sample_lines(samples: list[dict[str, Any]], sample_key: str) -> set[int]:
+    stale_lines = set()
+    last_x = None
+    for sample in samples:
+        x_value = sample[sample_key]
+        if x_value is None:
+            continue
+        if last_x is not None and x_value < last_x:
+            stale_lines.add(sample["line"])
+            continue
+        last_x = x_value
+    return stale_lines
 
 
 def axis_summary(points: list[dict[str, float]], exclusions: dict[str, int], unit: str) -> dict[str, Any]:
@@ -315,13 +380,39 @@ def build_report_data(
         samples = group["samples"]
         axes = {}
         chart_axes = {}
-        for axis_name, definition in AXES.items():
+        for axis_name in ("candidateEvaluations", "domainSimulations"):
+            definition = AXES[axis_name]
             points, exclusions = monotonic_axis(samples, axis_name)
             axes[axis_name] = axis_summary(points, exclusions, definition["unit"])
             chart_axes[axis_name] = points
-        final = samples[-1]
         candidate_points = chart_axes["candidateEvaluations"]
         domain_points = chart_axes["domainSimulations"]
+        candidate_stale = regressive_sample_lines(samples, "evaluations")
+        domain_stale = regressive_sample_lines(samples, "domainSimulations")
+        fully_stale = candidate_stale & domain_stale
+        final_candidates = [sample for sample in samples if sample["line"] not in fully_stale]
+        final_measurement_epoch = final_candidates[-1]["measurementEpochSeconds"]
+        elapsed_samples = [
+            sample for sample in samples
+            if sample["measurementEpochSeconds"] <= final_measurement_epoch
+        ]
+        elapsed_points, elapsed_exclusions = monotonic_axis(
+            elapsed_samples, "elapsedWallSeconds"
+        )
+        excluded_later_progress = sum(
+            sample["line"] in fully_stale
+            and sample["measurementEpochSeconds"] > final_measurement_epoch
+            for sample in samples
+        )
+        if excluded_later_progress:
+            elapsed_exclusions["laterRegressiveProgress"] = excluded_later_progress
+        axes["elapsedWallSeconds"] = axis_summary(
+            elapsed_points,
+            elapsed_exclusions,
+            AXES["elapsedWallSeconds"]["unit"],
+        )
+        chart_axes["elapsedWallSeconds"] = elapsed_points
+        final = final_candidates[-1]
         elapsed_points = chart_axes["elapsedWallSeconds"]
         route_summaries.append({
             "seriesLabel": group["seriesLabel"],
@@ -332,6 +423,7 @@ def build_report_data(
             "displayRouteLabel": group["displayRouteLabel"],
             "sampleCounts": {
                 "includedCoreSamples": len(samples),
+                "provenanceCounts": group["provenanceCounts"],
                 "coreExclusions": group["exclusions"],
             },
             "finalPrimaryMetrics": {
@@ -339,8 +431,14 @@ def build_report_data(
                 "candidateEvaluations": candidate_points[-1]["x"] if candidate_points else None,
                 "domainSimulations": domain_points[-1]["x"] if domain_points else None,
                 "elapsedWallSeconds": elapsed_points[-1]["x"] if elapsed_points else None,
+                "measurementEpochSeconds": final["measurementEpochSeconds"],
+                "measurementTimeSource": final["measurementTimeSource"],
                 "capturedAt": final["capturedAt"],
                 "capturedAtEpochSeconds": final["capturedAtEpochSeconds"],
+                "sourceLine": final["line"],
+                "captureDelaySeconds": (
+                    final["capturedAtEpochSeconds"] - final["measurementEpochSeconds"]
+                ),
             },
             "finalDiagnostics": {
                 "occupiedCells": final["occupiedCells"],
@@ -367,6 +465,11 @@ def build_report_data(
         },
         "comparisonAxes": list(AXES),
         "generationUsedForComparison": False,
+        "elapsedWallTimeBasis": {
+            "sourceField": "measurementEpochSeconds",
+            "fallbackSourceField": "capturedAtEpochSeconds",
+            "ordering": "ascending actual measurement time within each source/route",
+        },
         "sourceCounts": source_summaries,
         "routes": route_summaries,
     }
@@ -472,6 +575,10 @@ def render_chart(title: str, axis_name: str, routes: list[dict[str, Any]]) -> st
         )
     empty_note = '<p class="empty">No valid points were available for this axis.</p>' if not plotted else ""
     axis_title = AXES[axis_name]["title"]
+    time_note = (
+        " Elapsed wall time uses actual measurement time; capture time is retained only as provenance."
+        if axis_name == "elapsedWallSeconds" else ""
+    )
     generated_rows = "".join(rows)
     return f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -487,7 +594,7 @@ circle{{fill:var(--series);stroke:var(--panel);stroke-width:2}}.legend{{display:
 .legend span{{display:flex;gap:7px;align-items:center}}.legend i{{width:20px;height:3px;background:var(--series)}}.table-wrap{{overflow-x:auto}}
 table{{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}}th,td{{padding:9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}}
 th:first-child{{text-align:left}}thead th{{color:var(--muted)}}.empty{{padding:40px;text-align:center}}
-</style></head><body><main><h1>{html.escape(title)}</h1><p>Raw QD score vs {html.escape(axis_title.lower())}. Raw <code>qd.qdScore</code> is the primary outcome; samples are filtered and deduplicated without using generation.</p>
+</style></head><body><main><h1>{html.escape(title)}</h1><p>Raw QD score vs {html.escape(axis_title.lower())}. Raw <code>qd.qdScore</code> is the primary outcome; samples are filtered and deduplicated without using generation.{html.escape(time_note)}</p>
 <section class="panel">{empty_note}<svg viewBox="0 0 {width} {height}" role="img" aria-label="Raw QD score by {html.escape(axis_title.lower())}">{''.join(grid)}<line class="axis" x1="{left}" x2="{right}" y1="{bottom}" y2="{bottom}"/><line class="axis" x1="{left}" x2="{left}" y1="{top}" y2="{bottom}"/>{''.join(marks)}<text class="tick" x="{(left + right) / 2}" y="575" text-anchor="middle">{html.escape(axis_title)}</text><text class="tick" transform="translate(22 {(top + bottom) / 2}) rotate(-90)" text-anchor="middle">Raw QD score</text></svg><div class="legend">{''.join(legend)}</div></section>
 <section class="panel table-wrap"><table><thead><tr><th>Route series</th><th>Points</th><th>Final x</th><th>Final raw QD</th><th>Trapezoidal raw-QD AUC</th></tr></thead><tbody>{generated_rows}</tbody></table></section>
 </main></body></html>'''

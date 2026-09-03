@@ -26,7 +26,12 @@ The report excludes malformed records, samples without a route, capture time,
 or finite raw QD, and source-order time regressions. It records those exclusions
 in `route-summary.json`. Candidate-evaluation and domain-simulation views are
 deduplicated independently and reject regressing counters. Elapsed wall time is
-measured from the first valid sample for that source/route and intentionally
-retains later plateau samples, because time spent at a plateau is real wall
-time. Each axis reports its observed support and trapezoidal raw-QD AUC; the
-script does not extrapolate before the first or after the last observed point.
+ordered and measured by `measurementEpochSeconds`, which lets a delayed final
+sample be appended after a later idle record without charging capture delay to
+the experiment. When that field is absent, the capture epoch is the measurement
+epoch. Both epochs, the chosen time source, and final capture delay remain in
+the JSON provenance. Later samples whose candidate and domain counters both
+regress cannot extend elapsed wall time. Ordinary non-regressing plateaus remain
+part of wall time. Each axis reports its observed support and trapezoidal raw-QD
+AUC; the script does not extrapolate before the first or after the last observed
+point.
