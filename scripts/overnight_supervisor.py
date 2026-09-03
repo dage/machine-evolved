@@ -34,6 +34,7 @@ RUN_NAME_PATTERN = re.compile(r"^[A-Za-z0-9._-]+$")
 THROUGHPUT_DEFINITION = "route-first-last-checkpoint-mtime-v1"
 SELECTOR_ARM_COUNTERS = (
     "selections", "attempts", "outcomes", "failures", "invalidOutcomes",
+    "terminalFailures",
     "coverageGains", "replacements", "rejections", "globalBests",
     "positiveQdGain", "normalizedReward",
 )
@@ -249,8 +250,10 @@ def adaptive_selector_summary(config: dict) -> dict:
         "totalOutcomes": int(state.get("totalOutcomes", 0)),
         "totalFailures": int(state.get("totalFailures", 0)),
         "totalInvalidOutcomes": int(state.get("totalInvalidOutcomes", 0)),
+        "totalTerminalFailures": int(state.get("totalTerminalFailures", 0)),
         "totalPositiveQdGain": float(state.get("totalPositiveQdGain", 0.0)),
         "totalNormalizedReward": float(state.get("totalNormalizedReward", 0.0)),
+        "telemetryBaseline": state.get("telemetryBaseline"),
         "outcomes": {
             key: sum(arm[key] for arm in emitters.values())
             for key in ("coverageGains", "replacements", "rejections", "globalBests")

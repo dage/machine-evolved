@@ -181,11 +181,17 @@ class SupervisorTest(unittest.TestCase):
                     "totalOutcomes": 5,
                     "totalFailures": 1,
                     "totalInvalidOutcomes": 1,
+                    "totalTerminalFailures": 1,
                     "totalPositiveQdGain": 9.5,
                     "totalNormalizedReward": 0.75,
+                    "telemetryBaseline": {
+                        "kind": "fresh-run", "selection": 0, "outcome": 0,
+                        "completeBeforeBaseline": True,
+                    },
                     "arms": {"small-independent": {
                         "selections": 7, "attempts": 6, "outcomes": 5,
                         "failures": 1, "invalidOutcomes": 1,
+                        "terminalFailures": 1,
                         "coverageGains": 2, "replacements": 1,
                         "rejections": 2, "globalBests": 1,
                         "positiveQdGain": 9.5, "normalizedReward": 0.75,
@@ -406,12 +412,15 @@ class SupervisorTest(unittest.TestCase):
         self.assertEqual(selector["totalOutcomes"], 5)
         self.assertEqual(selector["totalFailures"], 1)
         self.assertEqual(selector["totalInvalidOutcomes"], 1)
+        self.assertEqual(selector["totalTerminalFailures"], 1)
         self.assertEqual(selector["totalPositiveQdGain"], 9.5)
         self.assertEqual(selector["totalNormalizedReward"], 0.75)
         self.assertEqual(selector["outcomes"], {
             "coverageGains": 2, "replacements": 1, "rejections": 2, "globalBests": 1,
         })
         self.assertEqual(selector["emitters"]["small-independent"]["selections"], 7)
+        self.assertEqual(selector["emitters"]["small-independent"]["terminalFailures"], 1)
+        self.assertEqual(selector["telemetryBaseline"]["kind"], "fresh-run")
         self.assertEqual(
             sample["throughput"]["definition"],
             "route-first-last-checkpoint-mtime-v1",
