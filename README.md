@@ -118,3 +118,19 @@ scripts/export-replay.sh \
 The exporter does not train or mutate the saved population. Its reported
 measured distance should match the selected creature's saved fitness under the
 strict floating-point build profile.
+
+To prepare a deterministic validation set without launching a worker, export
+the top four creatures overall and the top four within every morphology from a
+MAP-Elites checkpoint:
+
+```sh
+scripts/export-map-elites-replay-selection.py \
+  --checkpoint /path/to/map-elites-checkpoint.json \
+  --output-dir /path/to/selection
+```
+
+The output contains one compact replay config per unique selected creature and
+`selection-manifest.json`. The manifest binds every config to the source
+checkpoint and creature hashes, records overall and per-morphology ranks, and
+keeps the saved robust fitness distinct from the expected first-domain replay
+fitness. Use `--top N` to change both selection limits.
