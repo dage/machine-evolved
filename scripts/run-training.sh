@@ -9,6 +9,7 @@ config=""
 evaluations=""
 minutes=""
 workers=4
+startup_seconds=120
 seed=""
 stall_evaluations=""
 reset_fitness=false
@@ -19,7 +20,7 @@ hard_deadline_epoch=""
 deadline_signal_epoch=""
 
 usage() {
-  echo "Usage: $0 --config FILE (--evaluations N | --minutes N) [--workers N] [--seed N] [--stall-evaluations N] [--reset-fitness] [--run-name NAME]"
+  echo "Usage: $0 --config FILE (--evaluations N | --minutes N) [--workers N] [--startup-seconds N] [--seed N] [--stall-evaluations N] [--reset-fitness] [--run-name NAME]"
 }
 
 positive_integer() {
@@ -32,6 +33,7 @@ while [[ $# -gt 0 ]]; do
     --evaluations) evaluations=${2:-}; shift 2 ;;
     --minutes) minutes=${2:-}; shift 2 ;;
     --workers) workers=${2:-}; shift 2 ;;
+    --startup-seconds) startup_seconds=${2:-}; shift 2 ;;
     --seed) seed=${2:-}; shift 2 ;;
     --stall-evaluations) stall_evaluations=${2:-}; shift 2 ;;
     --reset-fitness) reset_fitness=true; shift ;;
@@ -67,6 +69,10 @@ if [[ -n "$evaluations" && -n "$minutes" ]]; then
 fi
 if ! positive_integer "$workers"; then
   echo "--workers must be a positive integer." >&2
+  exit 2
+fi
+if ! positive_integer "$startup_seconds"; then
+  echo "--startup-seconds must be a positive integer." >&2
   exit 2
 fi
 if [[ -n "$seed" && ! "$seed" =~ ^[0-9]+$ ]]; then
@@ -150,9 +156,15 @@ if [[ -n "$minutes" ]]; then
   hard_deadline_epoch=$(awk -v start="$(date +%s)" -v duration="$duration_seconds" 'BEGIN { printf "%.0f", start + duration + 30 }')
 fi
 
-python3 -c 'import json, socket, sys, time
-deadline = time.time() + 10
+python3 -c 'import json, os, socket, sys, time
+trainer_pid = int(sys.argv[1])
+startup_seconds = int(sys.argv[2])
+deadline = time.time() + startup_seconds
 while time.time() < deadline:
+    try:
+        os.kill(trainer_pid, 0)
+    except ProcessLookupError:
+        sys.exit("trainer exited before becoming ready")
     try:
         with socket.create_connection(("127.0.0.1", 9999), timeout=0.2) as connection:
             connection.sendall(b"{\"type\":\"PING\"}")
@@ -161,7 +173,7 @@ while time.time() < deadline:
                 sys.exit(0)
     except (OSError, json.JSONDecodeError):
         time.sleep(0.05)
-sys.exit("trainer did not become ready within 10 seconds")'
+sys.exit(f"trainer did not become ready within {startup_seconds} seconds")' "$trainer_pid" "$startup_seconds"
 
 if ! kill -0 "$trainer_pid" 2>/dev/null; then
   wait "$trainer_pid"
