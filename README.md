@@ -76,9 +76,12 @@ Each run contributes a solid best-robust-fitness line and a dashed occupied-
 population mean line. Re-running the command refreshes the output from the
 latest valid sample in each `progress.jsonl` file.
 
-Progress records also retain raw QD score, the explicit current-best/empty-cell
-normalization definition, top-5 and top-12 archive summaries, per-morphology
-quality summaries, and durable adaptive-emitter attempt and outcome counters.
+Progress records retain raw QD score as the primary comparison, top-5 and top-12
+archive summaries, per-morphology quality summaries, and durable adaptive-emitter
+attempt and outcome counters. Without an explicit reference, normalized QD is
+reported only as a sample-relative diagnostic and is marked non-comparable. Pass
+the same frozen full-archive denominator to every capture with
+`--qd-normalization-reference` to populate the comparable `normalizedQdScore`.
 
 `scripts/advance-double-gravity-experiment.sh` is the idempotent handoff used
 by the 15-minute monitor for the current gravity comparison. It waits for the
@@ -92,14 +95,16 @@ MAP-Elites can opt into the four-arm adaptive emitter with
 block must retain its normal `config` bounds and provide the existing broad
 `largeConfig` bounds. Optional selector fields are `windowSize`,
 `warmupSelectionsPerArm`, `minExplorationRate` (at least `0.05`),
-`ucbExploration`, and `rewardClip`. The selector compares small independent,
-large independent, fresh-template, and small shared-offset emitters; its state
-is checkpointed inside `adaptiveSelector.state`, including selections,
-evaluation attempts, invalid outcomes, failures, positive QD gain, coverage,
-replacement, rejection, and global-best counts per emitter. Configurations
-without the enabled gate continue to use the original static emitter path.
-Selections count emitted children, attempts count dispatched domain work units,
-and outcomes count candidates after all configured domains are aggregated.
+`ucbExploration`, `rewardClip`, and `maxFailedAttemptsPerChild`. The selector
+compares small independent, large independent, fresh-template, and small
+shared-offset emitters; its state is checkpointed inside `adaptiveSelector.state`,
+including selections, evaluation attempts, invalid outcomes, failures, terminal
+child failures, positive QD gain, coverage, replacement, rejection, and
+global-best counts per emitter. Configurations without the enabled gate continue
+to use the original static emitter path. Selections count emitted children,
+attempts and failures count dispatched domain work units, and outcomes count
+children after aggregation or terminal abandonment. A terminally abandoned child
+contributes exactly one zero-reward outcome.
 
 ## Browser replay export
 

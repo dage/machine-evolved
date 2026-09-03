@@ -23,6 +23,7 @@ class AdaptiveEmitterSelector:
 		self.minExplorationRate = float(config.get("minExplorationRate", 0.05))
 		self.ucbExploration = float(config.get("ucbExploration", math.sqrt(2.0)))
 		self.rewardClip = float(config.get("rewardClip", 1.0))
+		self.maxFailedAttemptsPerChild = int(config.get("maxFailedAttemptsPerChild", 3))
 		if self.windowSize < 1:
 			raise ValueError("adaptiveSelector.windowSize must be positive")
 		if self.warmupSelectionsPerArm < 1:
@@ -31,6 +32,8 @@ class AdaptiveEmitterSelector:
 			raise ValueError("adaptiveSelector.minExplorationRate must be at least 0.05 and leave room for UCB")
 		if self.ucbExploration < 0 or self.rewardClip <= 0:
 			raise ValueError("adaptiveSelector UCB exploration and reward clip must be non-negative and positive")
+		if self.maxFailedAttemptsPerChild < 1:
+			raise ValueError("adaptiveSelector.maxFailedAttemptsPerChild must be positive")
 
 		state = config.get("state")
 		if state is None:
@@ -47,10 +50,17 @@ class AdaptiveEmitterSelector:
 			"totalOutcomes": 0,
 			"totalFailures": 0,
 			"totalInvalidOutcomes": 0,
+			"totalTerminalFailures": 0,
 			"totalPositiveQdGain": 0.0,
 			"totalNormalizedReward": 0.0,
 			"currentBest": None,
 			"rewardWindow": [],
+			"telemetryBaseline": {
+				"kind": "fresh-run",
+				"selection": 0,
+				"outcome": 0,
+				"completeBeforeBaseline": True,
+			},
 			"arms": {
 				emitterId: {
 					"selections": 0,
@@ -58,6 +68,7 @@ class AdaptiveEmitterSelector:
 					"outcomes": 0,
 					"failures": 0,
 					"invalidOutcomes": 0,
+					"terminalFailures": 0,
 					"positiveQdGain": 0.0,
 					"normalizedReward": 0.0,
 					"coverageGains": 0,
@@ -74,7 +85,30 @@ class AdaptiveEmitterSelector:
 			raise ValueError("Unsupported adaptive emitter selector state schema")
 		if set(state.get("arms", {})) != set(self.ARMS):
 			raise ValueError("Adaptive emitter selector state has different arms")
-		for key in ("totalAttempts", "totalFailures", "totalInvalidOutcomes"):
+		topLevelCounters = (
+			"totalAttempts", "totalFailures", "totalInvalidOutcomes", "totalTerminalFailures",
+			"totalPositiveQdGain", "totalNormalizedReward",
+		)
+		armCounters = (
+			"attempts", "failures", "invalidOutcomes", "terminalFailures",
+			"positiveQdGain", "normalizedReward", "rejections", "globalBests",
+		)
+		missingCounters = any(key not in state for key in topLevelCounters) or any(
+			key not in arm for arm in state["arms"].values() for key in armCounters)
+		if missingCounters and "telemetryBaseline" not in state:
+			state["telemetryBaseline"] = {
+				"kind": "migrated-counter-reset",
+				"selection": int(state.get("totalSelections", 0)),
+				"outcome": int(state.get("totalOutcomes", 0)),
+				"completeBeforeBaseline": False,
+			}
+		state.setdefault("telemetryBaseline", {
+			"kind": "existing-counters",
+			"selection": 0,
+			"outcome": 0,
+			"completeBeforeBaseline": True,
+		})
+		for key in ("totalAttempts", "totalFailures", "totalInvalidOutcomes", "totalTerminalFailures"):
 			state.setdefault(key, 0)
 		for key in ("totalPositiveQdGain", "totalNormalizedReward"):
 			state.setdefault(key, 0.0)
@@ -86,11 +120,11 @@ class AdaptiveEmitterSelector:
 				raise ValueError("Adaptive emitter selector reward observation is invalid")
 		for emitterId in self.ARMS:
 			arm = state["arms"][emitterId]
-			for key in ("attempts", "failures", "invalidOutcomes", "rejections", "globalBests"):
+			for key in ("attempts", "failures", "invalidOutcomes", "terminalFailures", "rejections", "globalBests"):
 				arm.setdefault(key, 0)
 			for key in ("positiveQdGain", "normalizedReward"):
 				arm.setdefault(key, 0.0)
-			for key in ("selections", "attempts", "outcomes", "failures", "invalidOutcomes", "coverageGains", "replacements", "rejections", "globalBests"):
+			for key in ("selections", "attempts", "outcomes", "failures", "invalidOutcomes", "terminalFailures", "coverageGains", "replacements", "rejections", "globalBests"):
 				if int(arm.get(key, -1)) < 0:
 					raise ValueError("Adaptive emitter selector state contains a negative count")
 			for key in ("positiveQdGain", "normalizedReward"):
@@ -135,13 +169,34 @@ class AdaptiveEmitterSelector:
 		]
 		return self._leastSelected(ready) if ready else None
 
+	def _outstandingBalancedArm(self):
+		"""Keep delayed feedback from letting any arm build an arbitrary lead."""
+		outstanding = {
+			emitterId: max(
+				0,
+				int(self.state["arms"][emitterId]["selections"])
+				- int(self.state["arms"][emitterId]["outcomes"]),
+			)
+			for emitterId in self.ARMS
+		}
+		minimum = min(outstanding.values())
+		lagging = [emitterId for emitterId in self.ARMS if outstanding[emitterId] == minimum]
+		if len(lagging) == len(self.ARMS):
+			return None
+		return self._leastSelected(lagging)
+
 	def _ucbScore(self, emitterId):
 		rewards = self._recentRewards(emitterId)
-		if not rewards:
+		arm = self.state["arms"][emitterId]
+		outstanding = max(0, int(arm["selections"]) - int(arm["outcomes"]))
+		effectivePulls = len(rewards) + outstanding
+		if effectivePulls == 0:
 			return float("-inf")
-		meanReward = sum(rewards) / len(rewards)
-		total = max(2, len(self.state["rewardWindow"]))
-		return meanReward + self.ucbExploration * math.sqrt(math.log(total) / len(rewards))
+		meanReward = sum(rewards) / effectivePulls
+		total = max(2, len(self.state["rewardWindow"]) + sum(
+			max(0, int(candidate["selections"]) - int(candidate["outcomes"]))
+			for candidate in self.state["arms"].values()))
+		return meanReward + self.ucbExploration * math.sqrt(math.log(total) / effectivePulls)
 
 	def selectEmitter(self, controllerSignatureOrLength, morphologyId):
 		"""Select an emitter using only opaque controller and morphology context."""
@@ -158,6 +213,8 @@ class AdaptiveEmitterSelector:
 			emitterId = self._floorArm()
 			if emitterId is None:
 				emitterId = self._feedbackBalancedArm()
+			if emitterId is None:
+				emitterId = self._outstandingBalancedArm()
 			if emitterId is None:
 				emitterId = max(self.ARMS, key=lambda candidate: (self._ucbScore(candidate), -self.ARMS.index(candidate)))
 
@@ -181,6 +238,20 @@ class AdaptiveEmitterSelector:
 		if invalidOutcome:
 			arm["invalidOutcomes"] += 1
 			self.state["totalInvalidOutcomes"] += 1
+		return True
+
+	def recordTerminalFailure(self, controllerSignatureOrLength, morphologyId, emitterId):
+		_ = controllerSignatureOrLength, morphologyId
+		if emitterId not in self.state["arms"]:
+			return False
+		arm = self.state["arms"][emitterId]
+		arm["outcomes"] += 1
+		arm["terminalFailures"] += 1
+		self.state["totalOutcomes"] += 1
+		self.state["totalTerminalFailures"] += 1
+		self.state["rewardWindow"].append({"emitterId": emitterId, "reward": 0.0})
+		if len(self.state["rewardWindow"]) > self.windowSize:
+			del self.state["rewardWindow"][:-self.windowSize]
 		return True
 
 	def recordOutcome(self, controllerSignatureOrLength, morphologyId, fitness, descriptor, insertionResult, qdDelta, emitterId):

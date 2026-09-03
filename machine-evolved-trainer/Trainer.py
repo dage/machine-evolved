@@ -390,7 +390,11 @@ class Trainer():
 					arguments["mutation"],
 					structure,
 					arguments["archive"],
-					{ "saveState": self.saveState })
+					{
+						"saveState": self.saveState,
+						"abandonCreature": self.abandonCreature,
+						"expireEvaluation": self.expireEvaluation,
+					})
 			else:
 				sys.exit("Algorithm type must be 'GeneticAlgorithm' or 'MapElites'. Got '" + algorithmType + "'");
 
@@ -463,6 +467,16 @@ class Trainer():
 	def terminateSession(self):
 		print("terminate!!")
 
+	def abandonCreature(self, creatureId):
+		self.domainProgress.pop(creatureId, None)
+		self.domainQueue = [queuedId for queuedId in self.domainQueue if queuedId != creatureId]
+		for evaluationId, context in list(self.evaluationContexts.items()):
+			if context.get("creatureId") == creatureId:
+				self.evaluationContexts.pop(evaluationId, None)
+
+	def expireEvaluation(self, evaluationId):
+		self.evaluationContexts.pop(evaluationId, None)
+
 	def requestStop(self, reason, message):
 		with self.stateLock:
 			self._requestStop(reason, message)
@@ -514,7 +528,9 @@ class Trainer():
 			return "FAIL"
 		if not self.algorithm.isCurrentEvaluation(creatureId, data.get("evaluationId")):
 			if hasattr(self.algorithm, "recordEmitterFailure"):
-				self.algorithm.recordEmitterFailure(creature.emitterId, invalidOutcome=True)
+				self.algorithm.recordEmitterFailure(
+					creature.emitterId, invalidOutcome=True, creatureId=creatureId,
+					evaluationId=data.get("evaluationId"))
 			print("Ignoring stale or duplicate evaluation result for creature {}.".format(creatureId))
 			return "FAIL"
 
@@ -524,12 +540,16 @@ class Trainer():
 			simulatedTime = float(data["simulatedTime"])
 		except (KeyError, TypeError, ValueError, OverflowError):
 			if hasattr(self.algorithm, "recordEmitterFailure"):
-				self.algorithm.recordEmitterFailure(creature.emitterId, invalidOutcome=True)
+				self.algorithm.recordEmitterFailure(
+					creature.emitterId, invalidOutcome=True, creatureId=creatureId,
+					evaluationId=data.get("evaluationId"))
 			print("Ignoring evaluation result for creature {} because its distance, fitness, or simulated time is not numeric.".format(creatureId))
 			return "FAIL"
 		if not math.isfinite(rawDistance) or not math.isfinite(fitness) or not math.isfinite(simulatedTime):
 			if hasattr(self.algorithm, "recordEmitterFailure"):
-				self.algorithm.recordEmitterFailure(creature.emitterId, invalidOutcome=True)
+				self.algorithm.recordEmitterFailure(
+					creature.emitterId, invalidOutcome=True, creatureId=creatureId,
+					evaluationId=data.get("evaluationId"))
 			print("Ignoring evaluation result for creature {} because its distance, fitness, or simulated time is not finite.".format(creatureId))
 			return "FAIL"
 		try:
@@ -540,14 +560,20 @@ class Trainer():
 			rollingExplainedFraction = float(motion.get("rollingExplainedFraction", 0.0))
 		except (TypeError, ValueError, OverflowError):
 			if hasattr(self.algorithm, "recordEmitterFailure"):
-				self.algorithm.recordEmitterFailure(creature.emitterId, invalidOutcome=True)
+				self.algorithm.recordEmitterFailure(
+					creature.emitterId, invalidOutcome=True, creatureId=creatureId,
+					evaluationId=data.get("evaluationId"))
 			print("Ignoring evaluation result for creature {} because its motion descriptor is not numeric.".format(creatureId))
 			return "FAIL"
 		if not math.isfinite(nearGroundTimeFraction) or not math.isfinite(rollingExplainedFraction):
 			if hasattr(self.algorithm, "recordEmitterFailure"):
-				self.algorithm.recordEmitterFailure(creature.emitterId, invalidOutcome=True)
+				self.algorithm.recordEmitterFailure(
+					creature.emitterId, invalidOutcome=True, creatureId=creatureId,
+					evaluationId=data.get("evaluationId"))
 			print("Ignoring evaluation result for creature {} because its motion descriptor is not finite.".format(creatureId))
 			return "FAIL"
+		if hasattr(self.algorithm, "completeEmitterAttempt"):
+			self.algorithm.completeEmitterAttempt(creatureId, data.get("evaluationId"))
 
 		#print("fitness={}".format(fitness))
 
@@ -754,7 +780,7 @@ class Trainer():
 			controlRateHz = int(physics.get("controlRateHz", objective.get("fixedStepHz", 60)))
 			evaluationId = self.algorithm.startEvaluation(creature.id)
 			if not getBestForPlayback and hasattr(self.algorithm, "recordEmitterAttempt"):
-				self.algorithm.recordEmitterAttempt(creature.emitterId)
+				self.algorithm.recordEmitterAttempt(creature.emitterId, creature.id, evaluationId)
 			self.evaluationContexts[evaluationId] = {"creatureId": creature.id, "domainId": domain.get("id", "nominal")}
 			taskJson = {
 				"name": "MOVE_FAR",

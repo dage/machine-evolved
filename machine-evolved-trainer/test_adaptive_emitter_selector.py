@@ -5,6 +5,7 @@ import random
 import threading
 import time
 import unittest
+from unittest import mock
 from pathlib import Path
 
 from AdaptiveEmitterSelector import AdaptiveEmitterSelector
@@ -45,6 +46,20 @@ class AdaptiveEmitterSelectorTest(unittest.TestCase):
 		self.assertEqual(
 			{emitterId: selector.state["arms"][emitterId]["selections"] for emitterId in selector.ARMS},
 			{emitterId: 48 for emitterId in selector.ARMS})
+
+	def test_first_returning_arm_does_not_monopolize_delayed_feedback_ucb(self):
+		selector = self.createSelector()
+		for _ in range(192):
+			selector.selectEmitter(198, "morphology")
+		self.record(selector, "small-independent", 100.0)
+		before = {emitterId: selector.state["arms"][emitterId]["selections"] for emitterId in selector.ARMS}
+		for _ in range(40):
+			selector.selectEmitter(198, "morphology")
+		additional = {
+			emitterId: selector.state["arms"][emitterId]["selections"] - before[emitterId]
+			for emitterId in selector.ARMS
+		}
+		self.assertLessEqual(max(additional.values()) - min(additional.values()), 2)
 
 	def test_productive_arm_receives_most_post_warmup_allocations(self):
 		selector = self.createSelector(ucbExploration=0.15)
@@ -119,14 +134,32 @@ class AdaptiveEmitterSelectorTest(unittest.TestCase):
 	def test_additive_counters_resume_from_the_initial_selector_state_schema(self):
 		selector = self.createSelector()
 		legacyState = copy.deepcopy(selector.state)
-		for key in ("totalAttempts", "totalFailures", "totalInvalidOutcomes", "totalPositiveQdGain", "totalNormalizedReward"):
+		legacyState["totalSelections"] = 23
+		legacyState["totalOutcomes"] = 7
+		for key in ("totalAttempts", "totalFailures", "totalInvalidOutcomes", "totalTerminalFailures", "totalPositiveQdGain", "totalNormalizedReward"):
 			legacyState.pop(key)
+		legacyState.pop("telemetryBaseline")
 		for arm in legacyState["arms"].values():
-			for key in ("attempts", "failures", "invalidOutcomes", "positiveQdGain", "normalizedReward", "rejections", "globalBests"):
+			for key in ("attempts", "failures", "invalidOutcomes", "terminalFailures", "positiveQdGain", "normalizedReward", "rejections", "globalBests"):
 				arm.pop(key)
 		reloaded = self.createSelector(state=legacyState)
 		self.assertEqual(reloaded.state["totalAttempts"], 0)
 		self.assertTrue(all(arm["positiveQdGain"] == 0.0 for arm in reloaded.state["arms"].values()))
+		self.assertEqual(reloaded.state["telemetryBaseline"], {
+			"kind": "migrated-counter-reset",
+			"selection": 23,
+			"outcome": 7,
+			"completeBeforeBaseline": False,
+		})
+
+	def test_fresh_state_marks_a_complete_zero_baseline(self):
+		selector = self.createSelector()
+		self.assertEqual(selector.state["telemetryBaseline"], {
+			"kind": "fresh-run",
+			"selection": 0,
+			"outcome": 0,
+			"completeBeforeBaseline": True,
+		})
 
 	def test_state_round_trips_without_changing_the_next_choice(self):
 		selector = self.createSelector()
@@ -228,6 +261,8 @@ class AdaptiveMapElitesIntegrationTest(unittest.TestCase):
 			"timeStamp": time.monotonic(),
 		}
 		trainer.finalizeStop = lambda: None
+		algorithm.callbacks["abandonCreature"] = trainer.abandonCreature
+		algorithm.callbacks["expireEvaluation"] = trainer.expireEvaluation
 		return trainer
 
 	def test_config_gate_leaves_legacy_emitter_path_and_rng_sequence_intact(self):
@@ -281,9 +316,11 @@ class AdaptiveMapElitesIntegrationTest(unittest.TestCase):
 		random.seed(88)
 		algorithm = self.createAlgorithm(config)
 		self.evaluateNext(algorithm, 10.0)
+		next(iter(algorithm.pending.values())).emitterFailureCount = 2
 		saved = algorithm.getCreaturesWithFitnessJson()
 		pending = next(item for item in saved if item["fitness"] is None)
 		self.assertEqual(pending["data"]["metadata"]["emitterId"], "small-independent")
+		self.assertEqual(pending["data"]["metadata"]["emitterFailureCount"], 2)
 
 		reloadConfig = self.adaptiveConfig()
 		reloadConfig["algorithm"]["arguments"]["mutation"]["adaptiveSelector"] = copy.deepcopy(
@@ -292,6 +329,33 @@ class AdaptiveMapElitesIntegrationTest(unittest.TestCase):
 		reloaded = self.createAlgorithm(reloadConfig)
 		restored = next(creature for creature in reloaded.pending.values() if creature.id == pending["data"]["metadata"]["creatureId"])
 		self.assertEqual(restored.emitterId, "small-independent")
+		self.assertEqual(restored.emitterFailureCount, 2)
+
+	def test_resume_terminally_accounts_for_a_child_already_at_the_failure_bound(self):
+		config = self.adaptiveConfig()
+		config["algorithm"]["arguments"]["mutation"]["adaptiveSelector"]["maxFailedAttemptsPerChild"] = 2
+		random.seed(89)
+		algorithm = self.createAlgorithm(config)
+		self.evaluateNext(algorithm, 10.0)
+		failedChild = next(iter(algorithm.pending.values()))
+		failedChild.emitterFailureCount = 2
+		algorithm.adaptiveSelector.recordFailure(failedChild.emitterId)
+		algorithm.adaptiveSelector.recordFailure(failedChild.emitterId)
+		saved = algorithm.getCreaturesWithFitnessJson()
+		checkpointMutation = copy.deepcopy(config["algorithm"]["arguments"]["mutation"])
+
+		reloadConfig = self.adaptiveConfig()
+		reloadConfig["algorithm"]["arguments"]["mutation"] = checkpointMutation
+		reloadConfig["structure"]["creatures"] = saved
+		reloaded = self.createAlgorithm(reloadConfig)
+
+		self.assertNotIn(failedChild.id, reloaded.pending)
+		self.assertEqual(reloaded.adaptiveSelector.state["totalTerminalFailures"], 1)
+		self.assertEqual(reloaded.adaptiveSelector.state["totalOutcomes"], 1)
+		self.assertEqual(reloaded.adaptiveSelector.state["totalSelections"], 2)
+		self.assertEqual(reloaded.adaptiveSelector.state["rewardWindow"][-1], {
+			"emitterId": "small-independent", "reward": 0.0,
+		})
 
 	def test_checkpoint_resume_matches_uninterrupted_next_emission(self):
 		config = self.adaptiveConfig()
@@ -443,6 +507,66 @@ class AdaptiveMapElitesIntegrationTest(unittest.TestCase):
 		self.assertEqual(state["replacements"], 1)
 		self.assertEqual(state["globalBests"], 1)
 		self.assertEqual(state["positiveQdGain"], 2.0)
+
+	def test_failed_domain_attempt_is_counted_once_and_terminal_child_gets_one_zero_outcome(self):
+		config = self.adaptiveConfig()
+		config["algorithm"]["arguments"]["mutation"]["adaptiveSelector"]["maxFailedAttemptsPerChild"] = 2
+		config.setdefault("experiment", {})["evaluationDomains"] = [{"id": "nominal"}]
+		random.seed(391)
+		algorithm = self.createAlgorithm(config)
+		self.evaluateNext(algorithm, 10.0)
+		trainer = self.createBareTrainer(config, algorithm)
+
+		firstWork = trainer.getWorkUnserialized(False)
+		creatureId = firstWork["task"]["id"]
+		firstEvaluationId = firstWork["task"]["evaluationId"]
+		invalid = {
+			"experimentId": trainer.experimentId,
+			"evaluationId": firstEvaluationId,
+			"id": creatureId,
+			"maxDistance": 1.0,
+			"fitness": float("nan"),
+			"simulatedTime": 1.0,
+		}
+		self.assertEqual(trainer.registerResult(invalid, finalizeStop=False), "FAIL")
+		self.assertEqual(trainer.registerResult(invalid, finalizeStop=False), "FAIL")
+		missingEvaluationId = copy.deepcopy(invalid)
+		missingEvaluationId.pop("evaluationId")
+		self.assertEqual(trainer.registerResult(missingEvaluationId, finalizeStop=False), "FAIL")
+		arm = algorithm.adaptiveSelector.state["arms"]["small-independent"]
+		self.assertEqual((arm["attempts"], arm["failures"], arm["invalidOutcomes"]), (1, 1, 1))
+		self.assertEqual(algorithm.adaptiveSelector.state["rewardWindow"], [])
+
+		started = algorithm.inFlight[creatureId]
+		with mock.patch("MapElites.time.monotonic", return_value=started + 181.0):
+			algorithm.maintainPopulation()
+		self.assertIsNotNone(algorithm.getCreature(creatureId))
+		self.assertEqual((arm["failures"], arm["invalidOutcomes"]), (1, 1))
+		self.assertNotIn(firstEvaluationId, trainer.evaluationContexts)
+		self.assertEqual(trainer.registerResult(invalid, finalizeStop=False), "FAIL")
+		self.assertEqual((arm["failures"], arm["invalidOutcomes"]), (1, 1))
+
+		secondWork = trainer.getWorkUnserialized(False)
+		self.assertEqual(secondWork["task"]["id"], creatureId)
+		secondEvaluationId = secondWork["task"]["evaluationId"]
+		trainer.domainProgress[creatureId] = {"results": [{"domainId": "earlier-domain"}]}
+		trainer.domainQueue.append(creatureId)
+		started = algorithm.inFlight[creatureId]
+		with mock.patch("MapElites.time.monotonic", return_value=started + 181.0):
+			algorithm.maintainPopulation()
+
+		self.assertIsNone(algorithm.getCreature(creatureId))
+		self.assertNotIn(creatureId, trainer.domainProgress)
+		self.assertNotIn(creatureId, trainer.domainQueue)
+		self.assertNotIn(secondEvaluationId, trainer.evaluationContexts)
+		self.assertEqual(
+			{key: arm[key] for key in ("attempts", "outcomes", "failures", "invalidOutcomes", "terminalFailures")},
+			{"attempts": 2, "outcomes": 1, "failures": 2, "invalidOutcomes": 1, "terminalFailures": 1})
+		self.assertEqual(algorithm.adaptiveSelector.state["totalTerminalFailures"], 1)
+		self.assertEqual(algorithm.adaptiveSelector.state["rewardWindow"][-1], {
+			"emitterId": "small-independent", "reward": 0.0,
+		})
+		self.assertEqual(algorithm.adaptiveSelector.state["totalSelections"], 2)
 
 
 if __name__ == "__main__":

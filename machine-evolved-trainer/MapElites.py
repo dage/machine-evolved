@@ -21,6 +21,7 @@ class MapElitesAlgorithm:
 		self.pending = {}
 		self.inFlight = {}
 		self.activeEvaluationIds = {}
+		self.evaluationAttempts = {}
 		self.archive = {}
 		self.lastInsertionResult = None
 		selectorConfig = mutationConfig.get("adaptiveSelector")
@@ -45,6 +46,9 @@ class MapElitesAlgorithm:
 		self.lastInsertionResult = None
 		if self.adaptiveSelector is not None:
 			self.adaptiveSelector.observeFitness(self.getBestFitness())
+			for creature in list(self.pending.values()):
+				if creature.emitterId is not None and creature.emitterFailureCount >= self.adaptiveSelector.maxFailedAttemptsPerChild:
+					self._terminallyAbandon(creature)
 
 		initialSize = int(populationConfig.get("size", 192))
 		while len(self.pending) + len(self.archive) < initialSize:
@@ -182,8 +186,16 @@ class MapElitesAlgorithm:
 		for creatureId, started in list(self.inFlight.items()):
 			if time.monotonic() - started > timeout:
 				creature = self.pending.get(creatureId)
-				if creature is not None and self.adaptiveSelector is not None:
-					self.adaptiveSelector.recordFailure(creature.emitterId)
+				evaluationId = self.activeEvaluationIds.get(creatureId)
+				if creature is not None:
+					if self.adaptiveSelector is not None and evaluationId is not None:
+						self.recordEmitterFailure(creature.emitterId, creatureId=creatureId, evaluationId=evaluationId)
+						expireCallback = self.callbacks.get("expireEvaluation")
+						if expireCallback is not None:
+							expireCallback(evaluationId)
+					if self.adaptiveSelector is not None and creature.emitterId is not None and creature.emitterFailureCount >= self.adaptiveSelector.maxFailedAttemptsPerChild:
+						self._terminallyAbandon(creature)
+						continue
 				self.inFlight.pop(creatureId, None)
 				self.activeEvaluationIds.pop(creatureId, None)
 		if time.monotonic() - self.saveStateTimestamp > float(self.populationConfig.get("checkpointIntervalSeconds", 60)):
@@ -212,15 +224,58 @@ class MapElitesAlgorithm:
 	def continueEvaluation(self, creatureId):
 		self.activeEvaluationIds.pop(creatureId, None)
 
-	def recordEmitterAttempt(self, emitterId):
+	def recordEmitterAttempt(self, emitterId, creatureId=None, evaluationId=None):
 		if self.adaptiveSelector is not None:
-			return self.adaptiveSelector.recordAttempt(emitterId)
+			recorded = self.adaptiveSelector.recordAttempt(emitterId)
+			if recorded and creatureId is not None and evaluationId is not None:
+				self.evaluationAttempts[evaluationId] = {
+					"creatureId": creatureId,
+					"emitterId": emitterId,
+					"status": "active",
+				}
+			return recorded
 		return False
 
-	def recordEmitterFailure(self, emitterId, invalidOutcome=False):
+	def recordEmitterFailure(self, emitterId, invalidOutcome=False, creatureId=None, evaluationId=None):
 		if self.adaptiveSelector is not None:
+			if creatureId is not None:
+				if evaluationId is None:
+					return False
+				attempt = self.evaluationAttempts.get(evaluationId)
+				if attempt is None or attempt["status"] != "active" or attempt["creatureId"] != creatureId:
+					return False
+				attempt["status"] = "failed"
+				emitterId = attempt["emitterId"]
+				creature = self.pending.get(creatureId)
+				if creature is not None:
+					creature.emitterFailureCount += 1
 			return self.adaptiveSelector.recordFailure(emitterId, invalidOutcome)
 		return False
+
+	def completeEmitterAttempt(self, creatureId, evaluationId):
+		attempt = self.evaluationAttempts.get(evaluationId)
+		if attempt is None or attempt["status"] != "active" or attempt["creatureId"] != creatureId:
+			return False
+		attempt["status"] = "completed"
+		return True
+
+	def _clearEmitterAttempts(self, creatureId):
+		for evaluationId, attempt in list(self.evaluationAttempts.items()):
+			if attempt["creatureId"] == creatureId:
+				self.evaluationAttempts.pop(evaluationId, None)
+
+	def _terminallyAbandon(self, creature):
+		creatureId = creature.id
+		self.pending.pop(creatureId, None)
+		self.inFlight.pop(creatureId, None)
+		self.activeEvaluationIds.pop(creatureId, None)
+		self._clearEmitterAttempts(creatureId)
+		self.adaptiveSelector.recordTerminalFailure(
+			creature.motorController.getNumParameters(), creature.morphologyId, creature.emitterId)
+		abandonCallback = self.callbacks.get("abandonCreature")
+		if abandonCallback is not None:
+			abandonCallback(creatureId)
+		self._queueChild(creature.motorController.getNumParameters(), creature.morphologyId)
 
 	def setCreatureEvaluation(self, creatureId, fitness, behavior, domainScores):
 		creature = self.pending.pop(creatureId, None)
@@ -228,6 +283,7 @@ class MapElitesAlgorithm:
 			return False
 		self.inFlight.pop(creatureId, None)
 		self.activeEvaluationIds.pop(creatureId, None)
+		self._clearEmitterAttempts(creatureId)
 		inserted = self._insertArchive(creature, fitness, behavior, domainScores)
 		insertionResult = self.lastInsertionResult
 		if self.adaptiveSelector is not None:

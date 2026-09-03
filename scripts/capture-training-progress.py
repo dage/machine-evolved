@@ -22,10 +22,10 @@ def top_fitness_summary(fitnesses, count):
 	}
 
 
-def normalized_qd_score(fitnesses, best_fitness, total_cells):
-	if not fitnesses or best_fitness is None or best_fitness <= 0 or total_cells <= 0:
+def normalized_qd_score(fitnesses, denominator):
+	if not fitnesses or denominator is None or denominator <= 0:
 		return None
-	return sum(max(0.0, fitness) for fitness in fitnesses) / (float(best_fitness) * total_cells)
+	return sum(max(0.0, fitness) for fitness in fitnesses) / float(denominator)
 
 
 def selector_summary(config):
@@ -33,7 +33,7 @@ def selector_summary(config):
 	state = selector.get("state", {}) if isinstance(selector, dict) else {}
 	arm_keys = (
 		"selections", "attempts", "outcomes", "failures", "invalidOutcomes",
-		"coverageGains", "replacements", "rejections", "globalBests",
+		"terminalFailures", "coverageGains", "replacements", "rejections", "globalBests",
 		"positiveQdGain", "normalizedReward",
 	)
 	emitters = {
@@ -52,14 +52,16 @@ def selector_summary(config):
 		"totalOutcomes": int(state.get("totalOutcomes", 0)),
 		"totalFailures": int(state.get("totalFailures", 0)),
 		"totalInvalidOutcomes": int(state.get("totalInvalidOutcomes", 0)),
+		"totalTerminalFailures": int(state.get("totalTerminalFailures", 0)),
 		"totalPositiveQdGain": float(state.get("totalPositiveQdGain", 0.0)),
 		"totalNormalizedReward": float(state.get("totalNormalizedReward", 0.0)),
 		"outcomes": outcome_totals,
 		"emitters": emitters,
+		"telemetryBaseline": state.get("telemetryBaseline"),
 	}
 
 
-def summarize(config):
+def summarize(config, qd_normalization_reference=None):
 	arguments = config["algorithm"]["arguments"]
 	population = arguments["population"]
 	state = config.get("experiment", {}).get("trainerState", {})
@@ -80,6 +82,11 @@ def summarize(config):
 		by_morphology.setdefault(identifier, []).append(float(item["fitness"]))
 	morphology_count = max(1, len(template_ids | set(by_morphology)))
 	total_archive_cells = cells_per_morphology * morphology_count
+	if qd_normalization_reference is not None and qd_normalization_reference <= 0:
+		raise ValueError("QD normalization reference must be positive")
+	sample_denominator = best_fitness * total_archive_cells if best_fitness is not None and best_fitness > 0 else None
+	normalization_denominator = qd_normalization_reference
+	normalization_kind = "frozen-shared" if normalization_denominator is not None else "sample-relative-diagnostic"
 	top5 = top_fitness_summary(fitnesses, 5)
 	top12 = top_fitness_summary(fitnesses, 12)
 	return {
@@ -93,11 +100,15 @@ def summarize(config):
 		"occupiedCells": len(archived),
 		"partialCandidates": len(state.get("domainProgress", {})),
 		"qdScore": sum(fitnesses),
-		"normalizedQdScore": normalized_qd_score(fitnesses, best_fitness, total_archive_cells),
+		"normalizedQdScore": normalized_qd_score(fitnesses, normalization_denominator),
+		"sampleRelativeNormalizedQdScore": normalized_qd_score(fitnesses, sample_denominator),
 		"normalizedQdDefinition": {
-			"formula": "sum(max(0, cellFitness)) / (currentBestRobustFitness * totalArchiveCells)",
+			"kind": normalization_kind,
+			"comparableAcrossSamples": normalization_denominator is not None,
+			"formula": "sum(max(0, cellFitness)) / frozenSharedDenominator" if normalization_denominator is not None else "sum(max(0, cellFitness)) / (sampleBestRobustFitness * sampleTotalArchiveCells)",
 			"emptyCellFitness": 0.0,
-			"fitnessReference": "currentBestRobustFitness",
+			"denominator": normalization_denominator if normalization_denominator is not None else sample_denominator,
+			"fitnessReference": "frozen-shared" if normalization_denominator is not None else "sample-best-diagnostic-only",
 			"totalArchiveCells": total_archive_cells,
 			"cellsPerMorphology": cells_per_morphology,
 			"morphologyCount": morphology_count,
@@ -111,7 +122,8 @@ def summarize(config):
 				"bestRobustFitness": max(values),
 				"meanFitness": sum(values) / len(values),
 				"qdScore": sum(values),
-				"normalizedQdScore": normalized_qd_score(values, best_fitness, cells_per_morphology),
+				"normalizedQdScore": normalized_qd_score(values, normalization_denominator),
+				"sampleRelativeNormalizedQdScore": normalized_qd_score(values, sample_denominator),
 				"top5": top_fitness_summary(values, 5),
 				"top12": top_fitness_summary(values, 12),
 			}
@@ -133,14 +145,17 @@ def main():
 	parser.add_argument("--config", type=Path, required=True)
 	parser.add_argument("--output", type=Path, required=True)
 	parser.add_argument("--summary", type=Path)
+	parser.add_argument("--qd-normalization-reference", type=float)
 	parser.add_argument("--interval-seconds", type=float, default=30)
 	parser.add_argument("--once", action="store_true")
 	args = parser.parse_args()
 	if args.interval_seconds <= 0:
 		raise ValueError("--interval-seconds must be positive")
+	if args.qd_normalization_reference is not None and args.qd_normalization_reference <= 0:
+		raise ValueError("--qd-normalization-reference must be positive")
 	while True:
 		try:
-			append_record(args.output, summarize(read_json(args.config)))
+			append_record(args.output, summarize(read_json(args.config), args.qd_normalization_reference))
 		except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError) as error:
 			append_record(args.output, {"capturedAt": datetime.now(timezone.utc).isoformat(), "captureError": str(error)})
 		if args.once or (args.summary and args.summary.exists()):

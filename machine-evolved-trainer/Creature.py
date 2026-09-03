@@ -14,6 +14,7 @@ class Creature():
 		self.generatorJson = generatorJson
 		self.morphologyId = morphologyId
 		self.emitterId = None
+		self.emitterFailureCount = 0
 		motorsJson = None
 		if structureJson:
 			self.structure = CreatureStructure(structureJson["structure"])
@@ -21,6 +22,7 @@ class Creature():
 			metadata = structureJson.get("metadata", {})
 			self.morphologyId = metadata.get("morphologyId", morphologyId)
 			self.emitterId = metadata.get("emitterId")
+			self.emitterFailureCount = int(metadata.get("emitterFailureCount", 0))
 			self.generatorType = "loaded"
 		elif structureTemplate:
 			self.structure = CreatureStructure(copy.deepcopy(structureTemplate))
@@ -47,6 +49,8 @@ class Creature():
 			metadata["morphologyId"] = self.morphologyId
 		if self.emitterId is not None:
 			metadata["emitterId"] = self.emitterId
+			if self.emitterFailureCount:
+				metadata["emitterFailureCount"] = self.emitterFailureCount
 		if metadata:
 			result["metadata"] = metadata
 		return result
