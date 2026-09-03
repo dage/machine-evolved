@@ -61,6 +61,7 @@ class FakeSystem:
             "ppid": 1,
             "pgid": pid,
             "startedAt": f"start-{pid}",
+            "startedAtEpochSeconds": self.now,
             "cpuPercent": 1.0,
             "command": " ".join(command),
         })
@@ -143,6 +144,7 @@ class SupervisorTest(unittest.TestCase):
                 "ppid": launcher_pid,
                 "pgid": launcher_pid,
                 "startedAt": "trainer-start",
+                "startedAtEpochSeconds": self.system.now,
                 "cpuPercent": 12.5,
                 "command": f"python3 {self.root}/machine-evolved-trainer/Trainer.py config.json",
             },
@@ -151,6 +153,7 @@ class SupervisorTest(unittest.TestCase):
                 "ppid": launcher_pid,
                 "pgid": launcher_pid,
                 "startedAt": "worker-start",
+                "startedAtEpochSeconds": self.system.now,
                 "cpuPercent": 780.0,
                 "command": f"{self.root}/build/shellworker --threads {threads}",
             },
@@ -162,7 +165,12 @@ class SupervisorTest(unittest.TestCase):
         run_dir.mkdir(parents=True, exist_ok=True)
         (run_dir / "config.json").write_text(json.dumps({
             "algorithm": {"arguments": {"population": {"evaluations": evaluations, "generation": 2}}},
-            "experiment": {"trainerState": {"evaluationSimulations": evaluations * 3}},
+            "experiment": {"trainerState": {
+                "evaluationSimulations": evaluations * 3,
+                "bestFitnessEvaluation": max(0, evaluations - 2),
+                "domainProgress": {"pending": {}},
+            }},
+            "structure": {"creatures": [{"fitness": 2.5}, {"fitness": 3.5}, {"fitness": None}]},
         }))
 
     def test_immutable_precise_epoch_survives_restart(self):
@@ -244,6 +252,51 @@ class SupervisorTest(unittest.TestCase):
         supervisor.signal_recorded(None, signal.SIGTERM)
         self.assertNotIn((101, signal.SIGTERM), self.system.signals)
         self.assertIn((100, signal.SIGTERM), self.system.signals)
+
+    def test_exec_command_change_keeps_owner_and_adopts_children(self):
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.system.process_table[0]["command"] = self.system.process_table[0]["command"].replace(
+            "/bin/bash", "/usr/bin/env bash", 1
+        )
+        self.add_owned_runtime()
+        owned = supervisor.reconcile_owned_processes()
+        self.assertEqual([item["pid"] for item in owned], [100, 101, 102])
+        self.assertEqual(supervisor.state["activeRouteId"], "primary")
+
+    def test_repairs_already_misclassified_live_attempt(self):
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.add_owned_runtime()
+        supervisor.finish_attempt("process_exit", True)
+        self.assertIsNone(supervisor.state["activeRouteId"])
+        supervisor.tick()
+        self.assertEqual(supervisor.state["activeRouteId"], "primary")
+        self.assertEqual(supervisor.state["routes"]["primary"]["status"], "running")
+        self.assertEqual(supervisor.state["routes"]["primary"]["attemptHistory"], [])
+        self.assertEqual([item["pid"] for item in supervisor.state["ownedProcesses"]], [100, 101, 102])
+
+    def test_compact_metrics_append_every_thirty_seconds_with_qd(self):
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.add_owned_runtime()
+        self.write_checkpoint("run-primary", 12)
+        initial_count = len((self.state_dir / "metrics.jsonl").read_text().splitlines())
+        self.system.advance(29)
+        supervisor.tick()
+        self.assertEqual(len((self.state_dir / "metrics.jsonl").read_text().splitlines()), initial_count)
+        self.system.advance(1)
+        supervisor.tick()
+        lines = (self.state_dir / "metrics.jsonl").read_text().splitlines()
+        self.assertEqual(len(lines), initial_count + 1)
+        sample = json.loads(lines[-1])
+        self.assertEqual(sample["evaluations"], 12)
+        self.assertEqual(sample["domainSimulations"], 36)
+        self.assertEqual(sample["qd"]["occupiedCells"], 2)
+        self.assertEqual(sample["qd"]["bestFitness"], 3.5)
+        self.assertTrue(sample["workers"]["verified"])
+        self.assertEqual(sample["diskFreeBytes"], 99_000)
+        self.assertGreater(sample["deadlineRemainingSeconds"], 0)
 
     def test_three_rapid_crashes_abandon_primary_and_select_fallback(self):
         self.write_queue([

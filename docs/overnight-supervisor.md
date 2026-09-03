@@ -22,6 +22,9 @@ heartbeat is appended at most sixty seconds after the preceding heartbeat. The
 state reports process liveness, checkpoint evaluation/generation progress,
 evaluation throughput, queue depth, aggregate owned-process CPU, free disk,
 checkpoint age, power source, port ownership, and worker verification.
+It also appends a compact `metrics.jsonl` sample every thirty seconds with the
+evaluation/domain counts, throughput, available QD archive metrics, liveness,
+eight-worker confirmation, CPU, disk, checkpoint age, and remaining deadline.
 
 After three minutes without an accepted evaluation, the supervisor sends SIGINT
 only to a recorded Trainer identity, allows the configured checkpoint grace,

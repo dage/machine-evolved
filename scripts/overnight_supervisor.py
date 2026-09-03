@@ -15,8 +15,10 @@ import datetime as dt
 import fcntl
 import hashlib
 import json
+import math
 import os
 import re
+import shlex
 import shutil
 import signal
 import subprocess
@@ -27,6 +29,7 @@ from pathlib import Path
 
 SCHEMA_VERSION = 1
 HEARTBEAT_SECONDS = 60
+METRICS_SECONDS = 30
 RUN_NAME_PATTERN = re.compile(r"^[A-Za-z0-9._-]+$")
 
 
@@ -287,6 +290,9 @@ class RealSystem:
                     "ppid": int(fields[1]),
                     "pgid": int(fields[2]),
                     "startedAt": " ".join(fields[3:8]),
+                    "startedAtEpochSeconds": time.mktime(
+                        time.strptime(" ".join(fields[3:8]), "%a %b %d %H:%M:%S %Y")
+                    ),
                     "cpuPercent": float(fields[8]),
                     "command": fields[9],
                 })
@@ -344,6 +350,7 @@ class Supervisor:
         self.state_path = self.state_dir / "orchestrator-state.json"
         self.epoch_path = self.state_dir / "epoch.json"
         self.heartbeat_path = self.state_dir / "heartbeats.jsonl"
+        self.metrics_path = self.state_dir / "metrics.jsonl"
         self.lock_path = self.state_dir / "supervisor.lock"
         self.lock_file = None
         self.state: dict = {}
@@ -411,6 +418,7 @@ class Supervisor:
                 "metrics": {},
                 "events": [],
                 "lastHeartbeatEpochSeconds": None,
+                "lastMetricsEpochSeconds": None,
             }
         self.state["epoch"] = epoch
         self.reconcile_owned_processes()
@@ -425,16 +433,27 @@ class Supervisor:
             and self.system.monotonic() >= epoch["hardDeadlineMonotonicSeconds"]
         )
 
+    def deadline_remaining_seconds(self) -> float:
+        epoch = self.state["epoch"]
+        remaining = epoch["hardDeadlineEpochSeconds"] - self.system.epoch()
+        if self.system.boot_id() == epoch["bootId"]:
+            remaining = min(
+                remaining,
+                epoch["hardDeadlineMonotonicSeconds"] - self.system.monotonic(),
+            )
+        return max(0, remaining)
+
     def current_processes(self) -> list[dict]:
         return self.system.processes()
 
     @staticmethod
     def identity_matches(recorded: dict, current: dict) -> bool:
+        # argv/ps command is diagnostic, not identity: a shebang launch can exec
+        # /usr/bin/env -> bash without changing the owned PID, PGID, or birth.
         return (
             recorded.get("pid") == current.get("pid")
             and recorded.get("pgid") == current.get("pgid")
             and recorded.get("startedAt") == current.get("startedAt")
-            and recorded.get("command") == current.get("command")
         )
 
     def reconcile_owned_processes(self, processes: list[dict] | None = None) -> list[dict]:
@@ -503,9 +522,35 @@ class Supervisor:
             append_json_line(self.heartbeat_path, heartbeat)
             self.state["lastHeartbeatEpochSeconds"] = now
             atomic_json(self.state_path, self.state)
+        last_metrics = self.state.get("lastMetricsEpochSeconds")
+        if last_metrics is None or now - last_metrics >= METRICS_SECONDS:
+            metrics = self.state.get("metrics", {})
+            progress = metrics.get("progress") or {}
+            sample = {
+                "capturedAt": utc_timestamp(now),
+                "capturedAtEpochSeconds": now,
+                "status": self.state.get("status"),
+                "reason": self.state.get("reason"),
+                "activeRouteId": self.state.get("activeRouteId"),
+                "evaluations": progress.get("evaluations"),
+                "domainSimulations": progress.get("domainSimulations"),
+                "generation": progress.get("generation"),
+                "throughputEvaluationsPerMinute": metrics.get("throughputEvaluationsPerMinute"),
+                "qd": progress.get("qd"),
+                "liveness": metrics.get("liveness"),
+                "workers": metrics.get("workers"),
+                "cpuPercent": metrics.get("cpuPercent"),
+                "diskFreeBytes": (metrics.get("disk") or {}).get("freeBytes"),
+                "checkpointAgeSeconds": progress.get("checkpointAgeSeconds"),
+                "deadlineRemainingSeconds": self.deadline_remaining_seconds(),
+            }
+            append_json_line(self.metrics_path, sample)
+            self.state["lastMetricsEpochSeconds"] = now
+            atomic_json(self.state_path, self.state)
 
     def route_command(self, route: dict, resume: bool) -> list[str]:
         command = [
+            "/bin/bash",
             str(self.config["repository"] / "scripts" / "run-training.sh"),
             "--config", route["config"],
             "--evaluations", str(route["evaluationCap"]),
@@ -577,6 +622,62 @@ class Supervisor:
             if ledger["status"] not in ("completed", "abandoned"):
                 return ledger["definition"]
         return None
+
+    @staticmethod
+    def command_ends_with(current_command: str, expected: list[str]) -> bool:
+        try:
+            current = shlex.split(current_command)
+        except ValueError:
+            return False
+        return len(current) >= len(expected) and current[-len(expected):] == expected
+
+    def recover_false_process_exit(self, queue: list[dict], processes: list[dict]) -> bool:
+        """Re-adopt a launcher discarded only because its argv changed on exec.
+
+        This is intentionally narrow enough to repair the original live launch:
+        same PID, same process group, birth within two seconds of the recorded
+        spawn, and a command whose argv ends in the exact persisted launch vector.
+        """
+        if self.state.get("activeRouteId"):
+            return False
+        queue_by_id = {route["id"]: route for route in queue if route["enabled"]}
+        by_pid = {process["pid"]: process for process in processes}
+        for route_id, ledger in self.state.get("routes", {}).items():
+            history = ledger.get("attemptHistory") or []
+            queued = queue_by_id.get(route_id)
+            if (
+                queued is None
+                or route_digest(queued) != ledger.get("definitionDigest")
+                or ledger.get("status") != "pending"
+                or not history
+            ):
+                continue
+            attempt = history[-1]
+            if attempt.get("endReason") != "process_exit":
+                continue
+            launcher = by_pid.get(attempt.get("launcherPid"))
+            if not launcher or launcher.get("pgid") != attempt.get("processGroupId"):
+                continue
+            started_epoch = launcher.get("startedAtEpochSeconds")
+            if started_epoch is None or abs(started_epoch - attempt["startedAtEpochSeconds"]) > 2:
+                continue
+            if not self.command_ends_with(launcher.get("command", ""), attempt.get("command", [])):
+                continue
+            restored = history.pop()
+            for key in ("endedAt", "endedAtEpochSeconds", "endReason", "exitCode"):
+                restored.pop(key, None)
+            restored["ownedProcesses"] = []
+            ledger["activeAttempt"] = restored
+            ledger["status"] = "running"
+            ledger["nextStartNotBeforeEpochSeconds"] = None
+            ledger["consecutiveRapidCrashes"] = max(0, ledger["consecutiveRapidCrashes"] - 1)
+            self.state["activeRouteId"] = route_id
+            self.state["status"] = "running"
+            self.state["reason"] = None
+            self.event("route-ownership-recovered", f"{route_id} attempt {restored['number']}")
+            self.reconcile_owned_processes(processes)
+            return True
+        return False
 
     def start_route(self, route: dict) -> None:
         ledger = self.ensure_route_ledger(route)
@@ -650,6 +751,7 @@ class Supervisor:
             "generation": None,
             "domainSimulations": None,
             "readError": None,
+            "qd": None,
         }
         if not checkpoint.is_file():
             return result
@@ -658,11 +760,25 @@ class Supervisor:
             value = read_json(checkpoint)
             population = value["algorithm"]["arguments"]["population"]
             trainer_state = value.get("experiment", {}).get("trainerState", {})
+            fitnesses = []
+            for item in value.get("structure", {}).get("creatures", []):
+                if item.get("fitness") is None:
+                    continue
+                fitness = float(item["fitness"])
+                if math.isfinite(fitness):
+                    fitnesses.append(fitness)
             result.update({
                 "checkpointAgeSeconds": max(0, self.system.epoch() - stat.st_mtime),
                 "evaluations": int(population.get("evaluations", 0)),
                 "generation": int(population.get("generation", 0)),
                 "domainSimulations": int(trainer_state.get("evaluationSimulations", 0)),
+                "qd": {
+                    "occupiedCells": len(fitnesses),
+                    "bestFitness": max(fitnesses) if fitnesses else None,
+                    "meanArchiveFitness": sum(fitnesses) / len(fitnesses) if fitnesses else None,
+                    "partialCandidates": len(trainer_state.get("domainProgress", {})),
+                    "bestFitnessEvaluation": int(trainer_state.get("bestFitnessEvaluation", 0)),
+                },
             })
         except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
             result["readError"] = str(error)
@@ -874,6 +990,8 @@ class Supervisor:
             self.state["reason"] = str(error)
         processes = self.current_processes()
         owned = self.reconcile_owned_processes(processes)
+        if not self.state.get("activeRouteId") and self.recover_false_process_exit(queue, processes):
+            owned = self.reconcile_owned_processes(processes)
 
         if self.deadline_reached():
             if owned and not self.state.get("shutdown"):
