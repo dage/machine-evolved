@@ -98,17 +98,37 @@ target_include_directories(
 )
 target_link_libraries(replayworker PRIVATE ${MACHINE_EVOLVED_BULLET_LINK_TARGETS} Threads::Threads)
 
+add_executable(
+  physicsbenchmark
+  PhysicsBenchmark/PhysicsBenchmark.cpp
+  ${MACHINE_WORKER_SOURCE_DIR}/BulletCreature.cpp
+  ${MACHINE_WORKER_SOURCE_DIR}/BulletInterface.cpp
+  ${MACHINE_WORKER_SOURCE_DIR}/CreatureStructure.cpp
+)
+target_compile_features(physicsbenchmark PRIVATE cxx_std_17)
+target_include_directories(
+  physicsbenchmark
+  PRIVATE
+    ${MACHINE_WORKER_SOURCE_DIR}
+    ${bullet_SOURCE_DIR}/src
+    ${Boost_INCLUDE_DIRS}
+)
+target_link_libraries(physicsbenchmark PRIVATE ${MACHINE_EVOLVED_BULLET_LINK_TARGETS} Threads::Threads)
+
 if(MSVC)
   target_compile_options(shellworker PRIVATE /W4)
   target_compile_options(replayworker PRIVATE /W4)
+  target_compile_options(physicsbenchmark PRIVATE /W4)
 else()
   target_compile_options(shellworker PRIVATE -Wall -Wextra -Wpedantic)
   target_compile_options(replayworker PRIVATE -Wall -Wextra -Wpedantic)
+  target_compile_options(physicsbenchmark PRIVATE -Wall -Wextra -Wpedantic)
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     # The recovered Visual Studio worker used strict floating-point evaluation
     # with SIMD extensions disabled. Preserve that numerical mode for parity.
     target_compile_options(shellworker PRIVATE -ffp-model=strict -ffp-contract=off -U__ARM_NEON__)
     target_compile_options(replayworker PRIVATE -ffp-model=strict -ffp-contract=off -U__ARM_NEON__)
+    target_compile_options(physicsbenchmark PRIVATE -ffp-model=strict -ffp-contract=off -U__ARM_NEON__)
     foreach(bullet_target IN LISTS MACHINE_EVOLVED_BULLET_TARGETS)
       target_compile_options(${bullet_target} PRIVATE -ffp-model=strict -ffp-contract=off -U__ARM_NEON__)
     endforeach()
