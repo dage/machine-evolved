@@ -113,6 +113,10 @@ class MapElitesAlgorithm:
 				return creature
 		return None
 
+	def reserveEvaluation(self, creatureId):
+		if creatureId in self.pending:
+			self.inFlight[creatureId] = time.monotonic()
+
 	def startEvaluation(self, creatureId):
 		evaluationId = str(uuid.uuid4())
 		self.activeEvaluationIds[creatureId] = evaluationId

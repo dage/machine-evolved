@@ -46,6 +46,12 @@ class MapElitesTest(unittest.TestCase):
 		algorithm.setCreatureEvaluation(challenger.id, 9, {"airborneFraction": .2, "rotationParticipation": .3}, [9, 9, 9])
 		self.assertEqual(algorithm.archive[cell]["fitness"], 10)
 
+	def test_resumed_partial_domain_candidate_is_not_dispatched_twice(self):
+		algorithm = self.createAlgorithm()
+		reservedId = next(iter(algorithm.pending))
+		algorithm.reserveEvaluation(reservedId)
+		self.assertNotEqual(algorithm.getForFitness().id, reservedId)
+
 
 if __name__ == "__main__":
 	unittest.main()

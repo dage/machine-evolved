@@ -414,6 +414,9 @@ class Trainer():
 		self.lastStatus = "...waiting..."
 
 		startAlgorithm()
+		if hasattr(self.algorithm, "reserveEvaluation"):
+			for creatureId in self.domainProgress:
+				self.algorithm.reserveEvaluation(creatureId)
 
 		self.bestFitness = self.algorithm.getBestFitness()
 		currentEvaluations = int(self.algorithm.populationConfig["evaluations"])
