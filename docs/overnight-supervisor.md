@@ -30,6 +30,11 @@ Throughput uses the persisted `route-first-last-checkpoint-mtime-v1` estimator:
 firstCheckpointEpoch)`. Duplicate reads of one checkpoint revision do not add
 observations, so minute-long checkpoint plateaus do not become one-tick spikes;
 the first/last baseline survives supervisor restarts and route retries.
+For the current experiment, `pilotThroughputCandidatesPerMinute` freezes the
+reviewed pilot baseline (2640 candidates/minute). State and samples report the
+baseline and the current durable throughput ratio; a restart rejects a changed
+non-null baseline. The field remains optional for older supervisor configs, in
+which case the ratio is explicitly null.
 `qdScore` is the sum of all finite occupied-cell fitnesses. For cross-route
 comparison, set the positive `qdNormalizationReferenceFitness` once; the state
 persists it and rejects later changes. `totalArchiveCells` is derived from each
@@ -46,6 +51,17 @@ persisted aggregate and per-emitter selection, attempt, outcome, failure,
 invalid-outcome, positive-QD-gain, normalized-reward, coverage, replacement,
 rejection, and global-best counters. Fixed routes emit `enabled: false` with an
 empty emitter map and zero aggregate counters.
+
+The top-level state and each sample expose the active phase, normalized bank
+hash, original route cap, supervisor/launcher/Trainer/ShellWorker/capture PIDs,
+the current top-12 leaderboard, aggregate process-exit count, and next queued
+action. Heartbeats add the evaluation delta since the preceding heartbeat,
+pilot-relative throughput, route-queue and in-flight counts, and remaining wall
+time. Idle values remain present as nulls, empty arrays, or zero counts. Every
+attempt finish—including completion, restart, battery interruption, and
+deadline—forces one final route sample after re-reading the checkpoint, so a
+finish between normal 30-second samples cannot omit the final archive or
+adaptive-selector counters.
 
 After three minutes without an accepted evaluation, the supervisor sends SIGINT
 only to a recorded Trainer identity, allows the configured checkpoint grace,

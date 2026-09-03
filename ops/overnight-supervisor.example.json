@@ -7,6 +7,7 @@
   "runRoot": "training-runs",
   "durationSeconds": 36000,
   "qdNormalizationReferenceFitness": 3067.6275536307658,
+  "pilotThroughputCandidatesPerMinute": 2640,
   "t0EpochSeconds": 1788460655.126034,
   "t0MonotonicSeconds": 457187.114514208,
   "tickSeconds": 5,

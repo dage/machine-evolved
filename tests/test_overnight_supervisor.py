@@ -98,6 +98,7 @@ class SupervisorTest(unittest.TestCase):
             "runRoot": self.root / "training-runs",
             "durationSeconds": 36_000.0,
             "qdNormalizationReferenceFitness": 4.0,
+            "pilotThroughputCandidatesPerMinute": 2640.0,
             "t0EpochSeconds": 900.125,
             "t0MonotonicSeconds": 400.375,
             "tickSeconds": 5.0,
@@ -205,11 +206,14 @@ class SupervisorTest(unittest.TestCase):
                 "archive": {"binsPerAxis": 2, "axes": ["x", "y"]},
                 "mutation": selector,
             }},
-            "experiment": {"trainerState": {
-                "evaluationSimulations": evaluations * 3,
-                "bestFitnessEvaluation": max(0, evaluations - 2),
-                "domainProgress": {"pending": {}},
-            }},
+            "experiment": {
+                "overnightRoute": {"bankNormalizedSha256": "bank-sha256-test"},
+                "trainerState": {
+                    "evaluationSimulations": evaluations * 3,
+                    "bestFitnessEvaluation": max(0, evaluations - 2),
+                    "domainProgress": {"pending": {}},
+                },
+            },
             "structure": {"creatures": [
                 {"fitness": 2.5, "data": {"metadata": {"morphologyId": "m0"}}},
                 {"fitness": 3.5, "data": {"metadata": {"morphologyId": "m1"}}},
@@ -244,6 +248,29 @@ class SupervisorTest(unittest.TestCase):
         self.addCleanup(lambda: second.lock_file and second.lock_file.close())
         with self.assertRaisesRegex(RuntimeError, "persisted reference"):
             second.initialize()
+
+    def test_pilot_throughput_reference_is_frozen_in_state(self):
+        first = self.make_supervisor()
+        self.assertEqual(first.state["pilotThroughputCandidatesPerMinute"], 2640.0)
+        first.lock_file.close()
+        changed = dict(self.config)
+        changed["pilotThroughputCandidatesPerMinute"] = 2500.0
+        second = SUPERVISOR.Supervisor(changed, self.system)
+        self.addCleanup(lambda: second.lock_file and second.lock_file.close())
+        with self.assertRaisesRegex(RuntimeError, "pilot throughput reference"):
+            second.initialize()
+
+    def test_unset_pilot_reference_can_be_frozen_once_during_upgrade(self):
+        unset = dict(self.config)
+        unset["pilotThroughputCandidatesPerMinute"] = None
+        first = SUPERVISOR.Supervisor(unset, self.system)
+        first.initialize()
+        first.lock_file.close()
+        configured = dict(self.config)
+        second = SUPERVISOR.Supervisor(configured, self.system)
+        second.initialize()
+        self.addCleanup(second.lock_file.close)
+        self.assertEqual(second.state["pilotThroughputCandidatesPerMinute"], 2640.0)
 
     def test_battery_waits_without_spawning_and_keeps_heartbeats(self):
         self.system.power = "battery"
@@ -284,6 +311,94 @@ class SupervisorTest(unittest.TestCase):
         self.assertFalse((run_dir / "summary.json").exists())
         retained = self.state_dir / "attempts" / "primary" / "attempt-001-retained" / "summary.json"
         self.assertTrue(retained.is_file())
+
+    def test_battery_interrupted_disabled_preferred_pilot_resumes_on_ac(self):
+        pilot = self.route("pilot", "run-pilot")
+        self.write_queue([pilot])
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.assertEqual(supervisor.state["activeRouteId"], "pilot")
+        pilot["enabled"] = False
+        self.write_queue([pilot])
+        self.add_owned_runtime()
+        self.write_checkpoint("run-pilot", 12)
+        run_dir = self.config["runRoot"] / "run-pilot"
+        (run_dir / "summary.json").write_text('{"status":"completed","evaluations":12}\n')
+
+        self.system.power = "battery"
+        self.system.advance(1)
+        supervisor.tick()
+        self.system.process_table = []
+        self.system.listeners = []
+        self.system.advance(1)
+        supervisor.tick()
+        self.assertEqual(supervisor.state["routes"]["pilot"]["status"], "waiting_power")
+        self.assertEqual(supervisor.state["preferredRouteId"], "pilot")
+
+        self.system.power = "ac"
+        self.system.advance(self.config["restartDelaySeconds"])
+        supervisor.tick()
+        self.assertEqual(supervisor.state["activeRouteId"], "pilot")
+        self.assertIn("--resume-existing", self.system.spawned[-1]["command"])
+
+    def test_below_cap_summary_does_not_complete_exact_cap_checkpoint(self):
+        self.write_checkpoint("run-primary", 40_000)
+        run_dir = self.config["runRoot"] / "run-primary"
+        (run_dir / "trainer.log").write_text("pre-supervisor attempt\n")
+        (run_dir / "summary.json").write_text(
+            '{"status":"completed","evaluations":39999}\n'
+        )
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.assertEqual(supervisor.state["routes"]["primary"]["status"], "running")
+        self.assertIn("--resume-existing", self.system.spawned[-1]["command"])
+        self.assertFalse((run_dir / "summary.json").exists())
+        retained = self.state_dir / "attempts" / "primary" / "attempt-000-retained"
+        self.assertEqual((retained / "summary.json").read_text(), (
+            '{"status":"completed","evaluations":39999}\n'
+        ))
+        self.assertEqual((retained / "trainer.log").read_text(), "pre-supervisor attempt\n")
+
+    def test_exact_cap_checkpoint_and_valid_summary_complete_without_spawn(self):
+        self.write_checkpoint("run-primary", 40_000)
+        run_dir = self.config["runRoot"] / "run-primary"
+        (run_dir / "summary.json").write_text(
+            '{"status":"completed","evaluations":40000}\n'
+        )
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.assertEqual(supervisor.state["routes"]["primary"]["status"], "completed")
+        self.assertEqual(self.system.spawned, [])
+        final = json.loads((self.state_dir / "metrics.jsonl").read_text().splitlines()[-1])
+        self.assertTrue(final["finalRouteSample"])
+        self.assertEqual(final["finishReason"], "existing_complete_summary")
+        self.assertEqual(final["evaluations"], 40_000)
+
+    def test_stale_summary_and_unrelated_port_owner_never_spawn_duplicate(self):
+        self.write_checkpoint("run-primary", 40_000)
+        run_dir = self.config["runRoot"] / "run-primary"
+        (run_dir / "summary.json").write_text(
+            '{"status":"running","evaluations":40000}\n'
+        )
+        self.system.listeners = [7654]
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.assertEqual(supervisor.state["status"], "waiting_port")
+        self.assertEqual(self.system.spawned, [])
+        self.assertTrue((run_dir / "summary.json").is_file())
+
+    def test_retained_attempt_files_are_immutable(self):
+        supervisor = self.make_supervisor()
+        route = SUPERVISOR.load_route_queue(self.queue_path, self.root)[0]
+        run_dir = self.config["runRoot"] / "run-primary"
+        run_dir.mkdir(parents=True)
+        log = run_dir / "trainer.log"
+        log.write_text("first attempt\n")
+        supervisor.archive_attempt_files(route, 1)
+        log.write_text("later contents\n")
+        supervisor.archive_attempt_files(route, 1)
+        retained = self.state_dir / "attempts" / "primary" / "attempt-001-retained" / "trainer.log"
+        self.assertEqual(retained.read_text(), "first attempt\n")
 
     def test_persisted_completed_ledger_below_cap_is_repaired(self):
         supervisor = self.make_supervisor()
@@ -367,7 +482,9 @@ class SupervisorTest(unittest.TestCase):
         run_dir = self.config["runRoot"] / "run-primary"
         run_dir.mkdir(parents=True, exist_ok=True)
         self.write_checkpoint("run-primary", 40_000)
-        (run_dir / "summary.json").write_text("{}\n")
+        (run_dir / "summary.json").write_text(
+            '{"status":"completed","evaluations":40000}\n'
+        )
         self.system.process_table[0]["state"] = "Z"
         self.system.process_table[0]["command"] = "<defunct>"
         supervisor.tick()
@@ -424,6 +541,19 @@ class SupervisorTest(unittest.TestCase):
         supervisor = self.make_supervisor()
         supervisor.tick()
         self.add_owned_runtime()
+        self.system.process_table.append({
+            "pid": 103,
+            "ppid": 1,
+            "pgid": 103,
+            "state": "S",
+            "startedAt": "capture-start",
+            "startedAtEpochSeconds": self.system.now,
+            "cpuPercent": 0.5,
+            "command": (
+                f"python3 {self.root}/scripts/capture-training-progress.py "
+                f"--config {self.config['runRoot']}/run-primary/config.json"
+            ),
+        })
         self.write_checkpoint("run-primary", 12, include_selector=True)
         initial_count = len((self.state_dir / "metrics.jsonl").read_text().splitlines())
         self.system.advance(29)
@@ -477,6 +607,28 @@ class SupervisorTest(unittest.TestCase):
         self.assertTrue(sample["workers"]["verified"])
         self.assertEqual(sample["diskFreeBytes"], 99_000)
         self.assertGreater(sample["deadlineRemainingSeconds"], 0)
+        self.assertEqual(sample["phase"], "primary")
+        self.assertEqual(sample["activeBankHash"], "bank-sha256-test")
+        self.assertEqual(sample["routeEvaluationCap"], 40_000)
+        self.assertEqual(sample["processIds"]["launcher"], 100)
+        self.assertEqual(sample["processIds"]["trainer"], [101])
+        self.assertEqual(sample["processIds"]["shellworker"], [102])
+        self.assertEqual(sample["processIds"]["capture"], [103])
+        self.assertEqual(sample["currentLeaderboard"][0]["fitness"], 3.5)
+        self.assertEqual(sample["aggregateCrashCount"], 0)
+        self.assertEqual(sample["nextQueuedAction"], {
+            "action": "monitor_route", "routeId": "primary",
+        })
+        self.assertEqual(sample["queue"]["pending"], 1)
+        self.assertEqual(sample["inFlight"]["candidateEvaluations"], 1)
+        self.assertEqual(sample["inFlight"]["captureProcesses"], 1)
+        self.assertEqual(
+            sample["throughputVsPilot"]["referenceCandidatesPerMinute"], 2640.0
+        )
+        self.assertEqual(
+            sample["throughputCandidatesPerMinute"],
+            sample["throughputEvaluationsPerMinute"],
+        )
 
     def test_throughput_uses_durable_first_last_checkpoint_observations(self):
         supervisor = self.make_supervisor()
@@ -526,6 +678,71 @@ class SupervisorTest(unittest.TestCase):
             restarted.state["metrics"]["throughput"]["formula"],
             "(lastEvaluations-firstEvaluations)*60/(lastCheckpointEpoch-firstCheckpointEpoch)",
         )
+        self.assertAlmostEqual(
+            restarted.state["metrics"]["throughputVsPilot"]["ratio"], 90.0 / 2640.0
+        )
+
+    def test_heartbeat_records_evaluation_delta_queue_and_wall_time(self):
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.add_owned_runtime()
+        self.write_checkpoint("run-primary", 0)
+        self.system.advance(60)
+        supervisor.tick()
+        self.write_checkpoint("run-primary", 120)
+        self.system.advance(60)
+        supervisor.tick()
+        heartbeat = json.loads((self.state_dir / "heartbeats.jsonl").read_text().splitlines()[-1])
+        self.assertEqual(heartbeat["evaluationDelta"], 120)
+        self.assertEqual(heartbeat["throughputCandidatesPerMinute"], 120.0)
+        self.assertAlmostEqual(heartbeat["throughputVsPilot"]["ratio"], 120.0 / 2640.0)
+        self.assertEqual(heartbeat["queue"]["pending"], 1)
+        self.assertEqual(heartbeat["inFlight"]["candidateEvaluations"], 1)
+        self.assertGreater(heartbeat["remainingWallTimeSeconds"], 0)
+
+    def test_idle_state_keeps_explicit_telemetry_shape(self):
+        self.write_queue([])
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.assertIsNone(supervisor.state["phase"])
+        self.assertIsNone(supervisor.state["activeBankHash"])
+        self.assertIsNone(supervisor.state["routeEvaluationCap"])
+        self.assertIsNone(supervisor.state["processIds"]["launcher"])
+        self.assertEqual(supervisor.state["processIds"]["trainer"], [])
+        self.assertEqual(supervisor.state["processIds"]["shellworker"], [])
+        self.assertEqual(supervisor.state["processIds"]["capture"], [])
+        self.assertEqual(supervisor.state["currentLeaderboard"], [])
+        self.assertEqual(supervisor.state["aggregateCrashCount"], 0)
+        self.assertIsNone(supervisor.state["nextQueuedAction"])
+
+    def test_finish_forces_one_fresh_final_metric_sample(self):
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.add_owned_runtime()
+        self.system.advance(31)
+        self.write_checkpoint("run-primary", 39_000, include_selector=True)
+        supervisor.tick()
+        lines_before = (self.state_dir / "metrics.jsonl").read_text().splitlines()
+        self.system.advance(1)
+        self.write_checkpoint("run-primary", 40_000, include_selector=True)
+        run_dir = self.config["runRoot"] / "run-primary"
+        (run_dir / "summary.json").write_text(
+            '{"status":"completed","evaluations":40000}\n'
+        )
+        self.system.process_table = []
+        self.system.listeners = []
+        supervisor.tick()
+        lines_after = (self.state_dir / "metrics.jsonl").read_text().splitlines()
+        self.assertEqual(len(lines_after), len(lines_before) + 1)
+        final = json.loads(lines_after[-1])
+        self.assertTrue(final["finalRouteSample"])
+        self.assertEqual(final["finishReason"], "process_exit")
+        self.assertEqual(final["routeStatus"], "completed")
+        self.assertEqual(final["activeRouteId"], "primary")
+        self.assertEqual(final["evaluations"], 40_000)
+        self.assertEqual(final["domainSimulations"], 120_000)
+        self.assertEqual(final["activeBankHash"], "bank-sha256-test")
+        self.assertEqual(final["adaptiveSelector"]["totalSelections"], 7)
 
     def test_three_rapid_crashes_abandon_primary_and_select_fallback(self):
         self.write_queue([
@@ -569,6 +786,20 @@ class SupervisorTest(unittest.TestCase):
         supervisor.tick()
         self.assertEqual(supervisor.state["activeRouteId"], "fallback")
         self.assertNotIn("preferredRouteId", supervisor.state)
+
+    def test_deliberately_disabled_pilot_is_not_reopened_or_modified(self):
+        pilot = self.route("pilot", "run-pilot")
+        pilot["enabled"] = False
+        self.write_queue([pilot])
+        self.write_checkpoint("run-pilot", 12)
+        summary = self.config["runRoot"] / "run-pilot" / "summary.json"
+        summary.write_text('{"status":"completed","evaluations":12}\n')
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.assertEqual(supervisor.state["status"], "queue_complete")
+        self.assertNotIn("pilot", supervisor.state["routes"])
+        self.assertTrue(summary.is_file())
+        self.assertEqual(self.system.spawned, [])
 
 
 if __name__ == "__main__":

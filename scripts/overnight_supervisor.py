@@ -32,6 +32,7 @@ HEARTBEAT_SECONDS = 60
 METRICS_SECONDS = 30
 RUN_NAME_PATTERN = re.compile(r"^[A-Za-z0-9._-]+$")
 THROUGHPUT_DEFINITION = "route-first-last-checkpoint-mtime-v1"
+PILOT_THROUGHPUT_DEFINITION = "supervisor-config-frozen-candidates-per-minute-v1"
 SELECTOR_ARM_COUNTERS = (
     "selections", "attempts", "outcomes", "failures", "invalidOutcomes",
     "terminalFailures",
@@ -122,6 +123,13 @@ def load_configuration(path: Path) -> dict:
                 "qdNormalizationReferenceFitness",
             )
             if "qdNormalizationReferenceFitness" in raw else None
+        ),
+        "pilotThroughputCandidatesPerMinute": (
+            positive_number(
+                raw["pilotThroughputCandidatesPerMinute"],
+                "pilotThroughputCandidatesPerMinute",
+            )
+            if "pilotThroughputCandidatesPerMinute" in raw else None
         ),
         "t0EpochSeconds": (
             positive_number(raw["t0EpochSeconds"], "t0EpochSeconds")
@@ -263,6 +271,8 @@ def adaptive_selector_summary(config: dict) -> dict:
 
 
 def process_role(command: str) -> str:
+    if re.search(r"(^|[/ ])capture-training-progress\.py(?: |$)", command):
+        return "capture"
     if re.search(r"(^|[/ ])Trainer\.py(?: |$)", command):
         return "trainer"
     if re.search(r"(^|[/ ])shellworker(?: |$)", command, re.IGNORECASE):
@@ -468,6 +478,7 @@ class Supervisor:
                 "events": [],
                 "lastHeartbeatEpochSeconds": None,
                 "lastMetricsEpochSeconds": None,
+                "heartbeatEvaluationBaseline": None,
             }
         configured_qd_reference = self.config["qdNormalizationReferenceFitness"]
         if "qdNormalizationReferenceFitness" in self.state:
@@ -477,8 +488,49 @@ class Supervisor:
             self.config["qdNormalizationReferenceFitness"] = stored_qd_reference
         else:
             self.state["qdNormalizationReferenceFitness"] = configured_qd_reference
+        configured_pilot_throughput = self.config["pilotThroughputCandidatesPerMinute"]
+        if "pilotThroughputCandidatesPerMinute" in self.state:
+            stored_pilot_throughput = self.state["pilotThroughputCandidatesPerMinute"]
+            if stored_pilot_throughput is None and configured_pilot_throughput is not None:
+                stored_pilot_throughput = configured_pilot_throughput
+                self.state["pilotThroughputCandidatesPerMinute"] = stored_pilot_throughput
+            elif (
+                configured_pilot_throughput is not None
+                and configured_pilot_throughput != stored_pilot_throughput
+            ):
+                raise RuntimeError(
+                    "Configured pilot throughput reference differs from the persisted reference"
+                )
+            self.config["pilotThroughputCandidatesPerMinute"] = stored_pilot_throughput
+        else:
+            self.state["pilotThroughputCandidatesPerMinute"] = configured_pilot_throughput
+        self.state.setdefault("heartbeatEvaluationBaseline", None)
+        self.state.setdefault("phase", None)
+        self.state.setdefault("activeBankHash", None)
+        self.state.setdefault("routeEvaluationCap", None)
+        process_ids = self.state.setdefault("processIds", {
+            "supervisor": os.getpid(),
+            "launcher": None,
+            "trainer": [],
+            "shellworker": [],
+            "capture": [],
+        })
+        process_ids["supervisor"] = os.getpid()
+        process_ids.setdefault("launcher", None)
+        process_ids.setdefault("trainer", [])
+        process_ids.setdefault("shellworker", [])
+        process_ids.setdefault("capture", [])
+        self.state.setdefault("currentLeaderboard", [])
+        self.state.setdefault("aggregateCrashCount", 0)
+        self.state.setdefault("nextQueuedAction", None)
         self.state["epoch"] = epoch
-        self.reconcile_owned_processes()
+        processes = self.current_processes()
+        self.reconcile_owned_processes(processes)
+        try:
+            queue = load_route_queue(self.config["queueFile"], self.config["repository"])
+        except (OSError, ValueError, json.JSONDecodeError):
+            queue = []
+        self.update_metrics(queue, processes)
         self.write_state(now)
 
     def deadline_reached(self) -> bool:
@@ -575,6 +627,20 @@ class Supervisor:
         atomic_json(self.state_path, self.state)
         last = self.state.get("lastHeartbeatEpochSeconds")
         if last is None or now - last >= HEARTBEAT_SECONDS:
+            metrics = self.state.get("metrics", {})
+            progress = metrics.get("progress") or {}
+            route_id = self.state.get("activeRouteId")
+            evaluations = progress.get("evaluations")
+            baseline = self.state.get("heartbeatEvaluationBaseline") or {}
+            evaluation_delta = None
+            if (
+                route_id is not None
+                and route_id == baseline.get("routeId")
+                and evaluations is not None
+                and baseline.get("evaluations") is not None
+                and evaluations >= baseline["evaluations"]
+            ):
+                evaluation_delta = evaluations - baseline["evaluations"]
             heartbeat = {
                 "schemaVersion": SCHEMA_VERSION,
                 "experimentId": self.config["experimentId"],
@@ -582,39 +648,81 @@ class Supervisor:
                 "capturedAtEpochSeconds": now,
                 "status": self.state.get("status"),
                 "reason": self.state.get("reason"),
-                "activeRouteId": self.state.get("activeRouteId"),
-                "metrics": self.state.get("metrics", {}),
+                "activeRouteId": route_id,
+                "phase": self.state.get("phase"),
+                "activeBankHash": self.state.get("activeBankHash"),
+                "routeEvaluationCap": self.state.get("routeEvaluationCap"),
+                "processIds": self.state.get("processIds"),
+                "currentLeaderboard": self.state.get("currentLeaderboard", []),
+                "aggregateCrashCount": self.state.get("aggregateCrashCount", 0),
+                "nextQueuedAction": self.state.get("nextQueuedAction"),
+                "evaluationDelta": evaluation_delta,
+                "throughputCandidatesPerMinute": metrics.get("throughputCandidatesPerMinute"),
+                "throughputVsPilot": metrics.get("throughputVsPilot"),
+                "queue": metrics.get("queue"),
+                "inFlight": metrics.get("inFlight"),
+                "remainingWallTimeSeconds": self.deadline_remaining_seconds(),
+                "metrics": metrics,
             }
             append_json_line(self.heartbeat_path, heartbeat)
             self.state["lastHeartbeatEpochSeconds"] = now
+            self.state["heartbeatEvaluationBaseline"] = (
+                {"routeId": route_id, "evaluations": evaluations}
+                if route_id is not None and evaluations is not None else None
+            )
             atomic_json(self.state_path, self.state)
         last_metrics = self.state.get("lastMetricsEpochSeconds")
         if last_metrics is None or now - last_metrics >= METRICS_SECONDS:
-            metrics = self.state.get("metrics", {})
-            progress = metrics.get("progress") or {}
-            sample = {
-                "capturedAt": utc_timestamp(now),
-                "capturedAtEpochSeconds": now,
-                "status": self.state.get("status"),
-                "reason": self.state.get("reason"),
-                "activeRouteId": self.state.get("activeRouteId"),
-                "evaluations": progress.get("evaluations"),
-                "domainSimulations": progress.get("domainSimulations"),
-                "generation": progress.get("generation"),
-                "throughputEvaluationsPerMinute": metrics.get("throughputEvaluationsPerMinute"),
-                "throughput": metrics.get("throughput"),
-                "qd": progress.get("qd"),
-                "adaptiveSelector": progress.get("adaptiveSelector"),
-                "liveness": metrics.get("liveness"),
-                "workers": metrics.get("workers"),
-                "cpuPercent": metrics.get("cpuPercent"),
-                "diskFreeBytes": (metrics.get("disk") or {}).get("freeBytes"),
-                "checkpointAgeSeconds": progress.get("checkpointAgeSeconds"),
-                "deadlineRemainingSeconds": self.deadline_remaining_seconds(),
-            }
-            append_json_line(self.metrics_path, sample)
-            self.state["lastMetricsEpochSeconds"] = now
+            self.append_metrics_sample(now)
             atomic_json(self.state_path, self.state)
+
+    def append_metrics_sample(
+        self,
+        now: float,
+        *,
+        final_route_sample: bool = False,
+        finish_reason: str | None = None,
+        route_status: str | None = None,
+        route_id: str | None = None,
+    ) -> None:
+        metrics = self.state.get("metrics", {})
+        progress = metrics.get("progress") or {}
+        sample = {
+            "capturedAt": utc_timestamp(now),
+            "capturedAtEpochSeconds": now,
+            "status": self.state.get("status"),
+            "reason": self.state.get("reason"),
+            "activeRouteId": route_id if final_route_sample else self.state.get("activeRouteId"),
+            "phase": self.state.get("phase"),
+            "activeBankHash": self.state.get("activeBankHash"),
+            "routeEvaluationCap": self.state.get("routeEvaluationCap"),
+            "processIds": self.state.get("processIds"),
+            "currentLeaderboard": self.state.get("currentLeaderboard", []),
+            "aggregateCrashCount": self.state.get("aggregateCrashCount", 0),
+            "nextQueuedAction": self.state.get("nextQueuedAction"),
+            "evaluations": progress.get("evaluations"),
+            "domainSimulations": progress.get("domainSimulations"),
+            "generation": progress.get("generation"),
+            "throughputEvaluationsPerMinute": metrics.get("throughputEvaluationsPerMinute"),
+            "throughputCandidatesPerMinute": metrics.get("throughputCandidatesPerMinute"),
+            "throughput": metrics.get("throughput"),
+            "throughputVsPilot": metrics.get("throughputVsPilot"),
+            "qd": progress.get("qd"),
+            "adaptiveSelector": progress.get("adaptiveSelector"),
+            "liveness": metrics.get("liveness"),
+            "workers": metrics.get("workers"),
+            "queue": metrics.get("queue"),
+            "inFlight": metrics.get("inFlight"),
+            "cpuPercent": metrics.get("cpuPercent"),
+            "diskFreeBytes": (metrics.get("disk") or {}).get("freeBytes"),
+            "checkpointAgeSeconds": progress.get("checkpointAgeSeconds"),
+            "deadlineRemainingSeconds": self.deadline_remaining_seconds(),
+            "finalRouteSample": final_route_sample,
+            "finishReason": finish_reason,
+            "routeStatus": route_status,
+        }
+        append_json_line(self.metrics_path, sample)
+        self.state["lastMetricsEpochSeconds"] = now
 
     def route_command(self, route: dict, resume: bool) -> list[str]:
         command = [
@@ -645,10 +753,16 @@ class Supervisor:
         )
 
     def route_has_complete_summary(self, route: dict, evaluation_cap: int) -> bool:
-        return (
-            (self.route_run_dir(route) / "summary.json").is_file()
-            and self.route_reached_evaluation_cap(route, evaluation_cap)
-        )
+        summary_path = self.route_run_dir(route) / "summary.json"
+        try:
+            summary = read_json(summary_path)
+            summary_complete = (
+                summary.get("status") == "completed"
+                and int(summary.get("evaluations", -1)) >= evaluation_cap
+            )
+        except (OSError, TypeError, ValueError, json.JSONDecodeError):
+            summary_complete = False
+        return summary_complete and self.route_reached_evaluation_cap(route, evaluation_cap)
 
     def archive_attempt_files(self, route: dict, attempt_number: int) -> None:
         run_dir = self.route_run_dir(route)
@@ -660,6 +774,8 @@ class Supervisor:
                 continue
             destination = archive_dir / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
+            if destination.exists():
+                continue
             shutil.copy2(source, destination)
             copied.append(str(destination.relative_to(self.state_dir)))
         if copied:
@@ -693,7 +809,9 @@ class Supervisor:
         by_id = {route["id"]: route for route in queue}
         if preferred:
             route = by_id.get(preferred)
-            if route and (route["enabled"] or route["safeFallback"]):
+            ledger = self.state["routes"].get(preferred)
+            resumable_disabled_route = ledger and ledger.get("status") == "waiting_power"
+            if route and (route["enabled"] or route["safeFallback"] or resumable_disabled_route):
                 ledger = self.ensure_route_ledger(route)
                 if ledger["status"] not in ("completed", "abandoned"):
                     return ledger["definition"]
@@ -790,34 +908,55 @@ class Supervisor:
         if self.route_has_complete_summary(route, ledger["originalEvaluationCap"]):
             ledger["status"] = "completed"
             ledger["completedAt"] = utc_timestamp(now)
-            self.event("route-completed", f"{route['id']} already has a summary")
-            return
-        attempt_files_archived = False
-        if summary_path.is_file():
-            if ledger["attemptCount"]:
-                self.archive_attempt_files(route, ledger["attemptCount"])
-                attempt_files_archived = True
-                retained_summary = (
-                    self.state_dir / "attempts" / route["id"]
-                    / f"attempt-{ledger['attemptCount']:03d}-retained" / "summary.json"
-                )
-                if not retained_summary.is_file():
-                    retained_summary.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(summary_path, retained_summary)
-            summary_path.unlink()
-            self.event(
-                "incomplete-summary-quarantined",
-                f"{route['id']} summary was below {ledger['originalEvaluationCap']} evaluations",
+            self.state["activeRouteId"] = route["id"]
+            try:
+                queue = load_route_queue(self.config["queueFile"], self.config["repository"])
+            except (OSError, ValueError, json.JSONDecodeError):
+                queue = []
+            self.update_metrics(queue, self.current_processes())
+            self.state["activeRouteId"] = None
+            self.state["status"] = "route_completed"
+            self.state["reason"] = None
+            self.state["nextQueuedAction"] = self.next_queued_action(
+                queue,
+                self.system.power_source(),
+                self.system.port_pids(self.config["port"]),
             )
+            self.event("route-completed", f"{route['id']} already has a summary")
+            self.append_metrics_sample(
+                now,
+                final_route_sample=True,
+                finish_reason="existing_complete_summary",
+                route_status="completed",
+                route_id=route["id"],
+            )
+            return
         port_pids = self.system.port_pids(self.config["port"])
         if port_pids:
             self.state["status"] = "waiting_port"
             self.state["reason"] = f"port_{self.config['port']}_owned_by_unrelated_pid:{','.join(map(str, port_pids))}"
             return
+        attempt_files_archived = False
+        if summary_path.is_file():
+            previous_attempt_number = ledger["attemptCount"]
+            self.archive_attempt_files(route, previous_attempt_number)
+            attempt_files_archived = True
+            retained_summary = (
+                self.state_dir / "attempts" / route["id"]
+                / f"attempt-{previous_attempt_number:03d}-retained" / "summary.json"
+            )
+            if not retained_summary.is_file():
+                retained_summary.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(summary_path, retained_summary)
+            summary_path.unlink()
+            self.event(
+                "incomplete-summary-quarantined",
+                f"{route['id']} summary was below {ledger['originalEvaluationCap']} evaluations",
+            )
         attempt_number = ledger["attemptCount"] + 1
-        if ledger["attemptCount"] and not attempt_files_archived:
-            self.archive_attempt_files(route, ledger["attemptCount"])
         resume = run_dir.exists()
+        if resume and not attempt_files_archived:
+            self.archive_attempt_files(route, ledger["attemptCount"])
         command = self.route_command(route, resume)
         log_path = self.state_dir / "attempts" / route["id"] / f"attempt-{attempt_number:03d}.log"
         launcher_pid = self.system.spawn(command, self.config["repository"], log_path)
@@ -866,6 +1005,8 @@ class Supervisor:
             "evaluations": None,
             "generation": None,
             "domainSimulations": None,
+            "bankNormalizedSha256": None,
+            "leaderboard": [],
             "readError": None,
             "qd": None,
             "adaptiveSelector": adaptive_selector_summary({}),
@@ -879,6 +1020,7 @@ class Supervisor:
             arguments = value["algorithm"]["arguments"]
             trainer_state = value.get("experiment", {}).get("trainerState", {})
             fitnesses = []
+            leaderboard = []
             fitnesses_by_morphology = {}
             for item in value.get("structure", {}).get("creatures", []):
                 if item.get("fitness") is None:
@@ -886,11 +1028,18 @@ class Supervisor:
                 fitness = float(item["fitness"])
                 if math.isfinite(fitness):
                     fitnesses.append(fitness)
-                    morphology = str(
-                        item.get("data", {}).get("metadata", {}).get("morphologyId", "unknown")
-                    )
+                    metadata = item.get("data", {}).get("metadata", {})
+                    morphology = str(metadata.get("morphologyId", "unknown"))
                     fitnesses_by_morphology.setdefault(morphology, []).append(fitness)
+                    leaderboard.append({
+                        "fitness": fitness,
+                        "morphologyId": morphology,
+                        "creatureId": metadata.get("creatureId") or item.get("id"),
+                    })
             ranked_fitnesses = sorted(fitnesses, reverse=True)
+            leaderboard.sort(key=lambda item: item["fitness"], reverse=True)
+            for rank, item in enumerate(leaderboard[:12], start=1):
+                item["rank"] = rank
             best_fitness = ranked_fitnesses[0] if ranked_fitnesses else None
             qd_score = sum(fitnesses)
             non_negative_qd_score = sum(max(0, fitness) for fitness in fitnesses)
@@ -916,6 +1065,12 @@ class Supervisor:
                 "evaluations": int(population.get("evaluations", 0)),
                 "generation": int(population.get("generation", 0)),
                 "domainSimulations": int(trainer_state.get("evaluationSimulations", 0)),
+                "bankNormalizedSha256": (
+                    value.get("experiment", {}).get("overnightRoute", {}).get(
+                        "bankNormalizedSha256"
+                    )
+                ),
+                "leaderboard": leaderboard[:12],
                 "qd": {
                     "occupiedCells": len(fitnesses),
                     "bestFitness": best_fitness,
@@ -1007,24 +1162,136 @@ class Supervisor:
             )
         return copy.deepcopy(estimator)
 
+    def next_queued_action(
+        self,
+        queue: list[dict],
+        power_source: str,
+        port_pids: list[int],
+    ) -> dict | None:
+        active = self.active_route_state()
+        if active:
+            action = "checkpoint_route" if self.state.get("shutdown") else "monitor_route"
+            if self.state.get("status") == "finalizing_route":
+                action = "finalize_route"
+            return {"action": action, "routeId": active["id"]}
+        preferred = self.state.get("preferredRouteId")
+        by_id = {route["id"]: route for route in queue}
+        if preferred in by_id:
+            ledger = self.state.get("routes", {}).get(preferred, {})
+            if ledger.get("status") == "waiting_power" and power_source != "ac":
+                return {"action": "wait_for_ac_power", "routeId": preferred}
+            if port_pids:
+                return {"action": "wait_for_port", "routeId": preferred}
+            if (
+                ledger.get("nextStartNotBeforeEpochSeconds") is not None
+                and self.system.epoch() < ledger["nextStartNotBeforeEpochSeconds"]
+            ):
+                return {"action": "wait_for_restart_backoff", "routeId": preferred}
+            return {"action": "resume_route", "routeId": preferred}
+        for route in queue:
+            if not route["enabled"]:
+                continue
+            ledger = self.state.get("routes", {}).get(route["id"])
+            if not ledger or ledger.get("status") not in ("completed", "abandoned"):
+                return {
+                    "action": "wait_for_port" if port_pids else "start_route",
+                    "routeId": route["id"],
+                }
+        return None
+
+    def queue_counts(self, queue: list[dict]) -> dict:
+        counts = {
+            "configured": len(queue),
+            "enabled": sum(route["enabled"] for route in queue),
+            "disabled": sum(not route["enabled"] for route in queue),
+            "pending": 0,
+            "queued": 0,
+            "running": 0,
+            "completed": 0,
+            "abandoned": 0,
+            "waitingPower": 0,
+        }
+        for route in queue:
+            ledger = self.state.get("routes", {}).get(route["id"])
+            status = ledger.get("status") if ledger else None
+            if route["enabled"] and status not in ("completed", "abandoned"):
+                # Keep pending as the backward-compatible count of all enabled,
+                # nonterminal routes; queued excludes the currently running one.
+                counts["pending"] += 1
+                if status != "running":
+                    counts["queued"] += 1
+            if status == "running":
+                counts["running"] += 1
+            if status == "completed":
+                counts["completed"] += 1
+            if status == "abandoned":
+                counts["abandoned"] += 1
+            if status == "waiting_power":
+                counts["waitingPower"] += 1
+        return counts
+
     def update_metrics(self, queue: list[dict], processes: list[dict]) -> None:
         now = self.system.epoch()
         active = self.active_route_state()
         route = active["definition"] if active else None
         progress = self.progress_for(route) if route else None
         throughput = self.observe_throughput(active, progress) if active and progress else None
-        if active and progress and progress["evaluations"] is not None:
+        if (
+            active
+            and progress
+            and progress["evaluations"] is not None
+            and active.get("lastProgressAtEpochSeconds") is not None
+        ):
             progress["secondsSinceEvaluationProgress"] = max(
                 0, now - active["lastProgressAtEpochSeconds"]
             )
         disk = self.system.disk_usage(self.state_dir)
         owned_pids = {item["pid"] for item in self.state.get("ownedProcesses", [])}
         owned_current = [process for process in processes if process["pid"] in owned_pids]
-        pending = 0
-        for route_item in queue:
-            ledger = self.state["routes"].get(route_item["id"])
-            if route_item["enabled"] and (not ledger or ledger["status"] not in ("completed", "abandoned")):
-                pending += 1
+        by_role = {
+            role: sorted(
+                item["pid"] for item in owned_current if process_role(item["command"]) == role
+            )
+            for role in ("trainer", "shellworker")
+        }
+        capture_pids = []
+        if route:
+            run_checkpoint = str(self.route_run_dir(route) / "config.json")
+            capture_pids = sorted(
+                item["pid"] for item in processes
+                if process_role(item["command"]) == "capture"
+                and (run_checkpoint in item["command"] or route["runName"] in item["command"])
+            )
+        launcher_pid = (
+            active.get("activeAttempt", {}).get("launcherPid")
+            if active and active.get("activeAttempt") else None
+        )
+        port_pids = self.system.port_pids(self.config["port"])
+        power_source = self.system.power_source()
+        throughput_rate = throughput.get("evaluationsPerMinute") if throughput else None
+        pilot_reference = self.config["pilotThroughputCandidatesPerMinute"]
+        throughput_vs_pilot = {
+            "definition": PILOT_THROUGHPUT_DEFINITION,
+            "referenceCandidatesPerMinute": pilot_reference,
+            "ratio": (
+                throughput_rate / pilot_reference
+                if throughput_rate is not None and pilot_reference is not None else None
+            ),
+        }
+        process_ids = {
+            "supervisor": os.getpid(),
+            "launcher": launcher_pid,
+            "trainer": by_role["trainer"],
+            "shellworker": by_role["shellworker"],
+            "capture": capture_pids,
+        }
+        aggregate_crash_count = sum(
+            1
+            for ledger in self.state.get("routes", {}).values()
+            for attempt in ledger.get("attemptHistory", [])
+            if attempt.get("endReason") == "process_exit"
+        )
+        next_action = self.next_queued_action(queue, power_source, port_pids)
         self.state["metrics"] = {
             "liveness": {
                 "ownedProcessCount": len(owned_current),
@@ -1035,16 +1302,31 @@ class Supervisor:
             },
             "progress": progress,
             "throughput": throughput,
-            "throughputEvaluationsPerMinute": (
-                throughput.get("evaluationsPerMinute") if throughput else None
-            ),
-            "queue": {"configured": len(queue), "pending": pending},
+            "throughputEvaluationsPerMinute": throughput_rate,
+            "throughputCandidatesPerMinute": throughput_rate,
+            "throughputVsPilot": throughput_vs_pilot,
+            "queue": self.queue_counts(queue),
+            "inFlight": {
+                "candidateEvaluations": (
+                    (progress.get("qd") or {}).get("partialCandidates") if progress else None
+                ),
+                "trainerProcesses": len(by_role["trainer"]),
+                "shellworkerProcesses": len(by_role["shellworker"]),
+                "captureProcesses": len(capture_pids),
+            },
             "cpuPercent": sum(item.get("cpuPercent", 0.0) for item in owned_current),
             "disk": disk,
-            "powerSource": self.system.power_source(),
-            "port": {"number": self.config["port"], "listenerPids": self.system.port_pids(self.config["port"])},
+            "powerSource": power_source,
+            "port": {"number": self.config["port"], "listenerPids": port_pids},
             "workers": self.worker_verification(owned_current),
         }
+        self.state["phase"] = route.get("phase") if route else None
+        self.state["activeBankHash"] = progress.get("bankNormalizedSha256") if progress else None
+        self.state["routeEvaluationCap"] = active.get("originalEvaluationCap") if active else None
+        self.state["processIds"] = process_ids
+        self.state["currentLeaderboard"] = progress.get("leaderboard", []) if progress else []
+        self.state["aggregateCrashCount"] = aggregate_crash_count
+        self.state["nextQueuedAction"] = next_action
 
     def worker_verification(self, processes: list[dict]) -> dict:
         shellworkers = [
@@ -1170,6 +1452,11 @@ class Supervisor:
         if not active:
             self.state["shutdown"] = None
             return
+        try:
+            queue = load_route_queue(self.config["queueFile"], self.config["repository"])
+        except (OSError, ValueError, json.JSONDecodeError):
+            queue = []
+        self.update_metrics(queue, self.current_processes())
         attempt = active["activeAttempt"]
         attempt["endedAt"] = utc_timestamp(now)
         attempt["endedAtEpochSeconds"] = now
@@ -1185,12 +1472,17 @@ class Supervisor:
             active["status"] = "completed"
             active["completedAt"] = utc_timestamp(now)
             active["consecutiveRapidCrashes"] = 0
+            self.state["status"] = "route_completed"
+            self.state["reason"] = None
             self.event("route-completed", route["id"])
         elif reason == "deadline":
             active["status"] = "stopped_at_deadline"
+            self.state["status"] = "deadline_reached"
+            self.state["reason"] = "hard_deadline"
         elif reason == "battery_power":
             active["status"] = "waiting_power"
             active["nextStartNotBeforeEpochSeconds"] = now + self.config["restartDelaySeconds"]
+            self.state["preferredRouteId"] = route["id"]
         else:
             uptime = now - attempt["startedAtEpochSeconds"]
             is_rapid = reason == "process_exit" and uptime < self.config["rapidCrashWindowSeconds"]
@@ -1212,6 +1504,25 @@ class Supervisor:
             self.state["status"] = "waiting_restart_backoff"
         elif reason == "battery_power":
             self.state["status"] = "waiting_power"
+        self.state["aggregateCrashCount"] = sum(
+            1
+            for ledger in self.state.get("routes", {}).values()
+            for previous_attempt in ledger.get("attemptHistory", [])
+            if previous_attempt.get("endReason") == "process_exit"
+        )
+        self.state["nextQueuedAction"] = self.next_queued_action(
+            queue,
+            self.system.power_source(),
+            self.system.port_pids(self.config["port"]),
+        )
+        self.state["metrics"]["queue"] = self.queue_counts(queue)
+        self.append_metrics_sample(
+            now,
+            final_route_sample=True,
+            finish_reason=reason,
+            route_status=active["status"],
+            route_id=route["id"],
+        )
 
     def handle_unexpected_exit(self, owned: list[dict]) -> bool:
         active = self.active_route_state()
