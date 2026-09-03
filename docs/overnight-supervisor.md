@@ -25,6 +25,11 @@ checkpoint age, power source, port ownership, and worker verification.
 It also appends a compact `metrics.jsonl` sample every thirty seconds with the
 evaluation/domain counts, throughput, available QD archive metrics, liveness,
 eight-worker confirmation, CPU, disk, checkpoint age, and remaining deadline.
+`qdScore` is the sum of all finite occupied-cell fitnesses.
+`normalizedQdScore` has one stable definition: `qdScore / (occupiedCells *
+bestFitness)` when the archive is non-empty and `bestFitness > 0`; otherwise it
+is null. The same sample includes occupied-cell top-5 and top-12 means plus each
+morphology's occupied count, best fitness, and QD sum.
 
 After three minutes without an accepted evaluation, the supervisor sends SIGINT
 only to a recorded Trainer identity, allows the configured checkpoint grace,

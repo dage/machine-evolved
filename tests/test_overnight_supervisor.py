@@ -170,7 +170,11 @@ class SupervisorTest(unittest.TestCase):
                 "bestFitnessEvaluation": max(0, evaluations - 2),
                 "domainProgress": {"pending": {}},
             }},
-            "structure": {"creatures": [{"fitness": 2.5}, {"fitness": 3.5}, {"fitness": None}]},
+            "structure": {"creatures": [
+                {"fitness": 2.5, "data": {"metadata": {"morphologyId": "m0"}}},
+                {"fitness": 3.5, "data": {"metadata": {"morphologyId": "m1"}}},
+                {"fitness": None, "data": {"metadata": {"morphologyId": "m1"}}},
+            ]},
         }))
 
     def test_immutable_precise_epoch_survives_restart(self):
@@ -294,6 +298,14 @@ class SupervisorTest(unittest.TestCase):
         self.assertEqual(sample["domainSimulations"], 36)
         self.assertEqual(sample["qd"]["occupiedCells"], 2)
         self.assertEqual(sample["qd"]["bestFitness"], 3.5)
+        self.assertEqual(sample["qd"]["qdScore"], 6.0)
+        self.assertAlmostEqual(sample["qd"]["normalizedQdScore"], 6.0 / 7.0)
+        self.assertEqual(sample["qd"]["top5MeanFitness"], 3.0)
+        self.assertEqual(sample["qd"]["top12MeanFitness"], 3.0)
+        self.assertEqual(sample["qd"]["morphologies"], {
+            "m0": {"occupiedCells": 1, "bestFitness": 2.5, "qdScore": 2.5},
+            "m1": {"occupiedCells": 1, "bestFitness": 3.5, "qdScore": 3.5},
+        })
         self.assertTrue(sample["workers"]["verified"])
         self.assertEqual(sample["diskFreeBytes"], 99_000)
         self.assertGreater(sample["deadlineRemainingSeconds"], 0)

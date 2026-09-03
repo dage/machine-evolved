@@ -761,12 +761,20 @@ class Supervisor:
             population = value["algorithm"]["arguments"]["population"]
             trainer_state = value.get("experiment", {}).get("trainerState", {})
             fitnesses = []
+            fitnesses_by_morphology = {}
             for item in value.get("structure", {}).get("creatures", []):
                 if item.get("fitness") is None:
                     continue
                 fitness = float(item["fitness"])
                 if math.isfinite(fitness):
                     fitnesses.append(fitness)
+                    morphology = str(
+                        item.get("data", {}).get("metadata", {}).get("morphologyId", "unknown")
+                    )
+                    fitnesses_by_morphology.setdefault(morphology, []).append(fitness)
+            ranked_fitnesses = sorted(fitnesses, reverse=True)
+            best_fitness = ranked_fitnesses[0] if ranked_fitnesses else None
+            qd_score = sum(fitnesses)
             result.update({
                 "checkpointAgeSeconds": max(0, self.system.epoch() - stat.st_mtime),
                 "evaluations": int(population.get("evaluations", 0)),
@@ -774,8 +782,29 @@ class Supervisor:
                 "domainSimulations": int(trainer_state.get("evaluationSimulations", 0)),
                 "qd": {
                     "occupiedCells": len(fitnesses),
-                    "bestFitness": max(fitnesses) if fitnesses else None,
-                    "meanArchiveFitness": sum(fitnesses) / len(fitnesses) if fitnesses else None,
+                    "bestFitness": best_fitness,
+                    "meanArchiveFitness": qd_score / len(fitnesses) if fitnesses else None,
+                    "qdScore": qd_score,
+                    "normalizedQdScore": (
+                        qd_score / (len(fitnesses) * best_fitness)
+                        if fitnesses and best_fitness > 0 else None
+                    ),
+                    "top5MeanFitness": (
+                        sum(ranked_fitnesses[:5]) / len(ranked_fitnesses[:5])
+                        if ranked_fitnesses else None
+                    ),
+                    "top12MeanFitness": (
+                        sum(ranked_fitnesses[:12]) / len(ranked_fitnesses[:12])
+                        if ranked_fitnesses else None
+                    ),
+                    "morphologies": {
+                        morphology: {
+                            "occupiedCells": len(values),
+                            "bestFitness": max(values),
+                            "qdScore": sum(values),
+                        }
+                        for morphology, values in sorted(fitnesses_by_morphology.items())
+                    },
                     "partialCandidates": len(trainer_state.get("domainProgress", {})),
                     "bestFitnessEvaluation": int(trainer_state.get("bestFitnessEvaluation", 0)),
                 },
