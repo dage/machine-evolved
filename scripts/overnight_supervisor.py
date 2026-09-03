@@ -1230,6 +1230,29 @@ class Supervisor:
                 counts["waitingPower"] += 1
         return counts
 
+    def aggregate_crash_count(self) -> int:
+        count = 0
+        for ledger in self.state.get("routes", {}).values():
+            history = ledger.get("attemptHistory", [])
+            for index, attempt in enumerate(history):
+                if attempt.get("endReason") != "process_exit":
+                    continue
+                successful = attempt.get("successfulCompletion")
+                if successful is True:
+                    continue
+                # Older persisted ledgers did not record successfulCompletion.
+                # A completed route's final attempt is the one that produced its
+                # validated exact-cap summary, so do not retroactively call that
+                # normal launcher exit a crash.
+                if (
+                    successful is None
+                    and ledger.get("status") == "completed"
+                    and index == len(history) - 1
+                ):
+                    continue
+                count += 1
+        return count
+
     def update_metrics(self, queue: list[dict], processes: list[dict]) -> None:
         now = self.system.epoch()
         active = self.active_route_state()
@@ -1285,12 +1308,7 @@ class Supervisor:
             "shellworker": by_role["shellworker"],
             "capture": capture_pids,
         }
-        aggregate_crash_count = sum(
-            1
-            for ledger in self.state.get("routes", {}).values()
-            for attempt in ledger.get("attemptHistory", [])
-            if attempt.get("endReason") == "process_exit"
-        )
+        aggregate_crash_count = self.aggregate_crash_count()
         next_action = self.next_queued_action(queue, power_source, port_pids)
         self.state["metrics"] = {
             "liveness": {
@@ -1458,16 +1476,19 @@ class Supervisor:
             queue = []
         self.update_metrics(queue, self.current_processes())
         attempt = active["activeAttempt"]
+        route = active["definition"]
+        completed = self.route_has_complete_summary(route, active["originalEvaluationCap"])
+        effective_reason = "evaluation_cap_reached" if completed else reason
         attempt["endedAt"] = utc_timestamp(now)
         attempt["endedAtEpochSeconds"] = now
-        attempt["endReason"] = reason
+        attempt["endReason"] = effective_reason
+        attempt["terminationTrigger"] = reason
+        attempt["successfulCompletion"] = completed
         attempt["exitCode"] = self.system.poll(attempt["launcherPid"])
         active.setdefault("attemptHistory", []).append(attempt)
         active["activeAttempt"] = None
         self.state["ownedProcesses"] = []
         self.state["shutdown"] = None
-        route = active["definition"]
-        completed = self.route_has_complete_summary(route, active["originalEvaluationCap"])
         if completed:
             active["status"] = "completed"
             active["completedAt"] = utc_timestamp(now)
@@ -1504,12 +1525,7 @@ class Supervisor:
             self.state["status"] = "waiting_restart_backoff"
         elif reason == "battery_power":
             self.state["status"] = "waiting_power"
-        self.state["aggregateCrashCount"] = sum(
-            1
-            for ledger in self.state.get("routes", {}).values()
-            for previous_attempt in ledger.get("attemptHistory", [])
-            if previous_attempt.get("endReason") == "process_exit"
-        )
+        self.state["aggregateCrashCount"] = self.aggregate_crash_count()
         self.state["nextQueuedAction"] = self.next_queued_action(
             queue,
             self.system.power_source(),
@@ -1519,7 +1535,7 @@ class Supervisor:
         self.append_metrics_sample(
             now,
             final_route_sample=True,
-            finish_reason=reason,
+            finish_reason=effective_reason,
             route_status=active["status"],
             route_id=route["id"],
         )

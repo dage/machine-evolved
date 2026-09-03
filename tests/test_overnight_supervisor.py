@@ -736,13 +736,17 @@ class SupervisorTest(unittest.TestCase):
         self.assertEqual(len(lines_after), len(lines_before) + 1)
         final = json.loads(lines_after[-1])
         self.assertTrue(final["finalRouteSample"])
-        self.assertEqual(final["finishReason"], "process_exit")
+        self.assertEqual(final["finishReason"], "evaluation_cap_reached")
         self.assertEqual(final["routeStatus"], "completed")
         self.assertEqual(final["activeRouteId"], "primary")
         self.assertEqual(final["evaluations"], 40_000)
         self.assertEqual(final["domainSimulations"], 120_000)
         self.assertEqual(final["activeBankHash"], "bank-sha256-test")
         self.assertEqual(final["adaptiveSelector"]["totalSelections"], 7)
+        attempt = supervisor.state["routes"]["primary"]["attemptHistory"][-1]
+        self.assertTrue(attempt["successfulCompletion"])
+        self.assertEqual(attempt["terminationTrigger"], "process_exit")
+        self.assertEqual(supervisor.state["aggregateCrashCount"], 0)
 
     def test_three_rapid_crashes_abandon_primary_and_select_fallback(self):
         self.write_queue([
@@ -759,6 +763,7 @@ class SupervisorTest(unittest.TestCase):
             if attempt < 2:
                 self.system.advance(10)
         self.assertEqual(supervisor.state["routes"]["primary"]["status"], "abandoned")
+        self.assertEqual(supervisor.state["aggregateCrashCount"], 3)
         self.system.advance(10)
         supervisor.tick()
         self.assertEqual(supervisor.state["activeRouteId"], "fallback")
