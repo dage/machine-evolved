@@ -109,6 +109,13 @@ def load_configuration(path: Path) -> dict:
         "stateDirectory": (repository / raw["stateDirectory"]).resolve(),
         "runRoot": (repository / raw.get("runRoot", "training-runs")).resolve(),
         "durationSeconds": positive_number(raw.get("durationSeconds", 36_000), "durationSeconds"),
+        "qdNormalizationReferenceFitness": (
+            positive_number(
+                raw["qdNormalizationReferenceFitness"],
+                "qdNormalizationReferenceFitness",
+            )
+            if "qdNormalizationReferenceFitness" in raw else None
+        ),
         "t0EpochSeconds": (
             positive_number(raw["t0EpochSeconds"], "t0EpochSeconds")
             if "t0EpochSeconds" in raw else None
@@ -421,6 +428,14 @@ class Supervisor:
                 "lastHeartbeatEpochSeconds": None,
                 "lastMetricsEpochSeconds": None,
             }
+        configured_qd_reference = self.config["qdNormalizationReferenceFitness"]
+        if "qdNormalizationReferenceFitness" in self.state:
+            stored_qd_reference = self.state["qdNormalizationReferenceFitness"]
+            if configured_qd_reference is not None and configured_qd_reference != stored_qd_reference:
+                raise RuntimeError("Configured QD normalization reference differs from the persisted reference")
+            self.config["qdNormalizationReferenceFitness"] = stored_qd_reference
+        else:
+            self.state["qdNormalizationReferenceFitness"] = configured_qd_reference
         self.state["epoch"] = epoch
         self.reconcile_owned_processes()
         self.write_state(now)
@@ -773,6 +788,7 @@ class Supervisor:
             stat = checkpoint.stat()
             value = read_json(checkpoint)
             population = value["algorithm"]["arguments"]["population"]
+            arguments = value["algorithm"]["arguments"]
             trainer_state = value.get("experiment", {}).get("trainerState", {})
             fitnesses = []
             fitnesses_by_morphology = {}
@@ -789,6 +805,22 @@ class Supervisor:
             ranked_fitnesses = sorted(fitnesses, reverse=True)
             best_fitness = ranked_fitnesses[0] if ranked_fitnesses else None
             qd_score = sum(fitnesses)
+            non_negative_qd_score = sum(max(0, fitness) for fitness in fitnesses)
+            archive = arguments.get("archive", {})
+            bins_per_axis = archive.get("binsPerAxis")
+            axes = archive.get("axes")
+            axis_count = len(axes) if isinstance(axes, list) else archive.get("axisCount")
+            template_count = len(value.get("structure", {}).get("templates", []))
+            total_archive_cells = None
+            if (
+                isinstance(bins_per_axis, int) and not isinstance(bins_per_axis, bool)
+                and bins_per_axis > 0
+                and isinstance(axis_count, int) and not isinstance(axis_count, bool)
+                and axis_count > 0
+                and template_count > 0
+            ):
+                total_archive_cells = bins_per_axis ** axis_count * template_count
+            reference_fitness = self.config["qdNormalizationReferenceFitness"]
             result.update({
                 "checkpointAgeSeconds": max(0, self.system.epoch() - stat.st_mtime),
                 "evaluations": int(population.get("evaluations", 0)),
@@ -799,7 +831,18 @@ class Supervisor:
                     "bestFitness": best_fitness,
                     "meanArchiveFitness": qd_score / len(fitnesses) if fitnesses else None,
                     "qdScore": qd_score,
+                    "nonNegativeQdScore": non_negative_qd_score,
                     "normalizedQdScore": (
+                        non_negative_qd_score / (reference_fitness * total_archive_cells)
+                        if reference_fitness is not None and total_archive_cells is not None else None
+                    ),
+                    "normalizationFormula": "sum(max(0,fitness))/(referenceFitness*totalArchiveCells)",
+                    "normalizationReferenceFitness": reference_fitness,
+                    "archiveBinsPerAxis": bins_per_axis,
+                    "archiveAxisCount": axis_count,
+                    "archiveTemplateCount": template_count,
+                    "totalArchiveCells": total_archive_cells,
+                    "sampleRelativeOccupiedQdRatio": (
                         qd_score / (len(fitnesses) * best_fitness)
                         if fitnesses and best_fitness > 0 else None
                     ),

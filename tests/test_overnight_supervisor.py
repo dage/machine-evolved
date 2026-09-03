@@ -96,6 +96,7 @@ class SupervisorTest(unittest.TestCase):
             "stateDirectory": self.state_dir,
             "runRoot": self.root / "training-runs",
             "durationSeconds": 36_000.0,
+            "qdNormalizationReferenceFitness": 4.0,
             "t0EpochSeconds": 900.125,
             "t0MonotonicSeconds": 400.375,
             "tickSeconds": 5.0,
@@ -169,7 +170,10 @@ class SupervisorTest(unittest.TestCase):
         run_dir = self.config["runRoot"] / run_name
         run_dir.mkdir(parents=True, exist_ok=True)
         (run_dir / "config.json").write_text(json.dumps({
-            "algorithm": {"arguments": {"population": {"evaluations": evaluations, "generation": 2}}},
+            "algorithm": {"arguments": {
+                "population": {"evaluations": evaluations, "generation": 2},
+                "archive": {"binsPerAxis": 2, "axes": ["x", "y"]},
+            }},
             "experiment": {"trainerState": {
                 "evaluationSimulations": evaluations * 3,
                 "bestFitnessEvaluation": max(0, evaluations - 2),
@@ -178,8 +182,9 @@ class SupervisorTest(unittest.TestCase):
             "structure": {"creatures": [
                 {"fitness": 2.5, "data": {"metadata": {"morphologyId": "m0"}}},
                 {"fitness": 3.5, "data": {"metadata": {"morphologyId": "m1"}}},
+                {"fitness": -1.5, "data": {"metadata": {"morphologyId": "m0"}}},
                 {"fitness": None, "data": {"metadata": {"morphologyId": "m1"}}},
-            ]},
+            ], "templates": [{"id": "m0"}, {"id": "m1"}]},
         }))
 
     def test_immutable_precise_epoch_survives_restart(self):
@@ -195,6 +200,17 @@ class SupervisorTest(unittest.TestCase):
         self.addCleanup(second.lock_file.close)
         self.assertEqual((self.state_dir / "epoch.json").read_bytes(), epoch_before)
         self.assertEqual(second.state["epoch"]["hardDeadlineEpochSeconds"], 36_900.125)
+
+    def test_qd_normalization_reference_is_frozen_in_state(self):
+        first = self.make_supervisor()
+        self.assertEqual(first.state["qdNormalizationReferenceFitness"], 4.0)
+        first.lock_file.close()
+        changed = dict(self.config)
+        changed["qdNormalizationReferenceFitness"] = 5.0
+        second = SUPERVISOR.Supervisor(changed, self.system)
+        self.addCleanup(lambda: second.lock_file and second.lock_file.close())
+        with self.assertRaisesRegex(RuntimeError, "persisted reference"):
+            second.initialize()
 
     def test_battery_waits_without_spawning_and_keeps_heartbeats(self):
         self.system.power = "battery"
@@ -338,14 +354,22 @@ class SupervisorTest(unittest.TestCase):
         sample = json.loads(lines[-1])
         self.assertEqual(sample["evaluations"], 12)
         self.assertEqual(sample["domainSimulations"], 36)
-        self.assertEqual(sample["qd"]["occupiedCells"], 2)
+        self.assertEqual(sample["qd"]["occupiedCells"], 3)
         self.assertEqual(sample["qd"]["bestFitness"], 3.5)
-        self.assertEqual(sample["qd"]["qdScore"], 6.0)
-        self.assertAlmostEqual(sample["qd"]["normalizedQdScore"], 6.0 / 7.0)
-        self.assertEqual(sample["qd"]["top5MeanFitness"], 3.0)
-        self.assertEqual(sample["qd"]["top12MeanFitness"], 3.0)
+        self.assertEqual(sample["qd"]["qdScore"], 4.5)
+        self.assertEqual(sample["qd"]["nonNegativeQdScore"], 6.0)
+        self.assertEqual(sample["qd"]["totalArchiveCells"], 8)
+        self.assertEqual(sample["qd"]["normalizationReferenceFitness"], 4.0)
+        self.assertEqual(
+            sample["qd"]["normalizationFormula"],
+            "sum(max(0,fitness))/(referenceFitness*totalArchiveCells)",
+        )
+        self.assertAlmostEqual(sample["qd"]["normalizedQdScore"], 6.0 / 32.0)
+        self.assertAlmostEqual(sample["qd"]["sampleRelativeOccupiedQdRatio"], 4.5 / 10.5)
+        self.assertEqual(sample["qd"]["top5MeanFitness"], 1.5)
+        self.assertEqual(sample["qd"]["top12MeanFitness"], 1.5)
         self.assertEqual(sample["qd"]["morphologies"], {
-            "m0": {"occupiedCells": 1, "bestFitness": 2.5, "qdScore": 2.5},
+            "m0": {"occupiedCells": 2, "bestFitness": 2.5, "qdScore": 1.0},
             "m1": {"occupiedCells": 1, "bestFitness": 3.5, "qdScore": 3.5},
         })
         self.assertTrue(sample["workers"]["verified"])
