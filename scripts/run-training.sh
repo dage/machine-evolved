@@ -2,6 +2,17 @@
 
 set -euo pipefail
 
+# `launchctl submit` starts with only the macOS system PATH. Keep headless
+# training runnable both from an interactive shell and from the autonomous
+# experiment handoff on Apple Silicon and Intel developer setups.
+if [[ -d /opt/homebrew/bin ]]; then
+  PATH="/opt/homebrew/bin:$PATH"
+fi
+if [[ -d /usr/local/bin ]]; then
+  PATH="/usr/local/bin:$PATH"
+fi
+export PATH
+
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 repo_dir=$(cd "$script_dir/.." && pwd)
 build_dir="$repo_dir/build"

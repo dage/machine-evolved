@@ -15,6 +15,8 @@ target_generation=1000
 target_population=384
 target_evaluations=$((target_generation * target_population))
 workers=8
+target_trainer_job="com.dag.machine-evolved.$target_run.trainer"
+target_capture_job="com.dag.machine-evolved.$target_run.capture"
 
 if [[ ! -f "$source_dir/config.json" ]]; then
   echo "WAIT: source checkpoint is not available: $source_dir/config.json"
@@ -56,40 +58,29 @@ start_target() {
     exit 1
   fi
 
-  (
-    "$script_dir/run-training.sh" \
-      --config "$target_config" \
-      --evaluations "$target_evaluations" \
-      --workers "$workers" \
-      --seed 240903 \
-      --run-name "$target_run" &
-    runner_pid=$!
-    for _ in $(seq 1 120); do
-      [[ -f "$target_dir/config.json" ]] && break
-      kill -0 "$runner_pid" 2>/dev/null || break
-      sleep 1
-    done
-    if [[ -f "$target_dir/config.json" ]]; then
-      python3 "$script_dir/capture-training-progress.py" \
-        --config "$target_dir/config.json" \
-        --output "$target_dir/progress.jsonl" \
-        --summary "$target_dir/summary.json" \
-        --interval-seconds 30 &
-      capture_pid=$!
-      wait "$runner_pid"
-      wait "$capture_pid" || true
-    else
-      wait "$runner_pid"
-    fi
-  ) >"$repo_dir/training-runs/$target_run.launcher.log" 2>&1 &
-  launcher_pid=$!
+  launchctl submit -l "$target_trainer_job" \
+    -o "$repo_dir/training-runs/$target_run.launcher.log" \
+    -e "$repo_dir/training-runs/$target_run.launcher.log" \
+    -- "$script_dir/run-training.sh" \
+    --config "$target_config" \
+    --evaluations "$target_evaluations" \
+    --workers "$workers" \
+    --seed 240903 \
+    --run-name "$target_run"
 
   for _ in $(seq 1 20); do
     if target_running && [[ -f "$target_dir/config.json" ]]; then
+      launchctl submit -l "$target_capture_job" \
+        -o "$target_dir/capture.log" \
+        -e "$target_dir/capture.log" \
+        -- "$(command -v python3)" "$script_dir/capture-training-progress.py" \
+        --config "$target_dir/config.json" \
+        --output "$target_dir/progress.jsonl" \
+        --summary "$target_dir/summary.json" \
+        --interval-seconds 30
       echo "STARTED: fresh 384-member, -200 gravity run; capped at $target_generation generations ($target_evaluations evaluations): $target_dir"
       return
     fi
-    kill -0 "$launcher_pid" 2>/dev/null || break
     sleep 1
   done
   echo "BLOCKED: target launcher exited before the new training run became ready; inspect $repo_dir/training-runs/$target_run.launcher.log"
