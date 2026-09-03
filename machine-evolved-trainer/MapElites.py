@@ -87,13 +87,19 @@ class MapElitesAlgorithm:
 		return False
 
 	def _queueChild(self):
-		if not self.archive:
+		randomInjectionRate = float(self.mutationConfig.get("randomInjectionRate", 0.0))
+		if not self.archive or random.random() < randomInjectionRate:
 			self._queueRandomTemplate()
 			return
 		parent = random.choice(list(self.archive.values()))["creature"]
 		child = copy.deepcopy(parent)
-		child.mutate(self.mutationConfig["config"])
-		child.generatorType = "qd-mutate"
+		largeMutationRate = float(self.mutationConfig.get("largeMutationRate", 0.0))
+		largeMutation = largeMutationRate > 0 and random.random() < largeMutationRate
+		mutation = self.mutationConfig.get("largeConfig") if largeMutation else self.mutationConfig["config"]
+		if mutation is None:
+			raise ValueError("largeMutationRate requires mutation.largeConfig")
+		child.mutate(mutation)
+		child.generatorType = "qd-large-mutate" if largeMutation else "qd-mutate"
 		self.pending[child.id] = child
 
 	def maintainPopulation(self):

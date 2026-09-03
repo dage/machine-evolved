@@ -2,6 +2,7 @@ import copy
 import json
 import random
 import unittest
+from unittest import mock
 from pathlib import Path
 
 from MapElites import MapElitesAlgorithm
@@ -51,6 +52,16 @@ class MapElitesTest(unittest.TestCase):
 		reservedId = next(iter(algorithm.pending))
 		algorithm.reserveEvaluation(reservedId)
 		self.assertNotEqual(algorithm.getForFitness().id, reservedId)
+
+	def test_random_injection_emitter_adds_a_fresh_template(self):
+		algorithm = self.createAlgorithm()
+		algorithm.mutationConfig["randomInjectionRate"] = 1.0
+		before = set(algorithm.pending)
+		with mock.patch("MapElites.random.random", return_value=0.0):
+			algorithm._queueChild()
+		created = [algorithm.pending[key] for key in set(algorithm.pending) - before]
+		self.assertEqual(len(created), 1)
+		self.assertTrue(created[0].generatorType.startswith(("template-", "curl-")))
 
 
 if __name__ == "__main__":
