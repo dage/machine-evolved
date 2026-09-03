@@ -76,6 +76,13 @@ Each run contributes a solid best-robust-fitness line and a dashed occupied-
 population mean line. Re-running the command refreshes the output from the
 latest valid sample in each `progress.jsonl` file.
 
+`scripts/advance-double-gravity-experiment.sh` is the idempotent handoff used
+by the 15-minute monitor for the current gravity comparison. It waits for the
+192-member double-gravity run to reach generation 1,000, requests a checkpoint-
+safe stop, then starts a fresh 384-member double-gravity run capped at 384,000
+evaluations (1,000 MAP-Elites generations). It does not transfer any population
+or checkpoint state between the runs.
+
 ## Browser replay export
 
 `replayworker` replays the highest-fitness creature in a saved training config
