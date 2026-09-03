@@ -28,6 +28,11 @@ def main():
 	parser.add_argument("--case", required=True)
 	parser.add_argument("--top", type=int, default=64)
 	parser.add_argument("--physics", action="append", default=[])
+	parser.add_argument(
+		"--single-domain",
+		action="store_true",
+		help="replace the training-domain ring with one nominal domain for an isolated holdout case",
+	)
 	parser.add_argument("--seed", required=True, type=int)
 	parser.add_argument("--output", required=True)
 	args = parser.parse_args()
@@ -47,6 +52,7 @@ def main():
 	experiment.pop("trainerState", None)
 	experiment["profile"] = "two-hour-population-robustness-{}".format(args.case)
 	experiment["seed"] = args.seed
+	sourceDomains = copy.deepcopy(experiment.get("evaluationDomains", []))
 	physics = experiment.setdefault("physics", {})
 	overrides = {}
 	for rawOverride in args.physics:
@@ -55,7 +61,7 @@ def main():
 			raise ValueError("Unknown physics field: {}".format(key))
 		overrides[key] = value
 		physics[key] = value
-	experiment["populationRobustness"] = {
+	robustnessMetadata = {
 		"schemaVersion": 1,
 		"case": args.case,
 		"selectionRule": "top-baseline-fitness-v1",
@@ -69,6 +75,13 @@ def main():
 			for index, item in enumerate(selected)
 		],
 	}
+	if args.single_domain:
+		experiment["evaluationDomains"] = [{ "id": args.case, "physics": {} }]
+		robustnessMetadata.update({
+			"evaluationMode": "single-domain-v1",
+			"sourceEvaluationDomainsSha256": canonicalSha256(sourceDomains),
+		})
+	experiment["populationRobustness"] = robustnessMetadata
 
 	population = config["algorithm"]["arguments"]["population"]
 	population.update({ "size": args.top, "generation": 0, "evaluations": 0, "checkpointIntervalSeconds": 60 })
