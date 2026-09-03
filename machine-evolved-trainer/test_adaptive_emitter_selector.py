@@ -38,6 +38,14 @@ class AdaptiveEmitterSelectorTest(unittest.TestCase):
 		selected = [selector.selectEmitter(198, "morphology") for _ in selector.ARMS]
 		self.assertEqual(selected, list(selector.ARMS))
 
+	def test_delayed_feedback_balances_all_pending_selections(self):
+		selector = self.createSelector()
+		for _ in range(192):
+			selector.selectEmitter(198, "morphology")
+		self.assertEqual(
+			{emitterId: selector.state["arms"][emitterId]["selections"] for emitterId in selector.ARMS},
+			{emitterId: 48 for emitterId in selector.ARMS})
+
 	def test_productive_arm_receives_most_post_warmup_allocations(self):
 		selector = self.createSelector(ucbExploration=0.15)
 		for _ in range(300):
@@ -49,12 +57,28 @@ class AdaptiveEmitterSelectorTest(unittest.TestCase):
 
 	def test_minimum_exploration_prevents_starvation(self):
 		selector = self.createSelector(ucbExploration=0.0)
-		for _ in range(400):
+		for selection in range(1, 401):
 			emitterId = selector.selectEmitter(7, "any-id")
 			self.record(selector, emitterId, 100.0 if emitterId == "small-independent" else 0.0)
+			required = math.ceil(selection * selector.minExplorationRate)
+			if required * len(selector.ARMS) <= selection:
+				self.assertTrue(all(
+					selector.state["arms"][arm]["selections"] >= required
+					for arm in selector.ARMS))
 		minimum = math.floor(400 * 0.05)
 		for emitterId in selector.ARMS:
 			self.assertGreaterEqual(selector.state["arms"][emitterId]["selections"], minimum)
+
+	def test_exploration_floor_holds_at_each_feasible_boundary_from_20_to_25(self):
+		selector = self.createSelector(ucbExploration=0.0)
+		for selection in range(1, 26):
+			emitterId = selector.selectEmitter(7, "boundary")
+			self.record(selector, emitterId, 100.0 if emitterId == "small-independent" else 0.0)
+			if selection >= 20:
+				required = math.ceil(selection * selector.minExplorationRate)
+				self.assertTrue(
+					all(selector.state["arms"][arm]["selections"] >= required for arm in selector.ARMS),
+					"floor failed after selection {}: {}".format(selection, selector.state["arms"]))
 
 	def test_zero_gain_arms_still_receive_the_exploration_floor(self):
 		selector = self.createSelector(ucbExploration=0.0)
@@ -74,6 +98,35 @@ class AdaptiveEmitterSelectorTest(unittest.TestCase):
 		self.assertEqual(self.record(selector, emitterId, -5.0, replacement=True, fitness=20.0), 0.0)
 		self.assertEqual(selector.state["arms"]["small-independent"]["coverageGains"], 1)
 		self.assertEqual(selector.state["arms"]["large-independent"]["replacements"], 1)
+		self.assertEqual(selector.state["arms"]["small-independent"]["positiveQdGain"], 10.0)
+		self.assertEqual(selector.state["arms"]["small-independent"]["normalizedReward"], 0.25)
+
+	def test_attempt_failure_and_invalid_outcome_counters_are_durable(self):
+		selector = self.createSelector()
+		emitterId = selector.selectEmitter(198, "m")
+		selector.recordAttempt(emitterId)
+		selector.recordFailure(emitterId, invalidOutcome=True)
+		selector.recordFailure(emitterId, invalidOutcome=False)
+		reloaded = AdaptiveEmitterSelector(json.loads(json.dumps(selector.config)))
+		arm = reloaded.state["arms"][emitterId]
+		self.assertEqual(
+			{key: arm[key] for key in ("selections", "attempts", "outcomes", "failures", "invalidOutcomes")},
+			{"selections": 1, "attempts": 1, "outcomes": 0, "failures": 2, "invalidOutcomes": 1})
+		self.assertEqual(reloaded.state["totalAttempts"], 1)
+		self.assertEqual(reloaded.state["totalFailures"], 2)
+		self.assertEqual(reloaded.state["totalInvalidOutcomes"], 1)
+
+	def test_additive_counters_resume_from_the_initial_selector_state_schema(self):
+		selector = self.createSelector()
+		legacyState = copy.deepcopy(selector.state)
+		for key in ("totalAttempts", "totalFailures", "totalInvalidOutcomes", "totalPositiveQdGain", "totalNormalizedReward"):
+			legacyState.pop(key)
+		for arm in legacyState["arms"].values():
+			for key in ("attempts", "failures", "invalidOutcomes", "positiveQdGain", "normalizedReward", "rejections", "globalBests"):
+				arm.pop(key)
+		reloaded = self.createSelector(state=legacyState)
+		self.assertEqual(reloaded.state["totalAttempts"], 0)
+		self.assertTrue(all(arm["positiveQdGain"] == 0.0 for arm in reloaded.state["arms"].values()))
 
 	def test_state_round_trips_without_changing_the_next_choice(self):
 		selector = self.createSelector()
@@ -146,6 +199,36 @@ class AdaptiveMapElitesIntegrationTest(unittest.TestCase):
 			behavior = {"airborneFraction": 0.2, "rotationParticipation": 0.3}
 		algorithm.setCreatureEvaluation(creature.id, fitness, behavior, [fitness])
 		return creature
+
+	def createBareTrainer(self, config, algorithm):
+		trainer = Trainer.__new__(Trainer)
+		trainer.algorithm = algorithm
+		trainer.config = {
+			"json": config,
+			"terminateEvaluations": None,
+			"terminateSeconds": None,
+			"terminateStallEvaluations": None,
+		}
+		trainer.stateLock = threading.RLock()
+		trainer.startTime = time.monotonic()
+		trainer.experimentId = "adaptive-test"
+		trainer.stopReason = None
+		trainer.stopFinalized = False
+		trainer.bestFitness = algorithm.getBestFitness()
+		trainer.bestFitnessEvaluation = 0
+		trainer.domainProgress = {}
+		trainer.domainQueue = []
+		trainer.evaluationContexts = {}
+		trainer.evaluationHistory = []
+		trainer.evaluationSimulations = 0
+		trainer.statistics = {
+			"accumulatedSimulatedTime": 0,
+			"accumulatedFitness": {},
+			"accumulatedSimulatedCreatures": {},
+			"timeStamp": time.monotonic(),
+		}
+		trainer.finalizeStop = lambda: None
+		return trainer
 
 	def test_config_gate_leaves_legacy_emitter_path_and_rng_sequence_intact(self):
 		config = copy.deepcopy(self.config)
@@ -293,39 +376,19 @@ class AdaptiveMapElitesIntegrationTest(unittest.TestCase):
 		algorithm.setCreatureEvaluation(creature.id, 11.0, {"airborneFraction": 0.8, "rotationParticipation": 0.8}, [11.0])
 		best = algorithm.getLastInsertionResult()
 		self.assertEqual((best["outcome"], best["qdDelta"], best["qdScore"]), ("new-global-best", 5.0, 21.0))
+		selectorState = algorithm.adaptiveSelector.state
+		self.assertEqual(selectorState["arms"]["small-independent"]["coverageGains"], 1)
+		self.assertEqual(selectorState["arms"]["large-independent"]["replacements"], 1)
+		self.assertEqual(selectorState["arms"]["fresh-template"]["rejections"], 1)
+		self.assertEqual(selectorState["arms"]["small-shared"]["globalBests"], 1)
+		self.assertEqual(selectorState["totalPositiveQdGain"], 11.0)
 
 	def test_trainer_history_reports_qd_score_delta_outcome_and_emitter(self):
 		config = self.adaptiveConfig()
 		config.setdefault("experiment", {})["evaluationDomains"] = [{"id": "nominal"}]
 		random.seed(91)
 		algorithm = self.createAlgorithm(config)
-		trainer = Trainer.__new__(Trainer)
-		trainer.algorithm = algorithm
-		trainer.config = {
-			"json": config,
-			"terminateEvaluations": None,
-			"terminateSeconds": None,
-			"terminateStallEvaluations": None,
-		}
-		trainer.stateLock = threading.RLock()
-		trainer.startTime = time.monotonic()
-		trainer.experimentId = "adaptive-test"
-		trainer.stopReason = None
-		trainer.stopFinalized = False
-		trainer.bestFitness = float("nan")
-		trainer.bestFitnessEvaluation = 0
-		trainer.domainProgress = {}
-		trainer.domainQueue = []
-		trainer.evaluationContexts = {}
-		trainer.evaluationHistory = []
-		trainer.evaluationSimulations = 0
-		trainer.statistics = {
-			"accumulatedSimulatedTime": 0,
-			"accumulatedFitness": {},
-			"accumulatedSimulatedCreatures": {},
-			"timeStamp": time.monotonic(),
-		}
-		trainer.finalizeStop = lambda: None
+		trainer = self.createBareTrainer(config, algorithm)
 
 		creature = algorithm.getForFitness()
 		evaluationId = algorithm.startEvaluation(creature.id)
@@ -344,6 +407,42 @@ class AdaptiveMapElitesIntegrationTest(unittest.TestCase):
 			{key: trainer.evaluationHistory[0][key] for key in ("emitterId", "insertionOutcome", "qdDelta", "qdScore")},
 			{"emitterId": None, "insertionOutcome": "new-global-best", "qdDelta": 8.0, "qdScore": 8.0})
 		self.assertEqual(algorithm.getStatusNumeric()["qdScore"], 8.0)
+
+	def test_invalid_result_retains_pending_emitter_attribution(self):
+		config = self.adaptiveConfig()
+		config.setdefault("experiment", {})["evaluationDomains"] = [{"id": "nominal"}]
+		random.seed(390)
+		algorithm = self.createAlgorithm(config)
+		self.evaluateNext(algorithm, 10.0)
+		trainer = self.createBareTrainer(config, algorithm)
+
+		work = trainer.getWorkUnserialized(False)
+		self.assertEqual(work["status"], "OK")
+		self.assertEqual(work["creature"]["metadata"]["emitterId"], "small-independent")
+		task = work["task"]
+		invalid = {
+			"experimentId": trainer.experimentId,
+			"evaluationId": task["evaluationId"],
+			"id": task["id"],
+			"maxDistance": 12.0,
+			"fitness": float("nan"),
+			"simulatedTime": 1.0,
+		}
+		self.assertEqual(trainer.registerResult(invalid, finalizeStop=False), "FAIL")
+		state = algorithm.adaptiveSelector.state["arms"]["small-independent"]
+		self.assertEqual(
+			{key: state[key] for key in ("selections", "attempts", "outcomes", "failures", "invalidOutcomes")},
+			{"selections": 1, "attempts": 1, "outcomes": 0, "failures": 1, "invalidOutcomes": 1})
+
+		valid = copy.deepcopy(invalid)
+		valid["fitness"] = 12.0
+		valid["motion"] = {"nearGroundTimeFraction": 0.8, "rollingExplainedFraction": 0.3}
+		self.assertEqual(trainer.registerResult(valid, finalizeStop=False), "OK")
+		state = algorithm.adaptiveSelector.state["arms"]["small-independent"]
+		self.assertEqual(state["outcomes"], 1)
+		self.assertEqual(state["replacements"], 1)
+		self.assertEqual(state["globalBests"], 1)
+		self.assertEqual(state["positiveQdGain"], 2.0)
 
 
 if __name__ == "__main__":

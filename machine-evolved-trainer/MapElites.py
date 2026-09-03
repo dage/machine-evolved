@@ -181,6 +181,9 @@ class MapElitesAlgorithm:
 		timeout = float(self.populationConfig.get("evaluationTimeoutSeconds", 300))
 		for creatureId, started in list(self.inFlight.items()):
 			if time.monotonic() - started > timeout:
+				creature = self.pending.get(creatureId)
+				if creature is not None and self.adaptiveSelector is not None:
+					self.adaptiveSelector.recordFailure(creature.emitterId)
 				self.inFlight.pop(creatureId, None)
 				self.activeEvaluationIds.pop(creatureId, None)
 		if time.monotonic() - self.saveStateTimestamp > float(self.populationConfig.get("checkpointIntervalSeconds", 60)):
@@ -208,6 +211,16 @@ class MapElitesAlgorithm:
 
 	def continueEvaluation(self, creatureId):
 		self.activeEvaluationIds.pop(creatureId, None)
+
+	def recordEmitterAttempt(self, emitterId):
+		if self.adaptiveSelector is not None:
+			return self.adaptiveSelector.recordAttempt(emitterId)
+		return False
+
+	def recordEmitterFailure(self, emitterId, invalidOutcome=False):
+		if self.adaptiveSelector is not None:
+			return self.adaptiveSelector.recordFailure(emitterId, invalidOutcome)
+		return False
 
 	def setCreatureEvaluation(self, creatureId, fitness, behavior, domainScores):
 		creature = self.pending.pop(creatureId, None)

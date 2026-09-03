@@ -513,6 +513,8 @@ class Trainer():
 		if not creature:
 			return "FAIL"
 		if not self.algorithm.isCurrentEvaluation(creatureId, data.get("evaluationId")):
+			if hasattr(self.algorithm, "recordEmitterFailure"):
+				self.algorithm.recordEmitterFailure(creature.emitterId, invalidOutcome=True)
 			print("Ignoring stale or duplicate evaluation result for creature {}.".format(creatureId))
 			return "FAIL"
 
@@ -521,10 +523,30 @@ class Trainer():
 			fitness = float(data.get("fitness", rawDistance))
 			simulatedTime = float(data["simulatedTime"])
 		except (KeyError, TypeError, ValueError, OverflowError):
+			if hasattr(self.algorithm, "recordEmitterFailure"):
+				self.algorithm.recordEmitterFailure(creature.emitterId, invalidOutcome=True)
 			print("Ignoring evaluation result for creature {} because its distance, fitness, or simulated time is not numeric.".format(creatureId))
 			return "FAIL"
 		if not math.isfinite(rawDistance) or not math.isfinite(fitness) or not math.isfinite(simulatedTime):
+			if hasattr(self.algorithm, "recordEmitterFailure"):
+				self.algorithm.recordEmitterFailure(creature.emitterId, invalidOutcome=True)
 			print("Ignoring evaluation result for creature {} because its distance, fitness, or simulated time is not finite.".format(creatureId))
+			return "FAIL"
+		try:
+			motion = data.get("motion", {})
+			if not isinstance(motion, dict):
+				raise TypeError()
+			nearGroundTimeFraction = float(motion.get("nearGroundTimeFraction", 1.0))
+			rollingExplainedFraction = float(motion.get("rollingExplainedFraction", 0.0))
+		except (TypeError, ValueError, OverflowError):
+			if hasattr(self.algorithm, "recordEmitterFailure"):
+				self.algorithm.recordEmitterFailure(creature.emitterId, invalidOutcome=True)
+			print("Ignoring evaluation result for creature {} because its motion descriptor is not numeric.".format(creatureId))
+			return "FAIL"
+		if not math.isfinite(nearGroundTimeFraction) or not math.isfinite(rollingExplainedFraction):
+			if hasattr(self.algorithm, "recordEmitterFailure"):
+				self.algorithm.recordEmitterFailure(creature.emitterId, invalidOutcome=True)
+			print("Ignoring evaluation result for creature {} because its motion descriptor is not finite.".format(creatureId))
 			return "FAIL"
 
 		#print("fitness={}".format(fitness))
@@ -554,7 +576,6 @@ class Trainer():
 		if not domains:
 			domains = [{"id": "nominal"}]
 		progress = self.domainProgress.setdefault(creatureId, {"results": []})
-		motion = data.get("motion", {})
 		progress["results"].append({
 			"domainId": context.get("domainId", domains[len(progress["results"])]["id"]),
 			"distance": rawDistance,
@@ -732,6 +753,8 @@ class Trainer():
 			physics["backend"] = experiment.get("backend", "machine-evolved-bullet-v1")
 			controlRateHz = int(physics.get("controlRateHz", objective.get("fixedStepHz", 60)))
 			evaluationId = self.algorithm.startEvaluation(creature.id)
+			if not getBestForPlayback and hasattr(self.algorithm, "recordEmitterAttempt"):
+				self.algorithm.recordEmitterAttempt(creature.emitterId)
 			self.evaluationContexts[evaluationId] = {"creatureId": creature.id, "domainId": domain.get("id", "nominal")}
 			taskJson = {
 				"name": "MOVE_FAR",

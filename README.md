@@ -76,6 +76,10 @@ Each run contributes a solid best-robust-fitness line and a dashed occupied-
 population mean line. Re-running the command refreshes the output from the
 latest valid sample in each `progress.jsonl` file.
 
+Progress records also retain raw QD score, the explicit current-best/empty-cell
+normalization definition, top-5 and top-12 archive summaries, per-morphology
+quality summaries, and durable adaptive-emitter attempt and outcome counters.
+
 `scripts/advance-double-gravity-experiment.sh` is the idempotent handoff used
 by the 15-minute monitor for the current gravity comparison. It waits for the
 192-member double-gravity run to reach generation 1,000, requests a checkpoint-
@@ -90,8 +94,12 @@ block must retain its normal `config` bounds and provide the existing broad
 `warmupSelectionsPerArm`, `minExplorationRate` (at least `0.05`),
 `ucbExploration`, and `rewardClip`. The selector compares small independent,
 large independent, fresh-template, and small shared-offset emitters; its state
-is checkpointed inside `adaptiveSelector.state`. Configurations without the
-enabled gate continue to use the original static emitter path.
+is checkpointed inside `adaptiveSelector.state`, including selections,
+evaluation attempts, invalid outcomes, failures, positive QD gain, coverage,
+replacement, rejection, and global-best counts per emitter. Configurations
+without the enabled gate continue to use the original static emitter path.
+Selections count emitted children, attempts count dispatched domain work units,
+and outcomes count candidates after all configured domains are aggregated.
 
 ## Browser replay export
 
