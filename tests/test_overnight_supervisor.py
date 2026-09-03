@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import os
 import signal
 import tempfile
 import unittest
@@ -166,13 +167,37 @@ class SupervisorTest(unittest.TestCase):
         ])
         self.system.listeners = [101]
 
-    def write_checkpoint(self, run_name, evaluations):
+    def write_checkpoint(self, run_name, evaluations, include_selector=False):
         run_dir = self.config["runRoot"] / run_name
         run_dir.mkdir(parents=True, exist_ok=True)
-        (run_dir / "config.json").write_text(json.dumps({
+        selector = {}
+        if include_selector:
+            selector = {"adaptiveSelector": {
+                "enabled": True,
+                "state": {
+                    "schemaVersion": 1,
+                    "totalSelections": 7,
+                    "totalAttempts": 6,
+                    "totalOutcomes": 5,
+                    "totalFailures": 1,
+                    "totalInvalidOutcomes": 1,
+                    "totalPositiveQdGain": 9.5,
+                    "totalNormalizedReward": 0.75,
+                    "arms": {"small-independent": {
+                        "selections": 7, "attempts": 6, "outcomes": 5,
+                        "failures": 1, "invalidOutcomes": 1,
+                        "coverageGains": 2, "replacements": 1,
+                        "rejections": 2, "globalBests": 1,
+                        "positiveQdGain": 9.5, "normalizedReward": 0.75,
+                    }},
+                },
+            }}
+        checkpoint = run_dir / "config.json"
+        checkpoint.write_text(json.dumps({
             "algorithm": {"arguments": {
                 "population": {"evaluations": evaluations, "generation": 2},
                 "archive": {"binsPerAxis": 2, "axes": ["x", "y"]},
+                "mutation": selector,
             }},
             "experiment": {"trainerState": {
                 "evaluationSimulations": evaluations * 3,
@@ -186,6 +211,8 @@ class SupervisorTest(unittest.TestCase):
                 {"fitness": None, "data": {"metadata": {"morphologyId": "m1"}}},
             ], "templates": [{"id": "m0"}, {"id": "m1"}]},
         }))
+        timestamp_ns = int(self.system.now * 1_000_000_000)
+        os.utime(checkpoint, ns=(timestamp_ns, timestamp_ns))
 
     def test_immutable_precise_epoch_survives_restart(self):
         first = self.make_supervisor()
@@ -253,7 +280,7 @@ class SupervisorTest(unittest.TestCase):
         supervisor = self.make_supervisor()
         supervisor.tick()
         self.add_owned_runtime()
-        self.write_checkpoint("run-primary", 12)
+        self.write_checkpoint("run-primary", 12, include_selector=True)
         self.system.advance(1)
         supervisor.tick()
         self.assertTrue(supervisor.state["metrics"]["workers"]["verified"])
@@ -342,7 +369,7 @@ class SupervisorTest(unittest.TestCase):
         supervisor = self.make_supervisor()
         supervisor.tick()
         self.add_owned_runtime()
-        self.write_checkpoint("run-primary", 12)
+        self.write_checkpoint("run-primary", 12, include_selector=True)
         initial_count = len((self.state_dir / "metrics.jsonl").read_text().splitlines())
         self.system.advance(29)
         supervisor.tick()
@@ -372,9 +399,75 @@ class SupervisorTest(unittest.TestCase):
             "m0": {"occupiedCells": 2, "bestFitness": 2.5, "qdScore": 1.0},
             "m1": {"occupiedCells": 1, "bestFitness": 3.5, "qdScore": 3.5},
         })
+        selector = sample["adaptiveSelector"]
+        self.assertTrue(selector["enabled"])
+        self.assertEqual(selector["totalSelections"], 7)
+        self.assertEqual(selector["totalAttempts"], 6)
+        self.assertEqual(selector["totalOutcomes"], 5)
+        self.assertEqual(selector["totalFailures"], 1)
+        self.assertEqual(selector["totalInvalidOutcomes"], 1)
+        self.assertEqual(selector["totalPositiveQdGain"], 9.5)
+        self.assertEqual(selector["totalNormalizedReward"], 0.75)
+        self.assertEqual(selector["outcomes"], {
+            "coverageGains": 2, "replacements": 1, "rejections": 2, "globalBests": 1,
+        })
+        self.assertEqual(selector["emitters"]["small-independent"]["selections"], 7)
+        self.assertEqual(
+            sample["throughput"]["definition"],
+            "route-first-last-checkpoint-mtime-v1",
+        )
         self.assertTrue(sample["workers"]["verified"])
         self.assertEqual(sample["diskFreeBytes"], 99_000)
         self.assertGreater(sample["deadlineRemainingSeconds"], 0)
+
+    def test_throughput_uses_durable_first_last_checkpoint_observations(self):
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.add_owned_runtime()
+        self.system.advance(1)
+        self.write_checkpoint("run-primary", 0)
+        fixed_selector = supervisor.progress_for(
+            supervisor.state["routes"]["primary"]["definition"]
+        )["adaptiveSelector"]
+        self.assertFalse(fixed_selector["enabled"])
+        self.assertEqual(fixed_selector["emitters"], {})
+        supervisor.tick()
+        self.system.advance(60)
+        self.write_checkpoint("run-primary", 120)
+        supervisor.tick()
+        estimator = supervisor.state["routes"]["primary"]["throughputEstimator"]
+        self.assertEqual(estimator["definition"], "route-first-last-checkpoint-mtime-v1")
+        self.assertEqual(estimator["observationCount"], 2)
+        self.assertEqual(estimator["evaluationsPerMinute"], 120.0)
+
+        # Repeated reads of the same 60-second checkpoint plateau are ignored.
+        self.system.advance(30)
+        supervisor.tick()
+        estimator = supervisor.state["routes"]["primary"]["throughputEstimator"]
+        self.assertEqual(estimator["observationCount"], 2)
+        self.assertEqual(estimator["evaluationsPerMinute"], 120.0)
+
+        # A later checkpoint jump updates the route average, not a one-tick spike.
+        self.system.advance(30)
+        self.write_checkpoint("run-primary", 180)
+        supervisor.tick()
+        estimator = supervisor.state["routes"]["primary"]["throughputEstimator"]
+        self.assertEqual(estimator["observationCount"], 3)
+        self.assertEqual(estimator["evaluationsPerMinute"], 90.0)
+
+        # The first/last baseline survives a supervisor restart unchanged.
+        supervisor.lock_file.close()
+        restarted = SUPERVISOR.Supervisor(self.config, self.system)
+        restarted.initialize()
+        self.addCleanup(restarted.lock_file.close)
+        restarted.tick()
+        persisted = restarted.state["routes"]["primary"]["throughputEstimator"]
+        self.assertEqual(persisted["observationCount"], 3)
+        self.assertEqual(persisted["evaluationsPerMinute"], 90.0)
+        self.assertEqual(
+            restarted.state["metrics"]["throughput"]["formula"],
+            "(lastEvaluations-firstEvaluations)*60/(lastCheckpointEpoch-firstCheckpointEpoch)",
+        )
 
     def test_three_rapid_crashes_abandon_primary_and_select_fallback(self):
         self.write_queue([

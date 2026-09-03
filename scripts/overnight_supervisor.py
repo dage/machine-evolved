@@ -31,6 +31,12 @@ SCHEMA_VERSION = 1
 HEARTBEAT_SECONDS = 60
 METRICS_SECONDS = 30
 RUN_NAME_PATTERN = re.compile(r"^[A-Za-z0-9._-]+$")
+THROUGHPUT_DEFINITION = "route-first-last-checkpoint-mtime-v1"
+SELECTOR_ARM_COUNTERS = (
+    "selections", "attempts", "outcomes", "failures", "invalidOutcomes",
+    "coverageGains", "replacements", "rejections", "globalBests",
+    "positiveQdGain", "normalizedReward",
+)
 
 
 def utc_timestamp(epoch_seconds: float) -> str:
@@ -219,6 +225,38 @@ def load_route_queue(path: Path, repository: Path) -> list[dict]:
 def route_digest(route: dict) -> str:
     immutable = {key: value for key, value in route.items() if key != "enabled"}
     return hashlib.sha256(canonical_json(immutable).encode("utf-8")).hexdigest()
+
+
+def adaptive_selector_summary(config: dict) -> dict:
+    selector = config.get("algorithm", {}).get("arguments", {}).get("mutation", {}).get(
+        "adaptiveSelector", {}
+    )
+    selector = selector if isinstance(selector, dict) else {}
+    state = selector.get("state", {})
+    state = state if isinstance(state, dict) else {}
+    raw_arms = state.get("arms", {})
+    raw_arms = raw_arms if isinstance(raw_arms, dict) else {}
+    emitters = {
+        str(arm_id): {key: arm.get(key, 0) for key in SELECTOR_ARM_COUNTERS}
+        for arm_id, arm in sorted(raw_arms.items())
+        if isinstance(arm, dict)
+    }
+    return {
+        "enabled": selector.get("enabled") is True,
+        "schemaVersion": state.get("schemaVersion"),
+        "totalSelections": int(state.get("totalSelections", 0)),
+        "totalAttempts": int(state.get("totalAttempts", 0)),
+        "totalOutcomes": int(state.get("totalOutcomes", 0)),
+        "totalFailures": int(state.get("totalFailures", 0)),
+        "totalInvalidOutcomes": int(state.get("totalInvalidOutcomes", 0)),
+        "totalPositiveQdGain": float(state.get("totalPositiveQdGain", 0.0)),
+        "totalNormalizedReward": float(state.get("totalNormalizedReward", 0.0)),
+        "outcomes": {
+            key: sum(arm[key] for arm in emitters.values())
+            for key in ("coverageGains", "replacements", "rejections", "globalBests")
+        },
+        "emitters": emitters,
+    }
 
 
 def process_role(command: str) -> str:
@@ -561,7 +599,9 @@ class Supervisor:
                 "domainSimulations": progress.get("domainSimulations"),
                 "generation": progress.get("generation"),
                 "throughputEvaluationsPerMinute": metrics.get("throughputEvaluationsPerMinute"),
+                "throughput": metrics.get("throughput"),
                 "qd": progress.get("qd"),
+                "adaptiveSelector": progress.get("adaptiveSelector"),
                 "liveness": metrics.get("liveness"),
                 "workers": metrics.get("workers"),
                 "cpuPercent": metrics.get("cpuPercent"),
@@ -776,11 +816,14 @@ class Supervisor:
             "checkpointPath": str(checkpoint),
             "checkpointExists": checkpoint.is_file(),
             "checkpointAgeSeconds": None,
+            "checkpointObservedAtEpochSeconds": None,
+            "checkpointRevisionNanoseconds": None,
             "evaluations": None,
             "generation": None,
             "domainSimulations": None,
             "readError": None,
             "qd": None,
+            "adaptiveSelector": adaptive_selector_summary({}),
         }
         if not checkpoint.is_file():
             return result
@@ -823,6 +866,8 @@ class Supervisor:
             reference_fitness = self.config["qdNormalizationReferenceFitness"]
             result.update({
                 "checkpointAgeSeconds": max(0, self.system.epoch() - stat.st_mtime),
+                "checkpointObservedAtEpochSeconds": stat.st_mtime,
+                "checkpointRevisionNanoseconds": stat.st_mtime_ns,
                 "evaluations": int(population.get("evaluations", 0)),
                 "generation": int(population.get("generation", 0)),
                 "domainSimulations": int(trainer_state.get("evaluationSimulations", 0)),
@@ -865,25 +910,65 @@ class Supervisor:
                     "partialCandidates": len(trainer_state.get("domainProgress", {})),
                     "bestFitnessEvaluation": int(trainer_state.get("bestFitnessEvaluation", 0)),
                 },
+                "adaptiveSelector": adaptive_selector_summary(value),
             })
         except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
             result["readError"] = str(error)
         return result
+
+    def observe_throughput(self, active: dict, progress: dict) -> dict:
+        estimator = active.setdefault("throughputEstimator", {
+            "definition": THROUGHPUT_DEFINITION,
+            "formula": "(lastEvaluations-firstEvaluations)*60/(lastCheckpointEpoch-firstCheckpointEpoch)",
+            "firstCheckpoint": None,
+            "lastCheckpoint": None,
+            "observationCount": 0,
+            "rejectedRegressionCount": 0,
+            "evaluationsPerMinute": None,
+        })
+        if estimator.get("definition") != THROUGHPUT_DEFINITION:
+            raise RuntimeError("Unsupported persisted throughput estimator definition")
+        evaluations = progress.get("evaluations")
+        observed_at = progress.get("checkpointObservedAtEpochSeconds")
+        revision = progress.get("checkpointRevisionNanoseconds")
+        if evaluations is None or observed_at is None or revision is None:
+            return copy.deepcopy(estimator)
+        observation = {
+            "evaluations": evaluations,
+            "checkpointEpochSeconds": observed_at,
+            "checkpointRevisionNanoseconds": revision,
+        }
+        last = estimator["lastCheckpoint"]
+        if last and (
+            observation["checkpointRevisionNanoseconds"] == last["checkpointRevisionNanoseconds"]
+            and observation["evaluations"] == last["evaluations"]
+        ):
+            return copy.deepcopy(estimator)
+        if last and (
+            observation["checkpointEpochSeconds"] <= last["checkpointEpochSeconds"]
+            or observation["evaluations"] < last["evaluations"]
+        ):
+            estimator["rejectedRegressionCount"] += 1
+            return copy.deepcopy(estimator)
+        if estimator["firstCheckpoint"] is None:
+            estimator["firstCheckpoint"] = observation
+        estimator["lastCheckpoint"] = observation
+        estimator["observationCount"] += 1
+        first = estimator["firstCheckpoint"]
+        elapsed = observation["checkpointEpochSeconds"] - first["checkpointEpochSeconds"]
+        if elapsed > 0:
+            estimator["evaluationsPerMinute"] = (
+                (observation["evaluations"] - first["evaluations"]) * 60 / elapsed
+            )
+        return copy.deepcopy(estimator)
 
     def update_metrics(self, queue: list[dict], processes: list[dict]) -> None:
         now = self.system.epoch()
         active = self.active_route_state()
         route = active["definition"] if active else None
         progress = self.progress_for(route) if route else None
+        throughput = self.observe_throughput(active, progress) if active and progress else None
         if active and progress and progress["evaluations"] is not None:
-            current = progress["evaluations"]
-            previous = active.get("lastProgress")
-            if previous is None or current > previous:
-                previous_at = active.get("lastProgressAtEpochSeconds")
-                active["lastProgress"] = current
-                active["lastProgressAtEpochSeconds"] = now
-                if previous is not None and previous_at is not None and now > previous_at:
-                    active["evaluationsPerMinute"] = (current - previous) * 60 / (now - previous_at)
             progress["secondsSinceEvaluationProgress"] = max(
                 0, now - active["lastProgressAtEpochSeconds"]
             )
@@ -904,7 +989,10 @@ class Supervisor:
                 ),
             },
             "progress": progress,
-            "throughputEvaluationsPerMinute": active.get("evaluationsPerMinute") if active else None,
+            "throughput": throughput,
+            "throughputEvaluationsPerMinute": (
+                throughput.get("evaluationsPerMinute") if throughput else None
+            ),
             "queue": {"configured": len(queue), "pending": pending},
             "cpuPercent": sum(item.get("cpuPercent", 0.0) for item in owned_current),
             "disk": disk,

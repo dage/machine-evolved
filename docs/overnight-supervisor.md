@@ -25,6 +25,11 @@ checkpoint age, power source, port ownership, and worker verification.
 It also appends a compact `metrics.jsonl` sample every thirty seconds with the
 evaluation/domain counts, throughput, available QD archive metrics, liveness,
 eight-worker confirmation, CPU, disk, checkpoint age, and remaining deadline.
+Throughput uses the persisted `route-first-last-checkpoint-mtime-v1` estimator:
+`(lastEvaluations - firstEvaluations) * 60 / (lastCheckpointEpoch -
+firstCheckpointEpoch)`. Duplicate reads of one checkpoint revision do not add
+observations, so minute-long checkpoint plateaus do not become one-tick spikes;
+the first/last baseline survives supervisor restarts and route retries.
 `qdScore` is the sum of all finite occupied-cell fitnesses. For cross-route
 comparison, set the positive `qdNormalizationReferenceFitness` once; the state
 persists it and rejects later changes. `totalArchiveCells` is derived from each
@@ -36,6 +41,11 @@ the frozen reference, capacity and its three inputs. The former moving ratio is
 retained only as the clearly diagnostic `sampleRelativeOccupiedQdRatio`. The
 same sample includes occupied-cell top-5 and top-12 means plus each
 morphology's occupied count, best fitness, and QD sum.
+When adaptive emitter selection is configured, each sample also records its
+persisted aggregate and per-emitter selection, attempt, outcome, failure,
+invalid-outcome, positive-QD-gain, normalized-reward, coverage, replacement,
+rejection, and global-best counters. Fixed routes emit `enabled: false` with an
+empty emitter map and zero aggregate counters.
 
 After three minutes without an accepted evaluation, the supervisor sends SIGINT
 only to a recorded Trainer identity, allows the configured checkpoint grace,
