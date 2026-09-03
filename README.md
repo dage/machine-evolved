@@ -83,6 +83,16 @@ safe stop, then starts a fresh 384-member double-gravity run capped at 384,000
 evaluations (1,000 MAP-Elites generations). It does not transfer any population
 or checkpoint state between the runs.
 
+MAP-Elites can opt into the four-arm adaptive emitter with
+`algorithm.arguments.mutation.adaptiveSelector.enabled: true`. The mutation
+block must retain its normal `config` bounds and provide the existing broad
+`largeConfig` bounds. Optional selector fields are `windowSize`,
+`warmupSelectionsPerArm`, `minExplorationRate` (at least `0.05`),
+`ucbExploration`, and `rewardClip`. The selector compares small independent,
+large independent, fresh-template, and small shared-offset emitters; its state
+is checkpointed inside `adaptiveSelector.state`. Configurations without the
+enabled gate continue to use the original static emitter path.
+
 ## Browser replay export
 
 `replayworker` replays the highest-fitness creature in a saved training config

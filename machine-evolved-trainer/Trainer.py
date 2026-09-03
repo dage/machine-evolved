@@ -581,18 +581,33 @@ class Trainer():
 		}
 		self.domainProgress.pop(creatureId, None)
 		self.algorithm.populationConfig["evaluations"] += 1
+		insertionResult = None
 		if hasattr(self.algorithm, "setCreatureEvaluation"):
 			self.algorithm.setCreatureEvaluation(creatureId, robustFitness, behavior, domainScores)
+			if hasattr(self.algorithm, "getLastInsertionResult"):
+				insertionResult = self.algorithm.getLastInsertionResult()
 		else:
 			self.algorithm.setCreatureFitness(creatureId, robustFitness)
-		self.evaluationHistory.append({
+		historyEntry = {
 			"evaluation": self.algorithm.populationConfig["evaluations"],
 			"creatureId": creatureId,
 			"morphologyId": creature.morphologyId,
 			"robustFitness": robustFitness,
 			"domainScores": domainScores,
 			"behavior": behavior,
-		})
+		}
+		if insertionResult is not None:
+			historyEntry.update({
+				"emitterId": creature.emitterId,
+				"insertionOutcome": insertionResult["outcome"],
+				"qdDelta": insertionResult["qdDelta"],
+				"qdScore": insertionResult["qdScore"],
+			})
+			print(
+				"MAP-Elites insertion: outcome={} qd-delta={:.6f} qd-score={:.6f} emitter={}".format(
+					insertionResult["outcome"], insertionResult["qdDelta"],
+					insertionResult["qdScore"], creature.emitterId or "initial-population"))
+		self.evaluationHistory.append(historyEntry)
 		
 		if robustFitness > self.bestFitness or math.isnan(self.bestFitness):
 			self.bestFitness = robustFitness

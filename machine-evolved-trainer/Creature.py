@@ -13,11 +13,14 @@ class Creature():
 	def __init__(self, structureJson = None, generatorJson = None, structureTemplate = None, morphologyId = None):
 		self.generatorJson = generatorJson
 		self.morphologyId = morphologyId
+		self.emitterId = None
 		motorsJson = None
 		if structureJson:
 			self.structure = CreatureStructure(structureJson["structure"])
 			motorsJson = structureJson["motorController"]
-			self.morphologyId = structureJson.get("metadata", {}).get("morphologyId", morphologyId)
+			metadata = structureJson.get("metadata", {})
+			self.morphologyId = metadata.get("morphologyId", morphologyId)
+			self.emitterId = metadata.get("emitterId")
 			self.generatorType = "loaded"
 		elif structureTemplate:
 			self.structure = CreatureStructure(copy.deepcopy(structureTemplate))
@@ -39,8 +42,13 @@ class Creature():
 
 	def getJson(self):
 		result = { "structure": self.structure.getJson(), "motorController": self.motorController.getJson() }
+		metadata = {}
 		if self.morphologyId is not None:
-			result["metadata"] = { "morphologyId": self.morphologyId }
+			metadata["morphologyId"] = self.morphologyId
+		if self.emitterId is not None:
+			metadata["emitterId"] = self.emitterId
+		if metadata:
+			result["metadata"] = metadata
 		return result
 
 	def serialize(self):
