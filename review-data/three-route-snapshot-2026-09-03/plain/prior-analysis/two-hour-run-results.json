@@ -1,0 +1,3861 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-03T07:43:14.138531+00:00",
+  "timeFields": {
+    "startedAtProxy": "run-directory filesystem birth time",
+    "wallSecondsProxy": "summary.completedAt minus run-directory birth time"
+  },
+  "runs": [
+    {
+      "name": "two-hour-shared-offset-seed201-e5000",
+      "startedAtProxy": "2026-09-03T06:57:35.507721+00:00",
+      "completedAt": "2026-09-03T06:59:19.109235+00:00",
+      "wallSecondsProxy": 103.60151410102844,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 15,
+      "trainerAcceptedEvaluations": 5001,
+      "workerCompletedEvaluations": 5011,
+      "evaluatedCreaturesAtCheckpoint": 397,
+      "bestFitnessSimulationUnits": 121610.023438,
+      "averageFitnessSimulationUnits": 90205.10525228966,
+      "bestEvents": [
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 120019.328125
+        },
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 120656.296875
+        },
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 121610.023438
+        }
+      ],
+      "config": {
+        "bytes": 94681702,
+        "sha256": "b481cd68500184cdc2a64b15e0bc6a918b81f14daa864b7ae867dc090cce6c35"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0.1,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          }
+        },
+        "mutation": {
+          "rate": 0.5,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-independent-offset-seed201-e5000",
+      "startedAtProxy": "2026-09-03T06:59:32.234322+00:00",
+      "completedAt": "2026-09-03T07:01:17.506724+00:00",
+      "wallSecondsProxy": 105.27240252494812,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 15,
+      "trainerAcceptedEvaluations": 5001,
+      "workerCompletedEvaluations": 5029,
+      "evaluatedCreaturesAtCheckpoint": 397,
+      "bestFitnessSimulationUnits": 122192.421875,
+      "averageFitnessSimulationUnits": 93141.26727002265,
+      "bestEvents": [
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 120092.84375
+        },
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 122192.421875
+        }
+      ],
+      "config": {
+        "bytes": 94680538,
+        "sha256": "53e81e78d04b4c2b747fd7f88a57ad69a93c07e9b6d4d73944c6a64ccc084e0b"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0.1,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          }
+        },
+        "mutation": {
+          "rate": 0.5,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "independent-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "independent-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-shared-offset-seed202-e5000",
+      "startedAtProxy": "2026-09-03T07:01:39.983079+00:00",
+      "completedAt": "2026-09-03T07:03:25.794395+00:00",
+      "wallSecondsProxy": 105.8113157749176,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 15,
+      "trainerAcceptedEvaluations": 5001,
+      "workerCompletedEvaluations": 5014,
+      "evaluatedCreaturesAtCheckpoint": 397,
+      "bestFitnessSimulationUnits": 122526.125,
+      "averageFitnessSimulationUnits": 93767.49759917633,
+      "bestEvents": [
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 120098.625
+        },
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 121637.1875
+        },
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 122526.125
+        }
+      ],
+      "config": {
+        "bytes": 94680741,
+        "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0.1,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          }
+        },
+        "mutation": {
+          "rate": 0.5,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-independent-offset-seed202-e5000",
+      "startedAtProxy": "2026-09-03T07:03:36.256490+00:00",
+      "completedAt": "2026-09-03T07:05:21.223688+00:00",
+      "wallSecondsProxy": 104.96719765663147,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 15,
+      "trainerAcceptedEvaluations": 5003,
+      "workerCompletedEvaluations": 5014,
+      "evaluatedCreaturesAtCheckpoint": 399,
+      "bestFitnessSimulationUnits": 121284.515625,
+      "averageFitnessSimulationUnits": 93862.25519611278,
+      "bestEvents": [
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 120013.015625
+        },
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 120099.921875
+        },
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 120212.328125
+        },
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 120855.398438
+        },
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 121276.835938
+        },
+        {
+          "generator": "mutate",
+          "fitnessSimulationUnits": 121284.515625
+        }
+      ],
+      "config": {
+        "bytes": 94680836,
+        "sha256": "3cab883343de7a637e636101891a81ecf687c9237450bc1acc08565cad3fd464"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0.1,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          }
+        },
+        "mutation": {
+          "rate": 0.5,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "independent-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "independent-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-exploit-shared-seed202-e30000",
+      "startedAtProxy": "2026-09-03T07:06:06.368682+00:00",
+      "completedAt": "2026-09-03T07:09:11.548224+00:00",
+      "wallSecondsProxy": 185.17954206466675,
+      "stopReason": "fitness-stall",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 42,
+      "trainerAcceptedEvaluations": 13397,
+      "workerCompletedEvaluations": 8404,
+      "evaluatedCreaturesAtCheckpoint": 504,
+      "bestFitnessSimulationUnits": 122526.125,
+      "averageFitnessSimulationUnits": 83177.61076184524,
+      "bestEvents": [],
+      "config": {
+        "bytes": 94683143,
+        "sha256": "b2ef31777a706ac72e9a0dfa4aae14d7dba76a17d1b2e6688be8695e4d0b7efa"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0.1,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          }
+        },
+        "mutation": {
+          "rate": 0.5,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-independent-uniform-seed303-e5000",
+      "startedAtProxy": "2026-09-03T07:10:30.937594+00:00",
+      "completedAt": "2026-09-03T07:12:15.827271+00:00",
+      "wallSecondsProxy": 104.88967728614807,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 15,
+      "trainerAcceptedEvaluations": 5010,
+      "workerCompletedEvaluations": 5036,
+      "evaluatedCreaturesAtCheckpoint": 406,
+      "bestFitnessSimulationUnits": 122526.125,
+      "averageFitnessSimulationUnits": 95952.2488430591,
+      "bestEvents": [],
+      "config": {
+        "bytes": 94688953,
+        "sha256": "f2688e07aae3860e6b51d4c4bc3b667dab106be8a9635b727aa72b185f7c3833"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0.1,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          }
+        },
+        "mutation": {
+          "rate": 0.5,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.0001;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "independent-offset-v1",
+            "offsetSampling": "uniform-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-exploit-shared-seed202-e30000/config.json",
+          "sha256": "b2ef31777a706ac72e9a0dfa4aae14d7dba76a17d1b2e6688be8695e4d0b7efa",
+          "fitness": 122526.125
+        },
+        "mutationMode": "independent-offset-v1",
+        "pairedBudgetGroup": "two-hour-local-search-v1",
+        "offsetSampling": "uniform-v1",
+        "offsetRange": "0.0001;0.5"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-independent-log-seed303-e5000",
+      "startedAtProxy": "2026-09-03T07:12:26.959238+00:00",
+      "completedAt": "2026-09-03T07:14:15.327465+00:00",
+      "wallSecondsProxy": 108.36822724342346,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 15,
+      "trainerAcceptedEvaluations": 5010,
+      "workerCompletedEvaluations": 5020,
+      "evaluatedCreaturesAtCheckpoint": 406,
+      "bestFitnessSimulationUnits": 122526.125,
+      "averageFitnessSimulationUnits": 94189.64465393842,
+      "bestEvents": [],
+      "config": {
+        "bytes": 94689429,
+        "sha256": "eadb2079b4bad16a93ff39ccc3d9fd0770eb6df7eb690177c948d88b96dc78b6"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0.1,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          }
+        },
+        "mutation": {
+          "rate": 0.5,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.0001;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "independent-offset-v1",
+            "offsetSampling": "log-uniform-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-exploit-shared-seed202-e30000/config.json",
+          "sha256": "b2ef31777a706ac72e9a0dfa4aae14d7dba76a17d1b2e6688be8695e4d0b7efa",
+          "fitness": 122526.125
+        },
+        "mutationMode": "independent-offset-v1",
+        "pairedBudgetGroup": "two-hour-local-search-v1",
+        "offsetSampling": "log-uniform-v1",
+        "offsetRange": "0.0001;0.5"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-independent-uniform-seed304-e5000",
+      "startedAtProxy": "2026-09-03T07:14:28.456492+00:00",
+      "completedAt": "2026-09-03T07:16:11.795702+00:00",
+      "wallSecondsProxy": 103.33921003341675,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 15,
+      "trainerAcceptedEvaluations": 5008,
+      "workerCompletedEvaluations": 5019,
+      "evaluatedCreaturesAtCheckpoint": 404,
+      "bestFitnessSimulationUnits": 122526.125,
+      "averageFitnessSimulationUnits": 93542.20477356932,
+      "bestEvents": [],
+      "config": {
+        "bytes": 94688977,
+        "sha256": "222297025e37ac49cea81f96249546f388a28538bb8f431c99971536bc28794a"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0.1,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          }
+        },
+        "mutation": {
+          "rate": 0.5,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.0001;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "independent-offset-v1",
+            "offsetSampling": "uniform-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-exploit-shared-seed202-e30000/config.json",
+          "sha256": "b2ef31777a706ac72e9a0dfa4aae14d7dba76a17d1b2e6688be8695e4d0b7efa",
+          "fitness": 122526.125
+        },
+        "mutationMode": "independent-offset-v1",
+        "pairedBudgetGroup": "two-hour-local-search-v1",
+        "offsetSampling": "uniform-v1",
+        "offsetRange": "0.0001;0.5"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-independent-log-seed304-e5000",
+      "startedAtProxy": "2026-09-03T07:16:24.971539+00:00",
+      "completedAt": "2026-09-03T07:18:11.587941+00:00",
+      "wallSecondsProxy": 106.61640214920044,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 15,
+      "trainerAcceptedEvaluations": 5002,
+      "workerCompletedEvaluations": 5015,
+      "evaluatedCreaturesAtCheckpoint": 398,
+      "bestFitnessSimulationUnits": 122526.125,
+      "averageFitnessSimulationUnits": 94593.21690974371,
+      "bestEvents": [],
+      "config": {
+        "bytes": 94689185,
+        "sha256": "63fef172cbe2ac7945a6c35e160a8e4c085df9c2ae1072f6ffe95b495fccb8bd"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0.1,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          }
+        },
+        "mutation": {
+          "rate": 0.5,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.0001;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "independent-offset-v1",
+            "offsetSampling": "log-uniform-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-exploit-shared-seed202-e30000/config.json",
+          "sha256": "b2ef31777a706ac72e9a0dfa4aae14d7dba76a17d1b2e6688be8695e4d0b7efa",
+          "fitness": 122526.125
+        },
+        "mutationMode": "independent-offset-v1",
+        "pairedBudgetGroup": "two-hour-local-search-v1",
+        "offsetSampling": "log-uniform-v1",
+        "offsetRange": "0.0001;0.5"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-fine-independent-log-seed401-e10000",
+      "startedAtProxy": "2026-09-03T07:18:52.784668+00:00",
+      "completedAt": "2026-09-03T07:21:17.389392+00:00",
+      "wallSecondsProxy": 144.6047236919403,
+      "stopReason": "fitness-stall",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 15,
+      "trainerAcceptedEvaluations": 7001,
+      "workerCompletedEvaluations": 7013,
+      "evaluatedCreaturesAtCheckpoint": 492,
+      "bestFitnessSimulationUnits": 122526.125,
+      "averageFitnessSimulationUnits": 62012.584544132114,
+      "bestEvents": [],
+      "config": {
+        "bytes": 94690373,
+        "sha256": "ccdfa491a4f386bcbcb7f07d864efc6e5af4fee729d422550e78e4798ab285c4"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0.05,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          }
+        },
+        "mutation": {
+          "rate": 0.8,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.0005-0.003",
+            "offsetRange": "0.00001;0.05",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "independent-offset-v1",
+            "offsetSampling": "log-uniform-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-exploit-shared-seed202-e30000/config.json",
+          "sha256": "b2ef31777a706ac72e9a0dfa4aae14d7dba76a17d1b2e6688be8695e4d0b7efa",
+          "fitness": 122526.125
+        },
+        "mutationMode": "independent-offset-v1",
+        "pairedBudgetGroup": "two-hour-local-search-v1",
+        "offsetSampling": "log-uniform-v1",
+        "offsetRange": "0.00001;0.05",
+        "changedRatioRange": "0.0005-0.003",
+        "mutationRate": 0.8,
+        "crossoverRate": 0.05
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-elite-shared-seed601-e5000",
+      "startedAtProxy": "2026-09-03T07:22:45.066148+00:00",
+      "completedAt": "2026-09-03T07:24:29.269681+00:00",
+      "wallSecondsProxy": 104.20353293418884,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 11,
+      "trainerAcceptedEvaluations": 5005,
+      "workerCompletedEvaluations": 5010,
+      "evaluatedCreaturesAtCheckpoint": 507,
+      "bestFitnessSimulationUnits": 122526.125,
+      "averageFitnessSimulationUnits": 66968.76035599606,
+      "bestEvents": [],
+      "config": {
+        "bytes": 94689530,
+        "sha256": "b1835dc888d73d206e4a86b656d4ecec5108e7825429b6c25a81766fc235567d"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0.0,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          }
+        },
+        "mutation": {
+          "rate": 0.8,
+          "competitionSize": {
+            "reproduce": 8,
+            "eliminate": 4
+          },
+          "parentSelection": "elite-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1",
+            "offsetSampling": "uniform-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-exploit-shared-seed202-e30000/config.json",
+          "sha256": "b2ef31777a706ac72e9a0dfa4aae14d7dba76a17d1b2e6688be8695e4d0b7efa",
+          "fitness": 122526.125
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "two-hour-local-search-v1",
+        "offsetSampling": "uniform-v1",
+        "offsetRange": "0.01;0.5",
+        "changedRatioRange": "0.001-0.03",
+        "mutationRate": 0.8,
+        "crossoverRate": 0.0,
+        "mutationParentSelection": "elite-v1"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-controller-line-search-wide",
+      "startedAtProxy": "2026-09-03T07:27:15.296237+00:00",
+      "completedAt": "2026-09-03T07:27:27.092932+00:00",
+      "wallSecondsProxy": 11.7966947555542,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 511,
+      "workerCompletedEvaluations": 511,
+      "evaluatedCreaturesAtCheckpoint": 512,
+      "bestFitnessSimulationUnits": 122526.125,
+      "averageFitnessSimulationUnits": 60462.3799262207,
+      "bestEvents": [],
+      "config": {
+        "bytes": 94702939,
+        "sha256": "8c9a1b1bbf5ecacd77e197626c4d2b9db9a4459d0f8b1af47ec8d1bc0a94228b"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes"
+          }
+        }
+      },
+      "comparison": null,
+      "lineSearch": {
+        "schemaVersion": 1,
+        "source": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa"
+        },
+        "target": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "minimumCoefficient": -1.0,
+        "maximumCoefficient": 4.0,
+        "changedParameters": 138,
+        "measuredCoefficients": [
+          -1.0,
+          -0.9901960784313726,
+          -0.9803921568627451,
+          -0.9705882352941176,
+          -0.9607843137254902,
+          -0.9509803921568627,
+          -0.9411764705882353,
+          -0.9313725490196079,
+          -0.9215686274509804,
+          -0.9117647058823529,
+          -0.9019607843137255,
+          -0.892156862745098,
+          -0.8823529411764706,
+          -0.8725490196078431,
+          -0.8627450980392157,
+          -0.8529411764705882,
+          -0.8431372549019608,
+          -0.8333333333333334,
+          -0.8235294117647058,
+          -0.8137254901960784,
+          -0.803921568627451,
+          -0.7941176470588236,
+          -0.7843137254901961,
+          -0.7745098039215687,
+          -0.7647058823529411,
+          -0.7549019607843137,
+          -0.7450980392156863,
+          -0.7352941176470589,
+          -0.7254901960784313,
+          -0.7156862745098039,
+          -0.7058823529411764,
+          -0.696078431372549,
+          -0.6862745098039216,
+          -0.6764705882352942,
+          -0.6666666666666667,
+          -0.6568627450980392,
+          -0.6470588235294117,
+          -0.6372549019607843,
+          -0.6274509803921569,
+          -0.6176470588235294,
+          -0.607843137254902,
+          -0.5980392156862745,
+          -0.5882352941176471,
+          -0.5784313725490196,
+          -0.5686274509803921,
+          -0.5588235294117647,
+          -0.5490196078431373,
+          -0.5392156862745099,
+          -0.5294117647058824,
+          -0.5196078431372548,
+          -0.5098039215686274,
+          -0.5,
+          -0.4901960784313726,
+          -0.48039215686274506,
+          -0.47058823529411764,
+          -0.4607843137254902,
+          -0.4509803921568627,
+          -0.4411764705882353,
+          -0.43137254901960786,
+          -0.42156862745098034,
+          -0.4117647058823529,
+          -0.4019607843137255,
+          -0.3921568627450981,
+          -0.38235294117647056,
+          -0.37254901960784315,
+          -0.36274509803921573,
+          -0.3529411764705882,
+          -0.3431372549019608,
+          -0.33333333333333337,
+          -0.32352941176470584,
+          -0.3137254901960784,
+          -0.303921568627451,
+          -0.2941176470588235,
+          -0.28431372549019607,
+          -0.27450980392156865,
+          -0.2647058823529411,
+          -0.2549019607843137,
+          -0.2450980392156863,
+          -0.23529411764705888,
+          -0.22549019607843135,
+          -0.21568627450980393,
+          -0.20588235294117652,
+          -0.196078431372549,
+          -0.18627450980392157,
+          -0.17647058823529416,
+          -0.16666666666666663,
+          -0.1568627450980392,
+          -0.1470588235294118,
+          -0.13725490196078427,
+          -0.12745098039215685,
+          -0.11764705882352944,
+          -0.10784313725490191,
+          -0.0980392156862745,
+          -0.08823529411764708,
+          -0.07843137254901966,
+          -0.06862745098039214,
+          -0.05882352941176472,
+          -0.0490196078431373,
+          -0.039215686274509776,
+          -0.02941176470588236,
+          -0.019607843137254943,
+          -0.009803921568627416,
+          0.0,
+          0.009803921568627416,
+          0.019607843137254832,
+          0.02941176470588225,
+          0.03921568627450989,
+          0.0490196078431373,
+          0.05882352941176472,
+          0.06862745098039214,
+          0.07843137254901955,
+          0.08823529411764697,
+          0.0980392156862746,
+          0.10784313725490202,
+          0.11764705882352944,
+          0.12745098039215685,
+          0.13725490196078427,
+          0.1470588235294117,
+          0.15686274509803932,
+          0.16666666666666674,
+          0.17647058823529416,
+          0.18627450980392157,
+          0.196078431372549,
+          0.2058823529411764,
+          0.21568627450980382,
+          0.22549019607843146,
+          0.23529411764705888,
+          0.2450980392156863,
+          0.2549019607843137,
+          0.2647058823529411,
+          0.27450980392156854,
+          0.2843137254901962,
+          0.2941176470588236,
+          0.303921568627451,
+          0.3137254901960784,
+          0.32352941176470584,
+          0.33333333333333326,
+          0.3431372549019607,
+          0.3529411764705883,
+          0.36274509803921573,
+          0.37254901960784315,
+          0.38235294117647056,
+          0.392156862745098,
+          0.4019607843137254,
+          0.41176470588235303,
+          0.42156862745098045,
+          0.43137254901960786,
+          0.4411764705882353,
+          0.4509803921568627,
+          0.4607843137254901,
+          0.47058823529411775,
+          0.48039215686274517,
+          0.4901960784313726,
+          0.5,
+          0.5098039215686274,
+          0.5196078431372548,
+          0.5294117647058822,
+          0.5392156862745099,
+          0.5490196078431373,
+          0.5588235294117647,
+          0.5686274509803921,
+          0.5784313725490196,
+          0.588235294117647,
+          0.5980392156862746,
+          0.607843137254902,
+          0.6176470588235294,
+          0.6274509803921569,
+          0.6372549019607843,
+          0.6470588235294117,
+          0.6568627450980393,
+          0.6666666666666667,
+          0.6764705882352942,
+          0.6862745098039216,
+          0.696078431372549,
+          0.7058823529411764,
+          0.7156862745098038,
+          0.7254901960784315,
+          0.7352941176470589,
+          0.7450980392156863,
+          0.7549019607843137,
+          0.7647058823529411,
+          0.7745098039215685,
+          0.7843137254901962,
+          0.7941176470588236,
+          0.803921568627451,
+          0.8137254901960784,
+          0.8235294117647058,
+          0.8333333333333333,
+          0.8431372549019607,
+          0.8529411764705883,
+          0.8627450980392157,
+          0.8725490196078431,
+          0.8823529411764706,
+          0.892156862745098,
+          0.9019607843137254,
+          0.911764705882353,
+          0.9215686274509804,
+          0.9313725490196079,
+          0.9411764705882353,
+          0.9509803921568627,
+          0.9607843137254901,
+          0.9705882352941178,
+          0.9803921568627452,
+          0.9901960784313726,
+          1.0,
+          1.0098039215686274,
+          1.0196078431372548,
+          1.0294117647058822,
+          1.0392156862745097,
+          1.049019607843137,
+          1.0588235294117645,
+          1.0686274509803924,
+          1.0784313725490198,
+          1.0882352941176472,
+          1.0980392156862746,
+          1.107843137254902,
+          1.1176470588235294,
+          1.1274509803921569,
+          1.1372549019607843,
+          1.1470588235294117,
+          1.156862745098039,
+          1.1666666666666665,
+          1.176470588235294,
+          1.1862745098039214,
+          1.1960784313725492,
+          1.2058823529411766,
+          1.215686274509804,
+          1.2254901960784315,
+          1.2352941176470589,
+          1.2450980392156863,
+          1.2549019607843137,
+          1.2647058823529411,
+          1.2745098039215685,
+          1.284313725490196,
+          1.2941176470588234,
+          1.3039215686274508,
+          1.3137254901960786,
+          1.323529411764706,
+          1.3333333333333335,
+          1.343137254901961,
+          1.3529411764705883,
+          1.3627450980392157,
+          1.3725490196078431,
+          1.3823529411764706,
+          1.392156862745098,
+          1.4019607843137254,
+          1.4117647058823528,
+          1.4215686274509802,
+          1.4313725490196076,
+          1.4411764705882355,
+          1.450980392156863,
+          1.4607843137254903,
+          1.4705882352941178,
+          1.4803921568627452,
+          1.4901960784313726,
+          1.5,
+          1.5098039215686274,
+          1.5196078431372548,
+          1.5294117647058822,
+          1.5392156862745097,
+          1.549019607843137,
+          1.5588235294117645,
+          1.5686274509803924,
+          1.5784313725490198,
+          1.5882352941176472,
+          1.5980392156862746,
+          1.607843137254902,
+          1.6176470588235294,
+          1.6274509803921569,
+          1.6372549019607843,
+          1.6470588235294117,
+          1.656862745098039,
+          1.6666666666666665,
+          1.676470588235294,
+          1.6862745098039214,
+          1.6960784313725492,
+          1.7058823529411766,
+          1.715686274509804,
+          1.7254901960784315,
+          1.7352941176470589,
+          1.7450980392156863,
+          1.7549019607843137,
+          1.7647058823529411,
+          1.7745098039215685,
+          1.784313725490196,
+          1.7941176470588234,
+          1.8039215686274508,
+          1.8137254901960786,
+          1.823529411764706,
+          1.8333333333333335,
+          1.843137254901961,
+          1.8529411764705883,
+          1.8627450980392157,
+          1.8725490196078431,
+          1.8823529411764706,
+          1.892156862745098,
+          1.9019607843137254,
+          1.9117647058823528,
+          1.9215686274509802,
+          1.9313725490196076,
+          1.9411764705882355,
+          1.950980392156863,
+          1.9607843137254903,
+          1.9705882352941178,
+          1.9803921568627452,
+          1.9901960784313726,
+          2.0,
+          2.0098039215686274,
+          2.019607843137255,
+          2.0294117647058822,
+          2.0392156862745097,
+          2.049019607843137,
+          2.0588235294117645,
+          2.0686274509803924,
+          2.0784313725490198,
+          2.088235294117647,
+          2.0980392156862746,
+          2.107843137254902,
+          2.1176470588235294,
+          2.127450980392157,
+          2.1372549019607843,
+          2.1470588235294117,
+          2.156862745098039,
+          2.1666666666666665,
+          2.176470588235294,
+          2.1862745098039214,
+          2.196078431372549,
+          2.2058823529411766,
+          2.215686274509804,
+          2.2254901960784315,
+          2.235294117647059,
+          2.2450980392156863,
+          2.2549019607843137,
+          2.264705882352941,
+          2.2745098039215685,
+          2.284313725490196,
+          2.2941176470588234,
+          2.303921568627451,
+          2.3137254901960786,
+          2.323529411764706,
+          2.3333333333333335,
+          2.343137254901961,
+          2.3529411764705883,
+          2.3627450980392157,
+          2.372549019607843,
+          2.3823529411764706,
+          2.392156862745098,
+          2.4019607843137254,
+          2.411764705882353,
+          2.4215686274509802,
+          2.4313725490196076,
+          2.4411764705882355,
+          2.450980392156863,
+          2.4607843137254903,
+          2.4705882352941178,
+          2.480392156862745,
+          2.4901960784313726,
+          2.5,
+          2.5098039215686274,
+          2.519607843137255,
+          2.5294117647058822,
+          2.5392156862745097,
+          2.549019607843137,
+          2.5588235294117645,
+          2.5686274509803924,
+          2.5784313725490198,
+          2.588235294117647,
+          2.5980392156862746,
+          2.607843137254902,
+          2.6176470588235294,
+          2.627450980392157,
+          2.6372549019607843,
+          2.6470588235294117,
+          2.656862745098039,
+          2.6666666666666665,
+          2.676470588235294,
+          2.6862745098039214,
+          2.696078431372549,
+          2.7058823529411766,
+          2.715686274509804,
+          2.7254901960784315,
+          2.735294117647059,
+          2.7450980392156863,
+          2.7549019607843137,
+          2.764705882352941,
+          2.7745098039215685,
+          2.784313725490196,
+          2.7941176470588234,
+          2.803921568627451,
+          2.8137254901960786,
+          2.823529411764706,
+          2.8333333333333335,
+          2.843137254901961,
+          2.8529411764705883,
+          2.8627450980392157,
+          2.872549019607843,
+          2.8823529411764706,
+          2.892156862745098,
+          2.9019607843137254,
+          2.911764705882353,
+          2.9215686274509802,
+          2.9313725490196076,
+          2.9411764705882355,
+          2.950980392156863,
+          2.9607843137254903,
+          2.9705882352941178,
+          2.980392156862745,
+          2.9901960784313726,
+          3.0,
+          3.0098039215686274,
+          3.019607843137255,
+          3.0294117647058822,
+          3.0392156862745097,
+          3.049019607843137,
+          3.0588235294117645,
+          3.068627450980392,
+          3.0784313725490193,
+          3.0882352941176467,
+          3.098039215686274,
+          3.1078431372549016,
+          3.117647058823529,
+          3.1274509803921573,
+          3.1372549019607847,
+          3.147058823529412,
+          3.1568627450980395,
+          3.166666666666667,
+          3.1764705882352944,
+          3.186274509803922,
+          3.196078431372549,
+          3.2058823529411766,
+          3.215686274509804,
+          3.2254901960784315,
+          3.235294117647059,
+          3.2450980392156863,
+          3.2549019607843137,
+          3.264705882352941,
+          3.2745098039215685,
+          3.284313725490196,
+          3.2941176470588234,
+          3.303921568627451,
+          3.313725490196078,
+          3.3235294117647056,
+          3.333333333333333,
+          3.3431372549019605,
+          3.352941176470588,
+          3.3627450980392153,
+          3.3725490196078427,
+          3.382352941176471,
+          3.3921568627450984,
+          3.401960784313726,
+          3.4117647058823533,
+          3.4215686274509807,
+          3.431372549019608,
+          3.4411764705882355,
+          3.450980392156863,
+          3.4607843137254903,
+          3.4705882352941178,
+          3.480392156862745,
+          3.4901960784313726,
+          3.5,
+          3.5098039215686274,
+          3.519607843137255,
+          3.5294117647058822,
+          3.5392156862745097,
+          3.549019607843137,
+          3.5588235294117645,
+          3.568627450980392,
+          3.5784313725490193,
+          3.5882352941176467,
+          3.598039215686274,
+          3.6078431372549016,
+          3.617647058823529,
+          3.6274509803921573,
+          3.6372549019607847,
+          3.647058823529412,
+          3.6568627450980395,
+          3.666666666666667,
+          3.6764705882352944,
+          3.686274509803922,
+          3.696078431372549,
+          3.7058823529411766,
+          3.715686274509804,
+          3.7254901960784315,
+          3.735294117647059,
+          3.7450980392156863,
+          3.7549019607843137,
+          3.764705882352941,
+          3.7745098039215685,
+          3.784313725490196,
+          3.7941176470588234,
+          3.803921568627451,
+          3.813725490196078,
+          3.8235294117647056,
+          3.833333333333333,
+          3.8431372549019605,
+          3.852941176470588,
+          3.8627450980392153,
+          3.8725490196078427,
+          3.882352941176471,
+          3.8921568627450984,
+          3.901960784313726,
+          3.9117647058823533,
+          3.9215686274509807,
+          3.931372549019608,
+          3.9411764705882355,
+          3.950980392156863,
+          3.9607843137254903,
+          3.9705882352941178,
+          3.980392156862745,
+          3.9901960784313726,
+          4.0
+        ]
+      },
+      "robustness": null
+    },
+    {
+      "name": "two-hour-controller-line-search-zoom",
+      "startedAtProxy": "2026-09-03T07:27:55.326787+00:00",
+      "completedAt": "2026-09-03T07:28:07.343555+00:00",
+      "wallSecondsProxy": 12.016768455505371,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 511,
+      "workerCompletedEvaluations": 511,
+      "evaluatedCreaturesAtCheckpoint": 512,
+      "bestFitnessSimulationUnits": 122526.125,
+      "averageFitnessSimulationUnits": 54619.95174119726,
+      "bestEvents": [],
+      "config": {
+        "bytes": 94702731,
+        "sha256": "c8bcc9f4d19fe88f533f69bd9c4850137b374ff8cda6da7e5110bba4dccf5898"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes"
+          }
+        }
+      },
+      "comparison": null,
+      "lineSearch": {
+        "schemaVersion": 1,
+        "source": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa"
+        },
+        "target": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "minimumCoefficient": 0.8,
+        "maximumCoefficient": 1.1,
+        "changedParameters": 138,
+        "measuredCoefficients": [
+          0.8,
+          0.8005882352941177,
+          0.8011764705882354,
+          0.8017647058823529,
+          0.8023529411764706,
+          0.8029411764705883,
+          0.8035294117647059,
+          0.8041176470588236,
+          0.8047058823529413,
+          0.8052941176470588,
+          0.8058823529411765,
+          0.8064705882352942,
+          0.8070588235294118,
+          0.8076470588235295,
+          0.808235294117647,
+          0.8088235294117647,
+          0.8094117647058824,
+          0.81,
+          0.8105882352941177,
+          0.8111764705882354,
+          0.8117647058823529,
+          0.8123529411764706,
+          0.8129411764705883,
+          0.813529411764706,
+          0.8141176470588236,
+          0.8147058823529412,
+          0.8152941176470588,
+          0.8158823529411765,
+          0.8164705882352942,
+          0.8170588235294118,
+          0.8176470588235295,
+          0.8182352941176471,
+          0.8188235294117647,
+          0.8194117647058824,
+          0.8200000000000001,
+          0.8205882352941177,
+          0.8211764705882354,
+          0.821764705882353,
+          0.8223529411764706,
+          0.8229411764705883,
+          0.823529411764706,
+          0.8241176470588236,
+          0.8247058823529412,
+          0.8252941176470588,
+          0.8258823529411765,
+          0.8264705882352942,
+          0.8270588235294118,
+          0.8276470588235294,
+          0.8282352941176471,
+          0.8288235294117647,
+          0.8294117647058824,
+          0.8300000000000001,
+          0.8305882352941177,
+          0.8311764705882353,
+          0.831764705882353,
+          0.8323529411764706,
+          0.8329411764705883,
+          0.833529411764706,
+          0.8341176470588236,
+          0.8347058823529412,
+          0.8352941176470589,
+          0.8358823529411765,
+          0.8364705882352942,
+          0.8370588235294119,
+          0.8376470588235294,
+          0.8382352941176471,
+          0.8388235294117647,
+          0.8394117647058824,
+          0.8400000000000001,
+          0.8405882352941177,
+          0.8411764705882353,
+          0.841764705882353,
+          0.8423529411764706,
+          0.8429411764705883,
+          0.843529411764706,
+          0.8441176470588236,
+          0.8447058823529412,
+          0.8452941176470589,
+          0.8458823529411765,
+          0.8464705882352942,
+          0.8470588235294119,
+          0.8476470588235294,
+          0.8482352941176471,
+          0.8488235294117648,
+          0.8494117647058824,
+          0.8500000000000001,
+          0.8505882352941176,
+          0.8511764705882353,
+          0.851764705882353,
+          0.8523529411764706,
+          0.8529411764705883,
+          0.853529411764706,
+          0.8541176470588235,
+          0.8547058823529412,
+          0.8552941176470589,
+          0.8558823529411765,
+          0.8564705882352942,
+          0.8570588235294119,
+          0.8576470588235294,
+          0.8582352941176471,
+          0.8588235294117648,
+          0.8594117647058824,
+          0.8600000000000001,
+          0.8605882352941177,
+          0.8611764705882353,
+          0.861764705882353,
+          0.8623529411764707,
+          0.8629411764705883,
+          0.8635294117647059,
+          0.8641176470588235,
+          0.8647058823529412,
+          0.8652941176470589,
+          0.8658823529411765,
+          0.8664705882352942,
+          0.8670588235294118,
+          0.8676470588235294,
+          0.8682352941176471,
+          0.8688235294117648,
+          0.8694117647058824,
+          0.8700000000000001,
+          0.8705882352941177,
+          0.8711764705882353,
+          0.871764705882353,
+          0.8723529411764707,
+          0.8729411764705883,
+          0.8735294117647059,
+          0.8741176470588236,
+          0.8747058823529412,
+          0.8752941176470589,
+          0.8758823529411766,
+          0.8764705882352942,
+          0.8770588235294118,
+          0.8776470588235294,
+          0.8782352941176471,
+          0.8788235294117648,
+          0.8794117647058824,
+          0.88,
+          0.8805882352941177,
+          0.8811764705882353,
+          0.881764705882353,
+          0.8823529411764707,
+          0.8829411764705883,
+          0.8835294117647059,
+          0.8841176470588236,
+          0.8847058823529412,
+          0.8852941176470589,
+          0.8858823529411766,
+          0.8864705882352941,
+          0.8870588235294118,
+          0.8876470588235295,
+          0.8882352941176471,
+          0.8888235294117648,
+          0.8894117647058825,
+          0.89,
+          0.8905882352941177,
+          0.8911764705882353,
+          0.891764705882353,
+          0.8923529411764707,
+          0.8929411764705883,
+          0.8935294117647059,
+          0.8941176470588236,
+          0.8947058823529412,
+          0.8952941176470589,
+          0.8958823529411766,
+          0.8964705882352941,
+          0.8970588235294118,
+          0.8976470588235295,
+          0.8982352941176471,
+          0.8988235294117648,
+          0.8994117647058824,
+          0.9,
+          0.9005882352941177,
+          0.9011764705882354,
+          0.901764705882353,
+          0.9023529411764707,
+          0.9029411764705882,
+          0.9035294117647059,
+          0.9041176470588236,
+          0.9047058823529412,
+          0.9052941176470589,
+          0.9058823529411766,
+          0.9064705882352941,
+          0.9070588235294118,
+          0.9076470588235295,
+          0.9082352941176471,
+          0.9088235294117648,
+          0.9094117647058824,
+          0.91,
+          0.9105882352941177,
+          0.9111764705882354,
+          0.911764705882353,
+          0.9123529411764707,
+          0.9129411764705883,
+          0.9135294117647059,
+          0.9141176470588236,
+          0.9147058823529413,
+          0.9152941176470589,
+          0.9158823529411766,
+          0.9164705882352941,
+          0.9170588235294118,
+          0.9176470588235295,
+          0.9182352941176471,
+          0.9188235294117648,
+          0.9194117647058824,
+          0.92,
+          0.9205882352941177,
+          0.9211764705882354,
+          0.921764705882353,
+          0.9223529411764706,
+          0.9229411764705883,
+          0.9235294117647059,
+          0.9241176470588236,
+          0.9247058823529413,
+          0.9252941176470589,
+          0.9258823529411765,
+          0.9264705882352942,
+          0.9270588235294118,
+          0.9276470588235295,
+          0.928235294117647,
+          0.9288235294117647,
+          0.9294117647058824,
+          0.93,
+          0.9305882352941177,
+          0.9311764705882354,
+          0.931764705882353,
+          0.9323529411764706,
+          0.9329411764705883,
+          0.9335294117647059,
+          0.9341176470588236,
+          0.9347058823529413,
+          0.9352941176470588,
+          0.9358823529411765,
+          0.9364705882352942,
+          0.9370588235294118,
+          0.9376470588235295,
+          0.9382352941176472,
+          0.9388235294117648,
+          0.9394117647058824,
+          0.9400000000000001,
+          0.9405882352941177,
+          0.9411764705882354,
+          0.9417647058823531,
+          0.9423529411764706,
+          0.9429411764705883,
+          0.943529411764706,
+          0.9441176470588236,
+          0.9447058823529413,
+          0.9452941176470588,
+          0.9458823529411765,
+          0.9464705882352942,
+          0.9470588235294118,
+          0.9476470588235295,
+          0.9482352941176471,
+          0.9488235294117647,
+          0.9494117647058824,
+          0.9500000000000001,
+          0.9505882352941177,
+          0.9511764705882353,
+          0.951764705882353,
+          0.9523529411764706,
+          0.9529411764705883,
+          0.953529411764706,
+          0.9541176470588236,
+          0.9547058823529413,
+          0.9552941176470588,
+          0.9558823529411765,
+          0.9564705882352942,
+          0.9570588235294119,
+          0.9576470588235295,
+          0.9582352941176471,
+          0.9588235294117647,
+          0.9594117647058824,
+          0.9600000000000001,
+          0.9605882352941177,
+          0.9611764705882354,
+          0.9617647058823531,
+          0.9623529411764706,
+          0.9629411764705883,
+          0.963529411764706,
+          0.9641176470588236,
+          0.9647058823529413,
+          0.9652941176470589,
+          0.9658823529411765,
+          0.9664705882352942,
+          0.9670588235294119,
+          0.9676470588235295,
+          0.9682352941176471,
+          0.9688235294117648,
+          0.9694117647058824,
+          0.9700000000000001,
+          0.9705882352941178,
+          0.9711764705882353,
+          0.971764705882353,
+          0.9723529411764706,
+          0.9729411764705883,
+          0.973529411764706,
+          0.9741176470588235,
+          0.9747058823529412,
+          0.9752941176470589,
+          0.9758823529411765,
+          0.9764705882352942,
+          0.9770588235294119,
+          0.9776470588235295,
+          0.9782352941176471,
+          0.9788235294117648,
+          0.9794117647058824,
+          0.9800000000000001,
+          0.9805882352941178,
+          0.9811764705882353,
+          0.981764705882353,
+          0.9823529411764707,
+          0.9829411764705883,
+          0.983529411764706,
+          0.9841176470588237,
+          0.9847058823529413,
+          0.9852941176470589,
+          0.9858823529411765,
+          0.9864705882352942,
+          0.9870588235294119,
+          0.9876470588235295,
+          0.9882352941176471,
+          0.9888235294117648,
+          0.9894117647058824,
+          0.9900000000000001,
+          0.9905882352941178,
+          0.9911764705882353,
+          0.991764705882353,
+          0.9923529411764707,
+          0.9929411764705883,
+          0.993529411764706,
+          0.9941176470588236,
+          0.9947058823529412,
+          0.9952941176470589,
+          0.9958823529411766,
+          0.9964705882352942,
+          0.9970588235294118,
+          0.9976470588235294,
+          0.9982352941176471,
+          0.9988235294117648,
+          0.9994117647058824,
+          1.0,
+          1.0005882352941178,
+          1.0011764705882353,
+          1.0017647058823531,
+          1.0023529411764707,
+          1.0029411764705882,
+          1.003529411764706,
+          1.0041176470588236,
+          1.0047058823529413,
+          1.005294117647059,
+          1.0058823529411764,
+          1.0064705882352942,
+          1.0070588235294118,
+          1.0076470588235296,
+          1.0082352941176471,
+          1.0088235294117647,
+          1.0094117647058825,
+          1.01,
+          1.0105882352941178,
+          1.0111764705882353,
+          1.011764705882353,
+          1.0123529411764707,
+          1.0129411764705882,
+          1.013529411764706,
+          1.0141176470588236,
+          1.0147058823529411,
+          1.015294117647059,
+          1.0158823529411767,
+          1.0164705882352942,
+          1.0170588235294118,
+          1.0176470588235296,
+          1.0182352941176471,
+          1.018823529411765,
+          1.0194117647058825,
+          1.02,
+          1.0205882352941178,
+          1.0211764705882354,
+          1.0217647058823531,
+          1.0223529411764707,
+          1.0229411764705882,
+          1.023529411764706,
+          1.0241176470588236,
+          1.0247058823529414,
+          1.025294117647059,
+          1.0258823529411765,
+          1.0264705882352942,
+          1.0270588235294118,
+          1.0276470588235296,
+          1.0282352941176471,
+          1.0288235294117647,
+          1.0294117647058825,
+          1.03,
+          1.0305882352941178,
+          1.0311764705882354,
+          1.031764705882353,
+          1.0323529411764707,
+          1.0329411764705883,
+          1.033529411764706,
+          1.0341176470588236,
+          1.0347058823529411,
+          1.035294117647059,
+          1.0358823529411765,
+          1.0364705882352943,
+          1.0370588235294118,
+          1.0376470588235294,
+          1.0382352941176471,
+          1.0388235294117647,
+          1.0394117647058825,
+          1.04,
+          1.0405882352941178,
+          1.0411764705882354,
+          1.041764705882353,
+          1.0423529411764707,
+          1.0429411764705883,
+          1.043529411764706,
+          1.0441176470588236,
+          1.0447058823529412,
+          1.045294117647059,
+          1.0458823529411765,
+          1.0464705882352943,
+          1.0470588235294118,
+          1.0476470588235296,
+          1.0482352941176472,
+          1.0488235294117647,
+          1.0494117647058825,
+          1.05,
+          1.0505882352941178,
+          1.0511764705882354,
+          1.051764705882353,
+          1.0523529411764707,
+          1.0529411764705883,
+          1.053529411764706,
+          1.0541176470588236,
+          1.0547058823529412,
+          1.055294117647059,
+          1.0558823529411765,
+          1.0564705882352943,
+          1.0570588235294118,
+          1.0576470588235294,
+          1.0582352941176472,
+          1.058823529411765,
+          1.0594117647058825,
+          1.06,
+          1.0605882352941176,
+          1.0611764705882354,
+          1.0617647058823532,
+          1.0623529411764707,
+          1.0629411764705883,
+          1.063529411764706,
+          1.0641176470588236,
+          1.0647058823529414,
+          1.065294117647059,
+          1.0658823529411765,
+          1.0664705882352943,
+          1.0670588235294118,
+          1.0676470588235296,
+          1.0682352941176472,
+          1.0688235294117647,
+          1.0694117647058825,
+          1.07,
+          1.0705882352941178,
+          1.0711764705882354,
+          1.071764705882353,
+          1.0723529411764707,
+          1.0729411764705883,
+          1.073529411764706,
+          1.0741176470588236,
+          1.0747058823529412,
+          1.075294117647059,
+          1.0758823529411765,
+          1.0764705882352943,
+          1.0770588235294118,
+          1.0776470588235294,
+          1.0782352941176472,
+          1.0788235294117647,
+          1.0794117647058825,
+          1.08,
+          1.0805882352941176,
+          1.0811764705882354,
+          1.081764705882353,
+          1.0823529411764707,
+          1.0829411764705883,
+          1.0835294117647059,
+          1.0841176470588236,
+          1.0847058823529412,
+          1.085294117647059,
+          1.0858823529411765,
+          1.086470588235294,
+          1.0870588235294119,
+          1.0876470588235294,
+          1.0882352941176472,
+          1.0888235294117647,
+          1.0894117647058825,
+          1.09,
+          1.0905882352941179,
+          1.0911764705882354,
+          1.091764705882353,
+          1.0923529411764707,
+          1.0929411764705883,
+          1.093529411764706,
+          1.0941176470588236,
+          1.0947058823529412,
+          1.095294117647059,
+          1.0958823529411765,
+          1.0964705882352943,
+          1.0970588235294119,
+          1.0976470588235294,
+          1.0982352941176472,
+          1.0988235294117648,
+          1.0994117647058825,
+          1.1
+        ]
+      },
+      "robustness": null
+    },
+    {
+      "name": "two-hour-robust-gravity-95",
+      "startedAtProxy": "2026-09-03T07:29:39.577710+00:00",
+      "completedAt": "2026-09-03T07:29:40.409084+00:00",
+      "wallSecondsProxy": 0.8313744068145752,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 1,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 1,
+      "workerCompletedEvaluations": 1,
+      "evaluatedCreaturesAtCheckpoint": 1,
+      "bestFitnessSimulationUnits": 16516.203125,
+      "averageFitnessSimulationUnits": 16516.203125,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 16516.203125
+        }
+      ],
+      "config": {
+        "bytes": 199343,
+        "sha256": "8539b1f6db6b7e9b01e8803b33bff23c1c4926f42668a52802fcdf83c1f4b93d"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": {
+        "schemaVersion": 1,
+        "case": "gravity-95",
+        "sourceCheckpoint": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "physicsOverrides": {
+          "gravityZ": -95.0
+        }
+      }
+    },
+    {
+      "name": "two-hour-robust-gravity-105",
+      "startedAtProxy": "2026-09-03T07:29:41.924488+00:00",
+      "completedAt": "2026-09-03T07:29:42.729578+00:00",
+      "wallSecondsProxy": 0.8050897121429443,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 1,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 1,
+      "workerCompletedEvaluations": 1,
+      "evaluatedCreaturesAtCheckpoint": 1,
+      "bestFitnessSimulationUnits": 14919.453125,
+      "averageFitnessSimulationUnits": 14919.453125,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 14919.453125
+        }
+      ],
+      "config": {
+        "bytes": 199347,
+        "sha256": "bac5d8bbd79335648c2f0b24b29f1c86b147e8370f3846b9ab341d7853733e6a"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": {
+        "schemaVersion": 1,
+        "case": "gravity-105",
+        "sourceCheckpoint": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "physicsOverrides": {
+          "gravityZ": -105.0
+        }
+      }
+    },
+    {
+      "name": "two-hour-robust-friction-045",
+      "startedAtProxy": "2026-09-03T07:29:44.239543+00:00",
+      "completedAt": "2026-09-03T07:29:45.074698+00:00",
+      "wallSecondsProxy": 0.8351545333862305,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 1,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 1,
+      "workerCompletedEvaluations": 1,
+      "evaluatedCreaturesAtCheckpoint": 1,
+      "bestFitnessSimulationUnits": 91124.328125,
+      "averageFitnessSimulationUnits": 91124.328125,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 91124.328125
+        }
+      ],
+      "config": {
+        "bytes": 199382,
+        "sha256": "b485e99201195a0bcb5fb46284169c439ce812ce5002d45d6ab987866ce1fba3"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": {
+        "schemaVersion": 1,
+        "case": "friction-045",
+        "sourceCheckpoint": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "physicsOverrides": {
+          "groundFriction": 0.45,
+          "capsuleFriction": 0.45
+        }
+      }
+    },
+    {
+      "name": "two-hour-robust-friction-055",
+      "startedAtProxy": "2026-09-03T07:29:46.599984+00:00",
+      "completedAt": "2026-09-03T07:29:47.391227+00:00",
+      "wallSecondsProxy": 0.7912428379058838,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 1,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 1,
+      "workerCompletedEvaluations": 1,
+      "evaluatedCreaturesAtCheckpoint": 1,
+      "bestFitnessSimulationUnits": 115732.085938,
+      "averageFitnessSimulationUnits": 115732.085938,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 115732.085938
+        }
+      ],
+      "config": {
+        "bytes": 199383,
+        "sha256": "b02d81fa922074d9147a4d2f69f87cd4e7fd5d954fae9c7490a1be6f953eb60f"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": {
+        "schemaVersion": 1,
+        "case": "friction-055",
+        "sourceCheckpoint": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "physicsOverrides": {
+          "groundFriction": 0.55,
+          "capsuleFriction": 0.55
+        }
+      }
+    },
+    {
+      "name": "two-hour-robust-mass-095",
+      "startedAtProxy": "2026-09-03T07:29:48.842717+00:00",
+      "completedAt": "2026-09-03T07:29:49.663549+00:00",
+      "wallSecondsProxy": 0.8208315372467041,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 1,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 1,
+      "workerCompletedEvaluations": 1,
+      "evaluatedCreaturesAtCheckpoint": 1,
+      "bestFitnessSimulationUnits": 21502.976562,
+      "averageFitnessSimulationUnits": 21502.976562,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 21502.976562
+        }
+      ],
+      "config": {
+        "bytes": 199349,
+        "sha256": "e61ea066f588e26ac3f90a63b0bac1648bccb5e95676ffa74b15637d6d900ff9"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": {
+        "schemaVersion": 1,
+        "case": "mass-095",
+        "sourceCheckpoint": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "physicsOverrides": {
+          "capsuleMassScale": 9.5e-05
+        }
+      }
+    },
+    {
+      "name": "two-hour-robust-mass-105",
+      "startedAtProxy": "2026-09-03T07:29:51.075163+00:00",
+      "completedAt": "2026-09-03T07:29:51.905240+00:00",
+      "wallSecondsProxy": 0.8300771713256836,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 1,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 1,
+      "workerCompletedEvaluations": 1,
+      "evaluatedCreaturesAtCheckpoint": 1,
+      "bestFitnessSimulationUnits": 117574.117188,
+      "averageFitnessSimulationUnits": 117574.117188,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 117574.117188
+        }
+      ],
+      "config": {
+        "bytes": 199352,
+        "sha256": "4fd5bd784cb25cab10400d22f422a7a4c84232089cc8c7838e4115a69b8ad454"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": {
+        "schemaVersion": 1,
+        "case": "mass-105",
+        "sourceCheckpoint": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "physicsOverrides": {
+          "capsuleMassScale": 0.000105
+        }
+      }
+    },
+    {
+      "name": "two-hour-robust-gravity-99",
+      "startedAtProxy": "2026-09-03T07:30:05.195351+00:00",
+      "completedAt": "2026-09-03T07:30:06.023116+00:00",
+      "wallSecondsProxy": 0.8277649879455566,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 1,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 1,
+      "workerCompletedEvaluations": 1,
+      "evaluatedCreaturesAtCheckpoint": 1,
+      "bestFitnessSimulationUnits": 98470.265625,
+      "averageFitnessSimulationUnits": 98470.265625,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 98470.265625
+        }
+      ],
+      "config": {
+        "bytes": 199343,
+        "sha256": "d62481a7dfca96fa1432f79df463b313bc55c980ea684bee1dd777f0d5b53c78"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": {
+        "schemaVersion": 1,
+        "case": "gravity-99",
+        "sourceCheckpoint": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "physicsOverrides": {
+          "gravityZ": -99.0
+        }
+      }
+    },
+    {
+      "name": "two-hour-robust-gravity-101",
+      "startedAtProxy": "2026-09-03T07:30:07.462249+00:00",
+      "completedAt": "2026-09-03T07:30:08.246763+00:00",
+      "wallSecondsProxy": 0.7845141887664795,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 1,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 1,
+      "workerCompletedEvaluations": 1,
+      "evaluatedCreaturesAtCheckpoint": 1,
+      "bestFitnessSimulationUnits": 111024.546875,
+      "averageFitnessSimulationUnits": 111024.546875,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 111024.546875
+        }
+      ],
+      "config": {
+        "bytes": 199348,
+        "sha256": "1cdd8129bfdb7deeb5f0fb5e5c10b020087e5140a5edd028d78e37029c7eca6c"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": {
+        "schemaVersion": 1,
+        "case": "gravity-101",
+        "sourceCheckpoint": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "physicsOverrides": {
+          "gravityZ": -101.0
+        }
+      }
+    },
+    {
+      "name": "two-hour-robust-friction-049",
+      "startedAtProxy": "2026-09-03T07:30:09.695075+00:00",
+      "completedAt": "2026-09-03T07:30:10.516304+00:00",
+      "wallSecondsProxy": 0.8212289810180664,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 1,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 1,
+      "workerCompletedEvaluations": 1,
+      "evaluatedCreaturesAtCheckpoint": 1,
+      "bestFitnessSimulationUnits": 23175.738281,
+      "averageFitnessSimulationUnits": 23175.738281,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 23175.738281
+        }
+      ],
+      "config": {
+        "bytes": 199382,
+        "sha256": "4e8f4ea5c01fdd5b6c38032f8a0ad6c12bc4da6785aebde8aa7f7fa114800454"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": {
+        "schemaVersion": 1,
+        "case": "friction-049",
+        "sourceCheckpoint": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "physicsOverrides": {
+          "groundFriction": 0.49,
+          "capsuleFriction": 0.49
+        }
+      }
+    },
+    {
+      "name": "two-hour-robust-friction-051",
+      "startedAtProxy": "2026-09-03T07:30:11.945687+00:00",
+      "completedAt": "2026-09-03T07:30:12.738645+00:00",
+      "wallSecondsProxy": 0.7929577827453613,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 1,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 1,
+      "workerCompletedEvaluations": 1,
+      "evaluatedCreaturesAtCheckpoint": 1,
+      "bestFitnessSimulationUnits": 41710.355469,
+      "averageFitnessSimulationUnits": 41710.355469,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 41710.355469
+        }
+      ],
+      "config": {
+        "bytes": 199382,
+        "sha256": "9723125fed6dd6e60f4689d2881c4eca8a83f42ddc0e9d28f2b8e51b84f5e4c6"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": {
+        "schemaVersion": 1,
+        "case": "friction-051",
+        "sourceCheckpoint": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "physicsOverrides": {
+          "groundFriction": 0.51,
+          "capsuleFriction": 0.51
+        }
+      }
+    },
+    {
+      "name": "two-hour-robust-mass-099",
+      "startedAtProxy": "2026-09-03T07:30:14.182456+00:00",
+      "completedAt": "2026-09-03T07:30:14.979544+00:00",
+      "wallSecondsProxy": 0.7970883846282959,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 1,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 1,
+      "workerCompletedEvaluations": 1,
+      "evaluatedCreaturesAtCheckpoint": 1,
+      "bestFitnessSimulationUnits": 112901.632812,
+      "averageFitnessSimulationUnits": 112901.632812,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 112901.632812
+        }
+      ],
+      "config": {
+        "bytes": 199350,
+        "sha256": "ab439aef89d97e5d2e5a255de6e33502c046b1eb2cb5b0fef9619cd8a5f03418"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": {
+        "schemaVersion": 1,
+        "case": "mass-099",
+        "sourceCheckpoint": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "physicsOverrides": {
+          "capsuleMassScale": 9.9e-05
+        }
+      }
+    },
+    {
+      "name": "two-hour-robust-mass-101",
+      "startedAtProxy": "2026-09-03T07:30:16.420552+00:00",
+      "completedAt": "2026-09-03T07:30:17.233966+00:00",
+      "wallSecondsProxy": 0.8134145736694336,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 1,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 1,
+      "workerCompletedEvaluations": 1,
+      "evaluatedCreaturesAtCheckpoint": 1,
+      "bestFitnessSimulationUnits": 25785.611328,
+      "averageFitnessSimulationUnits": 25785.611328,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 25785.611328
+        }
+      ],
+      "config": {
+        "bytes": 199351,
+        "sha256": "7f2e58481d6848e65c84e621de9531f2ab7f3d204555ad95bd524f45adb4968e"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": {
+        "schemaVersion": 1,
+        "case": "mass-101",
+        "sourceCheckpoint": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "physicsOverrides": {
+          "capsuleMassScale": 0.000101
+        }
+      }
+    },
+    {
+      "name": "two-hour-pop-robust-gravity-99",
+      "startedAtProxy": "2026-09-03T07:35:59.762229+00:00",
+      "completedAt": "2026-09-03T07:36:01.946761+00:00",
+      "wallSecondsProxy": 2.1845321655273438,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 64,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 64,
+      "workerCompletedEvaluations": 64,
+      "evaluatedCreaturesAtCheckpoint": 64,
+      "bestFitnessSimulationUnits": 114128.421875,
+      "averageFitnessSimulationUnits": 33885.19146746875,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 101219.117188
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 112226.828125
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 114128.421875
+        }
+      ],
+      "config": {
+        "bytes": 11857957,
+        "sha256": "3a5bfd845a4140e5d60df13c9a0b112d566bf182a9cdcc4e252ef9d76426a538"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-pop-robust-gravity-101",
+      "startedAtProxy": "2026-09-03T07:36:03.963100+00:00",
+      "completedAt": "2026-09-03T07:36:06.106816+00:00",
+      "wallSecondsProxy": 2.1437160968780518,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 64,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 64,
+      "workerCompletedEvaluations": 64,
+      "evaluatedCreaturesAtCheckpoint": 64,
+      "bestFitnessSimulationUnits": 117749.960938,
+      "averageFitnessSimulationUnits": 98934.3568420625,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 28600.228516
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 111024.546875
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 114453.679688
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 116851.257812
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 117749.960938
+        }
+      ],
+      "config": {
+        "bytes": 11857871,
+        "sha256": "a96aef49815caaf1cf9f15785290940fb7751b3cc0eba0af52f607793c4b81f7"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-pop-robust-friction-049",
+      "startedAtProxy": "2026-09-03T07:36:08.116122+00:00",
+      "completedAt": "2026-09-03T07:36:10.271196+00:00",
+      "wallSecondsProxy": 2.155073642730713,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 64,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 64,
+      "workerCompletedEvaluations": 64,
+      "evaluatedCreaturesAtCheckpoint": 64,
+      "bestFitnessSimulationUnits": 113907.539062,
+      "averageFitnessSimulationUnits": 90592.965515125,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 60058.480469
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 109197.179688
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 110532.546875
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 113907.539062
+        }
+      ],
+      "config": {
+        "bytes": 11857986,
+        "sha256": "416032ba7375c1768a0d743f7ca27d9048e1bc81cc374f739a5b9b33c40703c9"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-pop-robust-friction-051",
+      "startedAtProxy": "2026-09-03T07:36:12.265493+00:00",
+      "completedAt": "2026-09-03T07:36:14.412989+00:00",
+      "wallSecondsProxy": 2.147496223449707,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 64,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 64,
+      "workerCompletedEvaluations": 64,
+      "evaluatedCreaturesAtCheckpoint": 64,
+      "bestFitnessSimulationUnits": 120365.484375,
+      "averageFitnessSimulationUnits": 34004.86103796875,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 41710.355469
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 120365.484375
+        }
+      ],
+      "config": {
+        "bytes": 11857991,
+        "sha256": "2dcf6dae5267c0a4a99d5270c73c1d57a85950baa7da692c8120e4108e31ab8b"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-pop-robust-mass-099",
+      "startedAtProxy": "2026-09-03T07:36:16.409615+00:00",
+      "completedAt": "2026-09-03T07:36:18.432679+00:00",
+      "wallSecondsProxy": 2.0230636596679688,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 64,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 64,
+      "workerCompletedEvaluations": 64,
+      "evaluatedCreaturesAtCheckpoint": 64,
+      "bestFitnessSimulationUnits": 119171.679688,
+      "averageFitnessSimulationUnits": 34234.661803953124,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 112901.632812
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 117085.640625
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 119171.679688
+        }
+      ],
+      "config": {
+        "bytes": 11857954,
+        "sha256": "22751735574ee6665ac920a0a642b9fcea08224b6aa61db4cf140245b8c7812c"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-pop-robust-mass-101",
+      "startedAtProxy": "2026-09-03T07:36:20.399493+00:00",
+      "completedAt": "2026-09-03T07:36:22.523738+00:00",
+      "wallSecondsProxy": 2.1242451667785645,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 64,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 64,
+      "workerCompletedEvaluations": 64,
+      "evaluatedCreaturesAtCheckpoint": 64,
+      "bestFitnessSimulationUnits": 118810.453125,
+      "averageFitnessSimulationUnits": 100770.79435726562,
+      "bestEvents": [
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 25785.611328
+        },
+        {
+          "generator": "loaded",
+          "fitnessSimulationUnits": 118810.453125
+        }
+      ],
+      "config": {
+        "bytes": 11858009,
+        "sha256": "4102ae9414d6a605ae8d456e64778185261c0b89f72d1e0f9aa128336a4d9d55"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes",
+            "mode": "shared-offset-v1"
+          }
+        }
+      },
+      "comparison": {
+        "schemaVersion": 1,
+        "startingController": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/artifacts/codex/machine-evolved-two-hour-final/live-best-before-pause.json",
+          "sha256": "689064f91a9e42b7e6fe8bdc6145828b8befacb03f034bbd4c82fd59095018fa",
+          "fitness": 119876.359375
+        },
+        "mutationMode": "shared-offset-v1",
+        "pairedBudgetGroup": "shared-vs-independent-offset-v1"
+      },
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-controller-coordinate-probes",
+      "startedAtProxy": "2026-09-03T07:41:32.751770+00:00",
+      "completedAt": "2026-09-03T07:41:48.475384+00:00",
+      "wallSecondsProxy": 15.723613500595093,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 691,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 690,
+      "workerCompletedEvaluations": 690,
+      "evaluatedCreaturesAtCheckpoint": 691,
+      "bestFitnessSimulationUnits": 122526.125,
+      "averageFitnessSimulationUnits": 49256.235961377715,
+      "bestEvents": [],
+      "config": {
+        "bytes": 127934532,
+        "sha256": "4c78dbbda015082f58fc4b92d4a03de05a9fc27560300f6dbc49df5431caa17c"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 0
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes"
+          }
+        }
+      },
+      "comparison": null,
+      "lineSearch": null,
+      "robustness": null
+    },
+    {
+      "name": "two-hour-controller-line-search-second-step-wide",
+      "startedAtProxy": "2026-09-03T07:42:16.798535+00:00",
+      "completedAt": "2026-09-03T07:42:29.658544+00:00",
+      "wallSecondsProxy": 12.860008716583252,
+      "stopReason": "evaluation-limit",
+      "workers": 6,
+      "populationSize": 512,
+      "generation": 0,
+      "trainerAcceptedEvaluations": 511,
+      "workerCompletedEvaluations": 511,
+      "evaluatedCreaturesAtCheckpoint": 512,
+      "bestFitnessSimulationUnits": 122526.125,
+      "averageFitnessSimulationUnits": 55051.32653805274,
+      "bestEvents": [],
+      "config": {
+        "bytes": 94706803,
+        "sha256": "f5b20ebe998fb56843e985f6ecbc59ed73a234141dd11914b5878518be360ebb"
+      },
+      "optimizer": {
+        "population": {
+          "eliteCount": 1
+        },
+        "crossover": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          }
+        },
+        "mutation": {
+          "rate": 0,
+          "competitionSize": {
+            "reproduce": 1,
+            "eliminate": 1
+          },
+          "parentSelection": "tournament-v1",
+          "config": {
+            "numParameterChangedRatioRange": "0.001-0.03",
+            "offsetRange": "0.01;0.5",
+            "offsetExponent": 1,
+            "randomizeSign": "yes"
+          }
+        }
+      },
+      "comparison": null,
+      "lineSearch": {
+        "schemaVersion": 1,
+        "source": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/machine-evolved-trainer/configs/two-hour-robust-alternative-three-capsule-v1.json",
+          "sha256": "66e575767c3a39cc4cef8076fa532db3f9de8272a4579d17e95e53a56e44cc28"
+        },
+        "target": {
+          "path": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/two-hour-shared-offset-seed202-e5000/config.json",
+          "sha256": "e658c3ac7dc18be8dfc8f71554c33944f8d7d4ed2e7d22674fe81456bc41bd73",
+          "fitness": 122526.125
+        },
+        "minimumCoefficient": -1.0,
+        "maximumCoefficient": 4.0,
+        "changedParameters": 202,
+        "measuredCoefficients": [
+          -1.0,
+          -0.9901960784313726,
+          -0.9803921568627451,
+          -0.9705882352941176,
+          -0.9607843137254902,
+          -0.9509803921568627,
+          -0.9411764705882353,
+          -0.9313725490196079,
+          -0.9215686274509804,
+          -0.9117647058823529,
+          -0.9019607843137255,
+          -0.892156862745098,
+          -0.8823529411764706,
+          -0.8725490196078431,
+          -0.8627450980392157,
+          -0.8529411764705882,
+          -0.8431372549019608,
+          -0.8333333333333334,
+          -0.8235294117647058,
+          -0.8137254901960784,
+          -0.803921568627451,
+          -0.7941176470588236,
+          -0.7843137254901961,
+          -0.7745098039215687,
+          -0.7647058823529411,
+          -0.7549019607843137,
+          -0.7450980392156863,
+          -0.7352941176470589,
+          -0.7254901960784313,
+          -0.7156862745098039,
+          -0.7058823529411764,
+          -0.696078431372549,
+          -0.6862745098039216,
+          -0.6764705882352942,
+          -0.6666666666666667,
+          -0.6568627450980392,
+          -0.6470588235294117,
+          -0.6372549019607843,
+          -0.6274509803921569,
+          -0.6176470588235294,
+          -0.607843137254902,
+          -0.5980392156862745,
+          -0.5882352941176471,
+          -0.5784313725490196,
+          -0.5686274509803921,
+          -0.5588235294117647,
+          -0.5490196078431373,
+          -0.5392156862745099,
+          -0.5294117647058824,
+          -0.5196078431372548,
+          -0.5098039215686274,
+          -0.5,
+          -0.4901960784313726,
+          -0.48039215686274506,
+          -0.47058823529411764,
+          -0.4607843137254902,
+          -0.4509803921568627,
+          -0.4411764705882353,
+          -0.43137254901960786,
+          -0.42156862745098034,
+          -0.4117647058823529,
+          -0.4019607843137255,
+          -0.3921568627450981,
+          -0.38235294117647056,
+          -0.37254901960784315,
+          -0.36274509803921573,
+          -0.3529411764705882,
+          -0.3431372549019608,
+          -0.33333333333333337,
+          -0.32352941176470584,
+          -0.3137254901960784,
+          -0.303921568627451,
+          -0.2941176470588235,
+          -0.28431372549019607,
+          -0.27450980392156865,
+          -0.2647058823529411,
+          -0.2549019607843137,
+          -0.2450980392156863,
+          -0.23529411764705888,
+          -0.22549019607843135,
+          -0.21568627450980393,
+          -0.20588235294117652,
+          -0.196078431372549,
+          -0.18627450980392157,
+          -0.17647058823529416,
+          -0.16666666666666663,
+          -0.1568627450980392,
+          -0.1470588235294118,
+          -0.13725490196078427,
+          -0.12745098039215685,
+          -0.11764705882352944,
+          -0.10784313725490191,
+          -0.0980392156862745,
+          -0.08823529411764708,
+          -0.07843137254901966,
+          -0.06862745098039214,
+          -0.05882352941176472,
+          -0.0490196078431373,
+          -0.039215686274509776,
+          -0.02941176470588236,
+          -0.019607843137254943,
+          -0.009803921568627416,
+          0.0,
+          0.009803921568627416,
+          0.019607843137254832,
+          0.02941176470588225,
+          0.03921568627450989,
+          0.0490196078431373,
+          0.05882352941176472,
+          0.06862745098039214,
+          0.07843137254901955,
+          0.08823529411764697,
+          0.0980392156862746,
+          0.10784313725490202,
+          0.11764705882352944,
+          0.12745098039215685,
+          0.13725490196078427,
+          0.1470588235294117,
+          0.15686274509803932,
+          0.16666666666666674,
+          0.17647058823529416,
+          0.18627450980392157,
+          0.196078431372549,
+          0.2058823529411764,
+          0.21568627450980382,
+          0.22549019607843146,
+          0.23529411764705888,
+          0.2450980392156863,
+          0.2549019607843137,
+          0.2647058823529411,
+          0.27450980392156854,
+          0.2843137254901962,
+          0.2941176470588236,
+          0.303921568627451,
+          0.3137254901960784,
+          0.32352941176470584,
+          0.33333333333333326,
+          0.3431372549019607,
+          0.3529411764705883,
+          0.36274509803921573,
+          0.37254901960784315,
+          0.38235294117647056,
+          0.392156862745098,
+          0.4019607843137254,
+          0.41176470588235303,
+          0.42156862745098045,
+          0.43137254901960786,
+          0.4411764705882353,
+          0.4509803921568627,
+          0.4607843137254901,
+          0.47058823529411775,
+          0.48039215686274517,
+          0.4901960784313726,
+          0.5,
+          0.5098039215686274,
+          0.5196078431372548,
+          0.5294117647058822,
+          0.5392156862745099,
+          0.5490196078431373,
+          0.5588235294117647,
+          0.5686274509803921,
+          0.5784313725490196,
+          0.588235294117647,
+          0.5980392156862746,
+          0.607843137254902,
+          0.6176470588235294,
+          0.6274509803921569,
+          0.6372549019607843,
+          0.6470588235294117,
+          0.6568627450980393,
+          0.6666666666666667,
+          0.6764705882352942,
+          0.6862745098039216,
+          0.696078431372549,
+          0.7058823529411764,
+          0.7156862745098038,
+          0.7254901960784315,
+          0.7352941176470589,
+          0.7450980392156863,
+          0.7549019607843137,
+          0.7647058823529411,
+          0.7745098039215685,
+          0.7843137254901962,
+          0.7941176470588236,
+          0.803921568627451,
+          0.8137254901960784,
+          0.8235294117647058,
+          0.8333333333333333,
+          0.8431372549019607,
+          0.8529411764705883,
+          0.8627450980392157,
+          0.8725490196078431,
+          0.8823529411764706,
+          0.892156862745098,
+          0.9019607843137254,
+          0.911764705882353,
+          0.9215686274509804,
+          0.9313725490196079,
+          0.9411764705882353,
+          0.9509803921568627,
+          0.9607843137254901,
+          0.9705882352941178,
+          0.9803921568627452,
+          0.9901960784313726,
+          1.0,
+          1.0098039215686274,
+          1.0196078431372548,
+          1.0294117647058822,
+          1.0392156862745097,
+          1.049019607843137,
+          1.0588235294117645,
+          1.0686274509803924,
+          1.0784313725490198,
+          1.0882352941176472,
+          1.0980392156862746,
+          1.107843137254902,
+          1.1176470588235294,
+          1.1274509803921569,
+          1.1372549019607843,
+          1.1470588235294117,
+          1.156862745098039,
+          1.1666666666666665,
+          1.176470588235294,
+          1.1862745098039214,
+          1.1960784313725492,
+          1.2058823529411766,
+          1.215686274509804,
+          1.2254901960784315,
+          1.2352941176470589,
+          1.2450980392156863,
+          1.2549019607843137,
+          1.2647058823529411,
+          1.2745098039215685,
+          1.284313725490196,
+          1.2941176470588234,
+          1.3039215686274508,
+          1.3137254901960786,
+          1.323529411764706,
+          1.3333333333333335,
+          1.343137254901961,
+          1.3529411764705883,
+          1.3627450980392157,
+          1.3725490196078431,
+          1.3823529411764706,
+          1.392156862745098,
+          1.4019607843137254,
+          1.4117647058823528,
+          1.4215686274509802,
+          1.4313725490196076,
+          1.4411764705882355,
+          1.450980392156863,
+          1.4607843137254903,
+          1.4705882352941178,
+          1.4803921568627452,
+          1.4901960784313726,
+          1.5,
+          1.5098039215686274,
+          1.5196078431372548,
+          1.5294117647058822,
+          1.5392156862745097,
+          1.549019607843137,
+          1.5588235294117645,
+          1.5686274509803924,
+          1.5784313725490198,
+          1.5882352941176472,
+          1.5980392156862746,
+          1.607843137254902,
+          1.6176470588235294,
+          1.6274509803921569,
+          1.6372549019607843,
+          1.6470588235294117,
+          1.656862745098039,
+          1.6666666666666665,
+          1.676470588235294,
+          1.6862745098039214,
+          1.6960784313725492,
+          1.7058823529411766,
+          1.715686274509804,
+          1.7254901960784315,
+          1.7352941176470589,
+          1.7450980392156863,
+          1.7549019607843137,
+          1.7647058823529411,
+          1.7745098039215685,
+          1.784313725490196,
+          1.7941176470588234,
+          1.8039215686274508,
+          1.8137254901960786,
+          1.823529411764706,
+          1.8333333333333335,
+          1.843137254901961,
+          1.8529411764705883,
+          1.8627450980392157,
+          1.8725490196078431,
+          1.8823529411764706,
+          1.892156862745098,
+          1.9019607843137254,
+          1.9117647058823528,
+          1.9215686274509802,
+          1.9313725490196076,
+          1.9411764705882355,
+          1.950980392156863,
+          1.9607843137254903,
+          1.9705882352941178,
+          1.9803921568627452,
+          1.9901960784313726,
+          2.0,
+          2.0098039215686274,
+          2.019607843137255,
+          2.0294117647058822,
+          2.0392156862745097,
+          2.049019607843137,
+          2.0588235294117645,
+          2.0686274509803924,
+          2.0784313725490198,
+          2.088235294117647,
+          2.0980392156862746,
+          2.107843137254902,
+          2.1176470588235294,
+          2.127450980392157,
+          2.1372549019607843,
+          2.1470588235294117,
+          2.156862745098039,
+          2.1666666666666665,
+          2.176470588235294,
+          2.1862745098039214,
+          2.196078431372549,
+          2.2058823529411766,
+          2.215686274509804,
+          2.2254901960784315,
+          2.235294117647059,
+          2.2450980392156863,
+          2.2549019607843137,
+          2.264705882352941,
+          2.2745098039215685,
+          2.284313725490196,
+          2.2941176470588234,
+          2.303921568627451,
+          2.3137254901960786,
+          2.323529411764706,
+          2.3333333333333335,
+          2.343137254901961,
+          2.3529411764705883,
+          2.3627450980392157,
+          2.372549019607843,
+          2.3823529411764706,
+          2.392156862745098,
+          2.4019607843137254,
+          2.411764705882353,
+          2.4215686274509802,
+          2.4313725490196076,
+          2.4411764705882355,
+          2.450980392156863,
+          2.4607843137254903,
+          2.4705882352941178,
+          2.480392156862745,
+          2.4901960784313726,
+          2.5,
+          2.5098039215686274,
+          2.519607843137255,
+          2.5294117647058822,
+          2.5392156862745097,
+          2.549019607843137,
+          2.5588235294117645,
+          2.5686274509803924,
+          2.5784313725490198,
+          2.588235294117647,
+          2.5980392156862746,
+          2.607843137254902,
+          2.6176470588235294,
+          2.627450980392157,
+          2.6372549019607843,
+          2.6470588235294117,
+          2.656862745098039,
+          2.6666666666666665,
+          2.676470588235294,
+          2.6862745098039214,
+          2.696078431372549,
+          2.7058823529411766,
+          2.715686274509804,
+          2.7254901960784315,
+          2.735294117647059,
+          2.7450980392156863,
+          2.7549019607843137,
+          2.764705882352941,
+          2.7745098039215685,
+          2.784313725490196,
+          2.7941176470588234,
+          2.803921568627451,
+          2.8137254901960786,
+          2.823529411764706,
+          2.8333333333333335,
+          2.843137254901961,
+          2.8529411764705883,
+          2.8627450980392157,
+          2.872549019607843,
+          2.8823529411764706,
+          2.892156862745098,
+          2.9019607843137254,
+          2.911764705882353,
+          2.9215686274509802,
+          2.9313725490196076,
+          2.9411764705882355,
+          2.950980392156863,
+          2.9607843137254903,
+          2.9705882352941178,
+          2.980392156862745,
+          2.9901960784313726,
+          3.0,
+          3.0098039215686274,
+          3.019607843137255,
+          3.0294117647058822,
+          3.0392156862745097,
+          3.049019607843137,
+          3.0588235294117645,
+          3.068627450980392,
+          3.0784313725490193,
+          3.0882352941176467,
+          3.098039215686274,
+          3.1078431372549016,
+          3.117647058823529,
+          3.1274509803921573,
+          3.1372549019607847,
+          3.147058823529412,
+          3.1568627450980395,
+          3.166666666666667,
+          3.1764705882352944,
+          3.186274509803922,
+          3.196078431372549,
+          3.2058823529411766,
+          3.215686274509804,
+          3.2254901960784315,
+          3.235294117647059,
+          3.2450980392156863,
+          3.2549019607843137,
+          3.264705882352941,
+          3.2745098039215685,
+          3.284313725490196,
+          3.2941176470588234,
+          3.303921568627451,
+          3.313725490196078,
+          3.3235294117647056,
+          3.333333333333333,
+          3.3431372549019605,
+          3.352941176470588,
+          3.3627450980392153,
+          3.3725490196078427,
+          3.382352941176471,
+          3.3921568627450984,
+          3.401960784313726,
+          3.4117647058823533,
+          3.4215686274509807,
+          3.431372549019608,
+          3.4411764705882355,
+          3.450980392156863,
+          3.4607843137254903,
+          3.4705882352941178,
+          3.480392156862745,
+          3.4901960784313726,
+          3.5,
+          3.5098039215686274,
+          3.519607843137255,
+          3.5294117647058822,
+          3.5392156862745097,
+          3.549019607843137,
+          3.5588235294117645,
+          3.568627450980392,
+          3.5784313725490193,
+          3.5882352941176467,
+          3.598039215686274,
+          3.6078431372549016,
+          3.617647058823529,
+          3.6274509803921573,
+          3.6372549019607847,
+          3.647058823529412,
+          3.6568627450980395,
+          3.666666666666667,
+          3.6764705882352944,
+          3.686274509803922,
+          3.696078431372549,
+          3.7058823529411766,
+          3.715686274509804,
+          3.7254901960784315,
+          3.735294117647059,
+          3.7450980392156863,
+          3.7549019607843137,
+          3.764705882352941,
+          3.7745098039215685,
+          3.784313725490196,
+          3.7941176470588234,
+          3.803921568627451,
+          3.813725490196078,
+          3.8235294117647056,
+          3.833333333333333,
+          3.8431372549019605,
+          3.852941176470588,
+          3.8627450980392153,
+          3.8725490196078427,
+          3.882352941176471,
+          3.8921568627450984,
+          3.901960784313726,
+          3.9117647058823533,
+          3.9215686274509807,
+          3.931372549019608,
+          3.9411764705882355,
+          3.950980392156863,
+          3.9607843137254903,
+          3.9705882352941178,
+          3.980392156862745,
+          3.9901960784313726,
+          4.0
+        ]
+      },
+      "robustness": null
+    }
+  ]
+}

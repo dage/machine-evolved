@@ -4,6 +4,17 @@ This package is an immutable data snapshot prepared for an external GitHub revie
 
 The repository at this branch supplies the corresponding source code, training launch scripts, committed configuration templates, tests, and Git history. The snapshot archive preserves ignored, generated run state that Git would otherwise omit.
 
+## Plain-text review set (no archive extraction required)
+
+Use this first if the reviewing environment cannot unpack `tar.xz`. It is 738,682 bytes of ordinary Git files:
+
+- `run-summary.json` — static configuration for all three routes plus the first archive snapshot's terminal records.
+- `plain/progress/` — the complete, uncompressed `progress.jsonl` history for every route. The 384-population file was refreshed at 2026-09-03T17:45:36Z (generation 867 / 333,021 evaluations); the other two are stopped.
+- `plain/prior-analysis/` — the original-run ledger, result records, attempt manifest, motion analyses, and robustness record.
+- `plain/runtime-notes/double-gravity-192-worker-shutdown-tail.log` — the relevant tail from the stopped 192-population route. It records workers losing the trainer connection after that route was terminated.
+
+All static physics, objective, domain, seed, mutation, archive, and population settings are present directly in `run-summary.json`. The archive is only needed for full mutable trainer state, all worker/trainer logs, phase-local checkpoint data, and full replay traces.
+
 ## Snapshot identity
 
 - Captured: 2026-09-03T16:57:06Z
