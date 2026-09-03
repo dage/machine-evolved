@@ -61,3 +61,8 @@ launchd executes `scripts/run-overnight-supervisor.sh`, which keeps the
 supervisor awake with `caffeinate -i`. Runtime state stays in ignored
 `training-runs/`; the committed examples cannot start until explicitly copied to
 the non-example filenames referenced by the plist.
+
+The example uses `ProcessType=Interactive` because the supervised evaluator is
+explicitly user-requested compute and must not inherit launchd's Background CPU
+and I/O limits. Use Background only for genuinely opportunistic jobs where
+reduced compute scheduling is intended.
