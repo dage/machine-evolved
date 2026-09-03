@@ -61,6 +61,21 @@ distance result, see
 The calibrated pilot exceeded the recovered video's fitness target in two
 independent seeds without starting a population-1000 training round.
 
+## Compare training progress
+
+Generate one self-contained chart from any two or more captured training runs:
+
+```sh
+scripts/compare-training-progress.py \
+  --run 'Original gravity=training-runs/original-run' \
+  --run 'Double gravity=training-runs/double-gravity-run' \
+  --output artifacts/codex/training-comparison/current.html
+```
+
+Each run contributes a solid best-robust-fitness line and a dashed occupied-
+population mean line. Re-running the command refreshes the output from the
+latest valid sample in each `progress.jsonl` file.
+
 ## Browser replay export
 
 `replayworker` replays the highest-fitness creature in a saved training config
