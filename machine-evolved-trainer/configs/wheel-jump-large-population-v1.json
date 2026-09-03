@@ -1,0 +1,125 @@
+{
+  "experiment": {
+    "schemaVersion": 1,
+    "backend": "machine-evolved-bullet-v1",
+    "profile": "wheel-jump-large-population-v1",
+    "seed": 85,
+    "coordinateSystem": {
+      "upAxis": "z",
+      "horizontalAxes": ["x", "y"],
+      "units": "simulation-units"
+    },
+    "objective": {
+      "id": "max-horizontal-distance-v1",
+      "horizonTicks": 7200,
+      "fixedStepHz": 60,
+      "penalties": []
+    },
+    "physics": {
+      "engine": "Bullet",
+      "version": "2.86",
+      "gravityX": 0,
+      "gravityY": 0,
+      "gravityZ": -100,
+      "groundFriction": 0.5,
+      "motorMaxForce": 5000,
+      "capsuleFriction": 0.5,
+      "capsuleRollingFriction": 0,
+      "capsuleSpinningFriction": 0,
+      "capsuleRestitution": 0,
+      "capsuleLinearDamping": 0,
+      "capsuleAngularDamping": 0,
+      "capsuleMassScale": 0.0001,
+      "motorTargetVelocityLimit": 0
+    },
+    "intent": [
+      "maximize physically simulated horizontal distance",
+      "allow upright rolling, spinning, and jump-assisted propulsion",
+      "classify motion after training instead of penalizing locomotion style"
+    ]
+  },
+  "algorithm": {
+    "type": "GeneticAlgorithm",
+    "arguments": {
+      "population": {
+        "size": 8192,
+        "generation": 0,
+        "evaluations": 0,
+        "evaluationTimeoutSeconds": 60,
+        "checkpointIntervalSeconds": 600
+      },
+      "crossover": {
+        "rate": 0.1,
+        "competitionSize": {
+          "reproduce": 2,
+          "eliminate": 2
+        },
+        "numParameterChangedRatioRange": "0.1-0.5",
+        "changeRatioRange": "0.25-0.75"
+      },
+      "mutation": {
+        "rate": 0.5,
+        "competitionSize": {
+          "reproduce": 2,
+          "eliminate": 2
+        },
+        "config": {
+          "numParameterChangedRatioRange": "0.001-0.03",
+          "offsetRange": "0.01;0.5",
+          "offsetExponent": 1,
+          "randomizeSign": "yes"
+        }
+      }
+    }
+  },
+  "structure": {
+    "generator": {
+      "capsuleRadiusRange": "10-20",
+      "capsuleInnerHeightRange": "50-100",
+      "numCapsules": 3,
+      "motors": {
+        "x-rotation": { "range": "-1;1" },
+        "y-rotation": { "range": "-1;1" },
+        "z-rotation": { "range": "-1;1" }
+      },
+      "feedbacks": 0,
+      "oscillators": {
+        "start": 0.1,
+        "multiplier": 2,
+        "count": 9
+      },
+      "inputs": {
+        "root-orientation-x": 1,
+        "root-orientation-y": 1,
+        "root-orientation-z": 1,
+        "root-orientation-w": 1,
+        "z-position": 1,
+        "velocity-x": 1,
+        "velocity-y": 1,
+        "velocity-z": 1,
+        "oscillators": 1,
+        "capsule-position-x": 1,
+        "capsule-position-y": 1,
+        "capsule-position-z": 1,
+        "capsule-velocity-x": 1,
+        "capsule-velocity-y": 1,
+        "capsule-velocity-z": 1,
+        "capsule-angular-velocity-x": 1,
+        "capsule-angular-velocity-y": 1,
+        "capsule-angular-velocity-z": 1,
+        "motor-angle-x": 1,
+        "motor-angle-y": 1,
+        "motor-angle-z": 1,
+        "feedbacks": 0
+      },
+      "motorController": {
+        "layers": [
+          { "neurons": 50, "activation": "tanh" },
+          { "neurons": 10, "activation": "tanh" },
+          { "activation": "linear" }
+        ]
+      }
+    },
+    "creatures": []
+  }
+}

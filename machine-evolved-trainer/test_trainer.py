@@ -102,6 +102,47 @@ class GeneticAlgorithmTest(unittest.TestCase):
 		)
 		self.assertEqual(reloaded.indicesMissingFitness, [0, 1])
 
+	def test_loaded_population_expands_with_fresh_creatures(self):
+		original = self.createAlgorithm()
+		original.individuals[0][original.FITNESS] = 42.0
+		savedCreature = original.getCreaturesWithFitnessJson()[0]
+
+		arguments = copy.deepcopy(self.config["algorithm"]["arguments"])
+		arguments["population"]["size"] = 3
+		structure = copy.deepcopy(self.config["structure"])
+		structure["creatures"] = [savedCreature]
+		expanded = GeneticAlgorithm(
+			arguments["population"],
+			arguments["crossover"],
+			arguments["mutation"],
+			structure,
+			{ "saveState": lambda: None },
+		)
+
+		self.assertEqual(len(expanded.individuals), 3)
+		self.assertEqual(expanded.individuals[0][expanded.FITNESS], 42.0)
+		self.assertEqual(expanded.indicesMissingFitness, [1, 2])
+		self.assertNotEqual(
+			expanded.individuals[0][expanded.CREATURE].id,
+			expanded.individuals[1][expanded.CREATURE].id,
+		)
+
+	def test_loaded_population_cannot_be_truncated_implicitly(self):
+		original = self.createAlgorithm()
+		arguments = copy.deepcopy(self.config["algorithm"]["arguments"])
+		arguments["population"]["size"] = 1
+		structure = copy.deepcopy(self.config["structure"])
+		structure["creatures"] = original.getCreaturesWithFitnessJson()
+
+		with self.assertRaisesRegex(ValueError, "more creatures"):
+			GeneticAlgorithm(
+				arguments["population"],
+				arguments["crossover"],
+				arguments["mutation"],
+				structure,
+				{ "saveState": lambda: None },
+			)
+
 	def createBareTrainer(self, terminateSeconds=None):
 		algorithm = self.createAlgorithm()
 		trainer = Trainer.__new__(Trainer)

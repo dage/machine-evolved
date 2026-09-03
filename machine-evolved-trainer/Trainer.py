@@ -50,6 +50,11 @@ class GeneticAlgorithm():
 		else:
 			# Deserialize existing creatures
 			creatures = structureConfig["creatures"]
+			populationSize = int(self.populationConfig["size"])
+			if len(creatures) > populationSize:
+				raise ValueError(
+					"Saved population has more creatures than the configured population size."
+				)
 			for i in range(0, len(creatures)):
 				creatureJson = creatures[i]["data"]
 				rawFitness = creatures[i].get("fitness")
@@ -60,6 +65,16 @@ class GeneticAlgorithm():
 
 				if math.isnan(fitness):
 					self.indicesMissingFitness.append(i)
+
+			# A larger configured population is an explicit request for fresh
+			# diversity around a saved checkpoint. Preserve every loaded creature,
+			# then fill the new slots from the same structure generator rather than
+			# silently training at the checkpoint's old population size.
+			for i in range(len(creatures), populationSize):
+				creature = Creature(None, structureConfig["generator"])
+				self.individuals.append([float("nan"), creature, float("nan")])
+				self.creatureIndexLookup[creature.id] = i
+				self.indicesMissingFitness.append(i)
 
 	def validateConfiguration(self):
 		populationSize = int(self.populationConfig["size"])

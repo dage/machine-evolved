@@ -57,3 +57,17 @@ starting configuration into an ignored `training-runs/<run-name>/` directory,
 and retains logs, the evolved population, and `summary.json`. It terminates the
 worker and trainer after the requested evaluation count. Scaling to the
 historical population of 1000 is intentionally a separate, user-approved run.
+
+## Long wheel-and-jump search
+
+`machine-evolved-trainer/configs/wheel-jump-large-population-v1.json` is the
+long-running exploration profile. It deliberately keeps the historical raw
+distance objective: rolling, spinning, and airborne motion are locomotion
+classes to inspect after training, not fitness penalties. Non-finite results
+and deterministic replay mismatches remain invalid.
+
+The profile starts 8192 independent three-capsule creatures, uses six external
+worker threads, and checkpoints every ten minutes. A saved checkpoint may also
+be enlarged by raising `population.size`; the trainer preserves loaded
+creatures and fills the added slots with fresh randomized creatures. This is
+useful for retaining a known fast controller while restoring broad diversity.
