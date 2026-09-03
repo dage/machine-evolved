@@ -273,7 +273,7 @@ class RealSystem:
 
     def processes(self) -> list[dict]:
         result = subprocess.run(
-            ["/bin/ps", "-axo", "pid=,ppid=,pgid=,lstart=,%cpu=,command="],
+            ["/bin/ps", "-axo", "pid=,ppid=,pgid=,stat=,lstart=,%cpu=,command="],
             capture_output=True,
             text=True,
             check=True,
@@ -281,20 +281,21 @@ class RealSystem:
         )
         records = []
         for line in result.stdout.splitlines():
-            fields = line.split(None, 9)
-            if len(fields) < 10:
+            fields = line.split(None, 10)
+            if len(fields) < 11:
                 continue
             try:
                 records.append({
                     "pid": int(fields[0]),
                     "ppid": int(fields[1]),
                     "pgid": int(fields[2]),
-                    "startedAt": " ".join(fields[3:8]),
+                    "state": fields[3],
+                    "startedAt": " ".join(fields[4:9]),
                     "startedAtEpochSeconds": time.mktime(
-                        time.strptime(" ".join(fields[3:8]), "%a %b %d %H:%M:%S %Y")
+                        time.strptime(" ".join(fields[4:9]), "%a %b %d %H:%M:%S %Y")
                     ),
-                    "cpuPercent": float(fields[8]),
-                    "command": fields[9],
+                    "cpuPercent": float(fields[9]),
+                    "command": fields[10],
                 })
             except ValueError:
                 continue
@@ -458,7 +459,6 @@ class Supervisor:
 
     def reconcile_owned_processes(self, processes: list[dict] | None = None) -> list[dict]:
         processes = processes if processes is not None else self.current_processes()
-        by_pid = {process["pid"]: process for process in processes}
         active = self.active_route_state()
         attempt = active.get("activeAttempt") if active else None
         if not attempt:
@@ -466,6 +466,16 @@ class Supervisor:
             return []
         launcher_pid = attempt["launcherPid"]
         launcher_pgid = attempt["processGroupId"]
+        launcher = next((process for process in processes if process["pid"] == launcher_pid), None)
+        if launcher and launcher.get("state", "").startswith("Z"):
+            # poll() reaps a Popen child owned by this supervisor. A launcher
+            # inherited after supervisor restart is still excluded as dead.
+            self.system.poll(launcher_pid)
+        processes = [
+            process for process in processes
+            if not process.get("state", "").startswith("Z")
+        ]
+        by_pid = {process["pid"]: process for process in processes}
         recorded_by_pid = {item["pid"]: item for item in attempt.get("ownedProcesses", [])}
         launcher_record = recorded_by_pid.get(launcher_pid)
         if launcher_record and not self.identity_matches(launcher_record, by_pid.get(launcher_pid, {})):
@@ -608,14 +618,15 @@ class Supervisor:
         return ledger
 
     def choose_route(self, queue: list[dict]) -> dict | None:
-        preferred = self.state.pop("preferredRouteId", None)
+        preferred = self.state.get("preferredRouteId")
         by_id = {route["id"]: route for route in queue}
         if preferred:
             route = by_id.get(preferred)
-            if route and route["enabled"]:
+            if route and (route["enabled"] or route["safeFallback"]):
                 ledger = self.ensure_route_ledger(route)
                 if ledger["status"] not in ("completed", "abandoned"):
                     return ledger["definition"]
+            self.state.pop("preferredRouteId", None)
         for route in queue:
             if not route["enabled"]:
                 continue
@@ -740,6 +751,8 @@ class Supervisor:
         self.state["ownedProcesses"] = [launcher_record]
         self.state["status"] = "running"
         self.state["reason"] = None
+        if self.state.get("preferredRouteId") == route["id"]:
+            self.state.pop("preferredRouteId", None)
         self.event("route-started", f"{route['id']} attempt {attempt_number}; resume={resume}")
 
     def progress_for(self, route: dict) -> dict:
@@ -891,6 +904,27 @@ class Supervisor:
             if not workers["verified"]:
                 return False, "exactly_8_workers_not_verified_before_startup_deadline"
         return True, None
+
+    def completion_is_draining(self, active: dict, owned: list[dict], progress: dict) -> bool:
+        """Recognize the runner's bounded post-training summary interval."""
+        route = active["definition"]
+        summary_exists = (self.route_run_dir(route) / "summary.json").is_file()
+        evaluation_cap_reached = (
+            progress.get("evaluations") is not None
+            and progress["evaluations"] >= active["originalEvaluationCap"]
+        )
+        attempt = active["activeAttempt"]
+        runtime_was_verified = (
+            attempt.get("portVerifiedAtEpochSeconds") is not None
+            and attempt.get("workerVerifiedAtEpochSeconds") is not None
+        )
+        roles = {item["role"] for item in owned}
+        runtime_is_gone = (
+            "trainer" not in roles
+            and "shellworker" not in roles
+            and not self.system.port_pids(self.config["port"])
+        )
+        return runtime_is_gone and (summary_exists or (evaluation_cap_reached and runtime_was_verified))
 
     def record_owned_before_signal(self) -> list[dict]:
         owned = self.reconcile_owned_processes(self.current_processes())
@@ -1070,11 +1104,18 @@ class Supervisor:
 
         active = self.active_route_state()
         if active:
-            okay, reason = self.verify_runtime_ownership(owned)
-            if not okay:
-                self.begin_shutdown(reason or "runtime_ownership_failed", True)
+            progress = self.progress_for(active["definition"])
+            if self.completion_is_draining(active, owned, progress):
+                drain_started = active.setdefault("completionDrainStartedAtEpochSeconds", now)
+                self.state["status"] = "finalizing_route"
+                self.state["reason"] = "evaluation_cap_reached"
+                if now - drain_started >= self.config["checkpointGraceSeconds"]:
+                    self.begin_shutdown("completion_finalization_stalled", True)
             else:
-                progress = self.progress_for(active["definition"])
+                active.pop("completionDrainStartedAtEpochSeconds", None)
+                okay, reason = self.verify_runtime_ownership(owned)
+                if not okay:
+                    self.begin_shutdown(reason or "runtime_ownership_failed", True)
                 if progress["evaluations"] is not None:
                     current = progress["evaluations"]
                     if active["lastProgress"] is None or current > active["lastProgress"]:

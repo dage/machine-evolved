@@ -21,6 +21,7 @@ class FakeSystem:
         self.listeners = []
         self.spawned = []
         self.signals = []
+        self.polled = []
         self.next_pid = 100
         self.exit_codes = {}
 
@@ -60,6 +61,7 @@ class FakeSystem:
             "pid": pid,
             "ppid": 1,
             "pgid": pid,
+            "state": "S",
             "startedAt": f"start-{pid}",
             "startedAtEpochSeconds": self.now,
             "cpuPercent": 1.0,
@@ -68,6 +70,7 @@ class FakeSystem:
         return pid
 
     def poll(self, pid):
+        self.polled.append(pid)
         return self.exit_codes.get(pid)
 
     def signal(self, pid, signum):
@@ -143,6 +146,7 @@ class SupervisorTest(unittest.TestCase):
                 "pid": 101,
                 "ppid": launcher_pid,
                 "pgid": launcher_pid,
+                "state": "S",
                 "startedAt": "trainer-start",
                 "startedAtEpochSeconds": self.system.now,
                 "cpuPercent": 12.5,
@@ -152,6 +156,7 @@ class SupervisorTest(unittest.TestCase):
                 "pid": 102,
                 "ppid": launcher_pid,
                 "pgid": launcher_pid,
+                "state": "S",
                 "startedAt": "worker-start",
                 "startedAtEpochSeconds": self.system.now,
                 "cpuPercent": 780.0,
@@ -242,6 +247,37 @@ class SupervisorTest(unittest.TestCase):
         self.assertEqual(supervisor.state["status"], "checkpointing")
         self.assertEqual(supervisor.state["reason"], "evaluation_progress_stalled")
         self.assertIn((101, signal.SIGINT), self.system.signals)
+
+    def test_normal_completion_drain_does_not_request_shutdown(self):
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.add_owned_runtime()
+        self.write_checkpoint("run-primary", 40_000)
+        self.system.advance(1)
+        supervisor.tick()
+        self.system.process_table = [item for item in self.system.process_table if item["pid"] == 100]
+        self.system.listeners = []
+        self.system.advance(5)
+        supervisor.tick()
+        self.assertEqual(supervisor.state["status"], "finalizing_route")
+        self.assertEqual(supervisor.state["reason"], "evaluation_cap_reached")
+        self.assertIsNone(supervisor.state["shutdown"])
+        self.assertEqual(self.system.signals, [])
+
+    def test_zombie_launcher_is_reaped_and_completed_not_kept_live(self):
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        run_dir = self.config["runRoot"] / "run-primary"
+        run_dir.mkdir(parents=True, exist_ok=True)
+        (run_dir / "summary.json").write_text("{}\n")
+        self.system.process_table[0]["state"] = "Z"
+        self.system.process_table[0]["command"] = "<defunct>"
+        supervisor.tick()
+        self.assertIn(100, self.system.polled)
+        self.assertEqual(supervisor.state["ownedProcesses"], [])
+        self.assertIsNone(supervisor.state["activeRouteId"])
+        self.assertEqual(supervisor.state["routes"]["primary"]["status"], "completed")
+        self.assertEqual(self.system.signals, [])
 
     def test_only_exact_recorded_identity_is_signaled(self):
         supervisor = self.make_supervisor()
@@ -334,6 +370,30 @@ class SupervisorTest(unittest.TestCase):
         self.system.advance(10)
         supervisor.tick()
         self.assertEqual(supervisor.state["activeRouteId"], "fallback")
+
+    def test_disabled_safe_fallback_runs_only_when_preferred(self):
+        fallback = self.route("fallback", "run-fallback")
+        fallback["enabled"] = False
+        fallback["safeFallback"] = True
+        self.write_queue([self.route("primary", "run-primary", "fallback"), fallback])
+        supervisor = self.make_supervisor()
+        queue = SUPERVISOR.load_route_queue(self.queue_path, self.root)
+        primary = supervisor.choose_route(queue)
+        self.assertEqual(primary["id"], "primary")
+        supervisor.state["routes"]["primary"]["status"] = "completed"
+        self.assertIsNone(supervisor.choose_route(queue))
+        supervisor.state["preferredRouteId"] = "fallback"
+        selected = supervisor.choose_route(queue)
+        self.assertEqual(selected["id"], "fallback")
+        self.assertEqual(supervisor.state["preferredRouteId"], "fallback")
+        self.system.listeners = [7654]
+        supervisor.tick()
+        self.assertEqual(supervisor.state["status"], "waiting_port")
+        self.assertEqual(supervisor.state["preferredRouteId"], "fallback")
+        self.system.listeners = []
+        supervisor.tick()
+        self.assertEqual(supervisor.state["activeRouteId"], "fallback")
+        self.assertNotIn("preferredRouteId", supervisor.state)
 
 
 if __name__ == "__main__":

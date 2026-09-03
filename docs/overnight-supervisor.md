@@ -38,6 +38,15 @@ and then terminates only still-matching recorded identities. A restart passes
 attempt logs are never reused, and Trainer/ShellWorker logs are copied into the
 attempt archive before a resume. Three consecutive crashes inside the rapid
 crash window abandon the route and prioritize its declared safe fallback.
+A route declared with `safeFallback: true, enabled: false` is skipped in normal
+queue order but may be started when an abandoned route explicitly selects it;
+the preference remains durable through temporary port or input waits.
+
+When a verified route reaches its evaluation cap and Trainer and ShellWorker
+exit, the supervisor allows a bounded launcher-only interval for summary
+generation instead of misclassifying the normal drain as a runtime failure.
+Zombie launchers are excluded from liveness and reaped when they remain direct
+children, allowing the persisted summary to complete the route without signals.
 
 At the hard deadline, or before pausing an active route because AC power was
 lost, the same bounded checkpoint shutdown runs. No new route starts after the
