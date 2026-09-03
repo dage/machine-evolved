@@ -13,6 +13,7 @@ startup_seconds=120
 seed=""
 stall_evaluations=""
 reset_fitness=false
+resume_existing=false
 run_name=""
 trainer_pid=""
 worker_pid=""
@@ -20,7 +21,7 @@ hard_deadline_epoch=""
 deadline_signal_epoch=""
 
 usage() {
-  echo "Usage: $0 --config FILE (--evaluations N | --minutes N) [--workers N] [--startup-seconds N] [--seed N] [--stall-evaluations N] [--reset-fitness] [--run-name NAME]"
+  echo "Usage: $0 --config FILE (--evaluations N | --minutes N) [--workers N] [--startup-seconds N] [--seed N] [--stall-evaluations N] [--reset-fitness] [--resume-existing] [--run-name NAME]"
 }
 
 positive_integer() {
@@ -37,6 +38,7 @@ while [[ $# -gt 0 ]]; do
     --seed) seed=${2:-}; shift 2 ;;
     --stall-evaluations) stall_evaluations=${2:-}; shift 2 ;;
     --reset-fitness) reset_fitness=true; shift ;;
+    --resume-existing) resume_existing=true; shift ;;
     --run-name) run_name=${2:-}; shift 2 ;;
     --help) usage; exit 0 ;;
     *) echo "Unknown argument: $1" >&2; usage >&2; exit 2 ;;
@@ -94,8 +96,19 @@ fi
 
 run_dir="$repo_dir/training-runs/$run_name"
 if [[ -e "$run_dir" ]]; then
-  echo "Run directory already exists: $run_dir" >&2
-  exit 2
+  if [[ "$resume_existing" != true ]]; then
+    echo "Run directory already exists: $run_dir" >&2
+    exit 2
+  fi
+  if [[ -f "$run_dir/summary.json" ]]; then
+    echo "Training run is already complete: $run_dir"
+    exit 0
+  fi
+  if [[ ! -f "$run_dir/config.json" ]]; then
+    echo "Cannot resume because the run checkpoint is missing: $run_dir/config.json" >&2
+    exit 2
+  fi
+  config="$run_dir/config.json"
 fi
 
 cleanup() {
@@ -126,8 +139,10 @@ try:
 except OSError:
     pass'
 
-mkdir -p "$run_dir"
-cp "$config" "$run_dir/config.json"
+if [[ ! -e "$run_dir" ]]; then
+  mkdir -p "$run_dir"
+  cp "$config" "$run_dir/config.json"
+fi
 
 trainer_args=(
   python3 -u "$repo_dir/machine-evolved-trainer/Trainer.py"
@@ -136,7 +151,23 @@ if [[ -n "$evaluations" ]]; then
   trainer_args+=(--terminate-evaluations "$evaluations")
 fi
 if [[ -n "$minutes" ]]; then
-  duration_seconds=$(awk -v value="$minutes" 'BEGIN { printf "%.3f", value * 60 }')
+  requested_duration_seconds=$(awk -v value="$minutes" 'BEGIN { printf "%.0f", value * 60 }')
+  deadline_file="$run_dir/deadline-epoch"
+  if [[ "$resume_existing" == true && -f "$deadline_file" ]]; then
+    hard_deadline_epoch=$(tr -d '[:space:]' < "$deadline_file")
+    if [[ ! "$hard_deadline_epoch" =~ ^[0-9]+$ ]]; then
+      echo "Invalid saved deadline: $deadline_file" >&2
+      exit 2
+    fi
+  else
+    hard_deadline_epoch=$(( $(date +%s) + requested_duration_seconds ))
+    printf '%s\n' "$hard_deadline_epoch" > "$deadline_file"
+  fi
+  remaining_seconds=$((hard_deadline_epoch - $(date +%s)))
+  if [[ "$remaining_seconds" -lt 1 ]]; then
+    remaining_seconds=1
+  fi
+  duration_seconds=$(printf '%s.000' "$remaining_seconds")
   trainer_args+=(--terminate-seconds "$duration_seconds")
 fi
 if [[ -n "$stall_evaluations" ]]; then
@@ -153,7 +184,7 @@ trainer_args+=("$run_dir/config.json")
 "${trainer_args[@]}" >"$run_dir/trainer.log" 2>&1 &
 trainer_pid=$!
 if [[ -n "$minutes" ]]; then
-  hard_deadline_epoch=$(awk -v start="$(date +%s)" -v duration="$duration_seconds" 'BEGIN { printf "%.0f", start + duration + 30 }')
+  hard_deadline_epoch=$((hard_deadline_epoch + 30))
 fi
 
 python3 -c 'import json, os, socket, sys, time
