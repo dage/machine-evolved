@@ -550,6 +550,7 @@ class Supervisor:
 
     def route_command(self, route: dict, resume: bool) -> list[str]:
         command = [
+            "/usr/sbin/taskpolicy", "-a",
             "/bin/bash",
             str(self.config["repository"] / "scripts" / "run-training.sh"),
             "--config", route["config"],

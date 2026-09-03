@@ -268,6 +268,12 @@ class SupervisorTest(unittest.TestCase):
         self.assertEqual([item["pid"] for item in owned], [100, 101, 102])
         self.assertEqual(supervisor.state["activeRouteId"], "primary")
 
+    def test_route_launch_uses_normal_application_policy(self):
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        command = supervisor.state["routes"]["primary"]["activeAttempt"]["command"]
+        self.assertEqual(command[:3], ["/usr/sbin/taskpolicy", "-a", "/bin/bash"])
+
     def test_repairs_already_misclassified_live_attempt(self):
         supervisor = self.make_supervisor()
         supervisor.tick()

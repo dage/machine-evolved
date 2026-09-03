@@ -65,4 +65,7 @@ the non-example filenames referenced by the plist.
 The example uses `ProcessType=Interactive` because the supervised evaluator is
 explicitly user-requested compute and must not inherit launchd's Background CPU
 and I/O limits. Use Background only for genuinely opportunistic jobs where
-reduced compute scheduling is intended.
+reduced compute scheduling is intended. Each training route is additionally
+launched through `/usr/sbin/taskpolicy -a`, which applies the resource-management
+policy used for normal applications to the runner and its Trainer/ShellWorker
+children.
