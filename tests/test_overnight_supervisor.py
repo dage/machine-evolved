@@ -256,6 +256,54 @@ class SupervisorTest(unittest.TestCase):
         supervisor.tick()
         self.assertEqual(len((self.state_dir / "heartbeats.jsonl").read_text().splitlines()), len(initial) + 1)
 
+    def test_battery_interrupted_summary_below_cap_is_reopened_and_resumed(self):
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.add_owned_runtime()
+        self.write_checkpoint("run-primary", 12)
+        run_dir = self.config["runRoot"] / "run-primary"
+        (run_dir / "summary.json").write_text('{"status":"completed","evaluations":12}\n')
+
+        self.system.power = "battery"
+        self.system.advance(1)
+        supervisor.tick()
+        self.assertEqual(supervisor.state["status"], "checkpointing")
+        self.system.process_table = []
+        self.system.listeners = []
+        self.system.advance(1)
+        supervisor.tick()
+        ledger = supervisor.state["routes"]["primary"]
+        self.assertEqual(ledger["status"], "waiting_power")
+        self.assertNotIn("completedAt", ledger)
+
+        self.system.power = "ac"
+        self.system.advance(self.config["restartDelaySeconds"])
+        supervisor.tick()
+        self.assertEqual(ledger["status"], "running")
+        self.assertIn("--resume-existing", self.system.spawned[-1]["command"])
+        self.assertFalse((run_dir / "summary.json").exists())
+        retained = self.state_dir / "attempts" / "primary" / "attempt-001-retained" / "summary.json"
+        self.assertTrue(retained.is_file())
+
+    def test_persisted_completed_ledger_below_cap_is_repaired(self):
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.write_checkpoint("run-primary", 39_999)
+        run_dir = self.config["runRoot"] / "run-primary"
+        (run_dir / "summary.json").write_text('{"status":"completed","evaluations":39999}\n')
+        ledger = supervisor.state["routes"]["primary"]
+        ledger["status"] = "completed"
+        ledger["completedAt"] = "incorrect"
+        supervisor.state["activeRouteId"] = None
+        supervisor.state["ownedProcesses"] = []
+        self.system.process_table = []
+
+        self.system.advance(1)
+        supervisor.tick()
+        self.assertEqual(ledger["status"], "running")
+        self.assertNotIn("completedAt", ledger)
+        self.assertIn("--resume-existing", self.system.spawned[-1]["command"])
+
     def test_command_enforces_eight_workers_original_cap_and_resume(self):
         (self.config["runRoot"] / "run-primary").mkdir(parents=True)
         supervisor = self.make_supervisor()
@@ -318,6 +366,7 @@ class SupervisorTest(unittest.TestCase):
         supervisor.tick()
         run_dir = self.config["runRoot"] / "run-primary"
         run_dir.mkdir(parents=True, exist_ok=True)
+        self.write_checkpoint("run-primary", 40_000)
         (run_dir / "summary.json").write_text("{}\n")
         self.system.process_table[0]["state"] = "Z"
         self.system.process_table[0]["command"] = "<defunct>"

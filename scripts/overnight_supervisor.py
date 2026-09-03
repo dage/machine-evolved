@@ -637,6 +637,19 @@ class Supervisor:
     def route_run_dir(self, route: dict) -> Path:
         return self.config["runRoot"] / route["runName"]
 
+    def route_reached_evaluation_cap(self, route: dict, evaluation_cap: int) -> bool:
+        progress = self.progress_for(route)
+        return (
+            progress.get("evaluations") is not None
+            and progress["evaluations"] >= evaluation_cap
+        )
+
+    def route_has_complete_summary(self, route: dict, evaluation_cap: int) -> bool:
+        return (
+            (self.route_run_dir(route) / "summary.json").is_file()
+            and self.route_reached_evaluation_cap(route, evaluation_cap)
+        )
+
     def archive_attempt_files(self, route: dict, attempt_number: int) -> None:
         run_dir = self.route_run_dir(route)
         archive_dir = self.state_dir / "attempts" / route["id"] / f"attempt-{attempt_number:03d}-retained"
@@ -689,6 +702,17 @@ class Supervisor:
             if not route["enabled"]:
                 continue
             ledger = self.ensure_route_ledger(route)
+            if (
+                ledger["status"] == "completed"
+                and (self.route_run_dir(route) / "summary.json").is_file()
+                and not self.route_has_complete_summary(route, ledger["originalEvaluationCap"])
+            ):
+                ledger["status"] = "pending"
+                ledger.pop("completedAt", None)
+                self.event(
+                    "route-under-cap-reopened",
+                    f"{route['id']} below {ledger['originalEvaluationCap']} evaluations",
+                )
             if ledger["status"] not in ("completed", "abandoned"):
                 return ledger["definition"]
         return None
@@ -762,18 +786,36 @@ class Supervisor:
             self.state["reason"] = f"missing_route_config:{route['config']}"
             return
         run_dir = self.route_run_dir(route)
-        if (run_dir / "summary.json").is_file():
+        summary_path = run_dir / "summary.json"
+        if self.route_has_complete_summary(route, ledger["originalEvaluationCap"]):
             ledger["status"] = "completed"
             ledger["completedAt"] = utc_timestamp(now)
             self.event("route-completed", f"{route['id']} already has a summary")
             return
+        attempt_files_archived = False
+        if summary_path.is_file():
+            if ledger["attemptCount"]:
+                self.archive_attempt_files(route, ledger["attemptCount"])
+                attempt_files_archived = True
+                retained_summary = (
+                    self.state_dir / "attempts" / route["id"]
+                    / f"attempt-{ledger['attemptCount']:03d}-retained" / "summary.json"
+                )
+                if not retained_summary.is_file():
+                    retained_summary.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(summary_path, retained_summary)
+            summary_path.unlink()
+            self.event(
+                "incomplete-summary-quarantined",
+                f"{route['id']} summary was below {ledger['originalEvaluationCap']} evaluations",
+            )
         port_pids = self.system.port_pids(self.config["port"])
         if port_pids:
             self.state["status"] = "waiting_port"
             self.state["reason"] = f"port_{self.config['port']}_owned_by_unrelated_pid:{','.join(map(str, port_pids))}"
             return
         attempt_number = ledger["attemptCount"] + 1
-        if ledger["attemptCount"]:
+        if ledger["attemptCount"] and not attempt_files_archived:
             self.archive_attempt_files(route, ledger["attemptCount"])
         resume = run_dir.exists()
         command = self.route_command(route, resume)
@@ -1138,7 +1180,7 @@ class Supervisor:
         self.state["ownedProcesses"] = []
         self.state["shutdown"] = None
         route = active["definition"]
-        completed = (self.route_run_dir(route) / "summary.json").is_file()
+        completed = self.route_has_complete_summary(route, active["originalEvaluationCap"])
         if completed:
             active["status"] = "completed"
             active["completedAt"] = utc_timestamp(now)
