@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "routes": [
+    {
+      "id": "primary",
+      "phase": "primary-search",
+      "config": "machine-evolved-trainer/configs/me-v2-harmonic-qd-01.json",
+      "runName": "overnight-primary",
+      "evaluationCap": 100000,
+      "seed": 240904,
+      "fallbackRouteId": "safe-fallback"
+    },
+    {
+      "id": "safe-fallback",
+      "phase": "conservative-fallback",
+      "config": "machine-evolved-trainer/configs/reproduction-three-capsule-distance-pilot.json",
+      "runName": "overnight-safe-fallback",
+      "evaluationCap": 10000,
+      "seed": 240904,
+      "safeFallback": true
+    }
+  ]
+}

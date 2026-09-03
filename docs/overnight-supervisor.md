@@ -1,0 +1,55 @@
+# Overnight training supervisor
+
+`scripts/overnight_supervisor.py` is the host-level guard for a bounded,
+unattended Machine Evolved run. It does not choose optimization routes. An
+orchestrator supplies those routes by atomically replacing the configured queue
+file with schema 1 JSON shaped like `ops/overnight-routes.example.json`.
+
+The first supervisor start creates an immutable `epoch.json` containing both
+wall-clock and monotonic T0 values and their ten-hour deadlines. A supplied
+`t0EpochSeconds` and `t0MonotonicSeconds` can preserve an already-started
+experiment's exact anchors; omitted, they are derived at supervisor startup.
+Later launchd restarts reuse that record and
+cannot extend the deadline. The supervisor holds
+an exclusive advisory lock, refuses an unrelated listener on TCP 9999, records
+process identities before signaling them, and requires one ShellWorker process
+whose command line declares exactly eight threads. It never uses `pgrep`, a
+process-name-wide kill, or an unrecorded process group signal.
+
+Every cycle atomically replaces `orchestrator-state.json`; the example uses a
+five-second cycle and values above sixty seconds are rejected. A durable JSONL
+heartbeat is appended at most sixty seconds after the preceding heartbeat. The
+state reports process liveness, checkpoint evaluation/generation progress,
+evaluation throughput, queue depth, aggregate owned-process CPU, free disk,
+checkpoint age, power source, port ownership, and worker verification.
+
+After three minutes without an accepted evaluation, the supervisor sends SIGINT
+only to a recorded Trainer identity, allows the configured checkpoint grace,
+and then terminates only still-matching recorded identities. A restart passes
+`--resume-existing` and the route's persisted original evaluation cap. Failed
+attempt logs are never reused, and Trainer/ShellWorker logs are copied into the
+attempt archive before a resume. Three consecutive crashes inside the rapid
+crash window abandon the route and prioritize its declared safe fallback.
+
+At the hard deadline, or before pausing an active route because AC power was
+lost, the same bounded checkpoint shutdown runs. No new route starts after the
+deadline. If `pmset` reports Battery Power—or the power source cannot be safely
+identified while `requireACPower` is enabled—the supervisor records a waiting
+state and does not begin sustained training.
+
+To prepare a real run without starting it:
+
+1. Copy the two example JSON files without the `.example` suffix and replace the
+   example route queue with the orchestrator's reviewed phases and absolute caps.
+2. Copy the plist example into `~/Library/LaunchAgents`, after reviewing every
+   path. Do not load it until the queue, disk threshold, and ten-hour duration
+   are approved.
+3. Validate the configuration observationally with
+   `python3 scripts/overnight_supervisor.py --config ops/overnight-supervisor.json --once`.
+   Once mode acquires the lock and writes state, but never launches or signals a
+   training process.
+
+launchd executes `scripts/run-overnight-supervisor.sh`, which keeps the
+supervisor awake with `caffeinate -i`. Runtime state stays in ignored
+`training-runs/`; the committed examples cannot start until explicitly copied to
+the non-example filenames referenced by the plist.

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "machine-evolved-ten-hour-example",
+  "repositoryDirectory": "..",
+  "queueFile": "ops/overnight-routes.example.json",
+  "stateDirectory": "training-runs/overnight-supervisor",
+  "runRoot": "training-runs",
+  "durationSeconds": 36000,
+  "t0EpochSeconds": 1788460655.126034,
+  "t0MonotonicSeconds": 457187.114514208,
+  "tickSeconds": 5,
+  "staleProgressSeconds": 180,
+  "checkpointGraceSeconds": 120,
+  "terminateGraceSeconds": 15,
+  "startupGraceSeconds": 120,
+  "restartDelaySeconds": 10,
+  "rapidCrashWindowSeconds": 180,
+  "rapidCrashLimit": 3,
+  "minimumDiskFreeBytes": 10737418240,
+  "requiredWorkers": 8,
+  "port": 9999,
+  "requireACPower": true
+}
