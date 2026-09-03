@@ -49,7 +49,7 @@
   },
   "twoHourSearch": {
     "resultsPath": "artifacts/codex/machine-evolved-two-hour-final/two-hour-run-results.json",
-    "resultsSha256": "e9d1a9bdb5116209bed020e2a8cb16a9979479165e87bc03b811cc7b889449a1",
+    "resultsSha256": "9d386f9b357f90d7835c9a86fabfc360307e22e7b196f56629d97648fc88da92",
     "optimizationRuns": 11,
     "trainerAcceptedSearchEvaluations": 65439,
     "wallSecondsProxy": 1276.8537454605103,
@@ -71,7 +71,7 @@
     "motionAnalysisSha256": "e8adbe62061d98472d935fa9a24d27dca47b6682dc58d4bd7e15672a2af99b3c"
   },
   "robustness": {
-    "validationEvaluations": 1418,
+    "validationEvaluations": 2619,
     "gravityMinus1Percent": 98470.265625,
     "gravityPlus1Percent": 111024.546875,
     "frictionMinus2Percent": 23175.738281,

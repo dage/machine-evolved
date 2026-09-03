@@ -16,12 +16,14 @@ All fitness figures are authoritative raw simulation units. Values multiplied by
 | 07:28 | Final parity | Two final 60 Hz exports were byte-identical and reproduced configured fitness 122,526.125 exactly. A compact canonical champion config reproduced the same samples and metrics; only its intentional profile label differs. |
 | 07:29–07:30 | Robustness ring | ±5% and ±1% paired gravity/mass perturbations plus paired friction changes substantially reduced distance. The speed champion is classified as exact-condition-only improvement, not robust improvement. |
 | 07:35–07:36 | Robust alternative selection | Re-evaluated the top 64 nominal controllers under all six mild perturbations. Nominal rank 2 was strongest by absolute worst-case fitness: 121,637.1875 nominal, 60,058.480469 worst case, and 104,527.009766 perturbed mean. |
+| 07:41 | Coordinate probes | Reverted each of the final mutation's 138 changed coordinates individually and applied ±0.005/±0.02 single-coordinate probes (690 evaluations). None exceeded the exact champion; several coordinates were behaviorally neutral. |
+| 07:42 | Second-step line search | A further 511-point sweep between the robust alternative and speed champion also reproduced but did not exceed the 122,526.125 peak. |
 
 ## Outcome
 
 - Final best: **122,526.125 raw simulation units**, up 2,649.765625 or 2.2104% from the frozen 119,876.359375 baseline.
 - Search compute: 65,439 trainer-accepted evaluations across 11 optimization runs, approximately 1,276.9 aggregate wall seconds by run-directory timestamps, always using six workers.
-- Validation compute: 1,418 evaluations across two line searches, twelve single-champion physics cases, and six matched 64-controller robustness sweeps.
+- Validation compute: 2,619 evaluations across three line searches, 690 coordinate probes, twelve single-champion physics cases, and six matched 64-controller robustness sweeps.
 - Classification: **exact-condition-only improvement**. Exact replay is deterministic, but even small physics perturbations can collapse performance.
 - Motion classification: near-ground rolling/spinning locomotion (99.40% near-ground time, 73.40 rad/s root spin, 0.99896 path efficiency). The legacy anti-spin credibility predicate is intentionally not an acceptance gate for this experiment.
 - Robust alternative: nominal fitness 121,637.1875 (0.73% below the speed champion), but 49.38% worst-case retention across the mild six-case ring versus 18.92% for the speed champion. It is preserved separately; the faster exact-condition champion remains the active preview.
