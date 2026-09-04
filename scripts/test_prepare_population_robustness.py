@@ -44,12 +44,12 @@ def source_config():
 
 
 class PreparePopulationRobustnessTests(unittest.TestCase):
-	def run_prepare(self, single_domain):
+	def run_prepare(self, single_domain, config=None):
 		with tempfile.TemporaryDirectory() as directory:
 			root = pathlib.Path(directory)
 			checkpoint = root / "checkpoint.json"
 			output = root / "output.json"
-			checkpoint.write_text(json.dumps(source_config()))
+			checkpoint.write_text(json.dumps(config or source_config()))
 			command = [
 				"python3", str(SCRIPT),
 				"--checkpoint", str(checkpoint),
@@ -78,9 +78,18 @@ class PreparePopulationRobustnessTests(unittest.TestCase):
 		metadata = result["experiment"]["populationRobustness"]
 		self.assertEqual(metadata["evaluationMode"], "single-domain-v1")
 		self.assertEqual(len(metadata["sourceEvaluationDomainsSha256"]), 64)
+		self.assertEqual([item["creatureId"] for item in metadata["candidates"]], ["b", "a"])
 		self.assertEqual(result["experiment"]["physics"]["gravityZ"], -99.0)
 		self.assertNotIn("trainerState", result["experiment"])
 		self.assertEqual(result["algorithm"]["arguments"]["population"]["size"], 2)
+
+	def test_absent_crossover_is_already_disabled(self):
+		config = source_config()
+		del config["algorithm"]["arguments"]["crossover"]
+		result = self.run_prepare(single_domain=True, config=config)
+		arguments = result["algorithm"]["arguments"]
+		self.assertNotIn("crossover", arguments)
+		self.assertEqual(arguments["mutation"]["rate"], 0)
 
 
 if __name__ == "__main__":

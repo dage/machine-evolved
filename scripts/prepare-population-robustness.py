@@ -70,6 +70,7 @@ def main():
 			{
 				"index": index,
 				"baselineFitness": float(item["fitness"]),
+				"creatureId": item["data"]["metadata"]["creatureId"],
 				"creatureSha256": canonicalSha256(item["data"]),
 			}
 			for index, item in enumerate(selected)
@@ -86,9 +87,12 @@ def main():
 	population = config["algorithm"]["arguments"]["population"]
 	population.update({ "size": args.top, "generation": 0, "evaluations": 0, "checkpointIntervalSeconds": 60 })
 	population.pop("eliteCount", None)
+	arguments = config["algorithm"]["arguments"]
 	for operation in ("crossover", "mutation"):
-		config["algorithm"]["arguments"][operation]["rate"] = 0
-		config["algorithm"]["arguments"][operation]["competitionSize"] = {
+		if operation not in arguments:
+			continue
+		arguments[operation]["rate"] = 0
+		arguments[operation]["competitionSize"] = {
 			"reproduce": 1,
 			"eliminate": 1,
 		}

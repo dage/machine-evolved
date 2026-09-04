@@ -24,10 +24,32 @@ def main():
 		if caseName in caseNames:
 			raise ValueError("Duplicate robustness case: {}".format(caseName))
 		caseNames.append(caseName)
-		creatures = config["structure"]["creatures"]
-		if any(item.get("fitness") is None or not math.isfinite(float(item["fitness"])) for item in creatures):
-			raise ValueError("Robustness config contains missing or non-finite fitness.")
-		hashes = [item["creatureSha256"] for item in metadata["candidates"]]
+		metadataCandidates = metadata["candidates"]
+		hashes = [item["creatureSha256"] for item in metadataCandidates]
+		candidateIds = [item.get("creatureId") for item in metadataCandidates]
+		if all(isinstance(creatureId, str) and creatureId for creatureId in candidateIds):
+			if len(set(candidateIds)) != len(candidateIds):
+				raise ValueError("Robustness metadata contains duplicate candidate IDs.")
+			history = config.get("experiment", {}).get("trainerState", {}).get("evaluationHistory", [])
+			fitnessById = {}
+			for item in history:
+				creatureId = item.get("creatureId")
+				fitness = item.get("robustFitness")
+				if creatureId in candidateIds and creatureId not in fitnessById:
+					if fitness is None or not math.isfinite(float(fitness)):
+						raise ValueError("Robustness history contains missing or non-finite fitness.")
+					fitnessById[creatureId] = float(fitness)
+			missingIds = [creatureId for creatureId in candidateIds if creatureId not in fitnessById]
+			if missingIds:
+				raise ValueError("Robustness history is missing selected candidate evaluations.")
+			caseFitnesses = [fitnessById[creatureId] for creatureId in candidateIds]
+		else:
+			creatures = config["structure"]["creatures"]
+			if len(creatures) != len(metadataCandidates):
+				raise ValueError("Legacy robustness config candidate count does not match metadata.")
+			if any(item.get("fitness") is None or not math.isfinite(float(item["fitness"])) for item in creatures):
+				raise ValueError("Robustness config contains missing or non-finite fitness.")
+			caseFitnesses = [float(item["fitness"]) for item in creatures]
 		if candidateRows is None:
 			candidateHashes = hashes
 			candidateRows = [
@@ -41,8 +63,8 @@ def main():
 			]
 		elif hashes != candidateHashes:
 			raise ValueError("Robustness configs do not contain the same ordered candidates.")
-		for index, creature in enumerate(creatures):
-			candidateRows[index]["cases"][caseName] = float(creature["fitness"])
+		for index, fitness in enumerate(caseFitnesses):
+			candidateRows[index]["cases"][caseName] = fitness
 
 	for row in candidateRows:
 		fitnesses = list(row["cases"].values())
