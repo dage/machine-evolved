@@ -22,6 +22,7 @@ class FakeSystem:
         self.listeners = []
         self.spawned = []
         self.signals = []
+        self.background_priority_clears = []
         self.polled = []
         self.next_pid = 100
         self.exit_codes = {}
@@ -76,6 +77,10 @@ class FakeSystem:
 
     def signal(self, pid, signum):
         self.signals.append((pid, signum))
+
+    def clear_background_priority(self, pid):
+        self.background_priority_clears.append(pid)
+        return True
 
 
 class SupervisorTest(unittest.TestCase):
@@ -459,6 +464,17 @@ class SupervisorTest(unittest.TestCase):
         self.assertEqual(supervisor.state["status"], "checkpointing")
         self.assertEqual(supervisor.state["reason"], "evaluation_progress_stalled")
         self.assertIn((101, signal.SIGINT), self.system.signals)
+
+    def test_owned_runtime_is_moved_out_of_background_priority_once_per_identity(self):
+        supervisor = self.make_supervisor()
+        supervisor.tick()
+        self.add_owned_runtime()
+        supervisor.tick()
+        self.assertEqual(self.system.background_priority_clears, [100, 101, 102])
+        supervisor.tick()
+        self.assertEqual(self.system.background_priority_clears, [100, 101, 102])
+        attempt = supervisor.state["routes"]["primary"]["activeAttempt"]
+        self.assertEqual(len(attempt["applicationPriority"]["verifiedIdentities"]), 3)
 
     def test_normal_completion_drain_does_not_request_shutdown(self):
         supervisor = self.make_supervisor()

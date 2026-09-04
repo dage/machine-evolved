@@ -400,6 +400,21 @@ class RealSystem:
     def signal(self, pid: int, signum: int) -> None:
         os.kill(pid, signum)
 
+    def clear_background_priority(self, pid: int) -> bool:
+        """Keep owned evaluators under normal application scheduling on macOS."""
+        if sys.platform != "darwin":
+            return True
+        try:
+            result = subprocess.run(
+                ["/usr/sbin/taskpolicy", "-B", "-p", str(pid)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+        except OSError:
+            return False
+        return result.returncode == 0
+
 
 class Supervisor:
     def __init__(self, config: dict, system: RealSystem | None = None) -> None:
@@ -607,6 +622,29 @@ class Supervisor:
                 ) if existing else self.system.epoch()
                 live.append(record)
         live.sort(key=lambda item: item["pid"])
+
+        # The route command begins under taskpolicy -a, which applies normal app
+        # resource policies to descendants.  Also clear PRIO_DARWIN_BG once for
+        # every newly observed owned identity so a persistent LaunchAgent cannot
+        # leave Trainer or ShellWorker classified as background work.
+        priority = attempt.setdefault("applicationPriority", {
+            "policy": "taskpolicy-application-and-clear-darwin-background-v1",
+            "verifiedIdentities": [],
+            "failedIdentities": [],
+        })
+        verified = set(priority.get("verifiedIdentities", []))
+        failed = set(priority.get("failedIdentities", []))
+        for record in live:
+            identity = "{}:{}".format(record["pid"], record.get("startedAt", "unknown"))
+            if identity in verified:
+                continue
+            if self.system.clear_background_priority(record["pid"]):
+                verified.add(identity)
+                failed.discard(identity)
+            else:
+                failed.add(identity)
+        priority["verifiedIdentities"] = sorted(verified)
+        priority["failedIdentities"] = sorted(failed)
         attempt["ownedProcesses"] = live
         self.state["ownedProcesses"] = copy.deepcopy(live)
         return live
