@@ -1,0 +1,109 @@
+{
+  "comparisonAxes": [
+    "candidateEvaluations",
+    "domainSimulations",
+    "elapsedWallSeconds"
+  ],
+  "elapsedWallTimeBasis": {
+    "fallbackSourceField": "capturedAtEpochSeconds",
+    "ordering": "ascending actual measurement time within each source/route",
+    "sourceField": "measurementEpochSeconds"
+  },
+  "generatedAt": "2026-09-04T01:29:33.479420+00:00",
+  "generationUsedForComparison": false,
+  "primaryMetric": {
+    "description": "Sum of finite occupied-cell fitness values; no normalized QD metric is substituted.",
+    "name": "rawQdScore",
+    "sourceField": "qd.qdScore"
+  },
+  "routes": [
+    {
+      "displayRouteLabel": "R3 \u00b7 bank 240909",
+      "finalDiagnostics": {
+        "bestFitness": 3152.3614591203545,
+        "occupiedCells": 43
+      },
+      "finalPrimaryMetrics": {
+        "candidateEvaluations": 50005.0,
+        "captureDelaySeconds": 0.0,
+        "capturedAt": "2026-09-04T01:28:38.418442+00:00",
+        "capturedAtEpochSeconds": 1788485318.418442,
+        "domainSimulations": 150026.0,
+        "elapsedWallSeconds": 1025.5626838207245,
+        "measurementEpochSeconds": 1788485318.418442,
+        "measurementTimeSource": "capturedAtEpochSeconds",
+        "rawQdScore": 65382.60496164868,
+        "sourceLine": 747
+      },
+      "rawQdAuc": {
+        "candidateEvaluations": {
+          "aucUnit": "raw QD score * candidate evaluations",
+          "exclusions": {
+            "duplicateX": 15
+          },
+          "pointCount": 19,
+          "trapezoidalRawQdAuc": 2722640181.4397116,
+          "xEnd": 50005.0,
+          "xSpan": 50005.0,
+          "xStart": 0.0,
+          "xUnit": "candidate evaluations"
+        },
+        "domainSimulations": {
+          "aucUnit": "raw QD score * domain simulations",
+          "exclusions": {
+            "duplicateX": 15
+          },
+          "pointCount": 19,
+          "trapezoidalRawQdAuc": 8166237280.859572,
+          "xEnd": 150026.0,
+          "xSpan": 150026.0,
+          "xStart": 0.0,
+          "xUnit": "domain simulations"
+        },
+        "elapsedWallSeconds": {
+          "aucUnit": "raw QD score * seconds",
+          "exclusions": {},
+          "pointCount": 34,
+          "trapezoidalRawQdAuc": 56128374.113122605,
+          "xEnd": 1025.5626838207245,
+          "xSpan": 1025.5626838207245,
+          "xStart": 0.0,
+          "xUnit": "seconds"
+        }
+      },
+      "routeId": "room-R3-240909",
+      "routeLabel": null,
+      "sampleCounts": {
+        "coreExclusions": {},
+        "includedCoreSamples": 34,
+        "provenanceCounts": {
+          "measurementTimeFallback": 34
+        }
+      },
+      "seriesLabel": "overnight / R3 \u00b7 bank 240909",
+      "sourceLabel": "overnight",
+      "sourcePath": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/metrics.jsonl"
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceCounts": [
+    {
+      "exclusions": {
+        "missingOrInvalidRawQd": 1,
+        "missingRouteIdentity": 85,
+        "routeFiltered": 628
+      },
+      "includedCoreSamples": 34,
+      "label": "overnight",
+      "lineCounts": {
+        "blank": 0,
+        "decodedObjects": 748,
+        "total": 748
+      },
+      "path": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/metrics.jsonl",
+      "provenanceCounts": {
+        "measurementTimeFallback": 34
+      }
+    }
+  ]
+}

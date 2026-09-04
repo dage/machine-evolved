@@ -1,0 +1,1121 @@
+{
+  "schemaVersion": 1,
+  "routes": [
+    {
+      "id": "F-240903",
+      "phase": "matched-screening-fixed-mixture",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/F-240903.json",
+      "runName": "overnight-F-240903",
+      "evaluationCap": 40000,
+      "enabled": false,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.ndjson",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "screen-F-240903",
+      "phase": "matched-screening-fixed-mixture",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/F-240903.json",
+      "runName": "screen-F-240903",
+      "evaluationCap": 8000,
+      "enabled": false,
+      "fallbackRouteId": "F-240903",
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.ndjson",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "match-F-240903",
+      "phase": "matched-screening-fixed-mixture",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/F-240903.json",
+      "runName": "match-F-240903",
+      "evaluationCap": 55000,
+      "fallbackRouteId": "fallback-F-240903",
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "fallback-F-240903",
+      "phase": "safe-fixed-mixture-fallback",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/F-240903.json",
+      "runName": "fallback-F-240903",
+      "evaluationCap": 55000,
+      "safeFallback": true,
+      "enabled": false,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "match-S-240903",
+      "phase": "matched-screening-small-only",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/S-240903.json",
+      "runName": "match-S-240903",
+      "evaluationCap": 55000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "match-A-240903",
+      "phase": "matched-screening-adaptive-four-arm",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/A-240903.json",
+      "runName": "match-A-240903",
+      "evaluationCap": 55000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "match-A-240904",
+      "phase": "matched-screening-adaptive-four-arm",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/A-240904.json",
+      "runName": "match-A-240904",
+      "evaluationCap": 55000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "match-S-240904",
+      "phase": "matched-screening-small-only",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/S-240904.json",
+      "runName": "match-S-240904",
+      "evaluationCap": 55000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "match-F-240904",
+      "phase": "matched-screening-fixed-mixture",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/F-240904.json",
+      "runName": "match-F-240904",
+      "evaluationCap": 55000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "halve-F-240905",
+      "phase": "successive-halving-fixed-mixture",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/halve-F-240905.json",
+      "runName": "halve-F-240905",
+      "evaluationCap": 90000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "halve-A-240905",
+      "phase": "successive-halving-adaptive-four-arm",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/halve-A-240905.json",
+      "runName": "halve-A-240905",
+      "evaluationCap": 90000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "halve-A-240906",
+      "phase": "successive-halving-adaptive-four-arm",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/halve-A-240906.json",
+      "runName": "halve-A-240906",
+      "evaluationCap": 90000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "halve-F-240906",
+      "phase": "successive-halving-fixed-mixture",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/halve-F-240906.json",
+      "runName": "halve-F-240906",
+      "evaluationCap": 90000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "exploit-F-historical-1",
+      "phase": "best-creature-exploitation-fixed-mixed",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/exploit-F-historical-1.json",
+      "runName": "exploit-F-historical-1",
+      "evaluationCap": 350000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "exploit-F-historical-2",
+      "phase": "best-creature-exploitation-fixed-mixed-continuation",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/exploit-F-historical-2.json",
+      "runName": "exploit-F-historical-2",
+      "evaluationCap": 400000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "exploit-A-historical-3",
+      "phase": "best-creature-exploitation-single-policy-switch",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/exploit-A-historical-3.json",
+      "runName": "exploit-A-historical-3",
+      "evaluationCap": 450001,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout-nominal",
+      "phase": "unseen-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout-nominal.json",
+      "runName": "holdout-nominal",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout-gravity-99",
+      "phase": "unseen-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout-gravity-99.json",
+      "runName": "holdout-gravity-99",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout-gravity-101",
+      "phase": "unseen-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout-gravity-101.json",
+      "runName": "holdout-gravity-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout-mass-099",
+      "phase": "unseen-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout-mass-099.json",
+      "runName": "holdout-mass-099",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout-mass-101",
+      "phase": "unseen-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout-mass-101.json",
+      "runName": "holdout-mass-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout-friction-060",
+      "phase": "unseen-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout-friction-060.json",
+      "runName": "holdout-friction-060",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout-friction-100",
+      "phase": "unseen-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout-friction-100.json",
+      "runName": "holdout-friction-100",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout2-nominal",
+      "phase": "unseen-holdout-id-bound",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout2-nominal.json",
+      "runName": "holdout2-nominal",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout2-gravity-99",
+      "phase": "unseen-holdout-id-bound",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout2-gravity-99.json",
+      "runName": "holdout2-gravity-99",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout2-gravity-101",
+      "phase": "unseen-holdout-id-bound",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout2-gravity-101.json",
+      "runName": "holdout2-gravity-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout2-mass-099",
+      "phase": "unseen-holdout-id-bound",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout2-mass-099.json",
+      "runName": "holdout2-mass-099",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout2-mass-101",
+      "phase": "unseen-holdout-id-bound",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout2-mass-101.json",
+      "runName": "holdout2-mass-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout2-friction-060",
+      "phase": "unseen-holdout-id-bound",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout2-friction-060.json",
+      "runName": "holdout2-friction-060",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "holdout2-friction-100",
+      "phase": "unseen-holdout-id-bound",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/holdout2-friction-100.json",
+      "runName": "holdout2-friction-100",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "room-R3-240909",
+      "phase": "robustness-room-R3-control",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/room-R3-240909.json",
+      "runName": "room-R3-240909",
+      "evaluationCap": 50000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "room-R5-240909",
+      "phase": "robustness-room-R5-gravity",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/room-R5-240909.json",
+      "runName": "room-R5-240909",
+      "evaluationCap": 30000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R3-nominal",
+      "phase": "room-holdout-R3",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R3-nominal.json",
+      "runName": "roomhold-R3-nominal",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R3-gravity-99",
+      "phase": "room-holdout-R3",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R3-gravity-99.json",
+      "runName": "roomhold-R3-gravity-99",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R3-gravity-101",
+      "phase": "room-holdout-R3",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R3-gravity-101.json",
+      "runName": "roomhold-R3-gravity-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R3-mass-099",
+      "phase": "room-holdout-R3",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R3-mass-099.json",
+      "runName": "roomhold-R3-mass-099",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R3-mass-101",
+      "phase": "room-holdout-R3",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R3-mass-101.json",
+      "runName": "roomhold-R3-mass-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R3-friction-060",
+      "phase": "room-holdout-R3",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R3-friction-060.json",
+      "runName": "roomhold-R3-friction-060",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R3-friction-100",
+      "phase": "room-holdout-R3",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R3-friction-100.json",
+      "runName": "roomhold-R3-friction-100",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R5-nominal",
+      "phase": "room-holdout-R5",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R5-nominal.json",
+      "runName": "roomhold-R5-nominal",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R5-gravity-99",
+      "phase": "room-holdout-R5",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R5-gravity-99.json",
+      "runName": "roomhold-R5-gravity-99",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R5-gravity-101",
+      "phase": "room-holdout-R5",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R5-gravity-101.json",
+      "runName": "roomhold-R5-gravity-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R5-mass-099",
+      "phase": "room-holdout-R5",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R5-mass-099.json",
+      "runName": "roomhold-R5-mass-099",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R5-mass-101",
+      "phase": "room-holdout-R5",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R5-mass-101.json",
+      "runName": "roomhold-R5-mass-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R5-friction-060",
+      "phase": "room-holdout-R5",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R5-friction-060.json",
+      "runName": "roomhold-R5-friction-060",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "roomhold-R5-friction-100",
+      "phase": "room-holdout-R5",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/roomhold-R5-friction-100.json",
+      "runName": "roomhold-R5-friction-100",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "confirm-R3-240907",
+      "phase": "untouched-confirmation-control",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/confirm-R3-240907.json",
+      "runName": "confirm-R3-240907",
+      "evaluationCap": 50000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": false,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "confirm-R5-240907",
+      "phase": "untouched-confirmation-proposed",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/confirm-R5-240907.json",
+      "runName": "confirm-R5-240907",
+      "evaluationCap": 30000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": false,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "confirm-R5-240908",
+      "phase": "untouched-confirmation-proposed",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/confirm-R5-240908.json",
+      "runName": "confirm-R5-240908",
+      "evaluationCap": 30000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": false,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "confirm-R3-240908",
+      "phase": "untouched-confirmation-control",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/confirm-R3-240908.json",
+      "runName": "confirm-R3-240908",
+      "evaluationCap": 50000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": false,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "confirm2-R3-240907",
+      "phase": "untouched-confirmation-control-corrected",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/confirm2-R3-240907.json",
+      "runName": "confirm2-R3-240907",
+      "evaluationCap": 50000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "confirm2-R5-240907",
+      "phase": "untouched-confirmation-proposed-corrected",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/confirm2-R5-240907.json",
+      "runName": "confirm2-R5-240907",
+      "evaluationCap": 30000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "confirm2-R5-240908",
+      "phase": "untouched-confirmation-proposed-corrected",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/confirm2-R5-240908.json",
+      "runName": "confirm2-R5-240908",
+      "evaluationCap": 30000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "confirm2-R3-240908",
+      "phase": "untouched-confirmation-control-corrected",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/confirm2-R3-240908.json",
+      "runName": "confirm2-R3-240908",
+      "evaluationCap": 50000,
+      "fallbackRouteId": "fallback-F-240903",
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "progress.jsonl",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240907-nominal",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240907-nominal.json",
+      "runName": "finalhold-confirm2-R3-240907-nominal",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240907-gravity-99",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240907-gravity-99.json",
+      "runName": "finalhold-confirm2-R3-240907-gravity-99",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240907-gravity-101",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240907-gravity-101.json",
+      "runName": "finalhold-confirm2-R3-240907-gravity-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240907-mass-099",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240907-mass-099.json",
+      "runName": "finalhold-confirm2-R3-240907-mass-099",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240907-mass-101",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240907-mass-101.json",
+      "runName": "finalhold-confirm2-R3-240907-mass-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240907-friction-060",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240907-friction-060.json",
+      "runName": "finalhold-confirm2-R3-240907-friction-060",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240907-friction-100",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240907-friction-100.json",
+      "runName": "finalhold-confirm2-R3-240907-friction-100",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240907-nominal",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240907-nominal.json",
+      "runName": "finalhold-confirm2-R5-240907-nominal",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240907-gravity-99",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240907-gravity-99.json",
+      "runName": "finalhold-confirm2-R5-240907-gravity-99",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240907-gravity-101",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240907-gravity-101.json",
+      "runName": "finalhold-confirm2-R5-240907-gravity-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240907-mass-099",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240907-mass-099.json",
+      "runName": "finalhold-confirm2-R5-240907-mass-099",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240907-mass-101",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240907-mass-101.json",
+      "runName": "finalhold-confirm2-R5-240907-mass-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240907-friction-060",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240907-friction-060.json",
+      "runName": "finalhold-confirm2-R5-240907-friction-060",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240907-friction-100",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240907-friction-100.json",
+      "runName": "finalhold-confirm2-R5-240907-friction-100",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240908-nominal",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240908-nominal.json",
+      "runName": "finalhold-confirm2-R5-240908-nominal",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240908-gravity-99",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240908-gravity-99.json",
+      "runName": "finalhold-confirm2-R5-240908-gravity-99",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240908-gravity-101",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240908-gravity-101.json",
+      "runName": "finalhold-confirm2-R5-240908-gravity-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240908-mass-099",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240908-mass-099.json",
+      "runName": "finalhold-confirm2-R5-240908-mass-099",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240908-mass-101",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240908-mass-101.json",
+      "runName": "finalhold-confirm2-R5-240908-mass-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240908-friction-060",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240908-friction-060.json",
+      "runName": "finalhold-confirm2-R5-240908-friction-060",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R5-240908-friction-100",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R5-240908-friction-100.json",
+      "runName": "finalhold-confirm2-R5-240908-friction-100",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240908-nominal",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240908-nominal.json",
+      "runName": "finalhold-confirm2-R3-240908-nominal",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240908-gravity-99",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240908-gravity-99.json",
+      "runName": "finalhold-confirm2-R3-240908-gravity-99",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240908-gravity-101",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240908-gravity-101.json",
+      "runName": "finalhold-confirm2-R3-240908-gravity-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240908-mass-099",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240908-mass-099.json",
+      "runName": "finalhold-confirm2-R3-240908-mass-099",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240908-mass-101",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240908-mass-101.json",
+      "runName": "finalhold-confirm2-R3-240908-mass-101",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240908-friction-060",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240908-friction-060.json",
+      "runName": "finalhold-confirm2-R3-240908-friction-060",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    },
+    {
+      "id": "finalhold-confirm2-R3-240908-friction-100",
+      "phase": "final-holdout",
+      "config": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/route-configs/finalhold-confirm2-R3-240908-friction-100.json",
+      "runName": "finalhold-confirm2-R3-240908-friction-100",
+      "evaluationCap": 12,
+      "enabled": true,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json"
+      ]
+    }
+  ]
+}

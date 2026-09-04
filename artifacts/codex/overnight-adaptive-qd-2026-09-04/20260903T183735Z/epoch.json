@@ -1,0 +1,10 @@
+{
+  "bootId": "{ sec = 1787987002, usec = 487312 } Sat Aug 29 14:03:22 2026",
+  "durationSeconds": 36000.0,
+  "experimentId": "overnight-adaptive-qd-2026-09-04",
+  "hardDeadlineEpochSeconds": 1788496655.126034,
+  "hardDeadlineMonotonicSeconds": 493187.114514208,
+  "schemaVersion": 1,
+  "t0EpochSeconds": 1788460655.126034,
+  "t0MonotonicSeconds": 457187.114514208
+}

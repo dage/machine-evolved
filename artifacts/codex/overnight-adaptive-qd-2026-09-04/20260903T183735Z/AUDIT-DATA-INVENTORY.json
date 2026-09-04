@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "overnight-adaptive-qd-2026-09-04",
+  "branch": "codex/overnight-adaptive-qd-2026-09-04",
+  "dataRoot": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z",
+  "sourceData": {
+    "fileCount": 3218,
+    "totalBytes": 834100532,
+    "largestFileBytes": 8869481,
+    "filesOver50MiB": 0,
+    "compressedArchiveFiles": 0,
+    "extensions": {
+      ".html": 21,
+      ".json": 2926,
+      ".jsonl": 5,
+      ".lock": 1,
+      ".log": 261,
+      ".md": 2,
+      ".txt": 2
+    }
+  },
+  "publicationMetadata": {
+    "inventory": "AUDIT-DATA-INVENTORY.json",
+    "checksumManifest": "RAW-DATA-SHA256SUMS",
+    "checksumEntryCount": 3218,
+    "checksumScope": "Every source-data file below dataRoot; AUDIT-DATA-INVENTORY.json and RAW-DATA-SHA256SUMS are excluded from the checksum scope."
+  },
+  "includedData": [
+    "attempts, checkpoints, archives, evaluation histories, and trajectories",
+    "baseline, development, confirmation, selection, and holdout validations",
+    "route definitions and route summaries",
+    "population banks and population-bank hashes",
+    "progress histories and comparison outputs",
+    "decisions, failures, heartbeats, supervisor state, and launch log",
+    "final controllers, deterministic replays, replay hashes, and movement data",
+    "historical three-route snapshot as raw ordinary files"
+  ],
+  "invalidOrExcludedExperimentOutputs": {
+    "retained": true,
+    "statusSources": [
+      "REPORT.md",
+      "decisions.jsonl",
+      "failures.jsonl",
+      "orchestrator-state.json",
+      "route-summaries",
+      "attempts"
+    ]
+  }
+}

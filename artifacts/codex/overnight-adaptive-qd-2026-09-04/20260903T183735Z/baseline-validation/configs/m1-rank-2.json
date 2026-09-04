@@ -1,0 +1,817 @@
+{
+  "algorithm": {
+    "type": "MapElites",
+    "arguments": {
+      "population": {
+        "size": 1,
+        "generation": 0,
+        "evaluations": 0,
+        "evaluationTimeoutSeconds": 180,
+        "checkpointIntervalSeconds": 60
+      },
+      "archive": {
+        "binsPerAxis": 8,
+        "axes": [
+          "airborneFraction",
+          "rotationParticipation"
+        ]
+      },
+      "mutation": {
+        "config": {
+          "mode": "independent-offset-v1",
+          "numParameterChangedRatioRange": "0.01-0.15",
+          "offsetRange": "0.001;0.2",
+          "offsetSampling": "log-uniform-v1",
+          "offsetExponent": 1,
+          "randomizeSign": "yes"
+        },
+        "randomInjectionRate": 0.1,
+        "largeMutationRate": 0.25,
+        "largeConfig": {
+          "mode": "independent-offset-v1",
+          "numParameterChangedRatioRange": "0.15-0.50",
+          "offsetRange": "0.02;1.0",
+          "offsetSampling": "log-uniform-v1",
+          "offsetExponent": 1,
+          "randomizeSign": "yes"
+        }
+      }
+    }
+  },
+  "experiment": {
+    "schemaVersion": 2,
+    "backend": "machine-evolved-bullet-v2",
+    "profile": "overnight-baseline-validation-m1-rank-2",
+    "seed": 240903,
+    "coordinateSystem": {
+      "upAxis": "z",
+      "horizontalAxes": [
+        "x",
+        "y"
+      ],
+      "units": "simulation-units"
+    },
+    "objective": {
+      "id": "max-horizontal-distance-v1",
+      "horizonTicks": 3600,
+      "fixedStepHz": 60,
+      "penalties": []
+    },
+    "physics": {
+      "engine": "Bullet",
+      "version": "2.86-v2",
+      "controlRateHz": 60,
+      "physicsRateHz": 120,
+      "solverIterations": 20,
+      "splitImpulse": true,
+      "gravityX": 0,
+      "gravityY": 0,
+      "gravityZ": -100,
+      "groundFriction": 0.8,
+      "motorMaxForce": 5000,
+      "motorTargetVelocityLimit": 100,
+      "capsuleFriction": 0.8,
+      "capsuleRollingFriction": 0.02,
+      "capsuleSpinningFriction": 0.02,
+      "capsuleRestitution": 0,
+      "capsuleLinearDamping": 0,
+      "capsuleAngularDamping": 0,
+      "capsuleMassScale": 0.0001,
+      "capsuleCcdEnabled": true,
+      "ccdMotionThresholdRadiusRatio": 0.25,
+      "ccdSweptSphereRadiusRatio": 0.2
+    },
+    "evaluationDomains": [
+      {
+        "id": "nominal",
+        "physics": {}
+      },
+      {
+        "id": "slick",
+        "physics": {
+          "groundFriction": 0.45,
+          "capsuleFriction": 0.45
+        }
+      },
+      {
+        "id": "rough",
+        "physics": {
+          "groundFriction": 1.2,
+          "capsuleFriction": 1.2
+        }
+      }
+    ],
+    "robustAggregation": "half-min-plus-geometric-mean-v1",
+    "intent": [
+      "maximize robust horizontal distance",
+      "permit rolling and jump-assisted propulsion",
+      "reject only numerical invalidity"
+    ]
+  },
+  "structure": {
+    "generator": {
+      "capsuleRadiusRange": "10-20",
+      "capsuleInnerHeightRange": "50-100",
+      "numCapsules": 3,
+      "motors": {
+        "x-rotation": {
+          "range": "-1;1"
+        },
+        "y-rotation": {
+          "range": "-1;1"
+        },
+        "z-rotation": {
+          "range": "-1;1"
+        }
+      },
+      "feedbacks": 0,
+      "oscillators": {
+        "start": 0.05,
+        "multiplier": 1.35,
+        "count": 16,
+        "mode": "sin-cos-v1"
+      },
+      "inputs": {
+        "root-orientation-x": 0,
+        "root-orientation-y": 0,
+        "root-orientation-z": 0,
+        "root-orientation-w": 0,
+        "z-position": 0,
+        "velocity-x": 0,
+        "velocity-y": 0,
+        "velocity-z": 0,
+        "oscillators": 1,
+        "capsule-position-x": 0,
+        "capsule-position-y": 0,
+        "capsule-position-z": 0,
+        "capsule-velocity-x": 0,
+        "capsule-velocity-y": 0,
+        "capsule-velocity-z": 0,
+        "capsule-angular-velocity-x": 0,
+        "capsule-angular-velocity-y": 0,
+        "capsule-angular-velocity-z": 0,
+        "motor-angle-x": 0,
+        "motor-angle-y": 0,
+        "motor-angle-z": 0,
+        "feedbacks": 0
+      },
+      "motorController": {
+        "schemaVersion": 2,
+        "commandMode": "target-angle-servo-v1",
+        "servo": {
+          "targetAngleRangeRadians": 2.827433388,
+          "kp": 10,
+          "kd": 0.75,
+          "settlingSeconds": 1,
+          "rampSeconds": 1
+        },
+        "initialization": {
+          "mode": "mixed-curl-v1",
+          "curlFraction": 0.5,
+          "curlTargetRadians": 2.05
+        },
+        "layers": [
+          {
+            "activation": "tanh"
+          }
+        ]
+      }
+    },
+    "templates": [
+      {
+        "id": "m0-champion-proportions",
+        "structure": {
+          "capsules": [
+            {
+              "id": "m0-champion-proportions-capsule-0",
+              "innerHeight": 82.7521957076658,
+              "radius": 18.78795045398938,
+              "positionX": 0.0,
+              "positionY": 0.0,
+              "positionZ": 22.0,
+              "quaternionX": 0.7071067811865475,
+              "quaternionY": 0.0,
+              "quaternionZ": 0.0,
+              "quaternionW": 0.7071067811865475,
+              "constraint": ""
+            },
+            {
+              "id": "m0-champion-proportions-capsule-1",
+              "innerHeight": 87.04240976588804,
+              "radius": 10.421538124883625,
+              "positionX": 0.0,
+              "positionY": -114.10679131564993,
+              "positionZ": 22.0,
+              "quaternionX": 0.7071067811865475,
+              "quaternionY": 0.0,
+              "quaternionZ": 0.0,
+              "quaternionW": 0.7071067811865475,
+              "constraint": {
+                "parentId": "m0-champion-proportions-capsule-0",
+                "x-rotation": {
+                  "range": "-1;1"
+                },
+                "y-rotation": {
+                  "range": "-1;1"
+                },
+                "z-rotation": {
+                  "range": "-1;1"
+                }
+              }
+            },
+            {
+              "id": "m0-champion-proportions-capsule-2",
+              "innerHeight": 60.50323125672853,
+              "radius": 10.996259171105123,
+              "positionX": 0.0,
+              "positionY": -209.29740912294696,
+              "positionZ": 22.0,
+              "quaternionX": 0.7071067811865475,
+              "quaternionY": 0.0,
+              "quaternionZ": 0.0,
+              "quaternionW": 0.7071067811865475,
+              "constraint": {
+                "parentId": "m0-champion-proportions-capsule-1",
+                "x-rotation": {
+                  "range": "-1;1"
+                },
+                "y-rotation": {
+                  "range": "-1;1"
+                },
+                "z-rotation": {
+                  "range": "-1;1"
+                }
+              }
+            }
+          ],
+          "feedbacks": 0,
+          "oscillators": {
+            "start": 0.05,
+            "multiplier": 1.35,
+            "count": 16,
+            "mode": "sin-cos-v1"
+          },
+          "inputs": {
+            "root-orientation-x": 0,
+            "root-orientation-y": 0,
+            "root-orientation-z": 0,
+            "root-orientation-w": 0,
+            "z-position": 0,
+            "velocity-x": 0,
+            "velocity-y": 0,
+            "velocity-z": 0,
+            "oscillators": 1,
+            "capsule-position-x": 0,
+            "capsule-position-y": 0,
+            "capsule-position-z": 0,
+            "capsule-velocity-x": 0,
+            "capsule-velocity-y": 0,
+            "capsule-velocity-z": 0,
+            "capsule-angular-velocity-x": 0,
+            "capsule-angular-velocity-y": 0,
+            "capsule-angular-velocity-z": 0,
+            "motor-angle-x": 0,
+            "motor-angle-y": 0,
+            "motor-angle-z": 0,
+            "feedbacks": 0
+          }
+        }
+      },
+      {
+        "id": "m1-balanced",
+        "structure": {
+          "capsules": [
+            {
+              "id": "m1-balanced-capsule-0",
+              "innerHeight": 76.0,
+              "radius": 14.0,
+              "positionX": 0.0,
+              "positionY": 0.0,
+              "positionZ": 22.0,
+              "quaternionX": 0.7071067811865475,
+              "quaternionY": 0.0,
+              "quaternionZ": 0.0,
+              "quaternionW": 0.7071067811865475,
+              "constraint": ""
+            },
+            {
+              "id": "m1-balanced-capsule-1",
+              "innerHeight": 76.0,
+              "radius": 14.0,
+              "positionX": 0.0,
+              "positionY": -104.0,
+              "positionZ": 22.0,
+              "quaternionX": 0.7071067811865475,
+              "quaternionY": 0.0,
+              "quaternionZ": 0.0,
+              "quaternionW": 0.7071067811865475,
+              "constraint": {
+                "parentId": "m1-balanced-capsule-0",
+                "x-rotation": {
+                  "range": "-1;1"
+                },
+                "y-rotation": {
+                  "range": "-1;1"
+                },
+                "z-rotation": {
+                  "range": "-1;1"
+                }
+              }
+            },
+            {
+              "id": "m1-balanced-capsule-2",
+              "innerHeight": 76.0,
+              "radius": 14.0,
+              "positionX": 0.0,
+              "positionY": -208.0,
+              "positionZ": 22.0,
+              "quaternionX": 0.7071067811865475,
+              "quaternionY": 0.0,
+              "quaternionZ": 0.0,
+              "quaternionW": 0.7071067811865475,
+              "constraint": {
+                "parentId": "m1-balanced-capsule-1",
+                "x-rotation": {
+                  "range": "-1;1"
+                },
+                "y-rotation": {
+                  "range": "-1;1"
+                },
+                "z-rotation": {
+                  "range": "-1;1"
+                }
+              }
+            }
+          ],
+          "feedbacks": 0,
+          "oscillators": {
+            "start": 0.05,
+            "multiplier": 1.35,
+            "count": 16,
+            "mode": "sin-cos-v1"
+          },
+          "inputs": {
+            "root-orientation-x": 0,
+            "root-orientation-y": 0,
+            "root-orientation-z": 0,
+            "root-orientation-w": 0,
+            "z-position": 0,
+            "velocity-x": 0,
+            "velocity-y": 0,
+            "velocity-z": 0,
+            "oscillators": 1,
+            "capsule-position-x": 0,
+            "capsule-position-y": 0,
+            "capsule-position-z": 0,
+            "capsule-velocity-x": 0,
+            "capsule-velocity-y": 0,
+            "capsule-velocity-z": 0,
+            "capsule-angular-velocity-x": 0,
+            "capsule-angular-velocity-y": 0,
+            "capsule-angular-velocity-z": 0,
+            "motor-angle-x": 0,
+            "motor-angle-y": 0,
+            "motor-angle-z": 0,
+            "feedbacks": 0
+          }
+        }
+      },
+      {
+        "id": "m2-wheel-biased",
+        "structure": {
+          "capsules": [
+            {
+              "id": "m2-wheel-biased-capsule-0",
+              "innerHeight": 48.0,
+              "radius": 21.0,
+              "positionX": 0.0,
+              "positionY": 0.0,
+              "positionZ": 22.0,
+              "quaternionX": 0.7071067811865475,
+              "quaternionY": 0.0,
+              "quaternionZ": 0.0,
+              "quaternionW": 0.7071067811865475,
+              "constraint": ""
+            },
+            {
+              "id": "m2-wheel-biased-capsule-1",
+              "innerHeight": 70.0,
+              "radius": 12.0,
+              "positionX": 0.0,
+              "positionY": -92.0,
+              "positionZ": 22.0,
+              "quaternionX": 0.7071067811865475,
+              "quaternionY": 0.0,
+              "quaternionZ": 0.0,
+              "quaternionW": 0.7071067811865475,
+              "constraint": {
+                "parentId": "m2-wheel-biased-capsule-0",
+                "x-rotation": {
+                  "range": "-1;1"
+                },
+                "y-rotation": {
+                  "range": "-1;1"
+                },
+                "z-rotation": {
+                  "range": "-1;1"
+                }
+              }
+            },
+            {
+              "id": "m2-wheel-biased-capsule-2",
+              "innerHeight": 48.0,
+              "radius": 21.0,
+              "positionX": 0.0,
+              "positionY": -184.0,
+              "positionZ": 22.0,
+              "quaternionX": 0.7071067811865475,
+              "quaternionY": 0.0,
+              "quaternionZ": 0.0,
+              "quaternionW": 0.7071067811865475,
+              "constraint": {
+                "parentId": "m2-wheel-biased-capsule-1",
+                "x-rotation": {
+                  "range": "-1;1"
+                },
+                "y-rotation": {
+                  "range": "-1;1"
+                },
+                "z-rotation": {
+                  "range": "-1;1"
+                }
+              }
+            }
+          ],
+          "feedbacks": 0,
+          "oscillators": {
+            "start": 0.05,
+            "multiplier": 1.35,
+            "count": 16,
+            "mode": "sin-cos-v1"
+          },
+          "inputs": {
+            "root-orientation-x": 0,
+            "root-orientation-y": 0,
+            "root-orientation-z": 0,
+            "root-orientation-w": 0,
+            "z-position": 0,
+            "velocity-x": 0,
+            "velocity-y": 0,
+            "velocity-z": 0,
+            "oscillators": 1,
+            "capsule-position-x": 0,
+            "capsule-position-y": 0,
+            "capsule-position-z": 0,
+            "capsule-velocity-x": 0,
+            "capsule-velocity-y": 0,
+            "capsule-velocity-z": 0,
+            "capsule-angular-velocity-x": 0,
+            "capsule-angular-velocity-y": 0,
+            "capsule-angular-velocity-z": 0,
+            "motor-angle-x": 0,
+            "motor-angle-y": 0,
+            "motor-angle-z": 0,
+            "feedbacks": 0
+          }
+        }
+      }
+    ],
+    "creatures": [
+      {
+        "fitness": 2638.0651520032707,
+        "data": {
+          "structure": {
+            "capsules": [
+              {
+                "id": "m1-balanced-capsule-0",
+                "innerHeight": 76.0,
+                "radius": 14.0,
+                "positionX": 0.0,
+                "positionY": 0.0,
+                "positionZ": 22.0,
+                "quaternionX": 0.7071067811865475,
+                "quaternionY": 0.0,
+                "quaternionZ": 0.0,
+                "quaternionW": 0.7071067811865475,
+                "constraint": ""
+              },
+              {
+                "id": "m1-balanced-capsule-1",
+                "innerHeight": 76.0,
+                "radius": 14.0,
+                "positionX": 0.0,
+                "positionY": -104.0,
+                "positionZ": 22.0,
+                "quaternionX": 0.7071067811865475,
+                "quaternionY": 0.0,
+                "quaternionZ": 0.0,
+                "quaternionW": 0.7071067811865475,
+                "constraint": {
+                  "parentId": "m1-balanced-capsule-0",
+                  "x-rotation": {
+                    "range": "-1;1"
+                  },
+                  "y-rotation": {
+                    "range": "-1;1"
+                  },
+                  "z-rotation": {
+                    "range": "-1;1"
+                  }
+                }
+              },
+              {
+                "id": "m1-balanced-capsule-2",
+                "innerHeight": 76.0,
+                "radius": 14.0,
+                "positionX": 0.0,
+                "positionY": -208.0,
+                "positionZ": 22.0,
+                "quaternionX": 0.7071067811865475,
+                "quaternionY": 0.0,
+                "quaternionZ": 0.0,
+                "quaternionW": 0.7071067811865475,
+                "constraint": {
+                  "parentId": "m1-balanced-capsule-1",
+                  "x-rotation": {
+                    "range": "-1;1"
+                  },
+                  "y-rotation": {
+                    "range": "-1;1"
+                  },
+                  "z-rotation": {
+                    "range": "-1;1"
+                  }
+                }
+              }
+            ],
+            "feedbacks": 0,
+            "oscillators": {
+              "start": 0.05,
+              "multiplier": 1.35,
+              "count": 16,
+              "mode": "sin-cos-v1"
+            },
+            "inputs": {
+              "root-orientation-x": 0,
+              "root-orientation-y": 0,
+              "root-orientation-z": 0,
+              "root-orientation-w": 0,
+              "z-position": 0,
+              "velocity-x": 0,
+              "velocity-y": 0,
+              "velocity-z": 0,
+              "oscillators": 1,
+              "capsule-position-x": 0,
+              "capsule-position-y": 0,
+              "capsule-position-z": 0,
+              "capsule-velocity-x": 0,
+              "capsule-velocity-y": 0,
+              "capsule-velocity-z": 0,
+              "capsule-angular-velocity-x": 0,
+              "capsule-angular-velocity-y": 0,
+              "capsule-angular-velocity-z": 0,
+              "motor-angle-x": 0,
+              "motor-angle-y": 0,
+              "motor-angle-z": 0,
+              "feedbacks": 0
+            }
+          },
+          "motorController": {
+            "name": "LinearMotorController",
+            "schemaVersion": 2,
+            "layers": [
+              {
+                "activation": "tanh",
+                "weights": [
+                  -0.4520405055012165,
+                  0.1773839043456605,
+                  -0.3346427424729454,
+                  0.04891829821458191,
+                  0.12210170859534239,
+                  0.6842059284615877,
+                  0.5005006435364151,
+                  0.3508614560938099,
+                  -0.3387603776466916,
+                  0.4967335263467978,
+                  0.03314158886577214,
+                  0.07708831712353767,
+                  -0.4538432076418255,
+                  0.13259143662763923,
+                  0.12049519646472712,
+                  0.12101488530868604,
+                  -0.35139738110689883,
+                  0.5682409716165021,
+                  -0.3956566506879785,
+                  0.0853566915354725,
+                  0.5402455997839789,
+                  0.42119295164943066,
+                  -0.23343856797165483,
+                  0.016748364252969133,
+                  -0.4430031727225568,
+                  0.2209867940334085,
+                  -0.8252533493728229,
+                  -0.1596979061359034,
+                  0.0710506122527644,
+                  -0.35007857063869324,
+                  -0.4579521642812592,
+                  -0.7356651285765188,
+                  0.5633880997059129,
+                  -0.14156006674235824,
+                  -0.19107451345403323,
+                  0.3051745785628991,
+                  0.36831342768880676,
+                  -0.015892312115130452,
+                  0.855829404685679,
+                  -0.5547635959963143,
+                  0.46216376077673627,
+                  -0.6170523734072833,
+                  0.022635546947517845,
+                  -0.29894437585117983,
+                  0.23827610459924026,
+                  0.2789338802633634,
+                  0.06028465159246557,
+                  -0.059603099199523224,
+                  -0.29912302133228097,
+                  0.3163383683824656,
+                  0.04065470723270209,
+                  -0.1030845729773591,
+                  0.14338822952921967,
+                  0.1130975817468995,
+                  0.06888572119824084,
+                  0.02206633739058384,
+                  0.0014046393485519196,
+                  0.24262441369312676,
+                  0.06496230331940589,
+                  -0.3112545989756113,
+                  -0.9371605573924503,
+                  0.2822650846783985,
+                  -0.0713953205718835,
+                  0.12158299535211373,
+                  -0.16481144958252214,
+                  0.11699807732230381,
+                  0.2474917036927211,
+                  0.019642950615330664,
+                  -0.18640640128982663,
+                  -0.5722536314158091,
+                  0.12721593696485578,
+                  0.3916794819366931,
+                  -0.15521808682072685,
+                  -0.0025956066679534533,
+                  -0.3086225517680688,
+                  0.057513926900746214,
+                  -0.4001302201185281,
+                  -0.10489885386579434,
+                  -0.760517877086069,
+                  -0.250247195450763,
+                  0.22315827517152687,
+                  -0.06731621052057689,
+                  -0.2506238241456212,
+                  -0.6140082688929335,
+                  -0.20336951060908195,
+                  0.3467254120159967,
+                  -0.2779469234782672,
+                  -0.3404764534698641,
+                  0.2354723018134017,
+                  -0.23177054312849033,
+                  0.9813003153064815,
+                  0.36909719524879336,
+                  -0.2204825971490167,
+                  -0.1256568220244561,
+                  -0.33609326707743753,
+                  0.06814388853048722,
+                  0.26820509403844955,
+                  -0.7897770218476935,
+                  -0.1372202450134634,
+                  0.4359346507652652,
+                  0.049815138008658326,
+                  -0.054850406968100396,
+                  -0.18889369646055504,
+                  -0.023300866209498724,
+                  0.0805418368943022,
+                  0.5819524948846929,
+                  0.6471639488598078,
+                  -0.07688484596212056,
+                  -0.13797618321262287,
+                  0.44952672172154845,
+                  -0.4097253384423371,
+                  0.23386912185830114,
+                  0.25348128769015504,
+                  0.02862190406421008,
+                  0.10205655405836392,
+                  0.05133846899870971,
+                  -0.4654233159493865,
+                  -0.24567732165703798,
+                  -0.12328570831626656,
+                  0.12749853430068375,
+                  -0.05496080214883417,
+                  -0.06667618960898766,
+                  0.23632639797372396,
+                  0.4177181109957652,
+                  -0.01363144462196449,
+                  0.1637978729836229,
+                  0.17993986760386127,
+                  -0.06892724337036454,
+                  -0.20423008154722913,
+                  -0.564519364353442,
+                  0.44039559190654065,
+                  0.2799358684148795,
+                  0.019199628408335508,
+                  -0.2228469039815645,
+                  -0.4160293852340735,
+                  -0.5832014190159056,
+                  0.03349072005783124,
+                  -0.001836807316674332,
+                  0.1538510991011159,
+                  -0.4372914827162909,
+                  0.7192567694033718,
+                  0.40133392390580747,
+                  0.13605529428894877,
+                  0.38079935259894593,
+                  -0.20947595646101208,
+                  -0.08816687270118005,
+                  0.04463305028513942,
+                  0.03917965634289173,
+                  -0.5021585035279391,
+                  0.40968953894934745,
+                  0.0681461954954562,
+                  0.5406806727175592,
+                  0.1092374526242832,
+                  -0.2568809792361207,
+                  -0.018069687154740156,
+                  0.1994550185565624,
+                  -1.2947244084240874,
+                  -0.13074944434295135,
+                  0.22045556215854734,
+                  0.5917961417070068,
+                  0.10387447119178478,
+                  0.06316415906636885,
+                  0.9548729440677911,
+                  -0.6751762889723409,
+                  -0.293281599003268,
+                  0.24419585737305874,
+                  0.09764585388773278,
+                  -0.05043209959433603,
+                  0.009250952767776351,
+                  -0.19585127933254867,
+                  0.5143548813141219,
+                  -0.3648729093487897,
+                  -0.02834858069384822,
+                  0.6477752818937436,
+                  -0.11612237900078337,
+                  0.01875262647072165,
+                  -0.013778239120067343,
+                  0.19679060304378873,
+                  -0.18933756504923874,
+                  -0.21548603942080669,
+                  0.0003068147959461617,
+                  -0.21493593210001788,
+                  0.052714875968842,
+                  -0.20204622051782728,
+                  0.5222765013841617,
+                  -0.1219860350108564,
+                  0.1304820614875593,
+                  -0.13728691872765658,
+                  -0.01815304305320775,
+                  0.10845077473959584,
+                  0.34143299204893585,
+                  -0.19156434971092468
+                ],
+                "biases": [
+                  0.032430824889579116,
+                  0.009827232168402806,
+                  -0.03921421391797498,
+                  0.7162581465219381,
+                  0.0,
+                  0.011734824134960438
+                ]
+              }
+            ],
+            "commandMode": "target-angle-servo-v1",
+            "servo": {
+              "targetAngleRangeRadians": 2.827433388,
+              "kp": 10,
+              "kd": 0.75,
+              "settlingSeconds": 1,
+              "rampSeconds": 1
+            }
+          },
+          "metadata": {
+            "morphologyId": "m1-balanced",
+            "creatureId": "373b15ea-d7fd-43df-9feb-7819c3c59efc"
+          }
+        },
+        "evaluation": {
+          "behavior": {
+            "airborneFraction": 0.744444,
+            "rotationParticipation": 0.381892
+          },
+          "domainScores": [
+            2794.433838,
+            2422.061768,
+            3434.900391
+          ]
+        }
+      }
+    ]
+  }
+}

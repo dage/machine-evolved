@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/Users/dag/projects/Machine-Evolved-overnight-adaptive-qd-2026-09-04/scripts/overnight_supervisor.py", line 1129, in <module>
+    if __name__ == "__main__":
+  File "/Users/dag/projects/Machine-Evolved-overnight-adaptive-qd-2026-09-04/scripts/overnight_supervisor.py", line 1122, in main
+    while True:
+  File "/Users/dag/projects/Machine-Evolved-overnight-adaptive-qd-2026-09-04/scripts/overnight_supervisor.py", line 1085, in tick
+    else:
+  File "/Users/dag/projects/Machine-Evolved-overnight-adaptive-qd-2026-09-04/scripts/overnight_supervisor.py", line 621, in choose_route
+    continue
+  File "/Users/dag/projects/Machine-Evolved-overnight-adaptive-qd-2026-09-04/scripts/overnight_supervisor.py", line 591, in ensure_route_ledger
+    if ledger["definitionDigest"] != digest:
+RuntimeError: Claimed route F-240903 changed in the live queue
+Traceback (most recent call last):
+  File "/Users/dag/projects/Machine-Evolved-overnight-adaptive-qd-2026-09-04/scripts/overnight_supervisor.py", line 1130, in <module>
+    main()
+  File "/Users/dag/projects/Machine-Evolved-overnight-adaptive-qd-2026-09-04/scripts/overnight_supervisor.py", line 1123, in main
+    supervisor.tick()
+  File "/Users/dag/projects/Machine-Evolved-overnight-adaptive-qd-2026-09-04/scripts/overnight_supervisor.py", line 1086, in tick
+    route = self.choose_route(queue)
+  File "/Users/dag/projects/Machine-Evolved-overnight-adaptive-qd-2026-09-04/scripts/overnight_supervisor.py", line 622, in choose_route
+    ledger = self.ensure_route_ledger(route)
+  File "/Users/dag/projects/Machine-Evolved-overnight-adaptive-qd-2026-09-04/scripts/overnight_supervisor.py", line 592, in ensure_route_ledger
+    raise RuntimeError(f"Claimed route {route['id']} changed in the live queue")
+RuntimeError: Claimed route F-240903 changed in the live queue

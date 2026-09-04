@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-04T03:44:13.766684+00:00",
+  "selectionRule": "maximum-absolute-worst-case-fitness-v1",
+  "cases": [
+    "nominal",
+    "gravity-99",
+    "gravity-101",
+    "mass-099",
+    "mass-101",
+    "friction-060",
+    "friction-100"
+  ],
+  "selected": {
+    "index": 11,
+    "creatureSha256": "2b26ee37f6d64de46811ac3a0f61274336863c0f395f708c4ca6a199b3e5f585",
+    "baselineFitness": 2016.5422394066386,
+    "cases": {
+      "nominal": 2010.936523,
+      "gravity-99": 2032.186035,
+      "gravity-101": 1050.665283,
+      "mass-099": 1649.208008,
+      "mass-101": 1972.491577,
+      "friction-060": 1208.233276,
+      "friction-100": 1120.450806
+    },
+    "worstCaseFitness": 1050.665283,
+    "meanPerturbedFitness": 1577.7387868571427,
+    "worstCaseRetention": 0.5210231962754002
+  },
+  "candidates": [
+    {
+      "index": 11,
+      "creatureSha256": "2b26ee37f6d64de46811ac3a0f61274336863c0f395f708c4ca6a199b3e5f585",
+      "baselineFitness": 2016.5422394066386,
+      "cases": {
+        "nominal": 2010.936523,
+        "gravity-99": 2032.186035,
+        "gravity-101": 1050.665283,
+        "mass-099": 1649.208008,
+        "mass-101": 1972.491577,
+        "friction-060": 1208.233276,
+        "friction-100": 1120.450806
+      },
+      "worstCaseFitness": 1050.665283,
+      "meanPerturbedFitness": 1577.7387868571427,
+      "worstCaseRetention": 0.5210231962754002
+    },
+    {
+      "index": 5,
+      "creatureSha256": "ec78c502fe2d7bf97ff649d33f487d92e50066ac356f8943edbe1e8f7e6d39d9",
+      "baselineFitness": 2245.398283009369,
+      "cases": {
+        "nominal": 2221.027588,
+        "gravity-99": 1109.721436,
+        "gravity-101": 1937.675903,
+        "mass-099": 1427.021729,
+        "mass-101": 1041.473145,
+        "friction-060": 1506.962402,
+        "friction-100": 950.086731
+      },
+      "worstCaseFitness": 950.086731,
+      "meanPerturbedFitness": 1456.2812762857143,
+      "worstCaseRetention": 0.423126150130772
+    },
+    {
+      "index": 6,
+      "creatureSha256": "4eec6a6256a186f90c2df6ae2c43ac2e04a3b88daa013d98a80d1b31255168f5",
+      "baselineFitness": 2189.2791457744524,
+      "cases": {
+        "nominal": 2125.69873,
+        "gravity-99": 1112.679565,
+        "gravity-101": 1313.218872,
+        "mass-099": 2236.014893,
+        "mass-101": 1604.529419,
+        "friction-060": 1889.898193,
+        "friction-100": 885.6521
+      },
+      "worstCaseFitness": 885.6521,
+      "meanPerturbedFitness": 1595.3845388571428,
+      "worstCaseRetention": 0.40454050901156446
+    },
+    {
+      "index": 3,
+      "creatureSha256": "b8bd1fde3393c3bc6d6912ae68108c9b7f31c6dd3a0d3e836b32461d8ac4b6f1",
+      "baselineFitness": 2337.629078415593,
+      "cases": {
+        "nominal": 2054.837158,
+        "gravity-99": 906.447327,
+        "gravity-101": 2226.865723,
+        "mass-099": 875.018372,
+        "mass-101": 1535.653931,
+        "friction-060": 1020.27887,
+        "friction-100": 1678.543823
+      },
+      "worstCaseFitness": 875.018372,
+      "meanPerturbedFitness": 1471.0921720000001,
+      "worstCaseRetention": 0.3743187403337202
+    },
+    {
+      "index": 1,
+      "creatureSha256": "f64a11f0fe959963a2594c59beea5a7c0a18f835b0ef84cf0bdd18c111630837",
+      "baselineFitness": 2441.2456423729877,
+      "cases": {
+        "nominal": 2478.979248,
+        "gravity-99": 1900.283936,
+        "gravity-101": 2272.676514,
+        "mass-099": 852.394043,
+        "mass-101": 1248.138184,
+        "friction-060": 3307.601318,
+        "friction-100": 1841.453491
+      },
+      "worstCaseFitness": 852.394043,
+      "meanPerturbedFitness": 1985.9323905714286,
+      "worstCaseRetention": 0.34916356969773804
+    },
+    {
+      "index": 7,
+      "creatureSha256": "e667805144d17dab878735de7e673f5ac36f5acb4e05eb0f8ec0a8ce4e435109",
+      "baselineFitness": 2178.095360011399,
+      "cases": {
+        "nominal": 2980.133301,
+        "gravity-99": 2141.832031,
+        "gravity-101": 779.500488,
+        "mass-099": 991.987244,
+        "mass-101": 1221.006958,
+        "friction-060": 2417.439941,
+        "friction-100": 1771.916382
+      },
+      "worstCaseFitness": 779.500488,
+      "meanPerturbedFitness": 1757.6880492857142,
+      "worstCaseRetention": 0.3578817081709042
+    },
+    {
+      "index": 9,
+      "creatureSha256": "f72012b74623e7a851875c529e53c29871de8c1467577c8c4978a1c3c5ffafae",
+      "baselineFitness": 2046.063257708831,
+      "cases": {
+        "nominal": 2055.715576,
+        "gravity-99": 1359.367798,
+        "gravity-101": 1175.345215,
+        "mass-099": 768.986328,
+        "mass-101": 967.111694,
+        "friction-060": 1625.379639,
+        "friction-100": 1020.102478
+      },
+      "worstCaseFitness": 768.986328,
+      "meanPerturbedFitness": 1281.7155325714286,
+      "worstCaseRetention": 0.3758370251275154
+    },
+    {
+      "index": 8,
+      "creatureSha256": "4d6beecaab048536c17a565d37446cdce68f548ed52650be4a6630d940a13efb",
+      "baselineFitness": 2089.8064648879704,
+      "cases": {
+        "nominal": 2464.680908,
+        "gravity-99": 2275.556885,
+        "gravity-101": 1390.127075,
+        "mass-099": 786.694885,
+        "mass-101": 1052.305786,
+        "friction-060": 731.245544,
+        "friction-100": 1344.62146
+      },
+      "worstCaseFitness": 731.245544,
+      "meanPerturbedFitness": 1435.0332204285714,
+      "worstCaseRetention": 0.34991065263031446
+    },
+    {
+      "index": 10,
+      "creatureSha256": "44f842b0ddb008c4a3a22ed151a3613c81193c9b62d0f5fd0c7a8ef603cb67b7",
+      "baselineFitness": 2020.576237003347,
+      "cases": {
+        "nominal": 2285.047363,
+        "gravity-99": 1266.647949,
+        "gravity-101": 1409.461426,
+        "mass-099": 637.243652,
+        "mass-101": 1444.354004,
+        "friction-060": 789.362183,
+        "friction-100": 2035.708008
+      },
+      "worstCaseFitness": 637.243652,
+      "meanPerturbedFitness": 1409.6892264285714,
+      "worstCaseRetention": 0.3153771881159387
+    },
+    {
+      "index": 0,
+      "creatureSha256": "29110bd1d872e1aa47194969a73f2b14c52f2d52a3b99aef783f18d48b322c8e",
+      "baselineFitness": 2814.8387194920506,
+      "cases": {
+        "nominal": 2735.471191,
+        "gravity-99": 1214.300171,
+        "gravity-101": 1357.354004,
+        "mass-099": 632.243225,
+        "mass-101": 1964.971069,
+        "friction-060": 1922.134888,
+        "friction-100": 1960.947266
+      },
+      "worstCaseFitness": 632.243225,
+      "meanPerturbedFitness": 1683.9174019999998,
+      "worstCaseRetention": 0.22461081717466605
+    },
+    {
+      "index": 2,
+      "creatureSha256": "e0d73a65cf16207af86e2aed4589792cdac9572d11bd3305da8fe29e1e74be86",
+      "baselineFitness": 2434.2492568443554,
+      "cases": {
+        "nominal": 3210.344727,
+        "gravity-99": 1135.578735,
+        "gravity-101": 1498.44751,
+        "mass-099": 1256.912354,
+        "mass-101": 604.994507,
+        "friction-060": 2326.135986,
+        "friction-100": 2888.326416
+      },
+      "worstCaseFitness": 604.994507,
+      "meanPerturbedFitness": 1845.8200335714284,
+      "worstCaseRetention": 0.24853432954696103
+    },
+    {
+      "index": 4,
+      "creatureSha256": "dfbe743a07e2ebf17fd6e2ba3b994ac1db52b61936b965fd00100343797c1bbf",
+      "baselineFitness": 2295.5219122942854,
+      "cases": {
+        "nominal": 2579.648438,
+        "gravity-99": 2103.190186,
+        "gravity-101": 511.830048,
+        "mass-099": 1945.216064,
+        "mass-101": 1212.188599,
+        "friction-060": 1296.440063,
+        "friction-100": 1601.931274
+      },
+      "worstCaseFitness": 511.830048,
+      "meanPerturbedFitness": 1607.2063817142857,
+      "worstCaseRetention": 0.22296892277906669
+    }
+  ]
+}

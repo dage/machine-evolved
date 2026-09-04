@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "configuredFitnessSimulationUnits": 1093.24646,
+  "replayedFitnessSimulationUnits": 1093.24646,
+  "rawMaxDistanceSimulationUnits": 1093.24646,
+  "undiscountedRawDistanceSimulationUnits": 1093.24646,
+  "selectedFitnessSimulationUnits": 0.0,
+  "discountedFitnessSimulationUnits": 0.0,
+  "maxDistanceMeters": 10.932093676791888,
+  "finalDistanceMeters": 7.944899112388056,
+  "finalToMaxDistanceRatio": 0.7267500029984696,
+  "pathLengthMeters": 39.45671431467199,
+  "pathEfficiency": 0.27706548471337833,
+  "radialMonotonicity": 0.59,
+  "averagePathSpeedMetersPerSecond": 0.6576119052445332,
+  "comHeightMeters": {
+    "median": 0.765669584,
+    "p95": 1.66194475,
+    "max": 2.24641109
+  },
+  "nearGroundTimeFraction": 0.23480432972522897,
+  "unsupportedPathFraction": 0.8015822997108455,
+  "longestUnsupportedSeconds": 3.2,
+  "rootRotationRadians": 357.3082509310536,
+  "rootAxisRotationRadians": 147.92148769609008,
+  "rootSpinRateRadiansPerSecond": 5.95513751551756,
+  "rootRollingCoupling": 0.5877578863299212,
+  "rootTransverseTravelFraction": 0.24120496350206677,
+  "rootAxisStability": 0.41398844642026783,
+  "rollingExplainedFraction": 0.4451317044138731,
+  "rollingDiscountEnabled": false,
+  "rollingDiscountLambda": 1.0,
+  "rollingDiscountPower": 1.0,
+  "rollingDiscountEpsilonSimulationUnits": 1e-06,
+  "rollingDiscountConfig": {
+    "enabled": false,
+    "lambda": 1.0,
+    "power": 1.0,
+    "epsilonSimulationUnits": 1e-06
+  },
+  "rollingSignatureEnabled": true,
+  "rollingSignature": false,
+  "rollingSignatureConfig": {
+    "enabled": true,
+    "minSpinRateRadiansPerSecond": 1.0,
+    "minRootRollingCoupling": 0.8,
+    "maxRootRollingCoupling": 1.2,
+    "minRootTransverseTravelFraction": 0.8,
+    "maxRootAxisStability": 0.2,
+    "maxRootTravelAlignment": 0.25,
+    "minActiveSegmentSimulationUnits": 0.0
+  },
+  "capsuleRotationRatesRadiansPerSecond": {
+    "m0-champion-proportions-capsule-0": 5.95513751551756,
+    "m0-champion-proportions-capsule-1": 5.356486042644055,
+    "m0-champion-proportions-capsule-2": 8.014404668578102
+  },
+  "maxCapsuleRotationRateRadiansPerSecond": 8.014404668578102,
+  "jointRotationRatesRadiansPerSecond": [
+    7.8973651463670285,
+    8.57056478774286
+  ],
+  "minJointRotationRateRadiansPerSecond": 7.8973651463670285,
+  "credibility": {
+    "passes": false,
+    "maxSpinRateRadiansPerSecond": 10.0,
+    "maxCapsuleRotationRateRadiansPerSecond": 10.0,
+    "minJointRotationRateRadiansPerSecond": 0.0,
+    "maxUnsupportedPathFraction": 1.0,
+    "clearanceEpsilonMeters": 0.02,
+    "rollingDiscountEnabled": false,
+    "rollingDiscountLambda": 1.0,
+    "rollingExplainedFraction": 0.4451317044138731
+  }
+}

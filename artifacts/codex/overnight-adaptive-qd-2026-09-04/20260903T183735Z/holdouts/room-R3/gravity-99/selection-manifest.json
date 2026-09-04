@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "case": "gravity-99",
+  "candidateCount": 12,
+  "physicsSha256": "095a741f7f51459b9755d74a22197fa72b916872c67d856818505a652087ba0c",
+  "objectiveSha256": "1ec6afdc47fe19792cf6d439af18cde3f658ecb6d329d2b3e11f242c0c9f9f8e",
+  "evaluationDomainsSha256": "0510f82598a72c8bb603af2a682755a8a5375b09c62c3ab4ad1f7de466613560",
+  "candidates": [
+    {
+      "index": 0,
+      "creatureId": "dc2b008c-9505-432a-a253-29506560c59c",
+      "creatureSha256": "a7d00ef9c5ad949fc9f166a7195306d25d7870d024caa88277d3d5f3f7b33e11",
+      "baselineFitness": 3152.3614591203545,
+      "evaluatedFitness": 2248.53833,
+      "config": "configs/candidate-00-a7d00ef9c5ad949f.json"
+    },
+    {
+      "index": 1,
+      "creatureId": "6e4c62cb-9e0c-4ab2-bcd5-48f57052a6a7",
+      "creatureSha256": "4438e1b1171b5b4125bf6a502f0b67dd3a7902c7a7af38cd25ebb188e6db44c9",
+      "baselineFitness": 2872.073085605066,
+      "evaluatedFitness": 783.542297,
+      "config": "configs/candidate-01-4438e1b1171b5b41.json"
+    },
+    {
+      "index": 2,
+      "creatureId": "e23d77a9-d948-4bb5-a66f-f007219ab11d",
+      "creatureSha256": "450efd5310864f102e58642db3a95e1f507a6fc9b3ab208d556a4c81b1e8b34f",
+      "baselineFitness": 2557.866301405774,
+      "evaluatedFitness": 994.983887,
+      "config": "configs/candidate-02-450efd5310864f10.json"
+    },
+    {
+      "index": 3,
+      "creatureId": "0720500c-c5b6-48bc-885a-eb32e0b7e939",
+      "creatureSha256": "137738fec31adf79a5c7e0d763bfd81119afa91d8a1a77c9a92ee1ce08cf9276",
+      "baselineFitness": 2236.8217812278435,
+      "evaluatedFitness": 1493.951416,
+      "config": "configs/candidate-03-137738fec31adf79.json"
+    },
+    {
+      "index": 4,
+      "creatureId": "f2755977-30e6-4fa6-9e6b-f4cfffd60bb0",
+      "creatureSha256": "8305dc35bfdafaf0963386350d4a0c7b8bd01d9888d4c479cad9b45aa8e9dc91",
+      "baselineFitness": 2186.794717388056,
+      "evaluatedFitness": 874.93219,
+      "config": "configs/candidate-04-8305dc35bfdafaf0.json"
+    },
+    {
+      "index": 5,
+      "creatureId": "aea6b8d7-898f-4ffe-853e-b1eee2c22d6b",
+      "creatureSha256": "66f3f3db3123743e2e81e19f34c678278942f5875c0a319e67854ce6a44afbb5",
+      "baselineFitness": 2168.7456756144784,
+      "evaluatedFitness": 1128.348389,
+      "config": "configs/candidate-05-66f3f3db3123743e.json"
+    },
+    {
+      "index": 6,
+      "creatureId": "29ab20a1-bf1c-49b5-9331-3467ca2f0270",
+      "creatureSha256": "0fec1a5aea80cd776a2fd19b6430cefaa686a3cd2936a928865591434ae4080d",
+      "baselineFitness": 2147.182826649005,
+      "evaluatedFitness": 1560.542114,
+      "config": "configs/candidate-06-0fec1a5aea80cd77.json"
+    },
+    {
+      "index": 7,
+      "creatureId": "8a55a087-7f7f-43af-8668-5fb3a1a00f7d",
+      "creatureSha256": "b49d042cc9dc17967971e37053ec4776d84cf420c59d19d49531dbf9e9b8f7f3",
+      "baselineFitness": 2123.943239411694,
+      "evaluatedFitness": 1190.797974,
+      "config": "configs/candidate-07-b49d042cc9dc1796.json"
+    },
+    {
+      "index": 8,
+      "creatureId": "3d9c1ace-e3f1-4820-abcc-24cea2b7f517",
+      "creatureSha256": "f5fb0f4e274698237f926596ff05991e942c102117f8b46cf06aa23492f3e4de",
+      "baselineFitness": 2120.798582611461,
+      "evaluatedFitness": 1901.075073,
+      "config": "configs/candidate-08-f5fb0f4e27469823.json"
+    },
+    {
+      "index": 9,
+      "creatureId": "9f662950-da24-40cd-97c2-a6cc542cf954",
+      "creatureSha256": "e02f7ccffb6a4694d776f8fa0dba40739ff374e1ffd8b18261682199ce17b101",
+      "baselineFitness": 2094.6370845608308,
+      "evaluatedFitness": 870.305542,
+      "config": "configs/candidate-09-e02f7ccffb6a4694.json"
+    },
+    {
+      "index": 10,
+      "creatureId": "0fe8fef9-55f4-4b05-8629-212d81f53c55",
+      "creatureSha256": "22b15a31b8f014c537d669c438de9594f1cd97e51ef32b398921bdde2a71476a",
+      "baselineFitness": 2054.983088102533,
+      "evaluatedFitness": 1125.509277,
+      "config": "configs/candidate-10-22b15a31b8f014c5.json"
+    },
+    {
+      "index": 11,
+      "creatureId": "7a463add-f8ec-487d-bc0f-3c23b70d6cba",
+      "creatureSha256": "fa42bb29b9100cd78a3b59a8378cfa53a031c190e1130aa5715f5c701e33c431",
+      "baselineFitness": 2046.0436335222312,
+      "evaluatedFitness": 475.529114,
+      "config": "configs/candidate-11-fa42bb29b9100cd7.json"
+    }
+  ]
+}

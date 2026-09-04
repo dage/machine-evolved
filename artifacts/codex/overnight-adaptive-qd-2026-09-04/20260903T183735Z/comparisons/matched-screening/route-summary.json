@@ -1,0 +1,444 @@
+{
+  "comparisonAxes": [
+    "candidateEvaluations",
+    "domainSimulations",
+    "elapsedWallSeconds"
+  ],
+  "elapsedWallTimeBasis": {
+    "fallbackSourceField": "capturedAtEpochSeconds",
+    "ordering": "ascending actual measurement time within each source/route",
+    "sourceField": "measurementEpochSeconds"
+  },
+  "generatedAt": "2026-09-03T21:44:01.860429+00:00",
+  "generationUsedForComparison": false,
+  "primaryMetric": {
+    "description": "Sum of finite occupied-cell fitness values; no normalized QD metric is substituted.",
+    "name": "rawQdScore",
+    "sourceField": "qd.qdScore"
+  },
+  "routes": [
+    {
+      "displayRouteLabel": "A adaptive four arm \u00b7 bank 240903",
+      "finalDiagnostics": {
+        "bestFitness": 2638.356740993868,
+        "occupiedCells": 44
+      },
+      "finalPrimaryMetrics": {
+        "candidateEvaluations": 55001.0,
+        "captureDelaySeconds": 0.0,
+        "capturedAt": "2026-09-03T20:35:18.303825+00:00",
+        "capturedAtEpochSeconds": 1788467718.303825,
+        "domainSimulations": 165019.0,
+        "elapsedWallSeconds": 1244.0209798812866,
+        "measurementEpochSeconds": 1788467718.303825,
+        "measurementTimeSource": "capturedAtEpochSeconds",
+        "rawQdScore": 61346.72322382536,
+        "sourceLine": 183
+      },
+      "rawQdAuc": {
+        "candidateEvaluations": {
+          "aucUnit": "raw QD score * candidate evaluations",
+          "exclusions": {
+            "duplicateX": 18
+          },
+          "pointCount": 22,
+          "trapezoidalRawQdAuc": 2890909353.79478,
+          "xEnd": 55001.0,
+          "xSpan": 55001.0,
+          "xStart": 0.0,
+          "xUnit": "candidate evaluations"
+        },
+        "domainSimulations": {
+          "aucUnit": "raw QD score * domain simulations",
+          "exclusions": {
+            "duplicateX": 18
+          },
+          "pointCount": 22,
+          "trapezoidalRawQdAuc": 8672235726.029526,
+          "xEnd": 165019.0,
+          "xSpan": 165019.0,
+          "xStart": 0.0,
+          "xUnit": "domain simulations"
+        },
+        "elapsedWallSeconds": {
+          "aucUnit": "raw QD score * seconds",
+          "exclusions": {},
+          "pointCount": 40,
+          "trapezoidalRawQdAuc": 64117581.48790759,
+          "xEnd": 1244.0209798812866,
+          "xSpan": 1244.0209798812866,
+          "xStart": 0.0,
+          "xUnit": "seconds"
+        }
+      },
+      "routeId": "match-A-240903",
+      "routeLabel": null,
+      "sampleCounts": {
+        "coreExclusions": {},
+        "includedCoreSamples": 40,
+        "provenanceCounts": {
+          "measurementTimeFallback": 40
+        }
+      },
+      "seriesLabel": "overnight / A adaptive four arm \u00b7 bank 240903",
+      "sourceLabel": "overnight",
+      "sourcePath": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/metrics.jsonl"
+    },
+    {
+      "displayRouteLabel": "A adaptive four arm \u00b7 bank 240904",
+      "finalDiagnostics": {
+        "bestFitness": 2619.6013468965607,
+        "occupiedCells": 45
+      },
+      "finalPrimaryMetrics": {
+        "candidateEvaluations": 55001.0,
+        "captureDelaySeconds": 0.0,
+        "capturedAt": "2026-09-03T20:59:43.892807+00:00",
+        "capturedAtEpochSeconds": 1788469183.892807,
+        "domainSimulations": 165079.0,
+        "elapsedWallSeconds": 1306.4815409183502,
+        "measurementEpochSeconds": 1788469183.892807,
+        "measurementTimeSource": "capturedAtEpochSeconds",
+        "rawQdScore": 64837.78768791993,
+        "sourceLine": 229
+      },
+      "rawQdAuc": {
+        "candidateEvaluations": {
+          "aucUnit": "raw QD score * candidate evaluations",
+          "exclusions": {
+            "duplicateX": 19
+          },
+          "pointCount": 23,
+          "trapezoidalRawQdAuc": 3095247288.859296,
+          "xEnd": 55001.0,
+          "xSpan": 55001.0,
+          "xStart": 0.0,
+          "xUnit": "candidate evaluations"
+        },
+        "domainSimulations": {
+          "aucUnit": "raw QD score * domain simulations",
+          "exclusions": {
+            "duplicateX": 19
+          },
+          "pointCount": 23,
+          "trapezoidalRawQdAuc": 9288783615.59688,
+          "xEnd": 165079.0,
+          "xSpan": 165079.0,
+          "xStart": 0.0,
+          "xUnit": "domain simulations"
+        },
+        "elapsedWallSeconds": {
+          "aucUnit": "raw QD score * seconds",
+          "exclusions": {},
+          "pointCount": 42,
+          "trapezoidalRawQdAuc": 72288488.45085917,
+          "xEnd": 1306.4815409183502,
+          "xSpan": 1306.4815409183502,
+          "xStart": 0.0,
+          "xUnit": "seconds"
+        }
+      },
+      "routeId": "match-A-240904",
+      "routeLabel": null,
+      "sampleCounts": {
+        "coreExclusions": {},
+        "includedCoreSamples": 42,
+        "provenanceCounts": {
+          "measurementTimeFallback": 42
+        }
+      },
+      "seriesLabel": "overnight / A adaptive four arm \u00b7 bank 240904",
+      "sourceLabel": "overnight",
+      "sourcePath": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/metrics.jsonl"
+    },
+    {
+      "displayRouteLabel": "F fixed mixed \u00b7 bank 240903",
+      "finalDiagnostics": {
+        "bestFitness": 2795.746875482024,
+        "occupiedCells": 41
+      },
+      "finalPrimaryMetrics": {
+        "candidateEvaluations": 55004.0,
+        "captureDelaySeconds": 218.0002999305725,
+        "capturedAt": "2026-09-03T19:45:08+00:00",
+        "capturedAtEpochSeconds": 1788464708.0,
+        "domainSimulations": 165045.0,
+        "elapsedWallSeconds": 1549.4911649227142,
+        "measurementEpochSeconds": 1788464489.9997,
+        "measurementTimeSource": "measurementEpochSeconds",
+        "rawQdScore": 63762.949272179605,
+        "sourceLine": 87
+      },
+      "rawQdAuc": {
+        "candidateEvaluations": {
+          "aucUnit": "raw QD score * candidate evaluations",
+          "exclusions": {
+            "duplicateX": 19
+          },
+          "pointCount": 24,
+          "trapezoidalRawQdAuc": 3041176254.512765,
+          "xEnd": 55004.0,
+          "xSpan": 55004.0,
+          "xStart": 0.0,
+          "xUnit": "candidate evaluations"
+        },
+        "domainSimulations": {
+          "aucUnit": "raw QD score * domain simulations",
+          "exclusions": {
+            "duplicateX": 19
+          },
+          "pointCount": 24,
+          "trapezoidalRawQdAuc": 9123684529.633245,
+          "xEnd": 165045.0,
+          "xSpan": 165045.0,
+          "xStart": 0.0,
+          "xUnit": "domain simulations"
+        },
+        "elapsedWallSeconds": {
+          "aucUnit": "raw QD score * seconds",
+          "exclusions": {},
+          "pointCount": 43,
+          "trapezoidalRawQdAuc": 86357269.66743138,
+          "xEnd": 1549.4911649227142,
+          "xSpan": 1549.4911649227142,
+          "xStart": 0.0,
+          "xUnit": "seconds"
+        }
+      },
+      "routeId": "match-F-240903",
+      "routeLabel": null,
+      "sampleCounts": {
+        "coreExclusions": {},
+        "includedCoreSamples": 43,
+        "provenanceCounts": {
+          "measurementTimeFallback": 42
+        }
+      },
+      "seriesLabel": "overnight / F fixed mixed \u00b7 bank 240903",
+      "sourceLabel": "overnight",
+      "sourcePath": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/metrics.jsonl"
+    },
+    {
+      "displayRouteLabel": "F fixed mixed \u00b7 bank 240904",
+      "finalDiagnostics": {
+        "bestFitness": 2723.178843654693,
+        "occupiedCells": 42
+      },
+      "finalPrimaryMetrics": {
+        "candidateEvaluations": 55001.0,
+        "captureDelaySeconds": 0.0,
+        "capturedAt": "2026-09-03T21:43:05.770808+00:00",
+        "capturedAtEpochSeconds": 1788471785.770808,
+        "domainSimulations": 165027.0,
+        "elapsedWallSeconds": 1190.3564038276672,
+        "measurementEpochSeconds": 1788471785.770808,
+        "measurementTimeSource": "capturedAtEpochSeconds",
+        "rawQdScore": 66611.77732186535,
+        "sourceLine": 312
+      },
+      "rawQdAuc": {
+        "candidateEvaluations": {
+          "aucUnit": "raw QD score * candidate evaluations",
+          "exclusions": {
+            "duplicateX": 17
+          },
+          "pointCount": 22,
+          "trapezoidalRawQdAuc": 3115536134.2153697,
+          "xEnd": 55001.0,
+          "xSpan": 55001.0,
+          "xStart": 0.0,
+          "xUnit": "candidate evaluations"
+        },
+        "domainSimulations": {
+          "aucUnit": "raw QD score * domain simulations",
+          "exclusions": {
+            "duplicateX": 17
+          },
+          "pointCount": 22,
+          "trapezoidalRawQdAuc": 9346233410.866993,
+          "xEnd": 165027.0,
+          "xSpan": 165027.0,
+          "xStart": 0.0,
+          "xUnit": "domain simulations"
+        },
+        "elapsedWallSeconds": {
+          "aucUnit": "raw QD score * seconds",
+          "exclusions": {},
+          "pointCount": 39,
+          "trapezoidalRawQdAuc": 66440872.156522244,
+          "xEnd": 1190.3564038276672,
+          "xSpan": 1190.3564038276672,
+          "xStart": 0.0,
+          "xUnit": "seconds"
+        }
+      },
+      "routeId": "match-F-240904",
+      "routeLabel": null,
+      "sampleCounts": {
+        "coreExclusions": {},
+        "includedCoreSamples": 39,
+        "provenanceCounts": {
+          "measurementTimeFallback": 39
+        }
+      },
+      "seriesLabel": "overnight / F fixed mixed \u00b7 bank 240904",
+      "sourceLabel": "overnight",
+      "sourcePath": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/metrics.jsonl"
+    },
+    {
+      "displayRouteLabel": "S small only \u00b7 bank 240903",
+      "finalDiagnostics": {
+        "bestFitness": 2235.717040520788,
+        "occupiedCells": 31
+      },
+      "finalPrimaryMetrics": {
+        "candidateEvaluations": 55004.0,
+        "captureDelaySeconds": 287.3014340400696,
+        "capturedAt": "2026-09-03T20:11:57Z",
+        "capturedAtEpochSeconds": 1788466317.0,
+        "domainSimulations": 165064.0,
+        "elapsedWallSeconds": 1244.4655139446259,
+        "measurementEpochSeconds": 1788466029.698566,
+        "measurementTimeSource": "measurementEpochSeconds",
+        "rawQdScore": 43305.25936644864,
+        "sourceLine": 139
+      },
+      "rawQdAuc": {
+        "candidateEvaluations": {
+          "aucUnit": "raw QD score * candidate evaluations",
+          "exclusions": {
+            "duplicateX": 18
+          },
+          "pointCount": 22,
+          "trapezoidalRawQdAuc": 2088393232.9348416,
+          "xEnd": 55004.0,
+          "xSpan": 55004.0,
+          "xStart": 0.0,
+          "xUnit": "candidate evaluations"
+        },
+        "domainSimulations": {
+          "aucUnit": "raw QD score * domain simulations",
+          "exclusions": {
+            "duplicateX": 18
+          },
+          "pointCount": 22,
+          "trapezoidalRawQdAuc": 6266214023.499819,
+          "xEnd": 165064.0,
+          "xSpan": 165064.0,
+          "xStart": 0.0,
+          "xUnit": "domain simulations"
+        },
+        "elapsedWallSeconds": {
+          "aucUnit": "raw QD score * seconds",
+          "exclusions": {},
+          "pointCount": 40,
+          "trapezoidalRawQdAuc": 47628312.21902987,
+          "xEnd": 1244.4655139446259,
+          "xSpan": 1244.4655139446259,
+          "xStart": 0.0,
+          "xUnit": "seconds"
+        }
+      },
+      "routeId": "match-S-240903",
+      "routeLabel": null,
+      "sampleCounts": {
+        "coreExclusions": {},
+        "includedCoreSamples": 40,
+        "provenanceCounts": {
+          "measurementTimeFallback": 39
+        }
+      },
+      "seriesLabel": "overnight / S small only \u00b7 bank 240903",
+      "sourceLabel": "overnight",
+      "sourcePath": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/metrics.jsonl"
+    },
+    {
+      "displayRouteLabel": "S small only \u00b7 bank 240904",
+      "finalDiagnostics": {
+        "bestFitness": 1943.0285295343344,
+        "occupiedCells": 38
+      },
+      "finalPrimaryMetrics": {
+        "candidateEvaluations": 55002.0,
+        "captureDelaySeconds": 0.0,
+        "capturedAt": "2026-09-03T21:21:39.205863+00:00",
+        "capturedAtEpochSeconds": 1788470499.205863,
+        "domainSimulations": 165051.0,
+        "elapsedWallSeconds": 1219.8011238574982,
+        "measurementEpochSeconds": 1788470499.205863,
+        "measurementTimeSource": "capturedAtEpochSeconds",
+        "rawQdScore": 47771.44972412789,
+        "sourceLine": 271
+      },
+      "rawQdAuc": {
+        "candidateEvaluations": {
+          "aucUnit": "raw QD score * candidate evaluations",
+          "exclusions": {
+            "duplicateX": 18
+          },
+          "pointCount": 22,
+          "trapezoidalRawQdAuc": 2316116292.3620625,
+          "xEnd": 55002.0,
+          "xSpan": 55002.0,
+          "xStart": 0.0,
+          "xUnit": "candidate evaluations"
+        },
+        "domainSimulations": {
+          "aucUnit": "raw QD score * domain simulations",
+          "exclusions": {
+            "duplicateX": 18
+          },
+          "pointCount": 22,
+          "trapezoidalRawQdAuc": 6949141792.612105,
+          "xEnd": 165051.0,
+          "xSpan": 165051.0,
+          "xStart": 0.0,
+          "xUnit": "domain simulations"
+        },
+        "elapsedWallSeconds": {
+          "aucUnit": "raw QD score * seconds",
+          "exclusions": {},
+          "pointCount": 40,
+          "trapezoidalRawQdAuc": 50644503.50954982,
+          "xEnd": 1219.8011238574982,
+          "xSpan": 1219.8011238574982,
+          "xStart": 0.0,
+          "xUnit": "seconds"
+        }
+      },
+      "routeId": "match-S-240904",
+      "routeLabel": null,
+      "sampleCounts": {
+        "coreExclusions": {},
+        "includedCoreSamples": 40,
+        "provenanceCounts": {
+          "measurementTimeFallback": 40
+        }
+      },
+      "seriesLabel": "overnight / S small only \u00b7 bank 240904",
+      "sourceLabel": "overnight",
+      "sourcePath": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/metrics.jsonl"
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceCounts": [
+    {
+      "exclusions": {
+        "missingOrInvalidRawQd": 2,
+        "missingRouteIdentity": 46,
+        "routeFiltered": 21
+      },
+      "includedCoreSamples": 244,
+      "label": "overnight",
+      "lineCounts": {
+        "blank": 0,
+        "decodedObjects": 313,
+        "total": 313
+      },
+      "path": "artifacts/codex/overnight-adaptive-qd-2026-09-04/20260903T183735Z/metrics.jsonl",
+      "provenanceCounts": {
+        "measurementTimeFallback": 242
+      }
+    }
+  ]
+}

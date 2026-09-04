@@ -1,0 +1,53 @@
+-- Configuring done (0.3s)
+-- Generating done (0.1s)
+-- Build files have been written to: /Users/dag/projects/Machine-Evolved-overnight-adaptive-qd-2026-09-04/build
+[  5%] Built target LinearMath
+[ 30%] Built target BulletDynamics
+[ 91%] Built target BulletCollision
+[100%] Built target shellworker
+{
+  "schemaVersion": 1,
+  "status": "completed",
+  "completedAt": "2026-09-03T19:31:48.074208+00:00",
+  "backend": "machine-evolved-bullet-v2",
+  "profile": "overnight-F-240903",
+  "seed": 240903,
+  "workers": 8,
+  "populationSize": 192,
+  "generation": 209,
+  "evaluations": 40166,
+  "evaluatedCreatures": 39,
+  "bestFitness": 2795.746875482024,
+  "averageFitness": 1564.214526323179,
+  "objective": {
+    "id": "max-horizontal-distance-v1",
+    "horizonTicks": 3600,
+    "fixedStepHz": 60,
+    "penalties": []
+  },
+  "physics": {
+    "engine": "Bullet",
+    "version": "2.86-v2",
+    "controlRateHz": 60,
+    "physicsRateHz": 120,
+    "solverIterations": 20,
+    "splitImpulse": true,
+    "gravityX": 0,
+    "gravityY": 0,
+    "gravityZ": -100,
+    "groundFriction": 0.8,
+    "motorMaxForce": 5000,
+    "motorTargetVelocityLimit": 100,
+    "capsuleFriction": 0.8,
+    "capsuleRollingFriction": 0.02,
+    "capsuleSpinningFriction": 0.02,
+    "capsuleRestitution": 0,
+    "capsuleLinearDamping": 0,
+    "capsuleAngularDamping": 0,
+    "capsuleMassScale": 0.0001,
+    "capsuleCcdEnabled": true,
+    "ccdMotionThresholdRadiusRatio": 0.25,
+    "ccdSweptSphereRadiusRatio": 0.2
+  }
+}
+Training run complete: /Users/dag/projects/Machine-Evolved-overnight-adaptive-qd-2026-09-04/training-runs/match-F-240903

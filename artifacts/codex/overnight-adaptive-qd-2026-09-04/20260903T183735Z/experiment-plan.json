@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "overnight-adaptive-qd-2026-09-04",
+  "t0Utc": "2026-09-03T18:37:35Z",
+  "t0Epoch": 1788460655.126034,
+  "t0Monotonic": 457187.114514208,
+  "bootTime": "{ sec = 1787987002, usec = 487312 } Sat Aug 29 14:03:22 2026",
+  "hardDeadlineUtc": "2026-09-04T04:37:35Z",
+  "hardDeadlineEpoch": 1788496655.126034,
+  "hardDeadlineMonotonic": 493187.114514208,
+  "durationSeconds": 36000,
+  "sourceCommit": "9ebf67add6087d7a6ae30764d1ee6e29b9608029",
+  "branch": "codex/overnight-adaptive-qd-2026-09-04",
+  "workerCount": 8,
+  "port": 9999,
+  "populationBanks": {
+    "development": [240903, 240904, 240905, 240906],
+    "confirmation": [240907, 240908],
+    "size": 192,
+    "immutable": true
+  },
+  "fixedContract": {
+    "gravityZ": -100,
+    "populationSize": 192,
+    "objective": "max-horizontal-distance-v1",
+    "horizonTicks": 3600,
+    "controlRateHz": 60,
+    "physicsRateHz": 120,
+    "solverIterations": 20,
+    "aggregation": "half-min-plus-geometric-mean-v1",
+    "archiveBinsPerAxis": 8,
+    "archiveAxes": ["airborneFraction", "rotationParticipation"],
+    "domains": ["nominal", "slick", "rough"]
+  },
+  "screeningOrder": ["F-240903", "S-240903", "A-240903", "A-240904", "S-240904", "F-240904"],
+  "phases": [
+    {"id": 1, "startSeconds": 0, "endSeconds": 1200, "name": "preflight-baseline-persistence"},
+    {"id": 2, "startSeconds": 1200, "endSeconds": 4200, "name": "baseline-compute-and-implementation"},
+    {"id": 3, "startSeconds": 4200, "endSeconds": 12000, "name": "matched-screening"},
+    {"id": 4, "startSeconds": 12000, "endSeconds": 20700, "name": "successive-halving"},
+    {"id": 5, "startSeconds": 20700, "endSeconds": 26100, "name": "best-creature-exploitation"},
+    {"id": 6, "startSeconds": 26100, "endSeconds": 29700, "name": "robustness-room-decision"},
+    {"id": 7, "startSeconds": 29700, "endSeconds": 33600, "name": "untouched-confirmation"},
+    {"id": 8, "startSeconds": 33600, "endSeconds": 36000, "name": "final-validation-closeout"}
+  ],
+  "fallbackQueue": [
+    "additional-paired-winner-versus-control",
+    "continue-best-minus-100-archive",
+    "fixed-mixed-from-fresh-bank",
+    "shared-or-directional-ablation",
+    "morphology-allocation-canary",
+    "additional-mild-robustness-training"
+  ]
+}

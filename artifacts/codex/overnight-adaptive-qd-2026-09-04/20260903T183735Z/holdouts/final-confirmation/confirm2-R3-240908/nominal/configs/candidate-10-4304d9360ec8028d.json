@@ -1,0 +1,500 @@
+{
+  "schemaVersion": 1,
+  "kind": "machine-evolved-population-robustness-replay-config-v1",
+  "algorithm": {
+    "type": "MapElites"
+  },
+  "selectionProvenance": {
+    "schemaVersion": 1,
+    "case": "nominal",
+    "sourceIndex": 10,
+    "sourceCreatureId": "e04a969b-8af2-4c0d-a2fb-15b79fd3953a",
+    "sourceCreatureSha256": "4304d9360ec8028d00050613ee4f6e54f207d699ed76cf5f7834b9fdf388b2d0",
+    "sourceBaselineFitness": 2128.682477687626,
+    "evaluatedFitness": 2409.77417
+  },
+  "experiment": {
+    "schemaVersion": 2,
+    "backend": "machine-evolved-bullet-v2",
+    "profile": "two-hour-population-robustness-nominal",
+    "seed": 530000,
+    "coordinateSystem": {
+      "upAxis": "z",
+      "horizontalAxes": [
+        "x",
+        "y"
+      ],
+      "units": "simulation-units"
+    },
+    "objective": {
+      "id": "max-horizontal-distance-v1",
+      "horizonTicks": 3600,
+      "fixedStepHz": 60,
+      "penalties": []
+    },
+    "physics": {
+      "engine": "Bullet",
+      "version": "2.86-v2",
+      "controlRateHz": 60,
+      "physicsRateHz": 120,
+      "solverIterations": 20,
+      "splitImpulse": true,
+      "gravityX": 0,
+      "gravityY": 0,
+      "gravityZ": -100,
+      "groundFriction": 0.8,
+      "motorMaxForce": 5000,
+      "motorTargetVelocityLimit": 100,
+      "capsuleFriction": 0.8,
+      "capsuleRollingFriction": 0.02,
+      "capsuleSpinningFriction": 0.02,
+      "capsuleRestitution": 0,
+      "capsuleLinearDamping": 0,
+      "capsuleAngularDamping": 0,
+      "capsuleMassScale": 0.0001,
+      "capsuleCcdEnabled": true,
+      "ccdMotionThresholdRadiusRatio": 0.25,
+      "ccdSweptSphereRadiusRatio": 0.2
+    },
+    "evaluationDomains": [
+      {
+        "id": "nominal",
+        "physics": {}
+      }
+    ],
+    "robustAggregation": "half-min-plus-geometric-mean-v1",
+    "intent": [
+      "maximize robust horizontal distance",
+      "permit rolling and jump-assisted propulsion",
+      "reject only numerical invalidity"
+    ],
+    "overnightRoute": {
+      "id": "confirm2-R3-240908",
+      "policy": "current-fixed-mixed",
+      "room": "R3",
+      "bankSeed": 240908,
+      "bankNormalizedSha256": "6133afcfeda815440a2014c0fe41411f8ace9f5082a2fc19713f7e0ba0d47141",
+      "confirmation": true,
+      "correctedFixedMixture": true
+    },
+    "populationRobustness": {
+      "schemaVersion": 1,
+      "case": "nominal",
+      "selectionRule": "top-baseline-fitness-v1",
+      "physicsOverrides": {},
+      "candidates": [
+        {
+          "index": 0,
+          "baselineFitness": 2800.4652702305293,
+          "creatureId": "58b19361-a099-4ded-a572-b2964e922de0",
+          "creatureSha256": "0b52b38f77fa300da5fae17d43cfd8ccf3e99f50ddb07dfdaef232a9f145c91f"
+        },
+        {
+          "index": 1,
+          "baselineFitness": 2768.6794885660943,
+          "creatureId": "aa48325b-5897-49a5-9656-268ccebc2639",
+          "creatureSha256": "b86f6b016ced84d747b28baa39a98133a5a79a99878a3573a1096a10c49dd39d"
+        },
+        {
+          "index": 2,
+          "baselineFitness": 2612.3913984338988,
+          "creatureId": "2901ceed-b278-422f-a998-4cbcddde3b6e",
+          "creatureSha256": "ab378a058511162cac645c25f2d2b97c373a5e25b7316e279baaf8aba62c98fd"
+        },
+        {
+          "index": 3,
+          "baselineFitness": 2565.8873024767627,
+          "creatureId": "188ccdeb-29fc-449e-8f5c-3948aca015fe",
+          "creatureSha256": "98bb91c61448d71675c0934d38b73e64d67c6a56c5c321c596fcc35ffe55e5d7"
+        },
+        {
+          "index": 4,
+          "baselineFitness": 2442.07346936297,
+          "creatureId": "06e6b4d2-cf77-472d-a9d3-ade7728cce23",
+          "creatureSha256": "336e7874b2efb62ccff4f0164fc56bfeb796b9e095bae975a8fb7df1ffc85ba5"
+        },
+        {
+          "index": 5,
+          "baselineFitness": 2407.312670426836,
+          "creatureId": "3ea6085b-cff9-4dd7-8e7f-a0b5f973f5ba",
+          "creatureSha256": "90fd4e9fa2a226053b9c00007e054b080a760ff0c67bce985b09bc833cf67a64"
+        },
+        {
+          "index": 6,
+          "baselineFitness": 2402.023473420303,
+          "creatureId": "d19e0d28-8d1e-4d72-a9c8-93afa9f97b71",
+          "creatureSha256": "1af12a9400c40ef4174edd6b78eedb137ffcba2958d316b57486e07d78e5a3de"
+        },
+        {
+          "index": 7,
+          "baselineFitness": 2401.6082854317565,
+          "creatureId": "a7bad671-0455-4759-8847-3ea2291846c8",
+          "creatureSha256": "bfbac3114a3a35c32d446ba1e33a14075c8a280490b82473adbb82c306b3f0d2"
+        },
+        {
+          "index": 8,
+          "baselineFitness": 2338.323437388246,
+          "creatureId": "24c08ac3-351d-4e4a-9f77-f540c8b677a5",
+          "creatureSha256": "a058ba27e93be3457d629d1826c1f5c76254d3caf1a9a7ada43931886c0a86ac"
+        },
+        {
+          "index": 9,
+          "baselineFitness": 2173.831036349563,
+          "creatureId": "6a882847-a303-4441-b9d5-37b89e1198b7",
+          "creatureSha256": "92fbf394d91642ea8152f75efa651179559a2eeaf6cd863a94bed527e82f72ea"
+        },
+        {
+          "index": 10,
+          "baselineFitness": 2128.682477687626,
+          "creatureId": "e04a969b-8af2-4c0d-a2fb-15b79fd3953a",
+          "creatureSha256": "4304d9360ec8028d00050613ee4f6e54f207d699ed76cf5f7834b9fdf388b2d0"
+        },
+        {
+          "index": 11,
+          "baselineFitness": 2119.6891686639874,
+          "creatureId": "22743f19-ba92-4513-b018-f2b9e0afd069",
+          "creatureSha256": "5ef0d38592417d62c4b54ad2541067e55be5cf0d6492ffde9983962639639100"
+        }
+      ],
+      "evaluationMode": "single-domain-v1",
+      "sourceEvaluationDomainsSha256": "9f6dde4a44691820134363daa7f806cadef698aa83b4f2562c57a0dd114a1184"
+    }
+  },
+  "structure": {
+    "creatures": [
+      {
+        "fitness": 2409.77417,
+        "data": {
+          "structure": {
+            "capsules": [
+              {
+                "id": "m2-wheel-biased-capsule-0",
+                "innerHeight": 48.0,
+                "radius": 21.0,
+                "positionX": 0.0,
+                "positionY": 0.0,
+                "positionZ": 22.0,
+                "quaternionX": 0.7071067811865475,
+                "quaternionY": 0.0,
+                "quaternionZ": 0.0,
+                "quaternionW": 0.7071067811865475,
+                "constraint": ""
+              },
+              {
+                "id": "m2-wheel-biased-capsule-1",
+                "innerHeight": 70.0,
+                "radius": 12.0,
+                "positionX": 0.0,
+                "positionY": -92.0,
+                "positionZ": 22.0,
+                "quaternionX": 0.7071067811865475,
+                "quaternionY": 0.0,
+                "quaternionZ": 0.0,
+                "quaternionW": 0.7071067811865475,
+                "constraint": {
+                  "parentId": "m2-wheel-biased-capsule-0",
+                  "x-rotation": {
+                    "range": "-1;1"
+                  },
+                  "y-rotation": {
+                    "range": "-1;1"
+                  },
+                  "z-rotation": {
+                    "range": "-1;1"
+                  }
+                }
+              },
+              {
+                "id": "m2-wheel-biased-capsule-2",
+                "innerHeight": 48.0,
+                "radius": 21.0,
+                "positionX": 0.0,
+                "positionY": -184.0,
+                "positionZ": 22.0,
+                "quaternionX": 0.7071067811865475,
+                "quaternionY": 0.0,
+                "quaternionZ": 0.0,
+                "quaternionW": 0.7071067811865475,
+                "constraint": {
+                  "parentId": "m2-wheel-biased-capsule-1",
+                  "x-rotation": {
+                    "range": "-1;1"
+                  },
+                  "y-rotation": {
+                    "range": "-1;1"
+                  },
+                  "z-rotation": {
+                    "range": "-1;1"
+                  }
+                }
+              }
+            ],
+            "feedbacks": 0,
+            "oscillators": {
+              "start": 0.05,
+              "multiplier": 1.35,
+              "count": 16,
+              "mode": "sin-cos-v1"
+            },
+            "inputs": {
+              "root-orientation-x": 0,
+              "root-orientation-y": 0,
+              "root-orientation-z": 0,
+              "root-orientation-w": 0,
+              "z-position": 0,
+              "velocity-x": 0,
+              "velocity-y": 0,
+              "velocity-z": 0,
+              "oscillators": 1,
+              "capsule-position-x": 0,
+              "capsule-position-y": 0,
+              "capsule-position-z": 0,
+              "capsule-velocity-x": 0,
+              "capsule-velocity-y": 0,
+              "capsule-velocity-z": 0,
+              "capsule-angular-velocity-x": 0,
+              "capsule-angular-velocity-y": 0,
+              "capsule-angular-velocity-z": 0,
+              "motor-angle-x": 0,
+              "motor-angle-y": 0,
+              "motor-angle-z": 0,
+              "feedbacks": 0
+            }
+          },
+          "motorController": {
+            "name": "LinearMotorController",
+            "schemaVersion": 2,
+            "layers": [
+              {
+                "activation": "tanh",
+                "weights": [
+                  0.04463447212902168,
+                  -0.721721502679189,
+                  0.7494252841235627,
+                  -0.2815178086749244,
+                  -0.3430713409309872,
+                  0.08635432161090274,
+                  -1.5667074026019971,
+                  -0.0076379809238881075,
+                  0.7148039373184794,
+                  -0.04300047666141228,
+                  -0.7091446948071379,
+                  -0.1707778468663037,
+                  -0.10894944333647935,
+                  0.08545291163311705,
+                  -0.09951012792981759,
+                  0.3199310574016578,
+                  -0.24510994684925916,
+                  0.9227050159666095,
+                  0.15568251523715199,
+                  0.7140962143125564,
+                  0.1812957592641883,
+                  -0.564906361485118,
+                  0.6721324500735848,
+                  0.6007376956052322,
+                  -0.9325953628446886,
+                  -0.13953187800188172,
+                  -0.6890058631034969,
+                  -0.3360546564260716,
+                  0.07639696142355568,
+                  -0.12821953655188217,
+                  0.1560910315696086,
+                  0.7350460275167334,
+                  -0.2626220202858715,
+                  0.14034183866983055,
+                  0.2902362460439397,
+                  -0.28427434218162645,
+                  -0.13253103412984465,
+                  -0.014314245625622009,
+                  0.10504151009472797,
+                  -0.21722897612437092,
+                  1.0582977367635715,
+                  0.38588393198126103,
+                  -0.1293519637258197,
+                  0.10439440753331175,
+                  -0.10806737160451654,
+                  0.3741702388904403,
+                  0.4112580332010276,
+                  -0.4189169648273984,
+                  0.32745253957426473,
+                  0.14420184701062716,
+                  -0.16510790991674096,
+                  0.42761780614822587,
+                  -0.12594301412485495,
+                  0.7111032425688314,
+                  0.6342376261802659,
+                  -0.14527351492967516,
+                  -0.8147808837002599,
+                  -0.44709289062715013,
+                  0.6543721286112542,
+                  0.14527931113471046,
+                  0.3593783923000133,
+                  0.23086619211651904,
+                  -0.5169653370883394,
+                  0.7870593451879956,
+                  0.3923750627232009,
+                  0.045374837893015094,
+                  -0.7156171542269829,
+                  0.7829971281151953,
+                  -0.35195054108700685,
+                  0.3762107137825846,
+                  0.45650582161478187,
+                  0.3087186596753518,
+                  0.5123721099887808,
+                  0.04512411739444539,
+                  -2.178598663811391,
+                  -0.17663055308975106,
+                  -0.36743697025056254,
+                  -0.16870469304931254,
+                  -0.2824917417617181,
+                  0.041241298378278474,
+                  0.05732368849105027,
+                  -0.5432076130971308,
+                  0.1035956109680448,
+                  0.2555610688412303,
+                  -0.052477430157624544,
+                  -0.6390968277585292,
+                  0.31265070998236527,
+                  -0.3121023515761988,
+                  -0.0060517448793231815,
+                  0.23625104425871582,
+                  -1.0276311499793096,
+                  0.7490085958419077,
+                  0.22845922421231132,
+                  0.05700326185047584,
+                  0.016685377801755108,
+                  1.0554227579624096,
+                  -0.8396961043106301,
+                  0.056017957025167014,
+                  0.5652133953307108,
+                  -0.17225870106979563,
+                  0.11156128928286745,
+                  0.528822115710523,
+                  -0.2601243634812865,
+                  0.41886730515693615,
+                  0.16934370536513826,
+                  0.510688766292219,
+                  -0.12789146203387203,
+                  -0.0974393937694892,
+                  0.3427868158734262,
+                  0.24561012490895928,
+                  -0.16362175896654868,
+                  0.9375925551932792,
+                  0.1890693280126152,
+                  -0.406552954461084,
+                  -0.0062675916707455315,
+                  0.15918971043948196,
+                  0.16665952375774942,
+                  0.873820033957917,
+                  -0.024545591409162765,
+                  0.4001506522203254,
+                  -0.2079035603079312,
+                  -0.21360862419126236,
+                  0.1285987513710427,
+                  0.21670835094753294,
+                  -0.018821491093714615,
+                  0.39063819591143834,
+                  0.48411245512654766,
+                  0.9904783284763559,
+                  0.2794821084981872,
+                  0.07903182177250218,
+                  0.023542077353076004,
+                  -0.21523635047682835,
+                  0.4392707913763172,
+                  0.11036306182796302,
+                  -0.21037077935007997,
+                  0.7821265844073217,
+                  -0.09777913750914682,
+                  -0.2593655551271995,
+                  0.20928673344962076,
+                  0.21603116292534205,
+                  -0.3244132903955212,
+                  0.11623635390213202,
+                  -0.11780929242869119,
+                  -0.19658118836246874,
+                  -0.4257365971879465,
+                  -0.09939163104116866,
+                  0.18370423005658232,
+                  0.05764132528559031,
+                  -0.16203046679840713,
+                  0.18131445175491714,
+                  -0.5081789627393845,
+                  0.02265293407916925,
+                  -0.018789525127760442,
+                  0.31173725087539805,
+                  -0.2343381831942934,
+                  0.13034763330454946,
+                  -0.1808573386183609,
+                  -0.09481823537303412,
+                  -0.7583899130099894,
+                  -1.286469730453837,
+                  0.4132695672411774,
+                  -0.34025621779910625,
+                  -0.1510363419620504,
+                  -0.2899138603065301,
+                  -0.06554312432027919,
+                  -0.3853328225143848,
+                  0.034546737228456414,
+                  0.9671506259697054,
+                  0.3845011409709433,
+                  -0.11252267531226338,
+                  0.8652815885789473,
+                  -0.19485725864683678,
+                  -1.5459698017316634,
+                  -0.02264564722247113,
+                  0.14860754141384935,
+                  0.0900345830577092,
+                  -0.6204517298357121,
+                  -0.4025588503549903,
+                  0.330988373538612,
+                  -0.4103938066089789,
+                  -0.0604864377713494,
+                  0.23789176441686916,
+                  0.24326624847322698,
+                  0.9604625398972082,
+                  -0.6884887489821638,
+                  -0.0596987096339181,
+                  0.26418441715572805,
+                  0.53923075002864,
+                  -0.04474102870999098,
+                  -0.09700731087701564,
+                  0.43455025716693174,
+                  -0.21860170139235613
+                ],
+                "biases": [
+                  1.5160412341152463,
+                  -0.3367312844821005,
+                  -0.023788098528739567,
+                  0.0,
+                  0.03279201936340538,
+                  0.6023537658910448
+                ]
+              }
+            ],
+            "commandMode": "target-angle-servo-v1",
+            "servo": {
+              "targetAngleRangeRadians": 2.827433388,
+              "kp": 10,
+              "kd": 0.75,
+              "settlingSeconds": 1,
+              "rampSeconds": 1
+            }
+          },
+          "metadata": {
+            "morphologyId": "m2-wheel-biased",
+            "creatureId": "e04a969b-8af2-4c0d-a2fb-15b79fd3953a"
+          }
+        },
+        "evaluation": {
+          "behavior": {
+            "airborneFraction": 0.754444,
+            "rotationParticipation": 0.460173
+          },
+          "domainScores": [
+            2409.77417
+          ]
+        }
+      }
+    ]
+  }
+}

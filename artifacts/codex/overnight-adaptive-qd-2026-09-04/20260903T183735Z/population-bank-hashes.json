@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "generatedFromCommit": "9ebf67add6087d7a6ae30764d1ee6e29b9608029",
+  "populationSize": 192,
+  "normalizedPayload": {
+    "description": "canonical JSON of structure.creatures and experiment.trainerState.pythonRandomState",
+    "command": "jq -Sc '{creatures:.structure.creatures,pythonRandomState:.experiment.trainerState.pythonRandomState}'"
+  },
+  "banks": [
+    {"seed": 240903, "role": "development", "normalizedSha256": "f6d4887d03fd1dc5a6f97d619190accf29962f9179568773ed2b8db38080f980", "fileSha256": "989fc1777fe007655221155a1a1b12df733e2c46a7f4efb3aeb5e7ba4bd549e3", "bytes": 1767326},
+    {"seed": 240904, "role": "development", "normalizedSha256": "1254609cfafe56d2f4edb4e0a2cfa301b8594c24a9eedcf1b27671e952838cd8", "fileSha256": "7972dd801d40dbb38e158a4c152f8d6f8fbaff9a2c52c6c4cb03ab3da3cf6013", "bytes": 1766016},
+    {"seed": 240905, "role": "development", "normalizedSha256": "ef183f951c06f1aee883b5e4be57b4b3997580203ccdbaa76dfea7b0d1646502", "fileSha256": "535f3fa42aed173ccacaa441f8b5d9e9942ff30079e7e061ccf6afe759fa9fab", "bytes": 1767519},
+    {"seed": 240906, "role": "development", "normalizedSha256": "2c1fb2f10761f80941dbfae3d5aa897ccfcdccde2a31bac9ea092b8e53581ee3", "fileSha256": "aafecfd5868d9610acb49d854a9478b27e32521eeb67e77e153915b08c4489de", "bytes": 1767974},
+    {"seed": 240907, "role": "confirmation", "normalizedSha256": "fa8bde1ac8e41b9bfbf7a8f20d49ebc77cdfc4e0622c24c2bcc92f9dbf2b15d0", "fileSha256": "fe69bdd24192c061f2d7190d62f0b847a321d300b88bee13f6633947894ea433", "bytes": 1766864},
+    {"seed": 240908, "role": "confirmation", "normalizedSha256": "6133afcfeda815440a2014c0fe41411f8ace9f5082a2fc19713f7e0ba0d47141", "fileSha256": "24be318c5f8434927805dba07cc73b4e3637e569926a6d868ac43d9e56d1ca2f", "bytes": 1766703},
+    {"seed": 240909, "role": "development-room-comparison", "normalizedSha256": "1be486299688ec395a2785e1c150ad136eaf93d91573ad902d74088f9163daf7", "fileSha256": "0ca1e5112ead16ecdc31f4a3d0484cfa4e9466ca0d73b2aed357f50a294e5825", "bytes": 1766702}
+  ]
+}

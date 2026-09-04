@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-04T03:47:28.558921+00:00",
+  "controlSystem": {
+    "optimizer": "current-fixed-mixed",
+    "room": "R3"
+  },
+  "proposedSystem": {
+    "optimizer": "current-fixed-mixed",
+    "room": "R5-gravity"
+  },
+  "routes": {
+    "confirm2-R3-240907": {
+      "candidateEvaluations": 50010.0,
+      "domainSimulations": 150080.0,
+      "wallSeconds": 1083.3786702156067,
+      "candidateEvaluationsPerMinute": 2769.6687063285463,
+      "domainSimulationsPerMinute": 8311.77523386899,
+      "acceptedBestFitness": 2814.8387194920506,
+      "acceptedTop5MeanFitness": 2464.6969218838544,
+      "acceptedWinnerWorstTrainingDomain": 2735.471191,
+      "rawQdScore": 65522.87095207267,
+      "domainSimulationQdAuc": 8280013281.232604,
+      "occupiedCells": 44,
+      "parityPassCount": 12,
+      "selectionMotionPassCount": 11,
+      "rollingSignatureCount": 0,
+      "holdoutParityPassCount": 84,
+      "holdoutMotionPassCount": 57,
+      "holdoutReplayCount": 84,
+      "allCaseMotionValidCandidateCount": 0
+    },
+    "confirm2-R3-240908": {
+      "candidateEvaluations": 50001.0,
+      "domainSimulations": 150044.0,
+      "wallSeconds": 1028.3909289836884,
+      "candidateEvaluationsPerMinute": 2917.236933395379,
+      "domainSimulationsPerMinute": 8754.102886629791,
+      "acceptedBestFitness": 2800.4652702305293,
+      "acceptedTop5MeanFitness": 2637.899385814051,
+      "acceptedWinnerWorstTrainingDomain": 2776.036133,
+      "rawQdScore": 64089.996773209234,
+      "domainSimulationQdAuc": 8163903439.013476,
+      "occupiedCells": 39,
+      "parityPassCount": 12,
+      "selectionMotionPassCount": 12,
+      "rollingSignatureCount": 0,
+      "holdoutParityPassCount": 84,
+      "holdoutMotionPassCount": 60,
+      "holdoutReplayCount": 84,
+      "allCaseMotionValidCandidateCount": 1
+    },
+    "confirm2-R5-240907": {
+      "candidateEvaluations": 30001.0,
+      "domainSimulations": 150085.0,
+      "wallSeconds": 1111.2259640693665,
+      "candidateEvaluationsPerMinute": 1619.886556113293,
+      "domainSimulationsPerMinute": 8103.752334064318,
+      "acceptedBestFitness": 1957.5060962665157,
+      "acceptedTop5MeanFitness": 1906.4286705721547,
+      "acceptedWinnerWorstTrainingDomain": 1859.669312,
+      "rawQdScore": 51081.61847102424,
+      "domainSimulationQdAuc": 6583571003.92075,
+      "occupiedCells": 43,
+      "parityPassCount": 12,
+      "selectionMotionPassCount": 10,
+      "rollingSignatureCount": 0,
+      "holdoutParityPassCount": 84,
+      "holdoutMotionPassCount": 53,
+      "holdoutReplayCount": 84,
+      "allCaseMotionValidCandidateCount": 2
+    },
+    "confirm2-R5-240908": {
+      "candidateEvaluations": 30001.0,
+      "domainSimulations": 150089.0,
+      "wallSeconds": 1090.3437869548798,
+      "candidateEvaluationsPerMinute": 1650.910494044471,
+      "domainSimulationsPerMinute": 8259.174865525836,
+      "acceptedBestFitness": 2013.3843935601299,
+      "acceptedTop5MeanFitness": 1937.791435758066,
+      "acceptedWinnerWorstTrainingDomain": 1769.333862,
+      "rawQdScore": 47251.52084716561,
+      "domainSimulationQdAuc": 6233121094.0259075,
+      "occupiedCells": 36,
+      "parityPassCount": 12,
+      "selectionMotionPassCount": 9,
+      "rollingSignatureCount": 0,
+      "holdoutParityPassCount": 84,
+      "holdoutMotionPassCount": 58,
+      "holdoutReplayCount": 84,
+      "allCaseMotionValidCandidateCount": 0
+    }
+  },
+  "pairedComparisons": [
+    {
+      "bank": 240907,
+      "controlRoute": "confirm2-R3-240907",
+      "proposedRoute": "confirm2-R5-240907",
+      "proposedRelativeToControlPercent": {
+        "acceptedBestFitness": -30.457610849556747,
+        "acceptedTop5MeanFitness": -22.6505841896778,
+        "acceptedWinnerWorstTrainingDomain": -32.01649068290261,
+        "rawQdScore": -22.040017891785634,
+        "domainSimulationQdAuc": -20.488400437194876,
+        "occupiedCells": -2.2727272727272707
+      }
+    },
+    {
+      "bank": 240908,
+      "controlRoute": "confirm2-R3-240908",
+      "proposedRoute": "confirm2-R5-240908",
+      "proposedRelativeToControlPercent": {
+        "acceptedBestFitness": -28.105361099714987,
+        "acceptedTop5MeanFitness": -26.540358355628978,
+        "acceptedWinnerWorstTrainingDomain": -36.2640190101589,
+        "rawQdScore": -26.273173309133956,
+        "domainSimulationQdAuc": -23.65023495697891,
+        "occupiedCells": -7.692307692307687
+      }
+    }
+  ],
+  "promotionGate": {
+    "decision": "reject-proposed-system",
+    "reason": "Proposed R5 has large regressions on both untouched banks in accepted best, QD score, domain-simulation QD AUC, top-five mean, and accepted-winner worst training-domain score; it fails the nonnegative-pair and below-3%-regression requirements.",
+    "retainSystem": {
+      "optimizer": "current-fixed-mixed",
+      "room": "R3"
+    },
+    "adaptiveSelectorPromotion": "not-promoted"
+  }
+}

@@ -1,0 +1,575 @@
+{
+  "schemaVersion": 1,
+  "kind": "machine-evolved-map-elites-replay-selection-v1",
+  "sourceCheckpoint": {
+    "fileName": "config.json",
+    "sha256": "ab8eec571b4280619e431d1a4b2731bed2d083fff237291139c4b73b0265c6a7"
+  },
+  "selection": {
+    "rule": "fitness-desc-morphology-id-creature-id-v1",
+    "rankBase": 1,
+    "topOverall": 4,
+    "topPerMorphology": 4,
+    "finiteCandidateCount": 44,
+    "exportedUniqueCandidateCount": 12
+  },
+  "replayContract": {
+    "physicsSha256": "49ede273c09e92ae14ac1c3f05cbd038ea2a7ef1e33a5598b8c07b9dbdd34d3b",
+    "objectiveSha256": "1ec6afdc47fe19792cf6d439af18cde3f658ecb6d329d2b3e11f242c0c9f9f8e",
+    "evaluationDomainsSha256": "9f6dde4a44691820134363daa7f806cadef698aa83b4f2562c57a0dd114a1184",
+    "firstReplayDomainId": "nominal"
+  },
+  "candidates": [
+    {
+      "config": {
+        "path": "configs/rank-000001-29110bd1d872e1aa.json",
+        "sha256": "c3bc8f2380c9723842bea218911a2970c9fa32d9d5365c2dca011278e5d5b395"
+      },
+      "sourceOverallRank": 1,
+      "sourceMorphologyRank": 1,
+      "selectedOverall": true,
+      "morphologyId": "m2-wheel-biased",
+      "fitness": 2814.8387194920506,
+      "creatureId": "c1047420-3316-466b-ae60-a60267bae10b",
+      "creatureSha256": "29110bd1d872e1aa47194969a73f2b14c52f2d52a3b99aef783f18d48b322c8e",
+      "sourceDomainScores": [
+        2735.471191,
+        2753.276123,
+        3218.892822
+      ],
+      "expectedReplayFitness": 2735.471191
+    },
+    {
+      "config": {
+        "path": "configs/rank-000002-f64a11f0fe959963.json",
+        "sha256": "48f2cda215b05a6cc7aa06bc714d94d90e99796343111d413b9056d414d5a150"
+      },
+      "sourceOverallRank": 2,
+      "sourceMorphologyRank": 1,
+      "selectedOverall": true,
+      "morphologyId": "m0-champion-proportions",
+      "fitness": 2441.2456423729877,
+      "creatureId": "13f50459-15ca-4ec4-a135-0047a1bdff4c",
+      "creatureSha256": "f64a11f0fe959963a2594c59beea5a7c0a18f835b0ef84cf0bdd18c111630837",
+      "sourceDomainScores": [
+        2478.979248,
+        2358.511719,
+        2750.087891
+      ],
+      "expectedReplayFitness": 2478.979248
+    },
+    {
+      "config": {
+        "path": "configs/rank-000003-e0d73a65cf16207a.json",
+        "sha256": "98a22463aeff41ccd4fdc22338fd0a4082c101a1c3414aff5e6d0a364093e240"
+      },
+      "sourceOverallRank": 3,
+      "sourceMorphologyRank": 1,
+      "selectedOverall": true,
+      "morphologyId": "m1-balanced",
+      "fitness": 2434.2492568443554,
+      "creatureId": "2bee28cf-caab-47d5-8da9-fd98ba826881",
+      "creatureSha256": "e0d73a65cf16207af86e2aed4589792cdac9572d11bd3305da8fe29e1e74be86",
+      "sourceDomainScores": [
+        3210.344727,
+        2486.163574,
+        2249.845215
+      ],
+      "expectedReplayFitness": 3210.344727
+    },
+    {
+      "config": {
+        "path": "configs/rank-000004-b8bd1fde3393c3bc.json",
+        "sha256": "5ed622559678df6e0b9bb99a1fe7cb03e1d3eee08fa86e092654d65a7ca7eb90"
+      },
+      "sourceOverallRank": 4,
+      "sourceMorphologyRank": 2,
+      "selectedOverall": true,
+      "morphologyId": "m1-balanced",
+      "fitness": 2337.629078415593,
+      "creatureId": "9978c82e-9034-41cc-9916-3d5453535f67",
+      "creatureSha256": "b8bd1fde3393c3bc6d6912ae68108c9b7f31c6dd3a0d3e836b32461d8ac4b6f1",
+      "sourceDomainScores": [
+        2054.837158,
+        2501.965576,
+        3499.890625
+      ],
+      "expectedReplayFitness": 2054.837158
+    },
+    {
+      "config": {
+        "path": "configs/rank-000005-dfbe743a07e2ebf1.json",
+        "sha256": "0ab88e8aa5a1dc6512894d8d028bd696ad72a26a66a544467bd8acc1474526e7"
+      },
+      "sourceOverallRank": 5,
+      "sourceMorphologyRank": 2,
+      "selectedOverall": false,
+      "morphologyId": "m0-champion-proportions",
+      "fitness": 2295.5219122942854,
+      "creatureId": "5e9746dd-409f-4172-95af-78e6dda97136",
+      "creatureSha256": "dfbe743a07e2ebf17fd6e2ba3b994ac1db52b61936b965fd00100343797c1bbf",
+      "sourceDomainScores": [
+        2579.648438,
+        2280.146729,
+        2231.987305
+      ],
+      "expectedReplayFitness": 2579.648438
+    },
+    {
+      "config": {
+        "path": "configs/rank-000006-ec78c502fe2d7bf9.json",
+        "sha256": "96241556b64f7338a907ab8633d302f6cb9176247e878cec1a3cfc9682e6708a"
+      },
+      "sourceOverallRank": 6,
+      "sourceMorphologyRank": 3,
+      "selectedOverall": false,
+      "morphologyId": "m1-balanced",
+      "fitness": 2245.398283009369,
+      "creatureId": "d90e7f25-1065-4fde-b3e3-75aeb0ee5d45",
+      "creatureSha256": "ec78c502fe2d7bf97ff649d33f487d92e50066ac356f8943edbe1e8f7e6d39d9",
+      "sourceDomainScores": [
+        2221.027588,
+        2102.196045,
+        2918.793701
+      ],
+      "expectedReplayFitness": 2221.027588
+    },
+    {
+      "config": {
+        "path": "configs/rank-000007-4eec6a6256a186f9.json",
+        "sha256": "1454fef9057d9218067e3e8dfe632859804eac1356b9d49054220799eb1eee86"
+      },
+      "sourceOverallRank": 7,
+      "sourceMorphologyRank": 3,
+      "selectedOverall": false,
+      "morphologyId": "m0-champion-proportions",
+      "fitness": 2189.2791457744524,
+      "creatureId": "07647ae4-d2e4-4dc6-a9de-173f92cc1b2b",
+      "creatureSha256": "4eec6a6256a186f90c2df6ae2c43ac2e04a3b88daa013d98a80d1b31255168f5",
+      "sourceDomainScores": [
+        2125.69873,
+        2005.437256,
+        3135.081787
+      ],
+      "expectedReplayFitness": 2125.69873
+    },
+    {
+      "config": {
+        "path": "configs/rank-000008-e667805144d17dab.json",
+        "sha256": "b95b4f3d4ccff574f745df55d288ebc920c693f53b7546587d68cb67ca175a2d"
+      },
+      "sourceOverallRank": 8,
+      "sourceMorphologyRank": 4,
+      "selectedOverall": false,
+      "morphologyId": "m1-balanced",
+      "fitness": 2178.095360011399,
+      "creatureId": "eb769a0f-02d6-4b8d-8c99-2ece5816ff1e",
+      "creatureSha256": "e667805144d17dab878735de7e673f5ac36f5acb4e05eb0f8ec0a8ce4e435109",
+      "sourceDomainScores": [
+        2980.133301,
+        2102.911865,
+        2024.032227
+      ],
+      "expectedReplayFitness": 2980.133301
+    },
+    {
+      "config": {
+        "path": "configs/rank-000009-4d6beecaab048536.json",
+        "sha256": "e707630fec3166f66c21a4e28cb37e5a844deb4190d63a63c6ae65eea775a18f"
+      },
+      "sourceOverallRank": 9,
+      "sourceMorphologyRank": 2,
+      "selectedOverall": false,
+      "morphologyId": "m2-wheel-biased",
+      "fitness": 2089.8064648879704,
+      "creatureId": "3e935b4b-49f3-4885-a704-2c95b0e72fce",
+      "creatureSha256": "4d6beecaab048536c17a565d37446cdce68f548ed52650be4a6630d940a13efb",
+      "sourceDomainScores": [
+        2464.680908,
+        2180.105225,
+        1980.16687
+      ],
+      "expectedReplayFitness": 2464.680908
+    },
+    {
+      "config": {
+        "path": "configs/rank-000010-f72012b74623e7a8.json",
+        "sha256": "cb9462a5a7f36c30b580da4d3bf97de4444aa783a32726111ae838edd47a1075"
+      },
+      "sourceOverallRank": 10,
+      "sourceMorphologyRank": 3,
+      "selectedOverall": false,
+      "morphologyId": "m2-wheel-biased",
+      "fitness": 2046.063257708831,
+      "creatureId": "9e449801-c1e4-4134-b0be-65e899e73991",
+      "creatureSha256": "f72012b74623e7a851875c529e53c29871de8c1467577c8c4978a1c3c5ffafae",
+      "sourceDomainScores": [
+        2055.715576,
+        2017.403076,
+        2153.401123
+      ],
+      "expectedReplayFitness": 2055.715576
+    },
+    {
+      "config": {
+        "path": "configs/rank-000011-44f842b0ddb008c4.json",
+        "sha256": "ed9d21a361647034cc211baf086a84202ad2b85e8158f00a6b86a127551a5786"
+      },
+      "sourceOverallRank": 11,
+      "sourceMorphologyRank": 4,
+      "selectedOverall": false,
+      "morphologyId": "m2-wheel-biased",
+      "fitness": 2020.576237003347,
+      "creatureId": "4f69e23a-3b30-48b0-a23d-bf4526a3f281",
+      "creatureSha256": "44f842b0ddb008c4a3a22ed151a3613c81193c9b62d0f5fd0c7a8ef603cb67b7",
+      "sourceDomainScores": [
+        2285.047363,
+        2279.975098,
+        1895.654297
+      ],
+      "expectedReplayFitness": 2285.047363
+    },
+    {
+      "config": {
+        "path": "configs/rank-000013-0ec4a1bf6e2de9a3.json",
+        "sha256": "f192e4a57b615aaee904394ba98b146a3281b269a896cb75a230951f15002269"
+      },
+      "sourceOverallRank": 13,
+      "sourceMorphologyRank": 4,
+      "selectedOverall": false,
+      "morphologyId": "m0-champion-proportions",
+      "fitness": 2010.6354561764033,
+      "creatureId": "2121d6c7-db64-4455-97e1-693f51d8625b",
+      "creatureSha256": "0ec4a1bf6e2de9a3bc02f376207c51b9c74738da68b7a08f7687f6e84eb582b3",
+      "sourceDomainScores": [
+        2763.230957,
+        2056.634277,
+        1836.082764
+      ],
+      "expectedReplayFitness": 2763.230957
+    }
+  ],
+  "topOverall": [
+    {
+      "config": {
+        "path": "configs/rank-000001-29110bd1d872e1aa.json",
+        "sha256": "c3bc8f2380c9723842bea218911a2970c9fa32d9d5365c2dca011278e5d5b395"
+      },
+      "sourceOverallRank": 1,
+      "sourceMorphologyRank": 1,
+      "selectedOverall": true,
+      "morphologyId": "m2-wheel-biased",
+      "fitness": 2814.8387194920506,
+      "creatureId": "c1047420-3316-466b-ae60-a60267bae10b",
+      "creatureSha256": "29110bd1d872e1aa47194969a73f2b14c52f2d52a3b99aef783f18d48b322c8e",
+      "sourceDomainScores": [
+        2735.471191,
+        2753.276123,
+        3218.892822
+      ],
+      "expectedReplayFitness": 2735.471191
+    },
+    {
+      "config": {
+        "path": "configs/rank-000002-f64a11f0fe959963.json",
+        "sha256": "48f2cda215b05a6cc7aa06bc714d94d90e99796343111d413b9056d414d5a150"
+      },
+      "sourceOverallRank": 2,
+      "sourceMorphologyRank": 1,
+      "selectedOverall": true,
+      "morphologyId": "m0-champion-proportions",
+      "fitness": 2441.2456423729877,
+      "creatureId": "13f50459-15ca-4ec4-a135-0047a1bdff4c",
+      "creatureSha256": "f64a11f0fe959963a2594c59beea5a7c0a18f835b0ef84cf0bdd18c111630837",
+      "sourceDomainScores": [
+        2478.979248,
+        2358.511719,
+        2750.087891
+      ],
+      "expectedReplayFitness": 2478.979248
+    },
+    {
+      "config": {
+        "path": "configs/rank-000003-e0d73a65cf16207a.json",
+        "sha256": "98a22463aeff41ccd4fdc22338fd0a4082c101a1c3414aff5e6d0a364093e240"
+      },
+      "sourceOverallRank": 3,
+      "sourceMorphologyRank": 1,
+      "selectedOverall": true,
+      "morphologyId": "m1-balanced",
+      "fitness": 2434.2492568443554,
+      "creatureId": "2bee28cf-caab-47d5-8da9-fd98ba826881",
+      "creatureSha256": "e0d73a65cf16207af86e2aed4589792cdac9572d11bd3305da8fe29e1e74be86",
+      "sourceDomainScores": [
+        3210.344727,
+        2486.163574,
+        2249.845215
+      ],
+      "expectedReplayFitness": 3210.344727
+    },
+    {
+      "config": {
+        "path": "configs/rank-000004-b8bd1fde3393c3bc.json",
+        "sha256": "5ed622559678df6e0b9bb99a1fe7cb03e1d3eee08fa86e092654d65a7ca7eb90"
+      },
+      "sourceOverallRank": 4,
+      "sourceMorphologyRank": 2,
+      "selectedOverall": true,
+      "morphologyId": "m1-balanced",
+      "fitness": 2337.629078415593,
+      "creatureId": "9978c82e-9034-41cc-9916-3d5453535f67",
+      "creatureSha256": "b8bd1fde3393c3bc6d6912ae68108c9b7f31c6dd3a0d3e836b32461d8ac4b6f1",
+      "sourceDomainScores": [
+        2054.837158,
+        2501.965576,
+        3499.890625
+      ],
+      "expectedReplayFitness": 2054.837158
+    }
+  ],
+  "topPerMorphology": [
+    {
+      "morphologyId": "m0-champion-proportions",
+      "candidates": [
+        {
+          "config": {
+            "path": "configs/rank-000002-f64a11f0fe959963.json",
+            "sha256": "48f2cda215b05a6cc7aa06bc714d94d90e99796343111d413b9056d414d5a150"
+          },
+          "sourceOverallRank": 2,
+          "sourceMorphologyRank": 1,
+          "selectedOverall": true,
+          "morphologyId": "m0-champion-proportions",
+          "fitness": 2441.2456423729877,
+          "creatureId": "13f50459-15ca-4ec4-a135-0047a1bdff4c",
+          "creatureSha256": "f64a11f0fe959963a2594c59beea5a7c0a18f835b0ef84cf0bdd18c111630837",
+          "sourceDomainScores": [
+            2478.979248,
+            2358.511719,
+            2750.087891
+          ],
+          "expectedReplayFitness": 2478.979248
+        },
+        {
+          "config": {
+            "path": "configs/rank-000005-dfbe743a07e2ebf1.json",
+            "sha256": "0ab88e8aa5a1dc6512894d8d028bd696ad72a26a66a544467bd8acc1474526e7"
+          },
+          "sourceOverallRank": 5,
+          "sourceMorphologyRank": 2,
+          "selectedOverall": false,
+          "morphologyId": "m0-champion-proportions",
+          "fitness": 2295.5219122942854,
+          "creatureId": "5e9746dd-409f-4172-95af-78e6dda97136",
+          "creatureSha256": "dfbe743a07e2ebf17fd6e2ba3b994ac1db52b61936b965fd00100343797c1bbf",
+          "sourceDomainScores": [
+            2579.648438,
+            2280.146729,
+            2231.987305
+          ],
+          "expectedReplayFitness": 2579.648438
+        },
+        {
+          "config": {
+            "path": "configs/rank-000007-4eec6a6256a186f9.json",
+            "sha256": "1454fef9057d9218067e3e8dfe632859804eac1356b9d49054220799eb1eee86"
+          },
+          "sourceOverallRank": 7,
+          "sourceMorphologyRank": 3,
+          "selectedOverall": false,
+          "morphologyId": "m0-champion-proportions",
+          "fitness": 2189.2791457744524,
+          "creatureId": "07647ae4-d2e4-4dc6-a9de-173f92cc1b2b",
+          "creatureSha256": "4eec6a6256a186f90c2df6ae2c43ac2e04a3b88daa013d98a80d1b31255168f5",
+          "sourceDomainScores": [
+            2125.69873,
+            2005.437256,
+            3135.081787
+          ],
+          "expectedReplayFitness": 2125.69873
+        },
+        {
+          "config": {
+            "path": "configs/rank-000013-0ec4a1bf6e2de9a3.json",
+            "sha256": "f192e4a57b615aaee904394ba98b146a3281b269a896cb75a230951f15002269"
+          },
+          "sourceOverallRank": 13,
+          "sourceMorphologyRank": 4,
+          "selectedOverall": false,
+          "morphologyId": "m0-champion-proportions",
+          "fitness": 2010.6354561764033,
+          "creatureId": "2121d6c7-db64-4455-97e1-693f51d8625b",
+          "creatureSha256": "0ec4a1bf6e2de9a3bc02f376207c51b9c74738da68b7a08f7687f6e84eb582b3",
+          "sourceDomainScores": [
+            2763.230957,
+            2056.634277,
+            1836.082764
+          ],
+          "expectedReplayFitness": 2763.230957
+        }
+      ]
+    },
+    {
+      "morphologyId": "m1-balanced",
+      "candidates": [
+        {
+          "config": {
+            "path": "configs/rank-000003-e0d73a65cf16207a.json",
+            "sha256": "98a22463aeff41ccd4fdc22338fd0a4082c101a1c3414aff5e6d0a364093e240"
+          },
+          "sourceOverallRank": 3,
+          "sourceMorphologyRank": 1,
+          "selectedOverall": true,
+          "morphologyId": "m1-balanced",
+          "fitness": 2434.2492568443554,
+          "creatureId": "2bee28cf-caab-47d5-8da9-fd98ba826881",
+          "creatureSha256": "e0d73a65cf16207af86e2aed4589792cdac9572d11bd3305da8fe29e1e74be86",
+          "sourceDomainScores": [
+            3210.344727,
+            2486.163574,
+            2249.845215
+          ],
+          "expectedReplayFitness": 3210.344727
+        },
+        {
+          "config": {
+            "path": "configs/rank-000004-b8bd1fde3393c3bc.json",
+            "sha256": "5ed622559678df6e0b9bb99a1fe7cb03e1d3eee08fa86e092654d65a7ca7eb90"
+          },
+          "sourceOverallRank": 4,
+          "sourceMorphologyRank": 2,
+          "selectedOverall": true,
+          "morphologyId": "m1-balanced",
+          "fitness": 2337.629078415593,
+          "creatureId": "9978c82e-9034-41cc-9916-3d5453535f67",
+          "creatureSha256": "b8bd1fde3393c3bc6d6912ae68108c9b7f31c6dd3a0d3e836b32461d8ac4b6f1",
+          "sourceDomainScores": [
+            2054.837158,
+            2501.965576,
+            3499.890625
+          ],
+          "expectedReplayFitness": 2054.837158
+        },
+        {
+          "config": {
+            "path": "configs/rank-000006-ec78c502fe2d7bf9.json",
+            "sha256": "96241556b64f7338a907ab8633d302f6cb9176247e878cec1a3cfc9682e6708a"
+          },
+          "sourceOverallRank": 6,
+          "sourceMorphologyRank": 3,
+          "selectedOverall": false,
+          "morphologyId": "m1-balanced",
+          "fitness": 2245.398283009369,
+          "creatureId": "d90e7f25-1065-4fde-b3e3-75aeb0ee5d45",
+          "creatureSha256": "ec78c502fe2d7bf97ff649d33f487d92e50066ac356f8943edbe1e8f7e6d39d9",
+          "sourceDomainScores": [
+            2221.027588,
+            2102.196045,
+            2918.793701
+          ],
+          "expectedReplayFitness": 2221.027588
+        },
+        {
+          "config": {
+            "path": "configs/rank-000008-e667805144d17dab.json",
+            "sha256": "b95b4f3d4ccff574f745df55d288ebc920c693f53b7546587d68cb67ca175a2d"
+          },
+          "sourceOverallRank": 8,
+          "sourceMorphologyRank": 4,
+          "selectedOverall": false,
+          "morphologyId": "m1-balanced",
+          "fitness": 2178.095360011399,
+          "creatureId": "eb769a0f-02d6-4b8d-8c99-2ece5816ff1e",
+          "creatureSha256": "e667805144d17dab878735de7e673f5ac36f5acb4e05eb0f8ec0a8ce4e435109",
+          "sourceDomainScores": [
+            2980.133301,
+            2102.911865,
+            2024.032227
+          ],
+          "expectedReplayFitness": 2980.133301
+        }
+      ]
+    },
+    {
+      "morphologyId": "m2-wheel-biased",
+      "candidates": [
+        {
+          "config": {
+            "path": "configs/rank-000001-29110bd1d872e1aa.json",
+            "sha256": "c3bc8f2380c9723842bea218911a2970c9fa32d9d5365c2dca011278e5d5b395"
+          },
+          "sourceOverallRank": 1,
+          "sourceMorphologyRank": 1,
+          "selectedOverall": true,
+          "morphologyId": "m2-wheel-biased",
+          "fitness": 2814.8387194920506,
+          "creatureId": "c1047420-3316-466b-ae60-a60267bae10b",
+          "creatureSha256": "29110bd1d872e1aa47194969a73f2b14c52f2d52a3b99aef783f18d48b322c8e",
+          "sourceDomainScores": [
+            2735.471191,
+            2753.276123,
+            3218.892822
+          ],
+          "expectedReplayFitness": 2735.471191
+        },
+        {
+          "config": {
+            "path": "configs/rank-000009-4d6beecaab048536.json",
+            "sha256": "e707630fec3166f66c21a4e28cb37e5a844deb4190d63a63c6ae65eea775a18f"
+          },
+          "sourceOverallRank": 9,
+          "sourceMorphologyRank": 2,
+          "selectedOverall": false,
+          "morphologyId": "m2-wheel-biased",
+          "fitness": 2089.8064648879704,
+          "creatureId": "3e935b4b-49f3-4885-a704-2c95b0e72fce",
+          "creatureSha256": "4d6beecaab048536c17a565d37446cdce68f548ed52650be4a6630d940a13efb",
+          "sourceDomainScores": [
+            2464.680908,
+            2180.105225,
+            1980.16687
+          ],
+          "expectedReplayFitness": 2464.680908
+        },
+        {
+          "config": {
+            "path": "configs/rank-000010-f72012b74623e7a8.json",
+            "sha256": "cb9462a5a7f36c30b580da4d3bf97de4444aa783a32726111ae838edd47a1075"
+          },
+          "sourceOverallRank": 10,
+          "sourceMorphologyRank": 3,
+          "selectedOverall": false,
+          "morphologyId": "m2-wheel-biased",
+          "fitness": 2046.063257708831,
+          "creatureId": "9e449801-c1e4-4134-b0be-65e899e73991",
+          "creatureSha256": "f72012b74623e7a851875c529e53c29871de8c1467577c8c4978a1c3c5ffafae",
+          "sourceDomainScores": [
+            2055.715576,
+            2017.403076,
+            2153.401123
+          ],
+          "expectedReplayFitness": 2055.715576
+        },
+        {
+          "config": {
+            "path": "configs/rank-000011-44f842b0ddb008c4.json",
+            "sha256": "ed9d21a361647034cc211baf086a84202ad2b85e8158f00a6b86a127551a5786"
+          },
+          "sourceOverallRank": 11,
+          "sourceMorphologyRank": 4,
+          "selectedOverall": false,
+          "morphologyId": "m2-wheel-biased",
+          "fitness": 2020.576237003347,
+          "creatureId": "4f69e23a-3b30-48b0-a23d-bf4526a3f281",
+          "creatureSha256": "44f842b0ddb008c4a3a22ed151a3613c81193c9b62d0f5fd0c7a8ef603cb67b7",
+          "sourceDomainScores": [
+            2285.047363,
+            2279.975098,
+            1895.654297
+          ],
+          "expectedReplayFitness": 2285.047363
+        }
+      ]
+    }
+  ]
+}

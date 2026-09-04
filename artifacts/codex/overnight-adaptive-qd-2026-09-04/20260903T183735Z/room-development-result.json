@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "bankSeed": 240909,
+  "bankNormalizedSha256": "1be486299688ec395a2785e1c150ad136eaf93d91573ad902d74088f9163daf7",
+  "matchedCompute": {
+    "R3": {
+      "candidateEvaluations": 50005,
+      "domainSimulations": 150026,
+      "wallSeconds": 1025.5626838207245
+    },
+    "R5": {
+      "candidateEvaluations": 30003,
+      "domainSimulations": 150194,
+      "wallSeconds": 1025.231684923172
+    }
+  },
+  "trainingResults": {
+    "R3": {
+      "acceptedBestRobustFitness": 3152.3614591203545,
+      "acceptedTop5MeanRobustFitness": 2601.1834689494185,
+      "rawQdScore": 65382.60496164868,
+      "domainSimulationQdAuc": 8166237280.859572,
+      "occupiedCells": 43
+    },
+    "R5": {
+      "acceptedBestRobustFitness": 2107.319312618339,
+      "acceptedTop5MeanRobustFitness": 2012.3967824855586,
+      "rawQdScore": 49410.16741277207,
+      "domainSimulationQdAuc": 6287027598.292974,
+      "occupiedCells": 37
+    },
+    "R5PercentChangeFromR3": {
+      "acceptedBestRobustFitness": -33.151088796575614,
+      "acceptedTop5MeanRobustFitness": -22.635338625370494,
+      "rawQdScore": -24.429185038200185,
+      "domainSimulationQdAuc": -23.01194072539604
+    }
+  },
+  "holdoutReplayResults": {
+    "casesPerCandidate": 7,
+    "selectedCandidatesPerRoom": 12,
+    "R3": {
+      "replayParityPass": 84,
+      "motionPass": 52,
+      "rollingSignatures": 0,
+      "allCaseMotionValidCandidates": 0,
+      "medianWorstCaseFitness": 791.928955,
+      "meanWorstCaseFitness": 770.4417368333333
+    },
+    "R5": {
+      "replayParityPass": 84,
+      "motionPass": 62,
+      "rollingSignatures": 0,
+      "allCaseMotionValidCandidates": 2,
+      "medianWorstCaseFitness": 787.7812805,
+      "meanWorstCaseFitness": 781.9315261666667
+    }
+  },
+  "bestAllCaseMotionValidCandidate": {
+    "room": "R5",
+    "sourceIndex": 2,
+    "creatureSha256": "19e50be68fa6aeb52997522f69d47d9fb735667f40dcbcfa09f93bc9225f154c",
+    "baselineRobustFitness": 2016.9066723235053,
+    "worstCaseFitness": 963.273621,
+    "meanHoldoutFitness": 1856.2083128571428,
+    "worstCaseRetention": 0.4775995013642823,
+    "motionPasses": 7,
+    "motionCases": 7,
+    "rollingSignatures": 0
+  },
+  "decision": {
+    "systemPromoted": false,
+    "provisionalSystemForUntouchedConfirmation": "current-fixed-mixed/R5-gravity",
+    "control": "current-fixed-mixed/R3",
+    "reason": "R5's large training-score regressions prevent development-only promotion, but its two all-case motion-valid candidates versus R3's zero justify untouched paired confirmation."
+  }
+}

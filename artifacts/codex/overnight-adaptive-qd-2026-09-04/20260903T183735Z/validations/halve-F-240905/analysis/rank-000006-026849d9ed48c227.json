@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "configuredFitnessSimulationUnits": 2517.06958,
+  "replayedFitnessSimulationUnits": 2517.06958,
+  "rawMaxDistanceSimulationUnits": 2517.06958,
+  "undiscountedRawDistanceSimulationUnits": 2517.06958,
+  "selectedFitnessSimulationUnits": 2517.06958,
+  "discountedFitnessSimulationUnits": 2517.06958,
+  "maxDistanceMeters": 25.167480795442955,
+  "finalDistanceMeters": 25.088004194934236,
+  "finalToMaxDistanceRatio": 0.9968420915404806,
+  "pathLengthMeters": 40.28068861088389,
+  "pathEfficiency": 0.6248026452219755,
+  "radialMonotonicity": 0.77,
+  "averagePathSpeedMetersPerSecond": 0.6713448101813982,
+  "comHeightMeters": {
+    "median": 0.845072567,
+    "p95": 2.7270484,
+    "max": 3.11324596
+  },
+  "nearGroundTimeFraction": 0.21482098251457118,
+  "unsupportedPathFraction": 0.7993027286160013,
+  "longestUnsupportedSeconds": 4.1000000000000005,
+  "rootRotationRadians": 442.49281791393105,
+  "rootAxisRotationRadians": 183.100677276935,
+  "rootSpinRateRadiansPerSecond": 7.374880298565517,
+  "rootRollingCoupling": 0.6502234448004541,
+  "rootTransverseTravelFraction": 0.20633635260363078,
+  "rootAxisStability": 0.4137935574641344,
+  "rollingExplainedFraction": 0.378082073087854,
+  "rollingDiscountEnabled": false,
+  "rollingDiscountLambda": 1.0,
+  "rollingDiscountPower": 1.0,
+  "rollingDiscountEpsilonSimulationUnits": 1e-06,
+  "rollingDiscountConfig": {
+    "enabled": false,
+    "lambda": 1.0,
+    "power": 1.0,
+    "epsilonSimulationUnits": 1e-06
+  },
+  "rollingSignatureEnabled": true,
+  "rollingSignature": false,
+  "rollingSignatureConfig": {
+    "enabled": true,
+    "minSpinRateRadiansPerSecond": 1.0,
+    "minRootRollingCoupling": 0.8,
+    "maxRootRollingCoupling": 1.2,
+    "minRootTransverseTravelFraction": 0.8,
+    "maxRootAxisStability": 0.2,
+    "maxRootTravelAlignment": 0.25,
+    "minActiveSegmentSimulationUnits": 0.0
+  },
+  "capsuleRotationRatesRadiansPerSecond": {
+    "m1-balanced-capsule-0": 7.374880298565517,
+    "m1-balanced-capsule-1": 5.0424731877436555,
+    "m1-balanced-capsule-2": 5.8354290226468395
+  },
+  "maxCapsuleRotationRateRadiansPerSecond": 7.374880298565517,
+  "jointRotationRatesRadiansPerSecond": [
+    8.183208151006037,
+    7.729687718445278
+  ],
+  "minJointRotationRateRadiansPerSecond": 7.729687718445278,
+  "credibility": {
+    "passes": true,
+    "maxSpinRateRadiansPerSecond": 10.0,
+    "maxCapsuleRotationRateRadiansPerSecond": 10.0,
+    "minJointRotationRateRadiansPerSecond": 0.0,
+    "maxUnsupportedPathFraction": 1.0,
+    "clearanceEpsilonMeters": 0.02,
+    "rollingDiscountEnabled": false,
+    "rollingDiscountLambda": 1.0,
+    "rollingExplainedFraction": 0.378082073087854
+  }
+}

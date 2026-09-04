@@ -1,0 +1,566 @@
+{
+  "schemaVersion": 1,
+  "summaryCount": 80,
+  "summaries": [
+    {
+      "routeId": "confirm-R3-240907",
+      "artifactPath": "route-summaries/confirm-R3-240907.json",
+      "sourcePath": "training-runs/confirm-R3-240907/summary.json",
+      "sha256": "d44dda40a675d1f9a9ebca1247238eb8cfa96678b98119e40cba5bf7bf6bb097",
+      "bytes": 1191
+    },
+    {
+      "routeId": "confirm-R5-240907",
+      "artifactPath": "route-summaries/confirm-R5-240907.json",
+      "sourcePath": "training-runs/confirm-R5-240907/summary.json",
+      "sha256": "dabc97c6ff816448fec93c10e136cfd445f36709b10984a502c48aa3f381435b",
+      "bytes": 1189
+    },
+    {
+      "routeId": "confirm2-R3-240907",
+      "artifactPath": "route-summaries/confirm2-R3-240907.json",
+      "sourcePath": "training-runs/confirm2-R3-240907/summary.json",
+      "sha256": "8ae285190b0a8e187da14c6f6d1d3b9472618670767e6995fddb15ba2e95003a",
+      "bytes": 1192
+    },
+    {
+      "routeId": "confirm2-R3-240908",
+      "artifactPath": "route-summaries/confirm2-R3-240908.json",
+      "sourcePath": "training-runs/confirm2-R3-240908/summary.json",
+      "sha256": "2cbe34828880c7ac042518ebd87e9ed465cef6a1fc51bb97048c36eea05592e5",
+      "bytes": 1192
+    },
+    {
+      "routeId": "confirm2-R5-240907",
+      "artifactPath": "route-summaries/confirm2-R5-240907.json",
+      "sourcePath": "training-runs/confirm2-R5-240907/summary.json",
+      "sha256": "89c595940f3d121985ff43142b3dfd935b41fea57f60be42c37a589e3b2b2014",
+      "bytes": 1192
+    },
+    {
+      "routeId": "confirm2-R5-240908",
+      "artifactPath": "route-summaries/confirm2-R5-240908.json",
+      "sourcePath": "training-runs/confirm2-R5-240908/summary.json",
+      "sha256": "aacf0abef404f228c0777ae5ddf10f915045a9156bf97bec298492a7aea2de2e",
+      "bytes": 1192
+    },
+    {
+      "routeId": "exploit-A-historical-3",
+      "artifactPath": "route-summaries/exploit-A-historical-3.json",
+      "sourcePath": "training-runs/exploit-A-historical-3/summary.json",
+      "sha256": "c3b1dfdb72ff1d6943aa2961eb25d886a0dc2eb394f5190b84b46dc926394260",
+      "bytes": 1198
+    },
+    {
+      "routeId": "exploit-F-historical-1",
+      "artifactPath": "route-summaries/exploit-F-historical-1.json",
+      "sourcePath": "training-runs/exploit-F-historical-1/summary.json",
+      "sha256": "3418a5f40028b88400a1fde736b0fbde19e4ce1d66bb1eaafeffce1f37e71192",
+      "bytes": 1198
+    },
+    {
+      "routeId": "exploit-F-historical-2",
+      "artifactPath": "route-summaries/exploit-F-historical-2.json",
+      "sourcePath": "training-runs/exploit-F-historical-2/summary.json",
+      "sha256": "b4a078acea464ff641b21f7fcc26cf5fe7a4aaa9666d92d5c77e69fa3b8b9ecf",
+      "bytes": 1198
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240907-friction-060",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240907-friction-060.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240907-friction-060/summary.json",
+      "sha256": "4f56708333147462f697f60c63347817e523e5ea13f61221e7b3522b49dcdf2c",
+      "bytes": 1189
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240907-friction-100",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240907-friction-100.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240907-friction-100/summary.json",
+      "sha256": "1c56f6a9827e75e1bb5b414b7a8dd4fff1ad20bb0af0970c7347d8c636ab26f2",
+      "bytes": 1193
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240907-gravity-101",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240907-gravity-101.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240907-gravity-101/summary.json",
+      "sha256": "adc539efdda0e2f6c4a912e980fc2709baab3b321726f7d5110c2197adc79eb1",
+      "bytes": 1194
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240907-gravity-99",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240907-gravity-99.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240907-gravity-99/summary.json",
+      "sha256": "054820f65f3ecd063b2a18dce8dc6aeb8419d429f0b420ef1dcac69f5fab806e",
+      "bytes": 1188
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240907-mass-099",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240907-mass-099.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240907-mass-099/summary.json",
+      "sha256": "1cf0d98ebb2e033c6a6579ed3ef4d35c17b1f49d996da42921d385b582e04fe3",
+      "bytes": 1190
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240907-mass-101",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240907-mass-101.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240907-mass-101/summary.json",
+      "sha256": "f478a9c7d2b88746866f9a1e8f22a816ec9e9cb6b74f9e466b078bbc293844ac",
+      "bytes": 1187
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240907-nominal",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240907-nominal.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240907-nominal/summary.json",
+      "sha256": "89dfab38db80c2dee45e6c022307a562b92544253b8329bc3e755b82041c3830",
+      "bytes": 1189
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240908-friction-060",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240908-friction-060.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240908-friction-060/summary.json",
+      "sha256": "ce7c8e52ef7c165e4cf78222a53f826d40ee9e7c616eaa8cf34e44b17b6e948e",
+      "bytes": 1187
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240908-friction-100",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240908-friction-100.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240908-friction-100/summary.json",
+      "sha256": "92d966bf12be24ea32aa2b7cdadbe9f755b1afd6257dbb474b875fae8b10004a",
+      "bytes": 1193
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240908-gravity-101",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240908-gravity-101.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240908-gravity-101/summary.json",
+      "sha256": "cbc6b0108541113a40bd4e7567717f71feb34073ded77837500179db49242424",
+      "bytes": 1194
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240908-gravity-99",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240908-gravity-99.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240908-gravity-99/summary.json",
+      "sha256": "3d1623fd5b87eba6df4cb3b89baece238930dff3d9025012be2cf7c295461e86",
+      "bytes": 1192
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240908-mass-099",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240908-mass-099.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240908-mass-099/summary.json",
+      "sha256": "2eba8061ffe271983a4d22f0bbb13f473527d648d4519626e0f6ec66401c7b44",
+      "bytes": 1190
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240908-mass-101",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240908-mass-101.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240908-mass-101/summary.json",
+      "sha256": "a4f52b3c040d13b4da94c8b3812eb6e4139c767df6d9bca4e87605f8d9fcfb02",
+      "bytes": 1186
+    },
+    {
+      "routeId": "finalhold-confirm2-R3-240908-nominal",
+      "artifactPath": "route-summaries/finalhold-confirm2-R3-240908-nominal.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R3-240908-nominal/summary.json",
+      "sha256": "5242261c808d6a8e63a71fb799736b1db8534368b57379fd9f4e7013e3f9fc80",
+      "bytes": 1189
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240907-friction-060",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240907-friction-060.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240907-friction-060/summary.json",
+      "sha256": "0ee20a0e9f7fa8cdf817be34cb1eea72c931fb48a1b1a1579ec032f767417604",
+      "bytes": 1193
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240907-friction-100",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240907-friction-100.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240907-friction-100/summary.json",
+      "sha256": "0cea2d756b8fa12039af691b864f2f7e62308c1fd7c82c9c14c3c9d87e945063",
+      "bytes": 1193
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240907-gravity-101",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240907-gravity-101.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240907-gravity-101/summary.json",
+      "sha256": "b161f790dc4292522ee7bda41192697cb87fa0f6293b6ac5cad0d1e74c7395a4",
+      "bytes": 1188
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240907-gravity-99",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240907-gravity-99.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240907-gravity-99/summary.json",
+      "sha256": "bd5d6c9c959590fe79e38d5dcd55013f9fbce00e75136ab17660aface9de29b5",
+      "bytes": 1192
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240907-mass-099",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240907-mass-099.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240907-mass-099/summary.json",
+      "sha256": "8f241ba2445ad2e0b30a16067e513b4543bf1789fa872aaa19ec75ca76ac280d",
+      "bytes": 1184
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240907-mass-101",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240907-mass-101.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240907-mass-101/summary.json",
+      "sha256": "fcb6aa9bfedfe1da6281dfb4dc9446eded9942d2c4fad405cd8ce9daac90c581",
+      "bytes": 1191
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240907-nominal",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240907-nominal.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240907-nominal/summary.json",
+      "sha256": "6e9da0ce213c6baf829f86ebaa085cbb8d999b8bfe91004014cd92262a4cd0cb",
+      "bytes": 1188
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240908-friction-060",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240908-friction-060.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240908-friction-060/summary.json",
+      "sha256": "90c5cb93991c8ff5b1f3ad15b1cc100a45d7676e4df5b4b2f714692e977b9599",
+      "bytes": 1193
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240908-friction-100",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240908-friction-100.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240908-friction-100/summary.json",
+      "sha256": "4910a9f5841fd6d821f3e104de9c20f71973358779802d464a0a228246f88dbd",
+      "bytes": 1193
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240908-gravity-101",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240908-gravity-101.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240908-gravity-101/summary.json",
+      "sha256": "974d0ccecf1209f08341387e49a8e2b23055735949f1a3647c983b1409906539",
+      "bytes": 1194
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240908-gravity-99",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240908-gravity-99.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240908-gravity-99/summary.json",
+      "sha256": "785a32789b4d87daa77ea1225dc1092dce498c5536a484c4ed638ba451a00cc7",
+      "bytes": 1187
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240908-mass-099",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240908-mass-099.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240908-mass-099/summary.json",
+      "sha256": "a3c4eadf780fd1d0025f55998fb5524ad0c66c8bee5e3945ece876efaaf20657",
+      "bytes": 1191
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240908-mass-101",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240908-mass-101.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240908-mass-101/summary.json",
+      "sha256": "9beb0ffcffa75e508295276bcd3d711704c918a7708bf4dad9bcca64cf8861cb",
+      "bytes": 1191
+    },
+    {
+      "routeId": "finalhold-confirm2-R5-240908-nominal",
+      "artifactPath": "route-summaries/finalhold-confirm2-R5-240908-nominal.json",
+      "sourcePath": "training-runs/finalhold-confirm2-R5-240908-nominal/summary.json",
+      "sha256": "b3d928d262bfd8e09c36c54597441c2753236e5b0db015c37bd29c63a4bf8287",
+      "bytes": 1189
+    },
+    {
+      "routeId": "halve-A-240905",
+      "artifactPath": "route-summaries/halve-A-240905.json",
+      "sourcePath": "training-runs/halve-A-240905/summary.json",
+      "sha256": "867fa38bb7351cbb4e417c54f6658a7f2a154db061ca9cc591bdeb7527f626df",
+      "bytes": 1188
+    },
+    {
+      "routeId": "halve-A-240906",
+      "artifactPath": "route-summaries/halve-A-240906.json",
+      "sourcePath": "training-runs/halve-A-240906/summary.json",
+      "sha256": "51c1e0527bc42f715ab342d0745f0fd9915b0d5243f7060bfecabe5ae2660cae",
+      "bytes": 1188
+    },
+    {
+      "routeId": "halve-F-240905",
+      "artifactPath": "route-summaries/halve-F-240905.json",
+      "sourcePath": "training-runs/halve-F-240905/summary.json",
+      "sha256": "e37ce17778007488bf59458651f3c2113441c57b758ad99339b37b183452630f",
+      "bytes": 1187
+    },
+    {
+      "routeId": "halve-F-240906",
+      "artifactPath": "route-summaries/halve-F-240906.json",
+      "sourcePath": "training-runs/halve-F-240906/summary.json",
+      "sha256": "302cdff1322931fa85582f513f2870b181690951689eb2c2afddcce62c04832f",
+      "bytes": 1188
+    },
+    {
+      "routeId": "holdout-friction-060",
+      "artifactPath": "route-summaries/holdout-friction-060.json",
+      "sourcePath": "training-runs/holdout-friction-060/summary.json",
+      "sha256": "841574df0a0372edfc51d808bc3c77e2ad2b0baabd321871e847a69ecb8433d1",
+      "bytes": 1194
+    },
+    {
+      "routeId": "holdout-friction-100",
+      "artifactPath": "route-summaries/holdout-friction-100.json",
+      "sourcePath": "training-runs/holdout-friction-100/summary.json",
+      "sha256": "300fc40f12460f6a4ee30202fe398a9c6adc25adcdda9e46a4ab784fd135ae9c",
+      "bytes": 1192
+    },
+    {
+      "routeId": "holdout-gravity-101",
+      "artifactPath": "route-summaries/holdout-gravity-101.json",
+      "sourcePath": "training-runs/holdout-gravity-101/summary.json",
+      "sha256": "9d5db121b9eeda08db4f23a1dff8fb16ad88bf83c1e1ecaae06c5255d987a779",
+      "bytes": 1195
+    },
+    {
+      "routeId": "holdout-gravity-99",
+      "artifactPath": "route-summaries/holdout-gravity-99.json",
+      "sourcePath": "training-runs/holdout-gravity-99/summary.json",
+      "sha256": "81b2874c2215c3088fed2141dc0e0b4903e21e78fc05e739ec57cd5f0283f15f",
+      "bytes": 1192
+    },
+    {
+      "routeId": "holdout-mass-099",
+      "artifactPath": "route-summaries/holdout-mass-099.json",
+      "sourcePath": "training-runs/holdout-mass-099/summary.json",
+      "sha256": "ec2d0cd2a9815d06af95649b56b7f4af5646f0b5a25d89fd065dc0af2994fc5d",
+      "bytes": 1190
+    },
+    {
+      "routeId": "holdout-mass-101",
+      "artifactPath": "route-summaries/holdout-mass-101.json",
+      "sourcePath": "training-runs/holdout-mass-101/summary.json",
+      "sha256": "02055f277ba9928d49553cf87ff3d3db972065683182b1fb4ffab58d273cd480",
+      "bytes": 1192
+    },
+    {
+      "routeId": "holdout-nominal",
+      "artifactPath": "route-summaries/holdout-nominal.json",
+      "sourcePath": "training-runs/holdout-nominal/summary.json",
+      "sha256": "638df6cfa5e720ac2bce9fe8f4bc63569eda7cbe4010ead4645a7e86bceb8a1a",
+      "bytes": 1188
+    },
+    {
+      "routeId": "holdout2-friction-060",
+      "artifactPath": "route-summaries/holdout2-friction-060.json",
+      "sourcePath": "training-runs/holdout2-friction-060/summary.json",
+      "sha256": "c3a9434dea3ee8f1a4f930ef90cccefc97c15f659807d6197e0053a9665738ab",
+      "bytes": 1192
+    },
+    {
+      "routeId": "holdout2-friction-100",
+      "artifactPath": "route-summaries/holdout2-friction-100.json",
+      "sourcePath": "training-runs/holdout2-friction-100/summary.json",
+      "sha256": "a1961cfcc53e6a3ac4301b731d89153c14ba7cfeead20218fecf9a06ef9608bc",
+      "bytes": 1194
+    },
+    {
+      "routeId": "holdout2-gravity-101",
+      "artifactPath": "route-summaries/holdout2-gravity-101.json",
+      "sourcePath": "training-runs/holdout2-gravity-101/summary.json",
+      "sha256": "8f49f5598d7b26ab9dd6b71c7b743c26140998bb9950002c83338bf16159d9f6",
+      "bytes": 1194
+    },
+    {
+      "routeId": "holdout2-gravity-99",
+      "artifactPath": "route-summaries/holdout2-gravity-99.json",
+      "sourcePath": "training-runs/holdout2-gravity-99/summary.json",
+      "sha256": "918f858fa313e2ee2e3700c4b84351fe3112ba3c6edd42565b7a381c1f1ceb29",
+      "bytes": 1193
+    },
+    {
+      "routeId": "holdout2-mass-099",
+      "artifactPath": "route-summaries/holdout2-mass-099.json",
+      "sourcePath": "training-runs/holdout2-mass-099/summary.json",
+      "sha256": "cf4fd5361e22e445776bea7524b7e2e6e0f406815a160e23c4533c2d41ad2086",
+      "bytes": 1190
+    },
+    {
+      "routeId": "holdout2-mass-101",
+      "artifactPath": "route-summaries/holdout2-mass-101.json",
+      "sourcePath": "training-runs/holdout2-mass-101/summary.json",
+      "sha256": "b93ab4fa80a8a6046646116f79d658e2bf094149f141fa7621981a3deb2c7a27",
+      "bytes": 1191
+    },
+    {
+      "routeId": "holdout2-nominal",
+      "artifactPath": "route-summaries/holdout2-nominal.json",
+      "sourcePath": "training-runs/holdout2-nominal/summary.json",
+      "sha256": "1f38ea8ef27477c5718c0cf3687025ed8ec96d4f33d14bb065b784efb8eeae00",
+      "bytes": 1189
+    },
+    {
+      "routeId": "match-A-240903",
+      "artifactPath": "route-summaries/match-A-240903.json",
+      "sourcePath": "training-runs/match-A-240903/summary.json",
+      "sha256": "a48f88dab0da7d7c491f0ae983416ad0d9e2fdab4f516e149894c4d6e004342a",
+      "bytes": 1181
+    },
+    {
+      "routeId": "match-A-240904",
+      "artifactPath": "route-summaries/match-A-240904.json",
+      "sourcePath": "training-runs/match-A-240904/summary.json",
+      "sha256": "e39a4eb3803e07132b55252db05d71465ff187eee31324d1ff64e660737eff94",
+      "bytes": 1182
+    },
+    {
+      "routeId": "match-F-240903",
+      "artifactPath": "route-summaries/match-F-240903.json",
+      "sourcePath": "training-runs/match-F-240903/summary.json",
+      "sha256": "36eae231bfff517eef7203fe1656882e0cfa129ecc0f0418a1c848c01010c594",
+      "bytes": 1181
+    },
+    {
+      "routeId": "match-F-240904",
+      "artifactPath": "route-summaries/match-F-240904.json",
+      "sourcePath": "training-runs/match-F-240904/summary.json",
+      "sha256": "1b9235bf5d7665e55e5b586c0b43247668a5c8ae3374213652f490ef4bbac523",
+      "bytes": 1181
+    },
+    {
+      "routeId": "match-S-240903",
+      "artifactPath": "route-summaries/match-S-240903.json",
+      "sourcePath": "training-runs/match-S-240903/summary.json",
+      "sha256": "25fbb631c97e96d5c55518e42e6dc2ce4435f2cc9ccf087864d0f2df7b4412e8",
+      "bytes": 1181
+    },
+    {
+      "routeId": "match-S-240904",
+      "artifactPath": "route-summaries/match-S-240904.json",
+      "sourcePath": "training-runs/match-S-240904/summary.json",
+      "sha256": "d23d1d858d335eb94930fac6ceab09472cc784bd2e82bd096ec8ca0a74be4c93",
+      "bytes": 1181
+    },
+    {
+      "routeId": "overnight-F-240903",
+      "artifactPath": "route-summaries/overnight-F-240903.json",
+      "sourcePath": "training-runs/overnight-F-240903/summary.json",
+      "sha256": "df72e2b3cba45d36940c3e291f6353b242f3e051f1917d79bd60d208c22a74c5",
+      "bytes": 1179
+    },
+    {
+      "routeId": "room-R3-240909",
+      "artifactPath": "route-summaries/room-R3-240909.json",
+      "sourcePath": "training-runs/room-R3-240909/summary.json",
+      "sha256": "9081cb38b77c15b085edbe0f7a012232809c968f1513e42bcd389c16749738e4",
+      "bytes": 1188
+    },
+    {
+      "routeId": "room-R5-240909",
+      "artifactPath": "route-summaries/room-R5-240909.json",
+      "sourcePath": "training-runs/room-R5-240909/summary.json",
+      "sha256": "7e9c3bcc573e4c03d16c6a1591f75722682af51e728c27180d9699226c2fb2bd",
+      "bytes": 1187
+    },
+    {
+      "routeId": "roomhold-R3-friction-060",
+      "artifactPath": "route-summaries/roomhold-R3-friction-060.json",
+      "sourcePath": "training-runs/roomhold-R3-friction-060/summary.json",
+      "sha256": "f608dc384397da733646d5711b72c701d06e2be3936650a8f1f43b11491688a3",
+      "bytes": 1188
+    },
+    {
+      "routeId": "roomhold-R3-friction-100",
+      "artifactPath": "route-summaries/roomhold-R3-friction-100.json",
+      "sourcePath": "training-runs/roomhold-R3-friction-100/summary.json",
+      "sha256": "7f30b17749676d1eb400345805d4ff25f2a75470043194404de6b40c0f770c0a",
+      "bytes": 1193
+    },
+    {
+      "routeId": "roomhold-R3-gravity-101",
+      "artifactPath": "route-summaries/roomhold-R3-gravity-101.json",
+      "sourcePath": "training-runs/roomhold-R3-gravity-101/summary.json",
+      "sha256": "c536551299fcf9a516f314482fc228ec76735806a4df37d3d33ecee60b789b7c",
+      "bytes": 1194
+    },
+    {
+      "routeId": "roomhold-R3-gravity-99",
+      "artifactPath": "route-summaries/roomhold-R3-gravity-99.json",
+      "sourcePath": "training-runs/roomhold-R3-gravity-99/summary.json",
+      "sha256": "6d5bfaa01e4cfcaba342460cba4a7f4df6f6bc461a5fa8f0a7137c834c92b131",
+      "bytes": 1190
+    },
+    {
+      "routeId": "roomhold-R3-mass-099",
+      "artifactPath": "route-summaries/roomhold-R3-mass-099.json",
+      "sourcePath": "training-runs/roomhold-R3-mass-099/summary.json",
+      "sha256": "57b3dff6003d2be43a74aec0d14e50b60d969af1539a6d1c2febbccfaa83db15",
+      "bytes": 1186
+    },
+    {
+      "routeId": "roomhold-R3-mass-101",
+      "artifactPath": "route-summaries/roomhold-R3-mass-101.json",
+      "sourcePath": "training-runs/roomhold-R3-mass-101/summary.json",
+      "sha256": "871362f5c180f10f3c8bae28f79f7b0fc2608446cf5e61d31ee4f70f76e2b13f",
+      "bytes": 1191
+    },
+    {
+      "routeId": "roomhold-R3-nominal",
+      "artifactPath": "route-summaries/roomhold-R3-nominal.json",
+      "sourcePath": "training-runs/roomhold-R3-nominal/summary.json",
+      "sha256": "14b637fba8d27f3b5d545707ec29d146197496a3083337e9f5e1a70186d242c8",
+      "bytes": 1189
+    },
+    {
+      "routeId": "roomhold-R5-friction-060",
+      "artifactPath": "route-summaries/roomhold-R5-friction-060.json",
+      "sourcePath": "training-runs/roomhold-R5-friction-060/summary.json",
+      "sha256": "bebcbbec124f8d77979e14fffa27659cb9c227952d563cc5c7657b9b1b36b26b",
+      "bytes": 1193
+    },
+    {
+      "routeId": "roomhold-R5-friction-100",
+      "artifactPath": "route-summaries/roomhold-R5-friction-100.json",
+      "sourcePath": "training-runs/roomhold-R5-friction-100/summary.json",
+      "sha256": "7c081cdd60a4c2b1963b9dae5c10a6b3ac27f64dd07db06ac3313cf52a0f6e00",
+      "bytes": 1193
+    },
+    {
+      "routeId": "roomhold-R5-gravity-101",
+      "artifactPath": "route-summaries/roomhold-R5-gravity-101.json",
+      "sourcePath": "training-runs/roomhold-R5-gravity-101/summary.json",
+      "sha256": "5ced4e99b73bc78f3c6cbf11b30cc8a718aeebd1dacd8b4a9ceb8a3d84ab293d",
+      "bytes": 1194
+    },
+    {
+      "routeId": "roomhold-R5-gravity-99",
+      "artifactPath": "route-summaries/roomhold-R5-gravity-99.json",
+      "sourcePath": "training-runs/roomhold-R5-gravity-99/summary.json",
+      "sha256": "8efea3cbc8d3b1378382d2184f9b882f5fb7015d8a923eaea870a95a345051ec",
+      "bytes": 1192
+    },
+    {
+      "routeId": "roomhold-R5-mass-099",
+      "artifactPath": "route-summaries/roomhold-R5-mass-099.json",
+      "sourcePath": "training-runs/roomhold-R5-mass-099/summary.json",
+      "sha256": "dc010dab9bd797dc4405940761e31664fc0f4b962f57eefe20fe631ed7896199",
+      "bytes": 1190
+    },
+    {
+      "routeId": "roomhold-R5-mass-101",
+      "artifactPath": "route-summaries/roomhold-R5-mass-101.json",
+      "sourcePath": "training-runs/roomhold-R5-mass-101/summary.json",
+      "sha256": "e6aa86ac806bf95d8cbb1370f6f4f164d972919139bd58db22bc99460d939da6",
+      "bytes": 1184
+    },
+    {
+      "routeId": "roomhold-R5-nominal",
+      "artifactPath": "route-summaries/roomhold-R5-nominal.json",
+      "sourcePath": "training-runs/roomhold-R5-nominal/summary.json",
+      "sha256": "214d109d622f5fe87fc9e1076c67f222c44e92e5ecee1e019b7aa9e553e78dee",
+      "bytes": 1189
+    },
+    {
+      "routeId": "screen-F-240903",
+      "artifactPath": "route-summaries/screen-F-240903.json",
+      "sourcePath": "training-runs/screen-F-240903/summary.json",
+      "sha256": "dec0b73957faef5d8a48514c1801bd5ef66082ab9015bbb85d937b6744f83420",
+      "bytes": 1179
+    },
+    {
+      "routeId": "smoke-A-240903",
+      "artifactPath": "route-summaries/smoke-A-240903.json",
+      "sourcePath": "training-runs/smoke-A-240903/summary.json",
+      "sha256": "ff3dd91aa5c307e4e803e3f4ab9b59d5831f3ca0ca27759bdc38b3f318b90aea",
+      "bytes": 1176
+    }
+  ]
+}

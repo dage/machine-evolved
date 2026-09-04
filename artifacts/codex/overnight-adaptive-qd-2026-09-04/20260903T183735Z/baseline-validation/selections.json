@@ -1,0 +1,19 @@
+{
+  "sourceCheckpoint": "/Users/dag/projects/Machine-Evolved-credible-training/training-runs/me-v2-harmonic-qd-01-2h/config.json",
+  "selectionRule": "global champion, top four per morphology, highest-airborne representative, highest-rotation representative",
+  "uniqueSelections": [
+    {"label": "m0-rank-1", "index": 32},
+    {"label": "m0-rank-2", "index": 1},
+    {"label": "m0-rank-3", "index": 33},
+    {"label": "m0-rank-4", "index": 19},
+    {"label": "m1-rank-1-global-champion-high-airborne", "index": 28},
+    {"label": "m1-rank-2", "index": 6},
+    {"label": "m1-rank-3", "index": 30},
+    {"label": "m1-rank-4", "index": 5},
+    {"label": "m2-rank-1", "index": 9},
+    {"label": "m2-rank-2", "index": 8},
+    {"label": "m2-rank-3", "index": 0},
+    {"label": "m2-rank-4", "index": 13},
+    {"label": "highest-rotation", "index": 36}
+  ]
+}
