@@ -285,8 +285,109 @@
           "evaluationCap": 44
         }
       ]
+    },
+    {
+      "routeId": "fork-R5-240911",
+      "runName": "followup-fork-R5-240911",
+      "checkpoint": "training-runs/followup-fork-R5-240911/config.json",
+      "checkpointSha256": "506a419bfb0cc0e13f8042c530c6f2906181b227c35c4e605bf80663af5058c8",
+      "archiveEntryCount": 41,
+      "sourceEvaluations": 24003,
+      "validationRoutes": [
+        {
+          "id": "validate-fork-R5-240911-nominal",
+          "case": "nominal",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-nominal.json",
+          "configSha256": "07e7db185d829974bbe8f685b91b7df279a3cbd6a7f0cc8c892209549b8bc6b7",
+          "evaluationCap": 41
+        },
+        {
+          "id": "validate-fork-R5-240911-gravity-99",
+          "case": "gravity-99",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-99.json",
+          "configSha256": "ebf55e26115ab41f7b7b8d113b19446ebdc057c5f77259bbdf4d62e7f5d561c5",
+          "evaluationCap": 41
+        },
+        {
+          "id": "validate-fork-R5-240911-gravity-101",
+          "case": "gravity-101",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-101.json",
+          "configSha256": "15971a6b816251f835b351af02318d4e54d96e6beecc8da36c2590fadc2d3f83",
+          "evaluationCap": 41
+        },
+        {
+          "id": "validate-fork-R5-240911-mass-99",
+          "case": "mass-99",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-mass-99.json",
+          "configSha256": "6697c87a37097a6deb0d35c2b465da47fee4afc98b5d976bf5441b72779ff253",
+          "evaluationCap": 41
+        },
+        {
+          "id": "validate-fork-R5-240911-mass-101",
+          "case": "mass-101",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-mass-101.json",
+          "configSha256": "48a8809f72fc68083e20fa562366a9b051410a07db296a0e1c7f4b4f1bab380c",
+          "evaluationCap": 41
+        },
+        {
+          "id": "validate-fork-R5-240911-friction-060",
+          "case": "friction-060",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-friction-060.json",
+          "configSha256": "ad749066c597057debd6a3a696ae03bdc1b730e925d34fac0c5cd9a6a6fa6298",
+          "evaluationCap": 41
+        },
+        {
+          "id": "validate-fork-R5-240911-friction-100",
+          "case": "friction-100",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-friction-100.json",
+          "configSha256": "f120e732f2dd43a83425b2b5c37252cbbbce8bf78877cd43e20d8d37a5a17c5f",
+          "evaluationCap": 41
+        },
+        {
+          "id": "validate-fork-R5-240911-gravity-985",
+          "case": "gravity-985",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-985.json",
+          "configSha256": "5d6d8cd6b0551660bd230c35151a8631a21dab7ea490e9c9ce74eff625b12659",
+          "evaluationCap": 41
+        },
+        {
+          "id": "validate-fork-R5-240911-gravity-1015",
+          "case": "gravity-1015",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-1015.json",
+          "configSha256": "634f21176f8b9870a6b1e3566b451139808759971fe06fc5acfa70c3fa0a934d",
+          "evaluationCap": 41
+        },
+        {
+          "id": "validate-fork-R5-240911-mass-985",
+          "case": "mass-985",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-mass-985.json",
+          "configSha256": "762d7446ec600962d7ed6b6f30a224ca89dfa794da84c63a3c94d7ce7edb849f",
+          "evaluationCap": 41
+        },
+        {
+          "id": "validate-fork-R5-240911-mass-1015",
+          "case": "mass-1015",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-mass-1015.json",
+          "configSha256": "bea959500387d5fc86568519470297fd9e3df017cd333d0abf63adbab5e82dae",
+          "evaluationCap": 41
+        },
+        {
+          "id": "validate-fork-R5-240911-gravity-101-mass-101",
+          "case": "gravity-101-mass-101",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-101-mass-101.json",
+          "configSha256": "9695ac757233c41b4bcec5cd4bd31125164d5883f35a8420327d0e1ced4160e0",
+          "evaluationCap": 41
+        },
+        {
+          "id": "validate-fork-R5-240911-gravity-99-friction-060",
+          "case": "gravity-99-friction-060",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-99-friction-060.json",
+          "configSha256": "1bb4e916006a88035b28fd39626cd7ec9298b953b9abb7dd811938a7f43ea780",
+          "evaluationCap": 41
+        }
+      ]
     }
   ],
-  "preparedSourceCount": 2,
-  "preparedValidationRouteCount": 26
+  "preparedSourceCount": 3,
+  "preparedValidationRouteCount": 39
 }

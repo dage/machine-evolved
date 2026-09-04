@@ -448,6 +448,188 @@
         "summary.json",
         "config.json"
       ]
+    },
+    {
+      "id": "validate-fork-R5-240911-nominal",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-nominal.json",
+      "runName": "followup-validate-fork-R5-240911-nominal",
+      "evaluationCap": 41,
+      "seed": 241911,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-gravity-99",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-99.json",
+      "runName": "followup-validate-fork-R5-240911-gravity-99",
+      "evaluationCap": 41,
+      "seed": 241912,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-gravity-101",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-101.json",
+      "runName": "followup-validate-fork-R5-240911-gravity-101",
+      "evaluationCap": 41,
+      "seed": 241913,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-mass-99",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-mass-99.json",
+      "runName": "followup-validate-fork-R5-240911-mass-99",
+      "evaluationCap": 41,
+      "seed": 241914,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-mass-101",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-mass-101.json",
+      "runName": "followup-validate-fork-R5-240911-mass-101",
+      "evaluationCap": 41,
+      "seed": 241915,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-friction-060",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-friction-060.json",
+      "runName": "followup-validate-fork-R5-240911-friction-060",
+      "evaluationCap": 41,
+      "seed": 241916,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-friction-100",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-friction-100.json",
+      "runName": "followup-validate-fork-R5-240911-friction-100",
+      "evaluationCap": 41,
+      "seed": 241917,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-gravity-985",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-985.json",
+      "runName": "followup-validate-fork-R5-240911-gravity-985",
+      "evaluationCap": 41,
+      "seed": 241918,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-gravity-1015",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-1015.json",
+      "runName": "followup-validate-fork-R5-240911-gravity-1015",
+      "evaluationCap": 41,
+      "seed": 241919,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-mass-985",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-mass-985.json",
+      "runName": "followup-validate-fork-R5-240911-mass-985",
+      "evaluationCap": 41,
+      "seed": 241920,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-mass-1015",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-mass-1015.json",
+      "runName": "followup-validate-fork-R5-240911-mass-1015",
+      "evaluationCap": 41,
+      "seed": 241921,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-gravity-101-mass-101",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-101-mass-101.json",
+      "runName": "followup-validate-fork-R5-240911-gravity-101-mass-101",
+      "evaluationCap": 41,
+      "seed": 241922,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-gravity-99-friction-060",
+      "phase": "exhaustive-archive-validation",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-99-friction-060.json",
+      "runName": "followup-validate-fork-R5-240911-gravity-99-friction-060",
+      "evaluationCap": 41,
+      "seed": 241923,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
     }
   ]
 }
