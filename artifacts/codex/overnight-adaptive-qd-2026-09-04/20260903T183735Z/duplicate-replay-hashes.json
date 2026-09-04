@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "sampleRateHz": 20,
+  "deterministicReplayPairs": {
+    "winner": {
+      "first": "final-replays/winner-a.json",
+      "second": "final-replays/winner-b.json",
+      "firstSha256": "40e2eb2e43748a6d2d1641ca7642d1b4ee00d4fc565b6830a62a6c5755c949ef",
+      "secondSha256": "40e2eb2e43748a6d2d1641ca7642d1b4ee00d4fc565b6830a62a6c5755c949ef",
+      "byteIdentical": true
+    },
+    "robust": {
+      "first": "final-replays/robust-a.json",
+      "second": "final-replays/robust-b.json",
+      "firstSha256": "f0bdfdb84453ea7da0d5dd71228cb28f1ea9119f2858869a5dd1eb97474650a6",
+      "secondSha256": "f0bdfdb84453ea7da0d5dd71228cb28f1ea9119f2858869a5dd1eb97474650a6",
+      "byteIdentical": true
+    }
+  }
+}

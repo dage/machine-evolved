@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "overnight-adaptive-qd-2026-09-04",
+  "capturedAtUtc": "2026-09-03T18:45:00Z",
+  "source": {
+    "repository": "https://github.com/dage/machine-evolved.git",
+    "branch": "codex/overnight-adaptive-qd-2026-09-04",
+    "startingCommit": "9ebf67add6087d7a6ae30764d1ee6e29b9608029",
+    "startingTree": "5eb09be285e18fc1c355f0dc916f82fa5160a478",
+    "implementationCommitBeforeFinalArtifacts": "ce936a351a0b8291a64921ab6fb993a87d95d503"
+  },
+  "hashesSha256": {
+    "CMakeLists.txt": "8be01181a7512c36360b747851c81e2f4a3c2d11ef75d6eebb05a46fc4169ea7",
+    "machine-evolved-trainer/Trainer.py": "70f3dc3fed8bdf365bac6b3bb5d14647c197d5aeb6e63ba6d7bb7b3175ca8dd3",
+    "machine-evolved-trainer/MapElites.py": "d566282e67bb9140141edf6c61261de5df44efff3d42516a26e4369c95d58566",
+    "machine-evolved-trainer/Creature.py": "6e36fcb0a1d0127ca5995968c618967e10f7c0d4c90d089ee505301ed6d3fc45",
+    "machine-evolved-trainer/LinearMotorController.py": "e38ead2fe5fbc7a4368cf5a17789108bf51d2d98b5308b65ba6a333702d20061",
+    "machine-evolved-trainer/configs/me-v2-harmonic-qd-01.json": "003b59c749b2dc80b2690b12d8b7949027af8cc50ca29183a7d270d46c79bc36",
+    "scripts/run-training.sh": "cba9ff861f8c290a5847960f4f6ae7b02a71335c566d1ad49f3d91022bd40d82",
+    "build/shellworker": "cbdfac841720b9a2cd94aa2ab5549cf7978c4289a63e0338d3755013478dfbfe",
+    "build/replayworker": "f9dadb77e8fdd9097490cbc411e46b6147d5e14448ad4f2b3a66e265b7bc59d0",
+    "review-data/three-route-snapshot-2026-09-03/three-route-raw-snapshot.tar.xz": "f20a2c912c8525ac319f3b9a55e3d4c199b1cc8bf4ea74788197e3f6249ef3d3",
+    "machine-evolved-trainer/AdaptiveEmitterSelector.py": "ba3b7353b03f643aefc254038355ea33743b27a1ef909b3eabe4e9f0fae4d7a4",
+    "scripts/overnight_supervisor.py": "9219e74e20974a38b847c2318a19a26a83606b84ba02f2a05d32f53d54c63232",
+    "scripts/compare-supervisor-qd.py": "9c11c2701aa3cb756257c4cddd768f7118feb625614526352f6de8a0ddaeae9a",
+    "scripts/prepare-population-robustness.py": "402eb4287d0dc6d6836438d5352fa750497e71ec086a121c9501cd1ccb49f557",
+    "scripts/summarize-population-robustness.py": "67b89b07995a8d7b2b91d44e8f48c2f3bee53761eb9a3f753c55971e7fdf9fab",
+    "scripts/export-population-robustness-replays.py": "07158bb3a6b728bb8b4fcc70f0c7752e37e251e51f04a97ed1211358acdf209b",
+    "scripts/export-movement-dossier.py": "76486c8c05dc78a6a84c832913adf4a3446fccc060df9673a6f96222772594ba"
+  },
+  "machine": {
+    "hostname": "Lovely.local",
+    "kernel": "Darwin 25.6.0 RELEASE_ARM64_T6030 arm64",
+    "macOS": "26.6.2 (25G83)",
+    "cpu": "Apple M3 Pro",
+    "physicalCores": 11,
+    "logicalCores": 11,
+    "memoryBytes": 19327352832,
+    "initialDiskAvailableGiB": 67,
+    "powerAtFinalPreflight": "AC Power, charging"
+  },
+  "verification": {
+    "releaseBuild": "passed",
+    "pythonTrainerTests": {
+      "passed": 28,
+      "failed": 0
+    },
+    "scriptTests": {
+      "passed": 8,
+      "failed": 0
+    },
+    "eightWorkerSmoke": {
+      "passed": true,
+      "acceptedEvaluations": 2,
+      "replayParity": true
+    },
+    "port9999InitiallyFree": true,
+    "oldTrainerOrWorkerProcessesInitiallyPresent": false,
+    "reviewArchiveHashVerified": true,
+    "populationBanksVerified": 6,
+    "finalTestSuites": {
+      "trainer": {
+        "passed": 52,
+        "failed": 0
+      },
+      "scripts": {
+        "passed": 31,
+        "failed": 0
+      },
+      "supervisor": {
+        "passed": 31,
+        "failed": 0
+      },
+      "totalPassed": 114,
+      "totalFailed": 0
+    },
+    "primaryPopulationBanksVerified": 6,
+    "additionalRoomPopulationBanksVerified": 1,
+    "totalPopulationBanksVerified": 7,
+    "correctedConfirmationRoutesCompleted": 4,
+    "correctedConfirmationSingleAttemptCleanExits": 4,
+    "confirmationSelectionReplayParityPass": 48,
+    "confirmationSelectionReplayCount": 48,
+    "confirmationHoldoutReplayParityPass": 336,
+    "confirmationHoldoutReplayCount": 336,
+    "confirmationHoldoutMotionPass": 228,
+    "confirmationHoldoutRollingSignatures": 0,
+    "duplicateReplayPairsByteIdentical": 2,
+    "enabledRoutesMissingSummary": 0,
+    "routeSummariesPromoted": 80
+  },
+  "updatedAtUtc": "2026-09-04T03:54:58.725843+00:00",
+  "finalArtifactHashesSha256": {
+    "comparison-by-evaluations.html": "f361ad514ce40e9c95333739ddb4521e4ae5c47ff05e7185200b515a4088e7f7",
+    "comparison-by-domain-simulations.html": "805a58a3fe3a66c52954a18510d0e9ecd663cb1fde9cc8a5ef8b8fde63a20ac1",
+    "comparison-by-wall-time.html": "d43b51ef945f95380e89becf0f5153273ae8ba3eea047a7d6c018b8824d72c1f",
+    "untouched-confirmation-result.json": "cbceef2148c4a1fc2202b5b087753c7dc055d4c594a0e986a8ddb91ab6a0c957",
+    "final-holdout-results.json": "c86e9d9f1c1407c60026bf0bc48ba3dab17a23648ab9834e6efe92624d921f04",
+    "winner-controller.json": "32402596f9479e446c299d96fa78946942c63efbdabd5d3ac2b3dad4ed56f7c3",
+    "robust-alternative-controller.json": "1997cc15586246aaf3462ef31d95f6beaaeee65f7139cf90ed721132ea420d48",
+    "duplicate-replay-hashes.json": "d76d4e818d4684640d606a756fb64b713d621779627af3f15e533cfff7cb8d80",
+    "winner-motion-analysis.json": "77ea27b3879f7129d4faeab3574607cd7bb887f36a8f7c2ff0fd729b436610f8",
+    "robust-alternative-motion-analysis.json": "b3a5a10d00d6e6702e5b1e950ef9aaf63da83ed3187ac1c0e9bcd1f043bfc8d2",
+    "winner-motion-dossier.txt": "cd8d3d82fdc1e7f46a552f7f66db12aedbae25f6a863b19f93a8aba7433163da",
+    "robust-alternative-motion-dossier.txt": "a65f79598ef72ca4e4866a955929460675830fb1c42a883226457f5be2479155",
+    "route-summary-index.json": "e129017abb71245f7e5bf5a3390fea4b2b1ef7cd0dfe1089bba1f7c8a86a490e",
+    "REPORT.md": "d241f39645ca2af50a3d7b220b5e00e063ed30e2575353333b9e1748a882ea40"
+  },
+  "artifactInventory": {
+    "fileCount": 3218,
+    "totalBytes": 833989190,
+    "jsonFilesParsed": 2926,
+    "jsonlFilesParsed": 5,
+    "requiredOutputFilesVerifiedNonempty": 19,
+    "zeroByteFiles": 0,
+    "temporaryDirectories": 0
+  },
+  "closeout": {
+    "status": "awaiting-immutable-hard-deadline",
+    "hardDeadlineUtc": "2026-09-04T04:37:35Z",
+    "launchAgentActive": true,
+    "heartbeatActive": true,
+    "newLongTrainingAllowed": false
+  },
+  "promotionDecision": {
+    "adaptiveFourArmPromoted": false,
+    "r5GravityRoomPromoted": false,
+    "retainedSystem": "current-fixed-mixed/R3"
+  },
+  "selectedControllers": {
+    "winner": {
+      "artifact": "winner-controller.json",
+      "routeId": "room-R3-240909",
+      "creatureId": "dc2b008c-9505-432a-a253-29506560c59c",
+      "creatureSha256": "a7d00ef9c5ad949fc9f166a7195306d25d7870d024caa88277d3d5f3f7b33e11",
+      "trainingRobustFitness": 3152.3614591203545
+    },
+    "robustAlternative": {
+      "artifact": "robust-alternative-controller.json",
+      "routeId": "confirm2-R5-240907",
+      "creatureId": "17621a5f-1a5d-459a-b2f4-d21300d18337",
+      "creatureSha256": "d013013babc119ce4ba190fe6565fd1e164ce71dae0ffef289fbda992e97a6ae",
+      "trainingRobustFitness": 1912.052172269925,
+      "worstHoldoutFitness": 1157.787598,
+      "holdoutMotionPassCases": 7,
+      "holdoutCaseCount": 7
+    }
+  }
+}
