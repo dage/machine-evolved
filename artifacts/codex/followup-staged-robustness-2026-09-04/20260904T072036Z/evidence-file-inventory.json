@@ -1,0 +1,1837 @@
+{
+  "schemaVersion": 1,
+  "compression": "none",
+  "scope": [
+    "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z",
+    "training-runs/followup-*"
+  ],
+  "fileCount": 365,
+  "totalBytes": 137745346,
+  "files": [
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R3-240910/attempt-001-retained/config.json",
+      "bytes": 7163387,
+      "sha256": "a69aa803684ebc992ccb13407e423c4505a6d9907ead6ee1a71c311d91351f9b"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R3-240910/attempt-001-retained/shellworker.log",
+      "bytes": 200626,
+      "sha256": "66aee9dc950eed75c5645bd9241623baaa144543a2d8b1a63b3acc0a0dca2bc3"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R3-240910/attempt-001-retained/summary.json",
+      "bytes": 1177,
+      "sha256": "c1959bb760f80e01c37a5947788a6632febf5f5505c43226bbcbefadf31a64bd"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R3-240910/attempt-001-retained/trainer.log",
+      "bytes": 3443395,
+      "sha256": "cc5de6a18f540399def6c59a5724b60752658a3e59f6de08a8814c3966a2e353"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R3-240910/attempt-001.log",
+      "bytes": 1616,
+      "sha256": "e603410660fa0a90073fbf5e66dd59223e321b32b8df2dc35162f2eddff552b4"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R3-240910/attempt-002.log",
+      "bytes": 1615,
+      "sha256": "0cce8b093e068865c3873ec2bb7b6c2a007af5f0fbc1a9501a9a84fd2e85c1e3"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R3-240911/attempt-001.log",
+      "bytes": 1616,
+      "sha256": "684b3c142a76604191bacf70b81af48dbf4421082a214458c5f7d612bdf5a89d"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R5-240910/attempt-001.log",
+      "bytes": 1617,
+      "sha256": "1a44fc1aed374617cdf52be7bbab9c6e47934b3f54a7a6cff82d757e888355bb"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R5-240911/attempt-001.log",
+      "bytes": 1617,
+      "sha256": "21b61ca4456a4a089d2b75fa3fa16cff3ebe40821a196d1ec9a1dee0b7384df5"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-friction-060/attempt-001.log",
+      "bytes": 1649,
+      "sha256": "6fd4f680594fa4d4ba175a91a1e201ea183f74a99a99c7bbd3360ab6f110f831"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-friction-100/attempt-001.log",
+      "bytes": 1652,
+      "sha256": "bc5b1628eb7929e93aab923519b9d4dc07a93fe6f110c92928afd0cb731ddeb7"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-gravity-101/attempt-001.log",
+      "bytes": 1655,
+      "sha256": "c4198cca2354a73ac0a3d54a9ec63d54dabbd312a7eb4fe9adb3d06e4897abc3"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-gravity-101-mass-101/attempt-001.log",
+      "bytes": 1675,
+      "sha256": "90aac8cf5c554a3a07fb10804a45c5d308e9ae415363260f7386dca8500c1e29"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-gravity-1015/attempt-001.log",
+      "bytes": 1656,
+      "sha256": "d4b9228b65d5ac028533f20a6ade433c7df794435aad9d71f5f7e80d440d10f2"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-gravity-985/attempt-001.log",
+      "bytes": 1654,
+      "sha256": "44b5a0126edcfbe32917bac76713c9e00ad18ef8bf2d1f8dd174c54909c6436c"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-gravity-99/attempt-001.log",
+      "bytes": 1652,
+      "sha256": "ba65e6eefe84c54ae67eed60bb04cb84a353ef6145aff2e9c2aba71299a227cc"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-gravity-99-friction-060/attempt-001.log",
+      "bytes": 1677,
+      "sha256": "0ea353e05c9434431ce88aa4005987ffa6055038cd21d3385308ef75ff92acb5"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-mass-101/attempt-001.log",
+      "bytes": 1649,
+      "sha256": "c2849fa9f8139cb51b4f85b352c2a2cb4bf247c081eadb21c666c156e03f6f8f"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-mass-1015/attempt-001.log",
+      "bytes": 1652,
+      "sha256": "d46ca8ccaedd3e5679ac58badd313a5921d77f95d37c13d0e0ce7537f7273618"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-mass-985/attempt-001.log",
+      "bytes": 1644,
+      "sha256": "a242d64538176476ad49980ffa33ee6cf4be9ed2cc406495a76ebac7874e8bca"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-mass-99/attempt-001.log",
+      "bytes": 1640,
+      "sha256": "8adfafbe5220ac3ffa092f89b90aee4fc4aa1b7bb1abfdff395169c7a8c96700"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-nominal/attempt-001.log",
+      "bytes": 1645,
+      "sha256": "a72babe5bde624f38210a768a8e9da2b22bfab6095f2f24e9a8e584fcd8d7673"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-friction-060/attempt-001.log",
+      "bytes": 1651,
+      "sha256": "826c1acd4e6f2527e1c60d438575d26d42c6f0e825988af22b38527ae6bb2e33"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-friction-100/attempt-001.log",
+      "bytes": 1654,
+      "sha256": "c772c437010fa00edf5f697d94f443cd7a416b7e77791fbfc8b5e633ae513579"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-gravity-101/attempt-001.log",
+      "bytes": 1655,
+      "sha256": "9c994c540e2636d04f9e889a37bd02b3294ee0afcdb245555bf3e118f3f29023"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-gravity-101-mass-101/attempt-001.log",
+      "bytes": 1675,
+      "sha256": "9cff20514c32c073c3bfc6e4f54f3b23eea4aed8a4116d1336afdfb8ce780739"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-gravity-1015/attempt-001.log",
+      "bytes": 1657,
+      "sha256": "19f8d7963b43010437a9785a41f4b445158d3fb631721a50de35aac5a6abe849"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-gravity-985/attempt-001.log",
+      "bytes": 1654,
+      "sha256": "4e57fb6cbb44a5926098583878795e1951b448828816c8b39e7778235557a5d8"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-gravity-99/attempt-001.log",
+      "bytes": 1645,
+      "sha256": "011448ac46d4bdef549a8d1fc77fd892850c1fa5240c10ee6a261683b8f17491"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-mass-101/attempt-001.log",
+      "bytes": 1649,
+      "sha256": "ae85e22f9f7ba2b3850ef424aa8ff5b01e974fc91ff54f290bd17477e590a9d4"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-mass-1015/attempt-001.log",
+      "bytes": 1648,
+      "sha256": "afcef197df027aad0bbee51d27c3381c2b9eefee3e22bb73d7c615d24134ff2e"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-mass-985/attempt-001.log",
+      "bytes": 1649,
+      "sha256": "3c870c5c752f682588f05b61d75d859f13ca8338ddde334cf0c3f55b24bf1f2c"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-mass-99/attempt-001.log",
+      "bytes": 1639,
+      "sha256": "34e356ec6972a34a4b66a7454464266922fe4bafcff3b7647d0c0dfd25dc5b29"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-nominal/attempt-001.log",
+      "bytes": 1639,
+      "sha256": "f7d3611f56817df0ec3686402b52dc739ec733b4621aafd9f579b5959aae33ba"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-friction-060/attempt-001.log",
+      "bytes": 1654,
+      "sha256": "50591354dcbe991f5f666686dac54af9ec24a3c88f3fb7fee6042b91a60e8c0e"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-friction-100/attempt-001.log",
+      "bytes": 1655,
+      "sha256": "818e09ccd76766e045aa132f44df6223951381c64eaea074ca6752201859681c"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-gravity-101/attempt-001.log",
+      "bytes": 1655,
+      "sha256": "1cb2d41328c5ee1940d907cf3383d961ba1a2e30d944fb67b66519acf5146ec1"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-gravity-101-mass-101/attempt-001.log",
+      "bytes": 1670,
+      "sha256": "fcedc8e2d484ac7abcfebdf7a6ceeb46bd0beebd9dc27c4d38f631ee0ac2c2e5"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-gravity-1015/attempt-001.log",
+      "bytes": 1657,
+      "sha256": "e22944a3474b299c12236823502d805cd470862333d61823de3a479f5cd2ca65"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-gravity-985/attempt-001.log",
+      "bytes": 1649,
+      "sha256": "a43edc446bd2e8dd198c85f7c191c5e446049612e483a3b6b80929d43680b6aa"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-gravity-99/attempt-001.log",
+      "bytes": 1651,
+      "sha256": "277aed81dd79aacf037c65af7c55a5db92082fd497318cef767370bb4fc7fd79"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-gravity-99-friction-060/attempt-001.log",
+      "bytes": 1671,
+      "sha256": "984939b0835bd9d8eafe8843c7c2ee9929458825ec1af5bb50b98bbb3beb0b18"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-mass-101/attempt-001.log",
+      "bytes": 1649,
+      "sha256": "7cf06b32510a1c2b0cd90d9a723a8702b2969b7996a2207b8bc407eb55a7daa9"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-mass-1015/attempt-001.log",
+      "bytes": 1652,
+      "sha256": "6475d2d666b42e236e26da107cf3068bb61c7b37bcb55372b6eff3f5fccb52c1"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-mass-985/attempt-001.log",
+      "bytes": 1649,
+      "sha256": "ea2e6239b76ba72111084dd1400a1383834944c0f70f3218bb97814e55d56588"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-mass-99/attempt-001.log",
+      "bytes": 1646,
+      "sha256": "d6eed35c7078c8f7d4baf127b631bf80d793aafde1dbef3defb25e2a74d64c30"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-nominal/attempt-001.log",
+      "bytes": 1645,
+      "sha256": "eb37db3173366097d0765a001fe93167a3f028c01b8ed1f2e1cbea2eceea5ee9"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-friction-060/attempt-001.log",
+      "bytes": 1655,
+      "sha256": "7b892c2d265aceb9350c9226a3bb643c71611b4e0051d164917d8a92e0b79ed4"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-friction-100/attempt-001.log",
+      "bytes": 1648,
+      "sha256": "bf55e8734815f163a7d53f0324a4f333f30bd9cf42f945fe4bd54061efb68469"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-gravity-101/attempt-001.log",
+      "bytes": 1650,
+      "sha256": "10036b8c45a85bf505849616c9d632c6c0e846f10c59777af8e454c13f14a7b8"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-gravity-101-mass-101/attempt-001.log",
+      "bytes": 1675,
+      "sha256": "b29705711a417704ee0fdf78a6b91dc34236b16759c8d276152f3e3a8fc9ea90"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-gravity-1015/attempt-001.log",
+      "bytes": 1657,
+      "sha256": "26e9e0fa1f323c2aa5c04b1eb96af27110c00c3fafb4df29811968819094d11e"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-gravity-985/attempt-001.log",
+      "bytes": 1654,
+      "sha256": "4995887eec3d784f955b277cf948bad9686397ce584e7719b2f56c66a01c5671"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-gravity-99/attempt-001.log",
+      "bytes": 1649,
+      "sha256": "ba5b331db5f2659065fb879e4f97e29fbdab7edd082d44789593b86d44618f41"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-gravity-99-friction-060/attempt-001.log",
+      "bytes": 1678,
+      "sha256": "cf336de8b7e33b997641c46f057a39525bde78f39243a6c5fcb2ba6053d00f40"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-mass-101/attempt-001.log",
+      "bytes": 1649,
+      "sha256": "0a0045b087515578e607d244a0f8c16b1e5c0477d1f4359612decdd114e6b94f"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-mass-1015/attempt-001.log",
+      "bytes": 1652,
+      "sha256": "614a38266f9d07d51abdf2e58279c7110382224d312604f1c0a8368d901736b5"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-mass-985/attempt-001.log",
+      "bytes": 1648,
+      "sha256": "4659fe6cc6316e8bdcc6f35c9478d9934e2aa20a42009b7218a0d64e94dd6b79"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-mass-99/attempt-001.log",
+      "bytes": 1642,
+      "sha256": "b6b10b3ea3283c77e405cc91686a13b82ddf2bad885fe8328a17f5adb1e7f731"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-nominal/attempt-001.log",
+      "bytes": 1643,
+      "sha256": "9a301ab738d6eb987d5407b95a31d13b521f1515fa2b6ce32d8989d9fe82bcdf"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/warmup-R3-240910/attempt-001.log",
+      "bytes": 1620,
+      "sha256": "224f007bd1376707193abe2632f8b096eda6d56ab7c3da4baa15699e7b4f6015"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/warmup-R3-240911/attempt-001.log",
+      "bytes": 1621,
+      "sha256": "cfb50c894808f484e9eb5eef3f817b941f238afa214f5fbfbb548703960dc96c"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/com.dag.machine-evolved.followup-staged-robustness-2026-09-04.plist",
+      "bytes": 1361,
+      "sha256": "5e958eaa83dac7c9e924f0e674a05b7c592fa275bd4a9d4a34795be435b05c9e"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/epoch.json",
+      "bytes": 363,
+      "sha256": "94e27be90d7a1aea956a3e02bec6f5a7c3a315790b09badff5d9d1cd7a20d469"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/experiment-facts.json",
+      "bytes": 188734,
+      "sha256": "2ce84e26c19db610f98e938b6de815e99fb1cde0b1f38ebcfbd7814c8b19b155"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/experiment-plan.json",
+      "bytes": 1373,
+      "sha256": "3b2003413694ce7a880c1eab04549d0d71c1dcec2282b7c032229d3a4570bba5"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/fork-manifests/fork-240910.json",
+      "bytes": 1322,
+      "sha256": "85ca678c47902f35f4eceeca3d8b7928ee073e9795d72484143e307923433c91"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/fork-manifests/fork-240911.json",
+      "bytes": 1322,
+      "sha256": "0d9ea52ae5ca70d6c97fe73f48e4b926215815c9863c1173b5b5ecf7ba70ad35"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/heartbeats.jsonl",
+      "bytes": 596237,
+      "sha256": "81f4aff5ffbc075cd24f9fee7c7313fbaa56376f2be32e1138a64884d1a25537"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/launchd.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/metrics.jsonl",
+      "bytes": 994613,
+      "sha256": "57e22a491d2dd381d30992418b2e3715be8e8f761c761d8b182e578e23334535"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/orchestrator-state.json",
+      "bytes": 247309,
+      "sha256": "e8ffe567d6c48073f677191484f906dfd0386cbe119ef5201b9b883a5c487ae8"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/population-bank-hashes.json",
+      "bytes": 1585,
+      "sha256": "f414a13a829cfbdf3cb7ede5cd041243626b01f0e6133ff8f6f26cb303db27fa"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/population-banks/initial-bank-240910.json",
+      "bytes": 2292786,
+      "sha256": "7a7dd80121a320fe5bc5bc20c02ea8a6d0d291cf7e3ea1bd93dc0d8d552a7115"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/population-banks/initial-bank-240911.json",
+      "bytes": 2292136,
+      "sha256": "bad88e4f0aee34c9daf35602c458fab4b11473e3bc7945c708b8bac195b83440"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/preflight-results.json",
+      "bytes": 925,
+      "sha256": "87d3b126bd8ee9609b0d1262305c029de7a2587edf283f66152b6e7cab375c84"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/fork-R3-240910.json",
+      "bytes": 2290846,
+      "sha256": "6d3bd2ac4e7c932a511916eaf7721f3a285df18fcb1f42ae0e4b71c354796bf8"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/fork-R3-240911.json",
+      "bytes": 2292640,
+      "sha256": "a0113d0c3860e8ca06f0c6c0732ac9276262e2e398c3cfbd6e1b97f79c50e35f"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/fork-R5-240910.json",
+      "bytes": 2291052,
+      "sha256": "352169a08431c9205ffe3fac08850540f38167af0c1765688e0f7b479a1162bc"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/fork-R5-240911.json",
+      "bytes": 2292846,
+      "sha256": "e0f09e70dd9c457804236d9da7cd3efb6847993cf992efb1639ba703b9208c05"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-friction-060.json",
+      "bytes": 279420,
+      "sha256": "81aa4d6676f4e10a41ad54fa772e669fbaed25a6a54ddeccda72f76721922b55"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-friction-100.json",
+      "bytes": 279420,
+      "sha256": "adcbb5d312419db26ed80919b770f0545305877047ee17440339662839578165"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-gravity-101-mass-101.json",
+      "bytes": 279473,
+      "sha256": "a69fd563b33c6a967f84354e9473a5c569fe1c1fee2d1c628236e645f057e20d"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-gravity-101.json",
+      "bytes": 279416,
+      "sha256": "def1cfec2ef42e67984369760df420e5872b637f6a16c104889914d348f1fe7d"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-gravity-1015.json",
+      "bytes": 279419,
+      "sha256": "1ec99de353baaced451dfbfcd388875b5dbe518cbd7b10f272ba89edfa89bf2c"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-gravity-985.json",
+      "bytes": 279414,
+      "sha256": "5d0221e20469e8c9cefe5ac359c31ee8664169b9414465e2362705e15e0fe991"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-gravity-99-friction-060.json",
+      "bytes": 279471,
+      "sha256": "2f8e5100165716adec721f265d80f8f0835a3113e460bad6834aaff6f3751c00"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-gravity-99.json",
+      "bytes": 279411,
+      "sha256": "5f2209140582319ea7039fc6a8907719dfa8ceaefe6e75a793222e961a620f91"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-mass-101.json",
+      "bytes": 279417,
+      "sha256": "546b19e500c79d7748ca3a9af2697d74123ecfeb548027298763eba4456472d5"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-mass-1015.json",
+      "bytes": 279422,
+      "sha256": "eef901f54e08eee1b1f2bec1bbced294e04f369304b73f07c1c2e9afa5e0f5d2"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-mass-985.json",
+      "bytes": 279417,
+      "sha256": "4c2c85adb3df8cf8558187a10c4b0726a35f4bdf070c5afcab348d85d368496e"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-mass-99.json",
+      "bytes": 279412,
+      "sha256": "e63a0df2d3d3d6c57e6b69cbd72dec01eb8e144029fcf655d21af6c1a94c5d43"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-nominal.json",
+      "bytes": 279385,
+      "sha256": "29d0dee9e2faf57706f2c204085d39f63efbd8ad7a067954d9116ef654124153"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-friction-060.json",
+      "bytes": 254563,
+      "sha256": "71316060bb68787c971c87094a0b7a80b301f2aa6aa87981bc5ed063351b1d49"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-friction-100.json",
+      "bytes": 254563,
+      "sha256": "8289bc12a113517941f87b91a17e478d04a978c0e152b64169e9b9d9371722c8"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-gravity-101-mass-101.json",
+      "bytes": 254616,
+      "sha256": "d01d6692f8a2c3b34732e9c83a9fa3f550df29cecb1dfeb97f885a9ad2c1defb"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-gravity-101.json",
+      "bytes": 254559,
+      "sha256": "0d82230075feb75d52b44b76e3157c6a6f8f427c066a7b9f25e52f1a53a21f3e"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-gravity-1015.json",
+      "bytes": 254562,
+      "sha256": "3d8f6d81562a204d933086d992cce30d06dfa9866a9b3df988aaf44f5ee899d7"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-gravity-985.json",
+      "bytes": 254557,
+      "sha256": "25d44878a08b75e0ab8651ac0fc7624f4b99cd10f0a578a74509ed90ead666cc"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-gravity-99-friction-060.json",
+      "bytes": 254614,
+      "sha256": "767a17c57b6d1f87ac1676d191089bba888366bd8272fc7832c280581ca83411"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-gravity-99.json",
+      "bytes": 254554,
+      "sha256": "51b0c9e60aa9b1fc1dc8f8f1a969b22974da4c8c6027d9dced19fe9a88753fe7"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-mass-101.json",
+      "bytes": 254560,
+      "sha256": "9c81211c78ca33b0131750b69c97262b8ced6c5b31d28a43d133e43efaefeedf"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-mass-1015.json",
+      "bytes": 254565,
+      "sha256": "624be7d5e6fbaaac54acee344e5548b550a110d7892c898bb8b5ac149feffad2"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-mass-985.json",
+      "bytes": 254560,
+      "sha256": "e4d795fc7b0811798145f97fb5ffd5a379b6e1ad7b4dffc99de223bceab20473"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-mass-99.json",
+      "bytes": 254555,
+      "sha256": "b8e638fac5a118f4c470365029ffb3f8e057b81314d871be30d7e484731b45f3"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240911-nominal.json",
+      "bytes": 254528,
+      "sha256": "3fb4ab386c1acc06aee722f78121baab35d27a54db60ceeefe6a7f5e3418423f"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-friction-060.json",
+      "bytes": 279398,
+      "sha256": "99d17355ed144411c5e64799b2471e5e4a7003ee5bb45ce542b2499dd3f45eca"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-friction-100.json",
+      "bytes": 279398,
+      "sha256": "637e7d1cd05e606f09e4bea28f7f63c8312785b259e5831cf41da741f86bd66d"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-gravity-101-mass-101.json",
+      "bytes": 279451,
+      "sha256": "b62816c84317f8f98e3be25944aec82f11277610d9abf4440670684c25a6cda3"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-gravity-101.json",
+      "bytes": 279394,
+      "sha256": "bea33139a500547d8dfc5845e276468c027c86cd61742cb0c693e786fa97c7d6"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-gravity-1015.json",
+      "bytes": 279397,
+      "sha256": "703d7cfa81eea13f7b8398866669640e0f8672ccb9cfbb8306857a2be9c0e7c1"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-gravity-985.json",
+      "bytes": 279392,
+      "sha256": "9e764ac0a53b39055094861b8afb28b9188982c81f18ad28ecc05eadf3b3c423"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-gravity-99-friction-060.json",
+      "bytes": 279449,
+      "sha256": "dca74cec3ccede3bb6cb14ebc07f22d24874861f2e9882caedbd62f4c293339d"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-gravity-99.json",
+      "bytes": 279389,
+      "sha256": "f4970c9537096086030bab234c5ad494720dc979fb493575956bd08e674d6996"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-mass-101.json",
+      "bytes": 279395,
+      "sha256": "a742022da6ce9e90716dc6e2881818c80edcac5959f953b921a8a7ede9602d18"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-mass-1015.json",
+      "bytes": 279400,
+      "sha256": "742b2e9c26eabd9f71548c1a4067198d9c17b20109c56ea9b2e81af4e3821d09"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-mass-985.json",
+      "bytes": 279395,
+      "sha256": "37bca18adba73091a1f8b8edc1abb97a0a2ed729f369c572c54608530ece4d98"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-mass-99.json",
+      "bytes": 279390,
+      "sha256": "5f32572f6fa41fe002bf040a75c3c6bf8bfab7385d642f1de2b4caae924d4aca"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240910-nominal.json",
+      "bytes": 279363,
+      "sha256": "00730961acb66203fba0bd935809a9819a50e606fd1c11e57dbfd2a7d0bcc4e4"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-friction-060.json",
+      "bytes": 260756,
+      "sha256": "ad749066c597057debd6a3a696ae03bdc1b730e925d34fac0c5cd9a6a6fa6298"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-friction-100.json",
+      "bytes": 260756,
+      "sha256": "f120e732f2dd43a83425b2b5c37252cbbbce8bf78877cd43e20d8d37a5a17c5f"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-101-mass-101.json",
+      "bytes": 260809,
+      "sha256": "9695ac757233c41b4bcec5cd4bd31125164d5883f35a8420327d0e1ced4160e0"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-101.json",
+      "bytes": 260752,
+      "sha256": "15971a6b816251f835b351af02318d4e54d96e6beecc8da36c2590fadc2d3f83"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-1015.json",
+      "bytes": 260755,
+      "sha256": "634f21176f8b9870a6b1e3566b451139808759971fe06fc5acfa70c3fa0a934d"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-985.json",
+      "bytes": 260750,
+      "sha256": "5d6d8cd6b0551660bd230c35151a8631a21dab7ea490e9c9ce74eff625b12659"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-99-friction-060.json",
+      "bytes": 260807,
+      "sha256": "1bb4e916006a88035b28fd39626cd7ec9298b953b9abb7dd811938a7f43ea780"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-gravity-99.json",
+      "bytes": 260747,
+      "sha256": "ebf55e26115ab41f7b7b8d113b19446ebdc057c5f77259bbdf4d62e7f5d561c5"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-mass-101.json",
+      "bytes": 260753,
+      "sha256": "48a8809f72fc68083e20fa562366a9b051410a07db296a0e1c7f4b4f1bab380c"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-mass-1015.json",
+      "bytes": 260758,
+      "sha256": "bea959500387d5fc86568519470297fd9e3df017cd333d0abf63adbab5e82dae"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-mass-985.json",
+      "bytes": 260753,
+      "sha256": "762d7446ec600962d7ed6b6f30a224ca89dfa794da84c63a3c94d7ce7edb849f"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-mass-99.json",
+      "bytes": 260748,
+      "sha256": "6697c87a37097a6deb0d35c2b465da47fee4afc98b5d976bf5441b72779ff253"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R5-240911-nominal.json",
+      "bytes": 260721,
+      "sha256": "07e7db185d829974bbe8f685b91b7df279a3cbd6a7f0cc8c892209549b8bc6b7"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/warmup-R3-240910.json",
+      "bytes": 2293182,
+      "sha256": "8707cd4d702830f91f4010188a51c0787aadd9b04a066740a2e1dcaf4576658f"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/warmup-R3-240911.json",
+      "bytes": 2292532,
+      "sha256": "a9816c4861adf023614336dc3571fabeba57bbf55fd6d85749fd9916bfba790a"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/routes.json",
+      "bytes": 28607,
+      "sha256": "c73132808b325f125cf44cb30d3ad6572f4b1fd7408e39ad48a04fefabc172fa"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/supervisor.json",
+      "bytes": 959,
+      "sha256": "5ccfb3f8b8516bc2f5185b7cbc70c1cf69ebb66dd26e4ba351e2dd065021733a"
+    },
+    {
+      "path": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/validation-route-manifest.json",
+      "bytes": 23148,
+      "sha256": "87926e7f397859cad66196aa3e92c0774b57e93b42be5abc5d05abbab23db9e9"
+    },
+    {
+      "path": "training-runs/followup-fork-R3-240910/config.json",
+      "bytes": 7098024,
+      "sha256": "6a1e3145f2abf8537416c76a96970936cc90ff82489bc0d84df610d1c0b84278"
+    },
+    {
+      "path": "training-runs/followup-fork-R3-240910/shellworker.log",
+      "bytes": 56003,
+      "sha256": "c54c0df05142336a5abf57abb6d0ed50383863fbfeafca7a93219d56c824e93c"
+    },
+    {
+      "path": "training-runs/followup-fork-R3-240910/summary.json",
+      "bytes": 1176,
+      "sha256": "adf45e792208f9796d821e8e64b2c977398b5bfaeafbc92c93cc40c4b3ee0678"
+    },
+    {
+      "path": "training-runs/followup-fork-R3-240910/trainer.log",
+      "bytes": 931700,
+      "sha256": "ee5a58be609888c3c6593772c47eeb4fa4c0723f5cc99b74ee7a9a256d099e0c"
+    },
+    {
+      "path": "training-runs/followup-fork-R3-240911/config.json",
+      "bytes": 7134367,
+      "sha256": "b72e813b1f2f56e3111ec9aa017995fe16e2f7baac29c812a744fdfc889debac"
+    },
+    {
+      "path": "training-runs/followup-fork-R3-240911/shellworker.log",
+      "bytes": 242148,
+      "sha256": "1518cd7a41d6f47685afca54e97a1163d2ffd1adb5795c37d04f81a5c0a7ad5b"
+    },
+    {
+      "path": "training-runs/followup-fork-R3-240911/summary.json",
+      "bytes": 1177,
+      "sha256": "faa77832d7b8a74bbf2cfc0547bf911153f39d5a228a32c2d051180c7bfc8ada"
+    },
+    {
+      "path": "training-runs/followup-fork-R3-240911/trainer.log",
+      "bytes": 4371669,
+      "sha256": "c39a3023f7f4e47e64ad686f2ebfb4398ad914415e015b2bfd34284cca794fa3"
+    },
+    {
+      "path": "training-runs/followup-fork-R5-240910/config.json",
+      "bytes": 7559081,
+      "sha256": "07eedfc53cb9d3eb6787f76406d10e0cac54afbf925889804b856c39025c3108"
+    },
+    {
+      "path": "training-runs/followup-fork-R5-240910/shellworker.log",
+      "bytes": 283221,
+      "sha256": "b2e8a4014eebdb4be82f18c605e0453dedf7a45219791656a63dd2236d1b4267"
+    },
+    {
+      "path": "training-runs/followup-fork-R5-240910/summary.json",
+      "bytes": 1178,
+      "sha256": "d03f1f3a803915e013de70980fcaf6f7192be6de421951f231584b51386e2b57"
+    },
+    {
+      "path": "training-runs/followup-fork-R5-240910/trainer.log",
+      "bytes": 2696339,
+      "sha256": "271145d1d50a92b8d7c363dabaa112a267bbb1f80dd25b9ed17e002300056771"
+    },
+    {
+      "path": "training-runs/followup-fork-R5-240911/config.json",
+      "bytes": 7536976,
+      "sha256": "506a419bfb0cc0e13f8042c530c6f2906181b227c35c4e605bf80663af5058c8"
+    },
+    {
+      "path": "training-runs/followup-fork-R5-240911/shellworker.log",
+      "bytes": 235084,
+      "sha256": "0919d352a48f8c38acdd8640278bef98129b39401014be30270acf1bc1e17a3b"
+    },
+    {
+      "path": "training-runs/followup-fork-R5-240911/summary.json",
+      "bytes": 1178,
+      "sha256": "00adcb69d700e00025dfa0a113b5d2971c715e9398ba07a534a3559521114a4e"
+    },
+    {
+      "path": "training-runs/followup-fork-R5-240911/trainer.log",
+      "bytes": 2671106,
+      "sha256": "e1e5344cf9f05d60e5e380e4ffacf68c319a81476acf42aa6c95d84f72b3015f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-friction-060/config.json",
+      "bytes": 594115,
+      "sha256": "a939543dc6f2db50489d4b2eda5d0b8aee7e546a82d9bba8705f9697df3709a5"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-friction-060/shellworker.log",
+      "bytes": 50,
+      "sha256": "bda78f0454a3d1c1713e408d044fd772ff2f7e839e402cd88b89462193e5567d"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-friction-060/summary.json",
+      "bytes": 1188,
+      "sha256": "583caafdcfc225ede989053ceb6539eb1034774ad8b18f1764a10b3ece8b8d6c"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-friction-060/trainer.log",
+      "bytes": 6809,
+      "sha256": "13797e54331338847fd2fda5ce8c901ab93436693b70714a0cff32d60d2299ff"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-friction-100/config.json",
+      "bytes": 607490,
+      "sha256": "53ec27298d21ec8ecc08193020ce8da2f257fe0c3ce8b5f888f156718d301087"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-friction-100/shellworker.log",
+      "bytes": 50,
+      "sha256": "bda78f0454a3d1c1713e408d044fd772ff2f7e839e402cd88b89462193e5567d"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-friction-100/summary.json",
+      "bytes": 1191,
+      "sha256": "7e3b45aaa9a7477fb5e3b3f72beb6682a50c5a96c2e35b95c3dc9889d92bd4fc"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-friction-100/trainer.log",
+      "bytes": 7108,
+      "sha256": "72f3698ad11259705b82f029d1bd4dbf2d277d75cda69ba52511a9ca6584bfbb"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-101/config.json",
+      "bytes": 624740,
+      "sha256": "b9c0b4b99673495894f4b30db4261d17557cb6ee62c5e53cf598086aeb34b4f0"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-101/shellworker.log",
+      "bytes": 88,
+      "sha256": "d3f5fe22590d9091beaa79ef529006032d6df8b58ccaea397be153b7f615f227"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-101/summary.json",
+      "bytes": 1195,
+      "sha256": "ace7b7c85d33aea0bdb875823660ee2bd3e4e2a125731f03a0c4c5db1cb46cd2"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-101/trainer.log",
+      "bytes": 6811,
+      "sha256": "53545fa4bdb3a06e84063b15a7951e9d99fbb36de4f1e3a88a65223493e21778"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-101-mass-101/config.json",
+      "bytes": 583230,
+      "sha256": "0cd20fc4ed5a319bdac8be1250178fed8873259311cdac427ccc622c23eb53ef"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-101-mass-101/shellworker.log",
+      "bytes": 50,
+      "sha256": "3d06edb32f08d4af0888353ab21d35a541c45b915c3b96507643ee5943ab0919"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-101-mass-101/summary.json",
+      "bytes": 1206,
+      "sha256": "f0968a33978d7863d872deb3788be0ea3f935fb8d47bea3a8168623a11730797"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-101-mass-101/trainer.log",
+      "bytes": 5649,
+      "sha256": "4ba497d424d6341fdaff6a1a683c4e2ce0a45626ae7b9cc18c5d28978b1be5d6"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-1015/config.json",
+      "bytes": 634072,
+      "sha256": "1a700b5d4446afd90daa270aaa453da8ebe8d7abcd6442d3b9a46da96525eeee"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-1015/shellworker.log",
+      "bytes": 88,
+      "sha256": "10a793fc973cd2e9a4d4837af97b1083d37d54a330546815983875410d30684b"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-1015/summary.json",
+      "bytes": 1195,
+      "sha256": "d2992912c33ec185905776514c8a2ed0a2be8382ca03276ce2d3a4cd349829ba"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-1015/trainer.log",
+      "bytes": 6528,
+      "sha256": "bf8fbaf251396635e8097ebda4dca80570029385f0028b2e3d2f62ecac12bd27"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-985/config.json",
+      "bytes": 648748,
+      "sha256": "aeb282fa04846d4a209194bbb577668f5f9550936540402695b31e57f732fa4c"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-985/shellworker.log",
+      "bytes": 50,
+      "sha256": "0bd27e9d0f87b0b9afdcb0a05d7259786bf4ef145effa59ba095b971d6c76076"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-985/summary.json",
+      "bytes": 1194,
+      "sha256": "cdc61ee46dd32a8680a87f8b3429ccab1b0586d90dcfe97301854e494e6941c1"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-985/trainer.log",
+      "bytes": 5763,
+      "sha256": "c5e6a5041e123dd213934c89d5645a56b1bd729c9562d261254f80f5608d5e88"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-99/config.json",
+      "bytes": 633815,
+      "sha256": "faab34a6dea093c4699d6bc0bef1733290107942ec7470801ef29204844fc5ae"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-99/shellworker.log",
+      "bytes": 50,
+      "sha256": "946d55b8284478286f7f3a969d76b29c02649f8760a320c5cd9b2e181de4b82e"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-99/summary.json",
+      "bytes": 1193,
+      "sha256": "9bf3c5ce93729997de860588e854d94c6f1338ef96ab1bccd0dbcc9271e4cbd7"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-99/trainer.log",
+      "bytes": 6618,
+      "sha256": "9c8d3b3bfbaea6107f280a79f98763c8707c8c08049adc0eb3b3e6a3c158c5fc"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-99-friction-060/config.json",
+      "bytes": 619455,
+      "sha256": "ce557dd3c0a0598c6b67e3cf0c2df6e74b9fab0568c0a9a4bbe3a4e93eb3adaa"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-99-friction-060/shellworker.log",
+      "bytes": 88,
+      "sha256": "b8cc52de63f70753e822a4b9cbb97c2f3f3d986438e212f983469ece897b92a2"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-99-friction-060/summary.json",
+      "bytes": 1205,
+      "sha256": "3716e2177b25f9704dbf28a3f32d54f43dda9cd3fe467736f68f9d8044a9d24f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-gravity-99-friction-060/trainer.log",
+      "bytes": 5740,
+      "sha256": "b5262710c9cffc4da17a55ff1837b4fa7d5b88aa7974ae031787087c41ff0cd0"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-101/config.json",
+      "bytes": 633138,
+      "sha256": "e252fb4b0dc7bef714afefc18deb99dba8858ad25eb7ff2224481bbc853f8f6c"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-101/shellworker.log",
+      "bytes": 50,
+      "sha256": "9bd2709d9bf3c73c74c34e8bce83437e396fd11a6cdc64f60c4a5202eb11c31f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-101/summary.json",
+      "bytes": 1192,
+      "sha256": "4ce31b79cee556fae1edf5f2c4e4bae088d4791f20c5a02b3d7c1254f9071975"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-101/trainer.log",
+      "bytes": 6498,
+      "sha256": "2225b54f0b93dc11b32de4b84a6271bdb5f2293645c38a23a498fb0b165042f6"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-1015/config.json",
+      "bytes": 641037,
+      "sha256": "e96eaad0a1d7066980856fc32232e51bf6a4459507fc57e5bece0ff12b401f4c"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-1015/shellworker.log",
+      "bytes": 50,
+      "sha256": "ebe538016ac8acc0a8339fdbabec3c48a8bb950fa5e4a892f017f80bbd1e67e8"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-1015/summary.json",
+      "bytes": 1194,
+      "sha256": "fe03bf56b5e125b8cd4a9be01ab96beffabb2e7095aae87048fdd7e75e911f67"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-1015/trainer.log",
+      "bytes": 6281,
+      "sha256": "15d0fc3de59506ad56b701d74ae548a7e9d48d32abb3b0d43554d5ba0f9f3c0f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-985/config.json",
+      "bytes": 641677,
+      "sha256": "365ef917498610c56ae1af79fd24bb0b82066403d5c1c68c6be30ee170242ea2"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-985/shellworker.log",
+      "bytes": 50,
+      "sha256": "9bd2709d9bf3c73c74c34e8bce83437e396fd11a6cdc64f60c4a5202eb11c31f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-985/summary.json",
+      "bytes": 1187,
+      "sha256": "062da9ce8150c331d83f13348b20c1fa3b2916fd0ee62c86ac54ac3bd09c1e39"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-985/trainer.log",
+      "bytes": 6288,
+      "sha256": "76a40c148d26e0acc24d066eebba29dd62cd4453531949d3998c4ef6aa31d9fb"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-99/config.json",
+      "bytes": 603319,
+      "sha256": "d127d45e68bbd29c199133cf779583108a3ea27f6de0e3f109d6cef41463a2db"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-99/shellworker.log",
+      "bytes": 50,
+      "sha256": "ebe538016ac8acc0a8339fdbabec3c48a8bb950fa5e4a892f017f80bbd1e67e8"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-99/summary.json",
+      "bytes": 1184,
+      "sha256": "75d65cc3faa500d5780879bba6f48ea52338b470903088c9de2e84a7a335f910"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-mass-99/trainer.log",
+      "bytes": 6148,
+      "sha256": "d97ddb52a5e4bc92ea131ca77266c2423f2765ad133d8b09fa90ead028156906"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-nominal/config.json",
+      "bytes": 863096,
+      "sha256": "288df3e5a9894205e4ebd35452c5009e95c1de7ff0ba4449e8190bf001153850"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-nominal/shellworker.log",
+      "bytes": 50,
+      "sha256": "4648f09ebd9ea614d340fefde9ea4dd8052fd86b6d17d2ae32d30711a678ba9b"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-nominal/summary.json",
+      "bytes": 1189,
+      "sha256": "49aedda4b7e7d4811d68ea3329e3bdc398f470b845dbbdfff9e0d63f2e4eac76"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240910-nominal/trainer.log",
+      "bytes": 5807,
+      "sha256": "dd3c5a41d1542dae1114f6ba9a75d90bf5902efedad597f45aa4b7847cbb8a31"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-friction-060/config.json",
+      "bytes": 560689,
+      "sha256": "fdae6fd03b865a352ef65bdb99bf786295744492457b4b471e9ec130b6788f39"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-friction-060/shellworker.log",
+      "bytes": 50,
+      "sha256": "a8d387c713303ae58c8663d47d030cf2fa36d913b14ed3ee05afc22fdc74bfde"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-friction-060/summary.json",
+      "bytes": 1190,
+      "sha256": "66f3d013fc6e45672f6a4aef1467ad981d1edeed1400c660f065e6e3e98236a4"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-friction-060/trainer.log",
+      "bytes": 5185,
+      "sha256": "4e7421ba21c45c7041139e8e5a6c14559fc8089d3729feb25751171242628cdc"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-friction-100/config.json",
+      "bytes": 578271,
+      "sha256": "ac1f00159aceb867855860d228a53a2241b79a214aba602dbb44c1f3668bd698"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-friction-100/shellworker.log",
+      "bytes": 50,
+      "sha256": "66d3353f96542d783fc823ccf9893e9a2b141e874e49fa076fd5c0e15fb72ccd"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-friction-100/summary.json",
+      "bytes": 1193,
+      "sha256": "7d782b0a65880c9bc4939ce71732522bc4c2bc26563b61dacd17d838d6ce7eb1"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-friction-100/trainer.log",
+      "bytes": 4993,
+      "sha256": "d825f03f75416feb7fdfae8a25704a580d0217e4d3ed7262ed5f02b4fb60505c"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-101/config.json",
+      "bytes": 560761,
+      "sha256": "bc24d3a2c2b1a386aeddd9c54d515ec9907852cb3722d65d0798e807e85df14f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-101/shellworker.log",
+      "bytes": 50,
+      "sha256": "66d3353f96542d783fc823ccf9893e9a2b141e874e49fa076fd5c0e15fb72ccd"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-101/summary.json",
+      "bytes": 1195,
+      "sha256": "badd309317dc2d5cce8411fb5fa57e9341c3f931810d45972323227135cbaf4b"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-101/trainer.log",
+      "bytes": 4801,
+      "sha256": "18a10a833c92860eb8c505d768ad0e7d62088e9114f623185af803a9c086917a"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-101-mass-101/config.json",
+      "bytes": 571774,
+      "sha256": "db358e472ce0913f8066a65eed2e363d578e73f301bb1c9c784f60d931934afc"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-101-mass-101/shellworker.log",
+      "bytes": 50,
+      "sha256": "927fc6e6f8ec2869b31c08ff1f440f1c4aadb0e92e85140c507265c1310e2bbe"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-101-mass-101/summary.json",
+      "bytes": 1206,
+      "sha256": "0dfd8661b469cf232778645dde7775d159f3331873d15f754143f231fed733a5"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-101-mass-101/trainer.log",
+      "bytes": 5628,
+      "sha256": "eb38b08eb65d131843a6605a5e7c3b59930f3446b3deafbb79a879904555fb79"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-1015/config.json",
+      "bytes": 551115,
+      "sha256": "015cc4428fc44d846ed9d727618f56ed402106cbc1a0dbfef1ac4bc571c6a885"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-1015/shellworker.log",
+      "bytes": 50,
+      "sha256": "d2a6f22f00af4753cccb1cb571bf648724d459cc83e64279b42da5d0d45591c8"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-1015/summary.json",
+      "bytes": 1196,
+      "sha256": "7cb4b2c7c4421e273b11ce57361d3c0203cb463fc7cd9562af64b382388217d7"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-1015/trainer.log",
+      "bytes": 5000,
+      "sha256": "29128e0fcff1ee1ccbdadf986cb990fa44a6d9c2d2967428a4cbfddc20ef936b"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-985/config.json",
+      "bytes": 572158,
+      "sha256": "f30ccbb125972be7e565e6d6f4d47e4c3d9924fcadb84227d2346546b7c5e379"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-985/shellworker.log",
+      "bytes": 50,
+      "sha256": "ba8d61b59d6768e1fedb74fe0c8f24ace7911e6fe4f933bb5601a552deaba4bd"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-985/summary.json",
+      "bytes": 1194,
+      "sha256": "7f35a78805a953cdc5888000067ee74d7236cc85e908ed1707827001d0d93fc6"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-985/trainer.log",
+      "bytes": 5338,
+      "sha256": "982fc4f76029ea2f2d6d43deed8cb7777e19cbc468ead28e04d7414a5e37da5f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-99/config.json",
+      "bytes": 551180,
+      "sha256": "fc65520b342cc54c81d1b8cf25b4c82f28740a2b0880a9a84143cc18ddf8a3ec"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-99/shellworker.log",
+      "bytes": 50,
+      "sha256": "251cbd00cc59819bfd464c28d37fb4d5a7bec73c350b5b0bea26b8d850bb5788"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-99/summary.json",
+      "bytes": 1186,
+      "sha256": "09667d740540b6e50b1dd2dc47a890830fbda74f28a43bd980b9cfff00eedfec"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-gravity-99/trainer.log",
+      "bytes": 5199,
+      "sha256": "c2cc0f1c6d95eca6a65b05a019370d9fd197e5db58383c36021290bc3f7faa4e"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-101/config.json",
+      "bytes": 552226,
+      "sha256": "d33a914754ca226e0417aee5789d27b4ede031b82665b9afb1d5db4533490ccc"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-101/shellworker.log",
+      "bytes": 50,
+      "sha256": "66d3353f96542d783fc823ccf9893e9a2b141e874e49fa076fd5c0e15fb72ccd"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-101/summary.json",
+      "bytes": 1192,
+      "sha256": "0167c419063777d4f00bfe269e8d3015e52ac2ea4e563adb833e87a3b586b2c6"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-101/trainer.log",
+      "bytes": 4972,
+      "sha256": "ed975a682ba889c43acae2bd73e4aadeaccd98ca2f619f11ea0c431869dfa29d"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-1015/config.json",
+      "bytes": 565245,
+      "sha256": "284329ec6c3a4e53dd3b2eea7222771f0195c6a1d6356f8fad8427e3f66f79e7"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-1015/shellworker.log",
+      "bytes": 50,
+      "sha256": "0bd27e9d0f87b0b9afdcb0a05d7259786bf4ef145effa59ba095b971d6c76076"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-1015/summary.json",
+      "bytes": 1190,
+      "sha256": "10da2280d8e387da3ce03ce7b470e4b50b67f9eac2e7c5c1776fd64c423cdc5b"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-1015/trainer.log",
+      "bytes": 5657,
+      "sha256": "a67314b491db71558489312ece948673d087e88f22c62b0d4de61b456576d41f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-985/config.json",
+      "bytes": 531915,
+      "sha256": "ec20d7d4395382ecb9e9d86e5c09e6fc4458535c5b16f6ad405419402ca2e010"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-985/shellworker.log",
+      "bytes": 50,
+      "sha256": "dcddf213dd9d526682318af68974978e59b88e2a63eaa35eea0d0bfacf73c7cd"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-985/summary.json",
+      "bytes": 1192,
+      "sha256": "788ae0dcdc5fd8ef6cd8d42b30995e28e953ef360caf45f8753bc1db52c370f7"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-985/trainer.log",
+      "bytes": 4971,
+      "sha256": "994c703087c74b74ddf2844e13763372c0c0f5885cf803a6a302f835e0f65ba2"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-99/config.json",
+      "bytes": 571900,
+      "sha256": "2b978ba125cd51e2b0074cb1cf7c345de886d9265dfe634dc3871bafae5e0417"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-99/shellworker.log",
+      "bytes": 88,
+      "sha256": "b53d942e8ba968d2909a16888188e43b3e65ef857c86a72fada96813cdc87aea"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-99/summary.json",
+      "bytes": 1183,
+      "sha256": "25cd744d56178989c8dcf851521937ce4e2602e085b9cd8e2767e8e11a2e515d"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-mass-99/trainer.log",
+      "bytes": 5438,
+      "sha256": "e675b17b1c290189de0187714e733ebcce8871249bbc4ce5526a364c51cdfa48"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-nominal/config.json",
+      "bytes": 784038,
+      "sha256": "f9f117e88a20166ffe701365b22c614900d143399fec9c0d83725972f0b44ac0"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-nominal/shellworker.log",
+      "bytes": 50,
+      "sha256": "bd56dd79d82e8478c48d75c0a5a624f010063c70db7df7d3334673472de215bb"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-nominal/summary.json",
+      "bytes": 1183,
+      "sha256": "03e2c79960178e7b827e96c3f8d66a32832cf13521a52f9257d8c586add33ab2"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R3-240911-nominal/trainer.log",
+      "bytes": 5039,
+      "sha256": "930bf9b3300c9d8c31a5b07422232057bc5874895abfffdf65d9e684daac166a"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-friction-060/config.json",
+      "bytes": 632187,
+      "sha256": "9425f052739317121ea7b553e2ffe6cece46b378de2a34ea9be697be3a279e5e"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-friction-060/shellworker.log",
+      "bytes": 50,
+      "sha256": "9bd2709d9bf3c73c74c34e8bce83437e396fd11a6cdc64f60c4a5202eb11c31f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-friction-060/summary.json",
+      "bytes": 1193,
+      "sha256": "7faeecd6ea91bc884f0786322bd05aff3f463a7ac60a63ed942be6a17c3eaa5d"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-friction-060/trainer.log",
+      "bytes": 6410,
+      "sha256": "bbdac6058215d528947c7cdf4e9fac6a3158bc51549d9e20edc233b09fee3ba8"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-friction-100/config.json",
+      "bytes": 624125,
+      "sha256": "3b35f2afd196b7637b9aa35add3dba3ba6baf64933768bd2d48bc4f7e805ec76"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-friction-100/shellworker.log",
+      "bytes": 88,
+      "sha256": "e38834094a91b89dcb4a60f943841ea5c30fb2640080464fcfefe27d96bb85eb"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-friction-100/summary.json",
+      "bytes": 1194,
+      "sha256": "5afc41129e46bc1dfce0ba77a648c6b0921f725b5a7c763b98520ae0ae938560"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-friction-100/trainer.log",
+      "bytes": 6604,
+      "sha256": "28d8df3354782671332026041b96ae46be443d89dd009bac5c2e3eedf0356703"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-101/config.json",
+      "bytes": 609601,
+      "sha256": "9536f38704488b5521486666d358a18db1c90572e7bf9583d8cc79b0f416eba4"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-101/shellworker.log",
+      "bytes": 50,
+      "sha256": "927fc6e6f8ec2869b31c08ff1f440f1c4aadb0e92e85140c507265c1310e2bbe"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-101/summary.json",
+      "bytes": 1195,
+      "sha256": "7fff00fdeb57d053b87471ecefb7eb94f7afd18b983c564f613b6ce5f1e6ff5a"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-101/trainer.log",
+      "bytes": 5530,
+      "sha256": "235b64480463f89dad2e0e266f2d5faaf608563dd12a30c6500f6af5efe735f9"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-101-mass-101/config.json",
+      "bytes": 642491,
+      "sha256": "702db9f6cb5cf5abdd05445f7eb111da71b42e2f9c029e5bdd2cf967e215523f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-101-mass-101/shellworker.log",
+      "bytes": 50,
+      "sha256": "9bd2709d9bf3c73c74c34e8bce83437e396fd11a6cdc64f60c4a5202eb11c31f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-101-mass-101/summary.json",
+      "bytes": 1201,
+      "sha256": "8ee84f0ac111dd2ca049506c32cfc6877fc73b86c401efef6589df179d05b60f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-101-mass-101/trainer.log",
+      "bytes": 6707,
+      "sha256": "d5205996aa2b834372045f0d3975b59a743f9bfc738d15a20746ce3c337fa791"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-1015/config.json",
+      "bytes": 613865,
+      "sha256": "2620fbebd6239d836be6be78790be00bf208c2dd7a9a5b89747d9f388c0486ad"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-1015/shellworker.log",
+      "bytes": 50,
+      "sha256": "d809172ac719a826062e08f0861afc77191c027d316f40e4d569ab02435c6c00"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-1015/summary.json",
+      "bytes": 1196,
+      "sha256": "74c3d763ab4ae9d1a4ebfbee23f96678231abbd5385046822384d5ddcf55f2a7"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-1015/trainer.log",
+      "bytes": 6571,
+      "sha256": "c64ac85b18b8b6268ab7350d14e696d6c93105df642f640ad117c9bf262cad77"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-985/config.json",
+      "bytes": 642258,
+      "sha256": "bd4bf5a533e9be2b4642938c1dfeedd94b1071d59a047442d64f1112e2be6169"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-985/shellworker.log",
+      "bytes": 50,
+      "sha256": "9bd2709d9bf3c73c74c34e8bce83437e396fd11a6cdc64f60c4a5202eb11c31f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-985/summary.json",
+      "bytes": 1189,
+      "sha256": "1a3821ffa8a941365f9c296a028e74a57838c3d626cca3f524de068279344fb6"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-985/trainer.log",
+      "bytes": 6655,
+      "sha256": "39f6b436408e628554fbd6a9761db955868122b93448e1c52bfacfd3ea00690f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-99/config.json",
+      "bytes": 651976,
+      "sha256": "97d0629a247d57e234086f3b63dd526c4301fe6dd363fc36cce5ee9a53289237"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-99/shellworker.log",
+      "bytes": 88,
+      "sha256": "10a793fc973cd2e9a4d4837af97b1083d37d54a330546815983875410d30684b"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-99/summary.json",
+      "bytes": 1192,
+      "sha256": "f1aede1e01a98439878e4e341c3cfacec957d5db6beafe8bc18a40a1ba27b660"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-99/trainer.log",
+      "bytes": 6802,
+      "sha256": "5bcccd26e958956ee32efaea0d451b50a7a229eeb08fec7378da6f868b0e409a"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-99-friction-060/config.json",
+      "bytes": 625162,
+      "sha256": "c38eeffcc4db531d0741aa612461255882a3958dce9c97d5a71ce95ecba1f839"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-99-friction-060/shellworker.log",
+      "bytes": 50,
+      "sha256": "9bd2709d9bf3c73c74c34e8bce83437e396fd11a6cdc64f60c4a5202eb11c31f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-99-friction-060/summary.json",
+      "bytes": 1199,
+      "sha256": "f877a906fac54eee04173dde98edea9a1360de74aed2b5e16a351a1ae263d5d4"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-gravity-99-friction-060/trainer.log",
+      "bytes": 6746,
+      "sha256": "e268ffb299ff3197e328a2a1ea4e1c764606225a2015ee66ac1ee4beb2a2d44a"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-101/config.json",
+      "bytes": 625173,
+      "sha256": "67779029806665d5143e7209b69f45140e3fd26b092ac527c737ffc5c82259ca"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-101/shellworker.log",
+      "bytes": 50,
+      "sha256": "bda78f0454a3d1c1713e408d044fd772ff2f7e839e402cd88b89462193e5567d"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-101/summary.json",
+      "bytes": 1192,
+      "sha256": "3750d8055cff3204ba7afd3a15d907b318b4ad4bafb26e868e62a8dbe74b5f2e"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-101/trainer.log",
+      "bytes": 6607,
+      "sha256": "aea405c1b309b4bbdd58a95f70159bdc49fff12c2dfbf09726e42ad693a95f5a"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-1015/config.json",
+      "bytes": 650069,
+      "sha256": "008ac0bfd0c9874e86b93360b6a1b3c510289e52f9fb81b48b3e4c35f9a0e021"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-1015/shellworker.log",
+      "bytes": 50,
+      "sha256": "ebe538016ac8acc0a8339fdbabec3c48a8bb950fa5e4a892f017f80bbd1e67e8"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-1015/summary.json",
+      "bytes": 1194,
+      "sha256": "e716ba32ddf4e5c8c05ebc2f6299b60e7c56cf1c6d2ff7113a1e5baa61eef224"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-1015/trainer.log",
+      "bytes": 6393,
+      "sha256": "d219d7894ce57697f00d198c4218ee5c5ce043a8492bface83c76b48617d912d"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-985/config.json",
+      "bytes": 628137,
+      "sha256": "397e12eedff2030a1c08f64e2ed380af0855bd3ac58f66465cd1089b72be7fd0"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-985/shellworker.log",
+      "bytes": 50,
+      "sha256": "927fc6e6f8ec2869b31c08ff1f440f1c4aadb0e92e85140c507265c1310e2bbe"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-985/summary.json",
+      "bytes": 1192,
+      "sha256": "4e36ac143cc7025c3e7a69982164a6c2c785cf3bec614a0d7f0ba5825ba061ad"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-985/trainer.log",
+      "bytes": 5333,
+      "sha256": "484c10823dc7305090372b4af5143469a0acc70a0a4ab0bdb7d997a5f83dede0"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-99/config.json",
+      "bytes": 611527,
+      "sha256": "d2694986dabad4fc9b7119d270a9d0c506d09846e34892295978f5aa2374948d"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-99/shellworker.log",
+      "bytes": 88,
+      "sha256": "16ad21fe477e5d009e9db29af93eaa68e5c4d59612400adf8bf1a3138431510b"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-99/summary.json",
+      "bytes": 1190,
+      "sha256": "25952b6d18efc15d06a6dd19061d4f8a303aed2376d73d8c6fb8d200f8d86e06"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-mass-99/trainer.log",
+      "bytes": 5858,
+      "sha256": "a17f31a5830653ddec13c28383e5a5f86fcfde4b15a54c4bb9cc71799e92deab"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-nominal/config.json",
+      "bytes": 866433,
+      "sha256": "a4aaa790796c137ac4dac4755e94f7d5af7eca529ae05f1a887762c5d0c8e54f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-nominal/shellworker.log",
+      "bytes": 50,
+      "sha256": "946d55b8284478286f7f3a969d76b29c02649f8760a320c5cd9b2e181de4b82e"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-nominal/summary.json",
+      "bytes": 1189,
+      "sha256": "a7c6ba554aad9887e44e5762c0d12663ea9ece8f2b008a76d6048cb09d55da41"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240910-nominal/trainer.log",
+      "bytes": 6646,
+      "sha256": "1784454019764ecf61b54239d54769719fefe8ed08b0d013f47566dfbe9b7e91"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-friction-060/config.json",
+      "bytes": 580795,
+      "sha256": "b6d38ebba6d4d0e34991a44138f5a8935fa76201dbf2178ad604e2fb05f7590f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-friction-060/shellworker.log",
+      "bytes": 50,
+      "sha256": "a8d387c713303ae58c8663d47d030cf2fa36d913b14ed3ee05afc22fdc74bfde"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-friction-060/summary.json",
+      "bytes": 1194,
+      "sha256": "2a12fd906bf146d12f42a4655819652f46af7c0ea2dbf4169461e77a74f91bd4"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-friction-060/trainer.log",
+      "bytes": 4999,
+      "sha256": "19be44a14de0e101537c0c001abd10a5e8b15a943c2105a4996b75e926fc9b05"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-friction-100/config.json",
+      "bytes": 583123,
+      "sha256": "d66703ab69fe5655239fe09775b9187f2aae44e73f00d74f352d0a1b022a377a"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-friction-100/shellworker.log",
+      "bytes": 50,
+      "sha256": "927fc6e6f8ec2869b31c08ff1f440f1c4aadb0e92e85140c507265c1310e2bbe"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-friction-100/summary.json",
+      "bytes": 1187,
+      "sha256": "a3f1f0bf520bb94a077c1a1c74a3fb4767d870244f7e43bd4299f251d5cee707"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-friction-100/trainer.log",
+      "bytes": 5466,
+      "sha256": "a4f73b74ec5a9c40506d8a87498b75b2652c801096c5ebcb9552f4243de37f04"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-101/config.json",
+      "bytes": 538218,
+      "sha256": "dee383092c3da223fe938c2f06528ca5e6fb801025c5c8317a9cbd42ab5e43b4"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-101/shellworker.log",
+      "bytes": 50,
+      "sha256": "dff5fe4569ec466a1d3021e7b569674cd6b635ae30ff2c5b775664c886db8f95"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-101/summary.json",
+      "bytes": 1190,
+      "sha256": "97918279733840452a14382939c4a874b557da45012c29061eb746697da21101"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-101/trainer.log",
+      "bytes": 6167,
+      "sha256": "cef78f34cbfeada9a4fe60d2576fad4051c55e79e82e03a30e337309f1f88512"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-101-mass-101/config.json",
+      "bytes": 581374,
+      "sha256": "c46cc9b72fabf0b819e5c139a2a0acb9ba1e758b89e04bd8b98ca55f1d1ab143"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-101-mass-101/shellworker.log",
+      "bytes": 50,
+      "sha256": "927fc6e6f8ec2869b31c08ff1f440f1c4aadb0e92e85140c507265c1310e2bbe"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-101-mass-101/summary.json",
+      "bytes": 1206,
+      "sha256": "d3436bc250b7372c28d2f5a4a123b60ab91cb088ecb47372650d7c7c390faa0c"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-101-mass-101/trainer.log",
+      "bytes": 5240,
+      "sha256": "1b1296773461fc3b434365b6a6f7ce200de5b6f7e88cd44951b9c5fe06f9e4a5"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-1015/config.json",
+      "bytes": 580461,
+      "sha256": "2a14544ef31daec4b0e0604536d63eda2e09b31f4f09e46be8cad9c824ae4e18"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-1015/shellworker.log",
+      "bytes": 88,
+      "sha256": "c9a25dfac8a6c2927c0a26be5ea7ec96c7001bdee771e8ac051e923717a4b093"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-1015/summary.json",
+      "bytes": 1196,
+      "sha256": "d5d26b0d3cd32726bef0b31a85b0bf608a129f7dbd60880ca2a956f2c92c99ff"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-1015/trainer.log",
+      "bytes": 5119,
+      "sha256": "1c4079d726d028af56df9e071cdb26697bd5977dadd9f8b05f0e129094a097e1"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-985/config.json",
+      "bytes": 542063,
+      "sha256": "c11da436616d248872cf11def6cd056425191b2b520af5396335fbdfe8478f04"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-985/shellworker.log",
+      "bytes": 50,
+      "sha256": "a8d387c713303ae58c8663d47d030cf2fa36d913b14ed3ee05afc22fdc74bfde"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-985/summary.json",
+      "bytes": 1194,
+      "sha256": "bdab3525660efe554222dfa7cd4c1e9c8ff9ce73403449cb40cf34b7e9ea88eb"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-985/trainer.log",
+      "bytes": 4987,
+      "sha256": "14f27a45a2350a7f94092fcb82a2cce945201887cb91861da451638239368374"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-99/config.json",
+      "bytes": 572401,
+      "sha256": "68307110621e965cbf270e865ed3cad261841637aa5633ceb05622cdfcdeb0a0"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-99/shellworker.log",
+      "bytes": 50,
+      "sha256": "927fc6e6f8ec2869b31c08ff1f440f1c4aadb0e92e85140c507265c1310e2bbe"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-99/summary.json",
+      "bytes": 1190,
+      "sha256": "e3917a7c379c89a8290f9f3c6a517d305a7e6b410fbd607a8c8977b533b81d79"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-99/trainer.log",
+      "bytes": 5316,
+      "sha256": "6a2e17cb9e6e66fb8370ce8fe3b7e58fcfef5e654328ced7cfbd806f540650b7"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-99-friction-060/config.json",
+      "bytes": 581384,
+      "sha256": "7f5785c0fa1f6a7a2f82a94a1e1f8afbbdda456628abda184606f9749ab3d7fa"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-99-friction-060/shellworker.log",
+      "bytes": 50,
+      "sha256": "ba8d61b59d6768e1fedb74fe0c8f24ace7911e6fe4f933bb5601a552deaba4bd"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-99-friction-060/summary.json",
+      "bytes": 1206,
+      "sha256": "d4ee9273b4d81410dc7db4b9466cda57beb2376fabe571101eb07b7fbd843ac2"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-gravity-99-friction-060/trainer.log",
+      "bytes": 5529,
+      "sha256": "4e213cc55b5f5518d3e459b5d0a5f940bf1f0673013885f7352de764f6f4f898"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-101/config.json",
+      "bytes": 584549,
+      "sha256": "0110b6ea4228d04e285aaf85e7b40b0724a85d3a6852fdc3ad4609a68ed9c8f2"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-101/shellworker.log",
+      "bytes": 50,
+      "sha256": "4648f09ebd9ea614d340fefde9ea4dd8052fd86b6d17d2ae32d30711a678ba9b"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-101/summary.json",
+      "bytes": 1192,
+      "sha256": "e2cb087e822feb807ec961ab3b97442a109909b7ddb37c3b825392bffa375e45"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-101/trainer.log",
+      "bytes": 6154,
+      "sha256": "d46b794930642ce3b3d4017fb52597d057b3c040a23fc614cea9482cd7ef00e2"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-1015/config.json",
+      "bytes": 562237,
+      "sha256": "a05c5a8d42e64814131c5273a6e155ea5a632f3ff536ff77023ef476eebee937"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-1015/shellworker.log",
+      "bytes": 50,
+      "sha256": "927fc6e6f8ec2869b31c08ff1f440f1c4aadb0e92e85140c507265c1310e2bbe"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-1015/summary.json",
+      "bytes": 1194,
+      "sha256": "1004082fb384abf46864defa2a49642af435615523756d41723c9a538957a499"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-1015/trainer.log",
+      "bytes": 5415,
+      "sha256": "cbed06842c496a61d29f6e2357b4688135efc58e72cadf9e350bb81f08334ecd"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-985/config.json",
+      "bytes": 554828,
+      "sha256": "b69782799487cf4b8810fbe702b9af17b2139ab8dd46670bc0638160bfd7768f"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-985/shellworker.log",
+      "bytes": 88,
+      "sha256": "b8cc52de63f70753e822a4b9cbb97c2f3f3d986438e212f983469ece897b92a2"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-985/summary.json",
+      "bytes": 1191,
+      "sha256": "6d5513dd6a9f9b86e8bdbbf963462e9b5cfb124aacc1fce6c5dfb4e966dcafbb"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-985/trainer.log",
+      "bytes": 5404,
+      "sha256": "e137583c399f0cb51328401980c1d003111b19b614a5ea155400e4bce1b039de"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-99/config.json",
+      "bytes": 572651,
+      "sha256": "50705df23a2ee35572a4fd68cbc894d0abbfbc18b22e38a7607c9613e1482ebd"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-99/shellworker.log",
+      "bytes": 50,
+      "sha256": "927fc6e6f8ec2869b31c08ff1f440f1c4aadb0e92e85140c507265c1310e2bbe"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-99/summary.json",
+      "bytes": 1186,
+      "sha256": "7e98b864624f1750e52e390b6367486f07135e5028b67b733d0689249acdc072"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-mass-99/trainer.log",
+      "bytes": 5835,
+      "sha256": "36d49b3d38f358a57e060ec8ffae2e540c5583dce49a626140f0105a25dbbfbb"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-nominal/config.json",
+      "bytes": 807975,
+      "sha256": "d188c56494867b34cc4c486334b6c54c1fc62646e5bd386c0dca4b9b16e998f7"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-nominal/shellworker.log",
+      "bytes": 50,
+      "sha256": "d809172ac719a826062e08f0861afc77191c027d316f40e4d569ab02435c6c00"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-nominal/summary.json",
+      "bytes": 1187,
+      "sha256": "4e3e749ab721f452e77ce981fe90ce0379fbfc307cb2ad5dcce3e9483cf643cb"
+    },
+    {
+      "path": "training-runs/followup-validate-fork-R5-240911-nominal/trainer.log",
+      "bytes": 6305,
+      "sha256": "a7f918d878fc7bd2f0bf84aa4c179dad9a91c8da58d05f7030edf2065f690c70"
+    },
+    {
+      "path": "training-runs/followup-warmup-R3-240910/config.json",
+      "bytes": 7080483,
+      "sha256": "8ffa25e00076ee731602853fbdbb9183a8a1ea3c082e44e46f0ed68bc555b711"
+    },
+    {
+      "path": "training-runs/followup-warmup-R3-240910/shellworker.log",
+      "bytes": 154827,
+      "sha256": "5c6b8fc0fb2246ee63847527985e62d0a561c4365f943ff7e99bf4206c0ae5a6"
+    },
+    {
+      "path": "training-runs/followup-warmup-R3-240910/summary.json",
+      "bytes": 1179,
+      "sha256": "c25d90bcf36eff2f61e2170dd3aaa008cc83f3ad9b337e57994d0220b67397f5"
+    },
+    {
+      "path": "training-runs/followup-warmup-R3-240910/trainer.log",
+      "bytes": 2736640,
+      "sha256": "819882472fd9be5cf3bb2e9766d82bbbf7a4e6677196c21e013aa52aef02f629"
+    },
+    {
+      "path": "training-runs/followup-warmup-R3-240911/config.json",
+      "bytes": 7059091,
+      "sha256": "cb6c1a0bbb0c35594efc7935c110f3356b83e1f6afb1c11db22ad8e0e2ee9bf1"
+    },
+    {
+      "path": "training-runs/followup-warmup-R3-240911/shellworker.log",
+      "bytes": 155347,
+      "sha256": "0d923ecd7b4cda4a09227613b2de37ffc392cf3ad092c575ec1eeea0be2d189f"
+    },
+    {
+      "path": "training-runs/followup-warmup-R3-240911/summary.json",
+      "bytes": 1180,
+      "sha256": "4efef406d12992e2518f4d90fa70d9e929b7f4eb40e2ec86fdc61e2f6c0db32c"
+    },
+    {
+      "path": "training-runs/followup-warmup-R3-240911/trainer.log",
+      "bytes": 2735072,
+      "sha256": "0dab3464650f8cb6b20997e49d9f32414a40ee71bcb835ce854f475e15a1a727"
+    }
+  ]
+}

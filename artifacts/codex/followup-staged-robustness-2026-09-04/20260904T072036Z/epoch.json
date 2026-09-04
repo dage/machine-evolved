@@ -1,0 +1,10 @@
+{
+  "bootId": "{ sec = 1787987002, usec = 354446 } Sat Aug 29 14:03:22 2026",
+  "durationSeconds": 6600.0,
+  "experimentId": "followup-staged-robustness-2026-09-04",
+  "hardDeadlineEpochSeconds": 1788513036.0,
+  "hardDeadlineMonotonicSeconds": 509567.9116185056,
+  "schemaVersion": 1,
+  "t0EpochSeconds": 1788506436.0,
+  "t0MonotonicSeconds": 502967.9116185056
+}

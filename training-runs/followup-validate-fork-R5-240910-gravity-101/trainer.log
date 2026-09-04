@@ -1,0 +1,52 @@
+Listening on 127.0.0.1:9999
+MAP-Elites insertion: outcome=new-global-best qd-delta=1871.973633 qd-score=1871.973633 emitter=initial-population
+--> new robust best creature found through loaded! Fitness=1871.973633 domains=[1871.973633]
+MAP-Elites insertion: outcome=new-global-best qd-delta=2080.293213 qd-score=3952.266846 emitter=initial-population
+--> new robust best creature found through loaded! Fitness=2080.293213 domains=[2080.293213]
+MAP-Elites insertion: outcome=new-global-best qd-delta=1019.692871 qd-score=4971.959717 emitter=initial-population
+--> new robust best creature found through loaded! Fitness=3099.986084 domains=[3099.986084]
+MAP-Elites insertion: outcome=new-cell qd-delta=1982.695312 qd-score=6954.655029 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=2135.299072 qd-score=9089.954101 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=1721.032715 qd-score=10810.986816 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=1107.534668 qd-score=11918.521484 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=11918.521484 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=2108.502197 qd-score=14027.023681 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=2524.768311 qd-score=16551.791992 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=1873.340820 qd-score=18425.132812 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=1572.155396 qd-score=19997.288208 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19997.288208 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19997.288208 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19997.288208 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=561.396241 qd-score=20558.684449 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=20558.684449 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=20558.684449 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=20558.684449 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=1505.199951 qd-score=22063.884400 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=22063.884400 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=22063.884400 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=22063.884400 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=22063.884400 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=22063.884400 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=22063.884400 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=994.749939 qd-score=23058.634339 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=23058.634339 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=1033.252075 qd-score=24091.886414 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=1583.744873 qd-score=25675.631287 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=25675.631287 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=25675.631287 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=808.471680 qd-score=26484.102967 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=744.010742 qd-score=27228.113709 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=222.359375 qd-score=27450.473084 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=27450.473084 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=27450.473084 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=27450.473084 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=1204.501587 qd-score=28654.974671 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=28654.974671 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=28654.974671 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=520.604675 qd-score=29175.579346 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=29175.579346 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=29175.579346 emitter=initial-population
+Exiting since max number of fitness evaluations has been performed. terminate-evaluations=44.
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=29175.579346 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=29175.579346 emitter=initial-population
+609601 bytes written to /Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/training-runs/followup-validate-fork-R5-240910-gravity-101/config.json. 

@@ -1,0 +1,64 @@
+Listening on 127.0.0.1:9999
+MAP-Elites insertion: outcome=new-global-best qd-delta=848.115967 qd-score=848.115967 emitter=initial-population
+--> new robust best creature found through loaded! Fitness=848.115967 domains=[848.115967]
+MAP-Elites insertion: outcome=new-global-best qd-delta=1189.664429 qd-score=2037.780396 emitter=initial-population
+--> new robust best creature found through loaded! Fitness=1189.664429 domains=[1189.664429]
+MAP-Elites insertion: outcome=new-cell qd-delta=782.830139 qd-score=2820.610535 emitter=initial-population
+MAP-Elites insertion: outcome=new-global-best qd-delta=1617.281616 qd-score=4437.892151 emitter=initial-population
+--> new robust best creature found through loaded! Fitness=1617.281616 domains=[1617.281616]
+MAP-Elites insertion: outcome=replacement qd-delta=78.582459 qd-score=4516.474610 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=1170.982056 qd-score=5687.456666 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=226.037597 qd-score=5913.494263 emitter=initial-population
+MAP-Elites insertion: outcome=new-global-best qd-delta=1032.505737 qd-score=6946.000000 emitter=initial-population
+--> new robust best creature found through loaded! Fitness=1893.918335 domains=[1893.918335]
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=6946.000000 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=381.392456 qd-score=7327.392456 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=582.876587 qd-score=7910.269043 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=945.598389 qd-score=8855.867432 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=8855.867432 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=722.201172 qd-score=9578.068604 emitter=initial-population
+MAP-Elites insertion: outcome=new-global-best qd-delta=528.810425 qd-score=10106.879029 emitter=initial-population
+--> new robust best creature found through loaded! Fitness=2185.840576 domains=[2185.840576]
+MAP-Elites insertion: outcome=new-cell qd-delta=760.152771 qd-score=10867.031800 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=893.931946 qd-score=11760.963746 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=11760.963746 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=220.767456 qd-score=11981.731202 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=678.866821 qd-score=12660.598023 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=556.231018 qd-score=13216.829041 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=13216.829041 emitter=initial-population
+MAP-Elites insertion: outcome=new-global-best qd-delta=293.954712 qd-score=13510.783753 emitter=initial-population
+--> new robust best creature found through loaded! Fitness=2187.873047 domains=[2187.873047]
+MAP-Elites insertion: outcome=new-cell qd-delta=829.908875 qd-score=14340.692628 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=373.749878 qd-score=14714.442506 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=1802.826660 qd-score=16517.269166 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=16517.269166 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=16517.269166 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=465.070831 qd-score=16982.339997 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=16982.339997 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=16982.339997 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=320.189941 qd-score=17302.529938 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=17302.529938 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=17302.529938 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=789.726135 qd-score=18092.256073 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=14.252868 qd-score=18106.508941 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=506.372864 qd-score=18612.881805 emitter=initial-population
+MAP-Elites insertion: outcome=new-cell qd-delta=594.598083 qd-score=19207.479888 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=82.949707 qd-score=19290.429595 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19290.429595 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19290.429595 emitter=initial-population
+MAP-Elites insertion: outcome=replacement qd-delta=38.548829 qd-score=19328.978424 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19328.978424 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19328.978424 emitter=initial-population
+Exiting since max number of fitness evaluations has been performed. terminate-evaluations=44.
+MAP-Elites insertion: outcome=replacement qd-delta=317.269287 qd-score=19646.247711 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19646.247711 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19646.247711 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19646.247711 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19646.247711 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19646.247711 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19646.247711 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19646.247711 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19646.247711 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19646.247711 emitter=initial-population
+MAP-Elites insertion: outcome=rejected qd-delta=0.000000 qd-score=19646.247711 emitter=initial-population
+594115 bytes written to /Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/training-runs/followup-validate-fork-R3-240910-friction-060/config.json. 

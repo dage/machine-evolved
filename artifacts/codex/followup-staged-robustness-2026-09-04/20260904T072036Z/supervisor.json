@@ -13,7 +13,7 @@
   "checkpointGraceSeconds": 120,
   "terminateGraceSeconds": 15,
   "startupGraceSeconds": 120,
-  "restartDelaySeconds": 10,
+  "restartDelaySeconds": 0.1,
   "rapidCrashWindowSeconds": 180,
   "rapidCrashLimit": 3,
   "minimumDiskFreeBytes": 10737418240,

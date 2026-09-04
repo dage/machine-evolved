@@ -1,0 +1,5073 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "followup-staged-robustness-2026-09-04",
+  "branch": "codex/followup-staged-robustness-2026-09-04",
+  "timing": {
+    "t0EpochSeconds": 1788506436.0,
+    "hardDeadlineEpochSeconds": 1788513036.0,
+    "durationSeconds": 6600.0,
+    "finalUpdatedAt": "2026-09-04T09:10:38.261448+00:00",
+    "finalStatus": "deadline_reached",
+    "finalReason": "hard_deadline"
+  },
+  "routeCounts": {
+    "configured": 58,
+    "byLedgerStatus": {
+      "completed": 56,
+      "running": 1,
+      "not-started": 1
+    },
+    "byTerminalDisposition": {
+      "completed": 56,
+      "interrupted-at-deadline": 1,
+      "not-started": 1
+    },
+    "trainingConfigured": 6,
+    "validationConfigured": 52,
+    "trainingCompleted": 6,
+    "validationCompleted": 50
+  },
+  "methodReasons": [
+    "Two independent warmup seeds were used to measure repeatability across starting populations.",
+    "Each warmup was forked into controller-identical R3 and R5 banks so the continuation method was the intended changed variable.",
+    "Matched continuation budgets were expressed as candidate evaluations and domain simulations rather than synthetic generations.",
+    "Every finite archive entry was scheduled against 13 single-domain physics cases to measure sensitivity to gravity, mass, and friction changes.",
+    "Training was allowed on battery after the user explicitly requested that power-source changes must not pause the experiment.",
+    "The inter-route delay was shortened only during the final small validation jobs because the original delay consumed most of their remaining fixed validation window.",
+    "The hard deadline was retained; the final route state records validation work interrupted or not started at that deadline."
+  ],
+  "routes": [
+    {
+      "id": "warmup-R3-240910",
+      "phase": "shared-r3-discovery",
+      "runName": "followup-warmup-R3-240910",
+      "evaluationCap": 25000,
+      "seed": 240910,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": 23333,
+      "lastProgressAtEpochSeconds": 1788507274.9384289,
+      "completedAt": "2026-09-04T07:35:17.788161+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T07:35:15.401648+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "warmup-R3-240910",
+        "seed": 240910,
+        "workers": 8,
+        "populationSize": 192,
+        "generation": 130,
+        "evaluations": 25001,
+        "evaluatedCreatures": 41,
+        "bestFitness": 3043.151038786027,
+        "averageFitness": 1430.9379374447708,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-warmup-R3-240910/config.json",
+        "bytes": 7080483,
+        "sha256": "8ffa25e00076ee731602853fbdbb9183a8a1ea3c082e44e46f0ed68bc555b711"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-warmup-R3-240910/summary.json",
+        "bytes": 1179,
+        "sha256": "c25d90bcf36eff2f61e2170dd3aaa008cc83f3ad9b337e57994d0220b67397f5"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T07:25:31.908616+00:00",
+          "endedAt": "2026-09-04T07:35:17.788161+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "a193d562e22dc14800347fbfb6ec0eacb39ece69a0ab2a95d5b1b18501458b6a",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/warmup-R3-240910/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "warmup-R3-240911",
+      "phase": "shared-r3-discovery",
+      "runName": "followup-warmup-R3-240911",
+      "evaluationCap": 25000,
+      "seed": 240911,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": 22867,
+      "lastProgressAtEpochSeconds": 1788507867.442423,
+      "completedAt": "2026-09-04T07:45:15.771975+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T07:45:15.419886+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "warmup-R3-240911",
+        "seed": 240911,
+        "workers": 8,
+        "populationSize": 192,
+        "generation": 130,
+        "evaluations": 25003,
+        "evaluatedCreatures": 38,
+        "bestFitness": 2763.6193937416438,
+        "averageFitness": 1479.5731235891708,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-warmup-R3-240911/config.json",
+        "bytes": 7059091,
+        "sha256": "cb6c1a0bbb0c35594efc7935c110f3356b83e1f6afb1c11db22ad8e0e2ee9bf1"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-warmup-R3-240911/summary.json",
+        "bytes": 1180,
+        "sha256": "4efef406d12992e2518f4d90fa70d9e929b7f4eb40e2ec86fdc61e2f6c0db32c"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T07:35:23.138184+00:00",
+          "endedAt": "2026-09-04T07:45:15.771975+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "53965f78614b1ac86c27ec5bf8b4f25524ba8ac3da3763284a7d666e3d580927",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/warmup-R3-240911/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "fork-R3-240910",
+      "phase": "matched-continuation",
+      "runName": "followup-fork-R3-240910",
+      "evaluationCap": 40000,
+      "seed": 240910,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 2,
+      "lastProgress": 38647,
+      "lastProgressAtEpochSeconds": 1788509155.207018,
+      "completedAt": "2026-09-04T08:06:37.503951+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:06:36.532295+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "fork-R3-240910",
+        "seed": 240910,
+        "workers": 8,
+        "populationSize": 192,
+        "generation": 208,
+        "evaluations": 40005,
+        "evaluatedCreatures": 44,
+        "bestFitness": 3043.151038786027,
+        "averageFitness": 1525.784577675981,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-fork-R3-240910/config.json",
+        "bytes": 7098024,
+        "sha256": "6a1e3145f2abf8537416c76a96970936cc90ff82489bc0d84df610d1c0b84278"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-fork-R3-240910/summary.json",
+        "bytes": 1176,
+        "sha256": "adf45e792208f9796d821e8e64b2c977398b5bfaeafbc92c93cc40c4b3ee0678"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T07:48:50.438388+00:00",
+          "endedAt": "2026-09-04T08:01:06.480056+00:00",
+          "endReason": "battery_power",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "f1e4f520b006b363e5a31be4a70f1fe1936f26956cdb89aaefb7a85e31390968",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R3-240910/attempt-001.log"
+        },
+        {
+          "number": 2,
+          "startedAt": "2026-09-04T08:02:53.534111+00:00",
+          "endedAt": "2026-09-04T08:06:37.503951+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": true,
+          "commandDigest": "5758b343a11087511bc6d075951ff0fa20f76b14aec50f376a08ceb40cc45478",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R3-240910/attempt-002.log"
+        }
+      ]
+    },
+    {
+      "id": "fork-R5-240910",
+      "phase": "matched-continuation",
+      "runName": "followup-fork-R5-240910",
+      "evaluationCap": 24000,
+      "seed": 240910,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": 23757,
+      "lastProgressAtEpochSeconds": 1788510286.708596,
+      "completedAt": "2026-09-04T08:24:57.678464+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:24:55.157335+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "fork-R5-240910",
+        "seed": 240910,
+        "workers": 8,
+        "populationSize": 192,
+        "generation": 125,
+        "evaluations": 24001,
+        "evaluatedCreatures": 44,
+        "bestFitness": 2038.8861576979752,
+        "averageFitness": 1250.5315940233256,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-fork-R5-240910/config.json",
+        "bytes": 7559081,
+        "sha256": "07eedfc53cb9d3eb6787f76406d10e0cac54afbf925889804b856c39025c3108"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-fork-R5-240910/summary.json",
+        "bytes": 1178,
+        "sha256": "d03f1f3a803915e013de70980fcaf6f7192be6de421951f231584b51386e2b57"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:06:42.896299+00:00",
+          "endedAt": "2026-09-04T08:24:57.678464+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "8ac2659015a470211069bdeaff3d81adbedbf71bb82adf46e64b85174900cb2a",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R5-240910/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "fork-R5-240911",
+      "phase": "matched-continuation",
+      "runName": "followup-fork-R5-240911",
+      "evaluationCap": 24000,
+      "seed": 240911,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": 23717,
+      "lastProgressAtEpochSeconds": 1788511208.953527,
+      "completedAt": "2026-09-04T08:40:19.698015+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:40:16.480243+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "fork-R5-240911",
+        "seed": 240911,
+        "workers": 8,
+        "populationSize": 192,
+        "generation": 125,
+        "evaluations": 24003,
+        "evaluatedCreatures": 41,
+        "bestFitness": 2229.6053377372937,
+        "averageFitness": 1247.8954508351237,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-fork-R5-240911/config.json",
+        "bytes": 7536976,
+        "sha256": "506a419bfb0cc0e13f8042c530c6f2906181b227c35c4e605bf80663af5058c8"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-fork-R5-240911/summary.json",
+        "bytes": 1178,
+        "sha256": "00adcb69d700e00025dfa0a113b5d2971c715e9398ba07a534a3559521114a4e"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:25:03.108795+00:00",
+          "endedAt": "2026-09-04T08:40:19.698015+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "34e868de14a2f13fbb4abe8f54510584b4f8b52cce3accb038b97018146eeecb",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R5-240911/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "fork-R3-240911",
+      "phase": "matched-continuation",
+      "runName": "followup-fork-R3-240911",
+      "evaluationCap": 40000,
+      "seed": 240911,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": 39438,
+      "lastProgressAtEpochSeconds": 1788512131.641432,
+      "completedAt": "2026-09-04T08:55:42.336898+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:55:41.416469+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "fork-R3-240911",
+        "seed": 240911,
+        "workers": 8,
+        "populationSize": 192,
+        "generation": 208,
+        "evaluations": 40003,
+        "evaluatedCreatures": 40,
+        "bestFitness": 2876.0838654545987,
+        "averageFitness": 1614.056210373066,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-fork-R3-240911/config.json",
+        "bytes": 7134367,
+        "sha256": "b72e813b1f2f56e3111ec9aa017995fe16e2f7baac29c812a744fdfc889debac"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-fork-R3-240911/summary.json",
+        "bytes": 1177,
+        "sha256": "faa77832d7b8a74bbf2cfc0547bf911153f39d5a228a32c2d051180c7bfc8ada"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:40:25.221963+00:00",
+          "endedAt": "2026-09-04T08:55:42.336898+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "a897912243ea0f039de1102fbe0ecd4c17540136ece1866690bcbc23bbcce0da",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/fork-R3-240911/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-nominal",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-nominal",
+      "evaluationCap": 44,
+      "seed": 241910,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512147.861136,
+      "completedAt": "2026-09-04T08:55:53.094648+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:55:49.974273+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-nominal",
+        "seed": 241910,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 50,
+        "evaluatedCreatures": 44,
+        "bestFitness": 3457.460938,
+        "averageFitness": 1653.9699304772728,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-nominal/config.json",
+        "bytes": 863096,
+        "sha256": "288df3e5a9894205e4ebd35452c5009e95c1de7ff0ba4449e8190bf001153850"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-nominal/summary.json",
+        "bytes": 1189,
+        "sha256": "49aedda4b7e7d4811d68ea3329e3bdc398f470b845dbbdfff9e0d63f2e4eac76"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:55:47.861136+00:00",
+          "endedAt": "2026-09-04T08:55:53.094648+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "b7f129f94e1b2beb5ffae6a053ac09e45269912a1ac8b9214691685906fb1157",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-nominal/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-gravity-99",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-gravity-99",
+      "evaluationCap": 44,
+      "seed": 241911,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512158.59634,
+      "completedAt": "2026-09-04T08:56:03.827139+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:56:00.623572+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-99",
+        "seed": 241911,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 55,
+        "evaluatedCreatures": 19,
+        "bestFitness": 2416.460205,
+        "averageFitness": 1486.3227989473685,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -99.0,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-gravity-99/config.json",
+        "bytes": 633815,
+        "sha256": "faab34a6dea093c4699d6bc0bef1733290107942ec7470801ef29204844fc5ae"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-gravity-99/summary.json",
+        "bytes": 1193,
+        "sha256": "9bf3c5ce93729997de860588e854d94c6f1338ef96ab1bccd0dbcc9271e4cbd7"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:55:58.596340+00:00",
+          "endedAt": "2026-09-04T08:56:03.827139+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "9ecaf97183bd2deb841f0e0abaee3f865f4ef533dd7826911ed097e6d933a5da",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-gravity-99/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-gravity-101",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-gravity-101",
+      "evaluationCap": 44,
+      "seed": 241912,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512169.3377368,
+      "completedAt": "2026-09-04T08:56:14.569392+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:56:11.500908+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-101",
+        "seed": 241912,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 55,
+        "evaluatedCreatures": 18,
+        "bestFitness": 3197.035889,
+        "averageFitness": 1352.5559947222223,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -101.0,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-gravity-101/config.json",
+        "bytes": 624740,
+        "sha256": "b9c0b4b99673495894f4b30db4261d17557cb6ee62c5e53cf598086aeb34b4f0"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-gravity-101/summary.json",
+        "bytes": 1195,
+        "sha256": "ace7b7c85d33aea0bdb875823660ee2bd3e4e2a125731f03a0c4c5db1cb46cd2"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:56:09.337737+00:00",
+          "endedAt": "2026-09-04T08:56:14.569392+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "95a0a8933489601ffe2b215af87c18a5f314a417caddeebdee96ab9653989744",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-gravity-101/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-mass-99",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-mass-99",
+      "evaluationCap": 44,
+      "seed": 241913,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512180.096444,
+      "completedAt": "2026-09-04T08:56:25.334860+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:56:22.318644+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-99",
+        "seed": 241913,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 51,
+        "evaluatedCreatures": 16,
+        "bestFitness": 2625.265381,
+        "averageFitness": 1421.7813035,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 9.9e-05,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-mass-99/config.json",
+        "bytes": 603319,
+        "sha256": "d127d45e68bbd29c199133cf779583108a3ea27f6de0e3f109d6cef41463a2db"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-mass-99/summary.json",
+        "bytes": 1184,
+        "sha256": "75d65cc3faa500d5780879bba6f48ea52338b470903088c9de2e84a7a335f910"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:56:20.096444+00:00",
+          "endedAt": "2026-09-04T08:56:25.334860+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "379831e6782ffa65a30098ace1e408912bc865a58ef89744741b5a1c5b3c87cc",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-mass-99/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-mass-101",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-mass-101",
+      "evaluationCap": 44,
+      "seed": 241914,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512190.900782,
+      "completedAt": "2026-09-04T08:56:36.160347+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:56:33.382384+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-101",
+        "seed": 241914,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 55,
+        "evaluatedCreatures": 19,
+        "bestFitness": 3847.012451,
+        "averageFitness": 1427.9441824736841,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.000101,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-mass-101/config.json",
+        "bytes": 633138,
+        "sha256": "e252fb4b0dc7bef714afefc18deb99dba8858ad25eb7ff2224481bbc853f8f6c"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-mass-101/summary.json",
+        "bytes": 1192,
+        "sha256": "4ce31b79cee556fae1edf5f2c4e4bae088d4791f20c5a02b3d7c1254f9071975"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:56:30.900782+00:00",
+          "endedAt": "2026-09-04T08:56:36.160347+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "4779eaba5ed8c2de4d3cdeba93862a10c23c95e06b46b74e14c4a67e67b6af5a",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-mass-101/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-friction-060",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-friction-060",
+      "evaluationCap": 44,
+      "seed": 241915,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512201.708527,
+      "completedAt": "2026-09-04T08:56:46.975920+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:56:44.026713+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-friction-060",
+        "seed": 241915,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 55,
+        "evaluatedCreatures": 15,
+        "bestFitness": 2187.873047,
+        "averageFitness": 1309.7498474,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.6,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-friction-060/config.json",
+        "bytes": 594115,
+        "sha256": "a939543dc6f2db50489d4b2eda5d0b8aee7e546a82d9bba8705f9697df3709a5"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-friction-060/summary.json",
+        "bytes": 1188,
+        "sha256": "583caafdcfc225ede989053ceb6539eb1034774ad8b18f1764a10b3ece8b8d6c"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:56:41.708527+00:00",
+          "endedAt": "2026-09-04T08:56:46.975920+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "e18e4aa7ee82f7cbe1810ea366d1e98100419c65355aae16c95be62a638e6746",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-friction-060/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-friction-100",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-friction-100",
+      "evaluationCap": 44,
+      "seed": 241916,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512212.548979,
+      "completedAt": "2026-09-04T08:56:57.821083+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:56:54.865100+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-friction-100",
+        "seed": 241916,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 57,
+        "evaluatedCreatures": 16,
+        "bestFitness": 2971.415771,
+        "averageFitness": 1449.4785383125,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 1.0,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-friction-100/config.json",
+        "bytes": 607490,
+        "sha256": "53ec27298d21ec8ecc08193020ce8da2f257fe0c3ce8b5f888f156718d301087"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-friction-100/summary.json",
+        "bytes": 1191,
+        "sha256": "7e3b45aaa9a7477fb5e3b3f72beb6682a50c5a96c2e35b95c3dc9889d92bd4fc"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:56:52.548979+00:00",
+          "endedAt": "2026-09-04T08:56:57.821083+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "a11778c9a3105b5c7fb99388619e37f464dc20a6b59038da280a00f9a06eab23",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-friction-100/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-gravity-985",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-gravity-985",
+      "evaluationCap": 44,
+      "seed": 241917,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512223.38591,
+      "completedAt": "2026-09-04T08:57:08.659703+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:57:06.143286+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-985",
+        "seed": 241917,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 48,
+        "evaluatedCreatures": 21,
+        "bestFitness": 3002.804443,
+        "averageFitness": 1199.1152183333334,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -98.5,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-gravity-985/config.json",
+        "bytes": 648748,
+        "sha256": "aeb282fa04846d4a209194bbb577668f5f9550936540402695b31e57f732fa4c"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-gravity-985/summary.json",
+        "bytes": 1194,
+        "sha256": "cdc61ee46dd32a8680a87f8b3429ccab1b0586d90dcfe97301854e494e6941c1"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:57:03.385910+00:00",
+          "endedAt": "2026-09-04T08:57:08.659703+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "f7e6393c77ca4df9a255259e716a0cac1195ee8595a751aa97358cd46dec9a14",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-gravity-985/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-gravity-1015",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-gravity-1015",
+      "evaluationCap": 44,
+      "seed": 241918,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512234.238934,
+      "completedAt": "2026-09-04T08:57:19.491555+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:57:16.789494+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-1015",
+        "seed": 241918,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 56,
+        "evaluatedCreatures": 19,
+        "bestFitness": 2900.144043,
+        "averageFitness": 1343.364592631579,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -101.5,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-gravity-1015/config.json",
+        "bytes": 634072,
+        "sha256": "1a700b5d4446afd90daa270aaa453da8ebe8d7abcd6442d3b9a46da96525eeee"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-gravity-1015/summary.json",
+        "bytes": 1195,
+        "sha256": "d2992912c33ec185905776514c8a2ed0a2be8382ca03276ce2d3a4cd349829ba"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:57:14.238934+00:00",
+          "endedAt": "2026-09-04T08:57:19.491555+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "add4adb6203f421e49abc8073059f8f409d17e009c0ce7c1837b404ece0eca4e",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-gravity-1015/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-mass-985",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-mass-985",
+      "evaluationCap": 44,
+      "seed": 241919,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512245.167424,
+      "completedAt": "2026-09-04T08:57:30.419542+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:57:28.702671+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-985",
+        "seed": 241919,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 52,
+        "evaluatedCreatures": 20,
+        "bestFitness": 2656.963379,
+        "averageFitness": 1190.48886715,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 9.85e-05,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-mass-985/config.json",
+        "bytes": 641677,
+        "sha256": "365ef917498610c56ae1af79fd24bb0b82066403d5c1c68c6be30ee170242ea2"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-mass-985/summary.json",
+        "bytes": 1187,
+        "sha256": "062da9ce8150c331d83f13348b20c1fa3b2916fd0ee62c86ac54ac3bd09c1e39"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:57:25.167424+00:00",
+          "endedAt": "2026-09-04T08:57:30.419542+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "21ce56494641227f3e19b422e3d14c09635364ae7b7fc71f8d23f614289c1ae8",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-mass-985/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-mass-1015",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-mass-1015",
+      "evaluationCap": 44,
+      "seed": 241920,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512256.227084,
+      "completedAt": "2026-09-04T08:57:41.511451+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:57:38.921139+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-1015",
+        "seed": 241920,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 51,
+        "evaluatedCreatures": 20,
+        "bestFitness": 3120.459961,
+        "averageFitness": 1661.6501586999998,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001015,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-mass-1015/config.json",
+        "bytes": 641037,
+        "sha256": "e96eaad0a1d7066980856fc32232e51bf6a4459507fc57e5bece0ff12b401f4c"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-mass-1015/summary.json",
+        "bytes": 1194,
+        "sha256": "fe03bf56b5e125b8cd4a9be01ab96beffabb2e7095aae87048fdd7e75e911f67"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:57:36.227084+00:00",
+          "endedAt": "2026-09-04T08:57:41.511451+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "31e2bd71f8b6efacc81f519e0aeaf0259c3843d825385c683c5dd584a82d9008",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-mass-1015/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-gravity-101-mass-101",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-gravity-101-mass-101",
+      "evaluationCap": 44,
+      "seed": 241921,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512267.117728,
+      "completedAt": "2026-09-04T08:57:52.363582+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:57:49.596302+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-101-mass-101",
+        "seed": 241921,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 48,
+        "evaluatedCreatures": 14,
+        "bestFitness": 2330.023682,
+        "averageFitness": 1279.2653067142858,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -101.0,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.000101,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-gravity-101-mass-101/config.json",
+        "bytes": 583230,
+        "sha256": "0cd20fc4ed5a319bdac8be1250178fed8873259311cdac427ccc622c23eb53ef"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-gravity-101-mass-101/summary.json",
+        "bytes": 1206,
+        "sha256": "f0968a33978d7863d872deb3788be0ea3f935fb8d47bea3a8168623a11730797"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:57:47.117728+00:00",
+          "endedAt": "2026-09-04T08:57:52.363582+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "e01ed6d825eabf290a5496d6cdfc92f1f6e771cb4b4f2e6567a8f9608c9a73e5",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-gravity-101-mass-101/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240910-gravity-99-friction-060",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240910-gravity-99-friction-060",
+      "evaluationCap": 44,
+      "seed": 241922,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512277.957607,
+      "completedAt": "2026-09-04T08:58:03.210327+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:58:00.299883+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-99-friction-060",
+        "seed": 241922,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 45,
+        "evaluatedCreatures": 18,
+        "bestFitness": 2586.630127,
+        "averageFitness": 1156.084681111111,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -99.0,
+          "groundFriction": 0.6,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240910-gravity-99-friction-060/config.json",
+        "bytes": 619455,
+        "sha256": "ce557dd3c0a0598c6b67e3cf0c2df6e74b9fab0568c0a9a4bbe3a4e93eb3adaa"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240910-gravity-99-friction-060/summary.json",
+        "bytes": 1205,
+        "sha256": "3716e2177b25f9704dbf28a3f32d54f43dda9cd3fe467736f68f9d8044a9d24f"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:57:57.957607+00:00",
+          "endedAt": "2026-09-04T08:58:03.210327+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "eb59b791e24328713f59021514d6bfbaf928e2b2b1094c8f500e3d3809086618",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240910-gravity-99-friction-060/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-nominal",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-nominal",
+      "evaluationCap": 44,
+      "seed": 241910,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512288.808599,
+      "completedAt": "2026-09-04T08:58:14.049991+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:58:11.372691+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-nominal",
+        "seed": 241910,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 56,
+        "evaluatedCreatures": 44,
+        "bestFitness": 3095.288086,
+        "averageFitness": 1511.3711339772728,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-nominal/config.json",
+        "bytes": 866433,
+        "sha256": "a4aaa790796c137ac4dac4755e94f7d5af7eca529ae05f1a887762c5d0c8e54f"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-nominal/summary.json",
+        "bytes": 1189,
+        "sha256": "a7c6ba554aad9887e44e5762c0d12663ea9ece8f2b008a76d6048cb09d55da41"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:58:08.808599+00:00",
+          "endedAt": "2026-09-04T08:58:14.049991+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "c351a73fbb273ab233457ba46c9089ba77b5dd84f676b3564e9cd1e34b2879e2",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-nominal/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-gravity-99",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-gravity-99",
+      "evaluationCap": 44,
+      "seed": 241911,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512299.6397738,
+      "completedAt": "2026-09-04T08:58:24.886093+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:58:21.965716+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-99",
+        "seed": 241911,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 56,
+        "evaluatedCreatures": 21,
+        "bestFitness": 4046.369629,
+        "averageFitness": 1704.524010095238,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -99.0,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-gravity-99/config.json",
+        "bytes": 651976,
+        "sha256": "97d0629a247d57e234086f3b63dd526c4301fe6dd363fc36cce5ee9a53289237"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-gravity-99/summary.json",
+        "bytes": 1192,
+        "sha256": "f1aede1e01a98439878e4e341c3cfacec957d5db6beafe8bc18a40a1ba27b660"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:58:19.639774+00:00",
+          "endedAt": "2026-09-04T08:58:24.886093+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "bf0cd59301a37e6e2eb3679a8945d96db7f1be10586ce7234c39a372c7198808",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-gravity-99/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-gravity-101",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-gravity-101",
+      "evaluationCap": 44,
+      "seed": 241912,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512310.458803,
+      "completedAt": "2026-09-04T08:58:35.702228+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:58:32.565459+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-101",
+        "seed": 241912,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 46,
+        "evaluatedCreatures": 17,
+        "bestFitness": 3099.986084,
+        "averageFitness": 1716.2105497647058,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -101.0,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-gravity-101/config.json",
+        "bytes": 609601,
+        "sha256": "9536f38704488b5521486666d358a18db1c90572e7bf9583d8cc79b0f416eba4"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-gravity-101/summary.json",
+        "bytes": 1195,
+        "sha256": "7fff00fdeb57d053b87471ecefb7eb94f7afd18b983c564f613b6ce5f1e6ff5a"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:58:30.458803+00:00",
+          "endedAt": "2026-09-04T08:58:35.702228+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "d3a8cb66812bf51eb2c64575e8b8024a6229fa6d67c5a52b80e10cc7e8e4bb8e",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-gravity-101/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-mass-99",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-mass-99",
+      "evaluationCap": 44,
+      "seed": 241913,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512321.390338,
+      "completedAt": "2026-09-04T08:58:46.646375+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:58:43.857221+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-99",
+        "seed": 241913,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 49,
+        "evaluatedCreatures": 17,
+        "bestFitness": 2692.327148,
+        "averageFitness": 1238.5603134117646,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 9.9e-05,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-mass-99/config.json",
+        "bytes": 611527,
+        "sha256": "d2694986dabad4fc9b7119d270a9d0c506d09846e34892295978f5aa2374948d"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-mass-99/summary.json",
+        "bytes": 1190,
+        "sha256": "25952b6d18efc15d06a6dd19061d4f8a303aed2376d73d8c6fb8d200f8d86e06"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:58:41.390338+00:00",
+          "endedAt": "2026-09-04T08:58:46.646375+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "21d6c93719956976344677637c3065d8677c51d5c6c63752b23b982c1d90cfec",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-mass-99/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-mass-101",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-mass-101",
+      "evaluationCap": 44,
+      "seed": 241914,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512332.2840052,
+      "completedAt": "2026-09-04T08:58:57.538141+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:58:54.737208+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-101",
+        "seed": 241914,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 57,
+        "evaluatedCreatures": 18,
+        "bestFitness": 2381.579102,
+        "averageFitness": 1225.2849562222223,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.000101,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-mass-101/config.json",
+        "bytes": 625173,
+        "sha256": "67779029806665d5143e7209b69f45140e3fd26b092ac527c737ffc5c82259ca"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-mass-101/summary.json",
+        "bytes": 1192,
+        "sha256": "3750d8055cff3204ba7afd3a15d907b318b4ad4bafb26e868e62a8dbe74b5f2e"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:58:52.284005+00:00",
+          "endedAt": "2026-09-04T08:58:57.538141+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "9a9e2e271908d7fed68214216ecb01903c899c8b6a7ed749125d7bb7f3108b1a",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-mass-101/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-friction-060",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-friction-060",
+      "evaluationCap": 44,
+      "seed": 241915,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512343.16011,
+      "completedAt": "2026-09-04T08:59:08.411005+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:59:05.611405+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-friction-060",
+        "seed": 241915,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 54,
+        "evaluatedCreatures": 19,
+        "bestFitness": 2490.587891,
+        "averageFitness": 1161.093918631579,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.6,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-friction-060/config.json",
+        "bytes": 632187,
+        "sha256": "9425f052739317121ea7b553e2ffe6cece46b378de2a34ea9be697be3a279e5e"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-friction-060/summary.json",
+        "bytes": 1193,
+        "sha256": "7faeecd6ea91bc884f0786322bd05aff3f463a7ac60a63ed942be6a17c3eaa5d"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:59:03.160110+00:00",
+          "endedAt": "2026-09-04T08:59:08.411005+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "a7d533e3d36502c8bdcac8a3ece2ad44df4e3d3894b395643b1fa1cb1a73aa3e",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-friction-060/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-friction-100",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-friction-100",
+      "evaluationCap": 44,
+      "seed": 241916,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512354.0338979,
+      "completedAt": "2026-09-04T08:59:19.277680+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:59:16.429812+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-friction-100",
+        "seed": 241916,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 56,
+        "evaluatedCreatures": 18,
+        "bestFitness": 4070.833008,
+        "averageFitness": 1604.0457764444445,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 1.0,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-friction-100/config.json",
+        "bytes": 624125,
+        "sha256": "3b35f2afd196b7637b9aa35add3dba3ba6baf64933768bd2d48bc4f7e805ec76"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-friction-100/summary.json",
+        "bytes": 1194,
+        "sha256": "5afc41129e46bc1dfce0ba77a648c6b0921f725b5a7c763b98520ae0ae938560"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:59:14.033898+00:00",
+          "endedAt": "2026-09-04T08:59:19.277680+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "91678a40146eb51508bda6d05dac854ad6ce8bd72a17e26af036055ad139cd78",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-friction-100/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-gravity-985",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-gravity-985",
+      "evaluationCap": 44,
+      "seed": 241917,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512364.922977,
+      "completedAt": "2026-09-04T08:59:30.196898+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:59:27.335603+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-985",
+        "seed": 241917,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 56,
+        "evaluatedCreatures": 20,
+        "bestFitness": 3045.475586,
+        "averageFitness": 1425.40868685,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -98.5,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-gravity-985/config.json",
+        "bytes": 642258,
+        "sha256": "bd4bf5a533e9be2b4642938c1dfeedd94b1071d59a047442d64f1112e2be6169"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-gravity-985/summary.json",
+        "bytes": 1189,
+        "sha256": "1a3821ffa8a941365f9c296a028e74a57838c3d626cca3f524de068279344fb6"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:59:24.922977+00:00",
+          "endedAt": "2026-09-04T08:59:30.196898+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "f50987519aa8921da75a67b90cbb15fde84db7b17ee3a96280cf58c40429f6c0",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-gravity-985/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-gravity-1015",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-gravity-1015",
+      "evaluationCap": 44,
+      "seed": 241918,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512375.84676,
+      "completedAt": "2026-09-04T08:59:41.118624+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:59:38.376613+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-1015",
+        "seed": 241918,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 54,
+        "evaluatedCreatures": 17,
+        "bestFitness": 3575.326904,
+        "averageFitness": 1257.6963922941177,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -101.5,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-gravity-1015/config.json",
+        "bytes": 613865,
+        "sha256": "2620fbebd6239d836be6be78790be00bf208c2dd7a9a5b89747d9f388c0486ad"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-gravity-1015/summary.json",
+        "bytes": 1196,
+        "sha256": "74c3d763ab4ae9d1a4ebfbee23f96678231abbd5385046822384d5ddcf55f2a7"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:59:35.846760+00:00",
+          "endedAt": "2026-09-04T08:59:41.118624+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "c13e676b26fb0487dfcf1b464ed01e29d64a16dde2d9000fb26e514ef1d29132",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-gravity-1015/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-mass-985",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-mass-985",
+      "evaluationCap": 44,
+      "seed": 241919,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512386.72556,
+      "completedAt": "2026-09-04T08:59:52.026156+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T08:59:48.956378+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-985",
+        "seed": 241919,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 45,
+        "evaluatedCreatures": 19,
+        "bestFitness": 2381.501465,
+        "averageFitness": 1337.3139327368422,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 9.85e-05,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-mass-985/config.json",
+        "bytes": 628137,
+        "sha256": "397e12eedff2030a1c08f64e2ed380af0855bd3ac58f66465cd1089b72be7fd0"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-mass-985/summary.json",
+        "bytes": 1192,
+        "sha256": "4e36ac143cc7025c3e7a69982164a6c2c785cf3bec614a0d7f0ba5825ba061ad"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:59:46.725560+00:00",
+          "endedAt": "2026-09-04T08:59:52.026156+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "f9b87904a27b65ca22c80cd0a270e980416c4f53d2aacf7cc3078960a2228831",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-mass-985/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-mass-1015",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-mass-1015",
+      "evaluationCap": 44,
+      "seed": 241920,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512397.735273,
+      "completedAt": "2026-09-04T09:00:03.010286+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:00:00.805657+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-1015",
+        "seed": 241920,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 51,
+        "evaluatedCreatures": 21,
+        "bestFitness": 2169.853271,
+        "averageFitness": 1231.6504356190476,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001015,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-mass-1015/config.json",
+        "bytes": 650069,
+        "sha256": "008ac0bfd0c9874e86b93360b6a1b3c510289e52f9fb81b48b3e4c35f9a0e021"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-mass-1015/summary.json",
+        "bytes": 1194,
+        "sha256": "e716ba32ddf4e5c8c05ebc2f6299b60e7c56cf1c6d2ff7113a1e5baa61eef224"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T08:59:57.735273+00:00",
+          "endedAt": "2026-09-04T09:00:03.010286+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "1d64818b2c5dc0a18ea666cc29d4cae952f06229a5d15f5ba42c0d367825b2ee",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-mass-1015/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-gravity-101-mass-101",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-gravity-101-mass-101",
+      "evaluationCap": 44,
+      "seed": 241921,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512408.7350662,
+      "completedAt": "2026-09-04T09:00:13.984517+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:00:11.232412+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-101-mass-101",
+        "seed": 241921,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 55,
+        "evaluatedCreatures": 20,
+        "bestFitness": 2449.657471,
+        "averageFitness": 1267.32658545,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -101.0,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.000101,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-gravity-101-mass-101/config.json",
+        "bytes": 642491,
+        "sha256": "702db9f6cb5cf5abdd05445f7eb111da71b42e2f9c029e5bdd2cf967e215523f"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-gravity-101-mass-101/summary.json",
+        "bytes": 1201,
+        "sha256": "8ee84f0ac111dd2ca049506c32cfc6877fc73b86c401efef6589df179d05b60f"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:00:08.735066+00:00",
+          "endedAt": "2026-09-04T09:00:13.984517+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "f1c6f47f14e08839ba48a818b45f1420e807371a9874642aad8b211eaf60b6f2",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-gravity-101-mass-101/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240910-gravity-99-friction-060",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240910-gravity-99-friction-060",
+      "evaluationCap": 44,
+      "seed": 241922,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512419.640683,
+      "completedAt": "2026-09-04T09:00:24.891457+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:00:22.027961+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-99-friction-060",
+        "seed": 241922,
+        "workers": 8,
+        "populationSize": 44,
+        "generation": 1,
+        "evaluations": 56,
+        "evaluatedCreatures": 18,
+        "bestFitness": 3107.922363,
+        "averageFitness": 1516.611262,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -99.0,
+          "groundFriction": 0.6,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240910-gravity-99-friction-060/config.json",
+        "bytes": 625162,
+        "sha256": "c38eeffcc4db531d0741aa612461255882a3958dce9c97d5a71ce95ecba1f839"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240910-gravity-99-friction-060/summary.json",
+        "bytes": 1199,
+        "sha256": "f877a906fac54eee04173dde98edea9a1360de74aed2b5e16a351a1ae263d5d4"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:00:19.640683+00:00",
+          "endedAt": "2026-09-04T09:00:24.891457+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "8e2d6f01795d79882768cc34164a08f2cafeafb4d09c81629c8185b3803acafe",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240910-gravity-99-friction-060/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-nominal",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-nominal",
+      "evaluationCap": 41,
+      "seed": 241911,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512430.538846,
+      "completedAt": "2026-09-04T09:00:35.788884+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:00:32.976531+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-nominal",
+        "seed": 241911,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 52,
+        "evaluatedCreatures": 41,
+        "bestFitness": 3828.59082,
+        "averageFitness": 1553.640231292683,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-nominal/config.json",
+        "bytes": 807975,
+        "sha256": "d188c56494867b34cc4c486334b6c54c1fc62646e5bd386c0dca4b9b16e998f7"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-nominal/summary.json",
+        "bytes": 1187,
+        "sha256": "4e3e749ab721f452e77ce981fe90ce0379fbfc307cb2ad5dcce3e9483cf643cb"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:00:30.538846+00:00",
+          "endedAt": "2026-09-04T09:00:35.788884+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "d4b0256b5b865d751193a4b449371b14171f54b29b7969d445b5e360e22352dd",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-nominal/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-gravity-99",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-gravity-99",
+      "evaluationCap": 41,
+      "seed": 241912,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512441.5598059,
+      "completedAt": "2026-09-04T09:00:46.807469+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:00:43.683829+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-99",
+        "seed": 241912,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 45,
+        "evaluatedCreatures": 16,
+        "bestFitness": 3019.205078,
+        "averageFitness": 1776.4173468125,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -99.0,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-gravity-99/config.json",
+        "bytes": 572401,
+        "sha256": "68307110621e965cbf270e865ed3cad261841637aa5633ceb05622cdfcdeb0a0"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-gravity-99/summary.json",
+        "bytes": 1190,
+        "sha256": "e3917a7c379c89a8290f9f3c6a517d305a7e6b410fbd607a8c8977b533b81d79"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:00:41.559806+00:00",
+          "endedAt": "2026-09-04T09:00:46.807469+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "eb2e59837e096c6ac073bae7bfa1ad9408aecad6313bb31581dd3242fd588632",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-gravity-99/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-gravity-101",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-gravity-101",
+      "evaluationCap": 41,
+      "seed": 241913,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512452.595767,
+      "completedAt": "2026-09-04T09:00:57.865390+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:00:55.111699+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-101",
+        "seed": 241913,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 51,
+        "evaluatedCreatures": 12,
+        "bestFitness": 2851.685547,
+        "averageFitness": 1790.41412875,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -101.0,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-gravity-101/config.json",
+        "bytes": 538218,
+        "sha256": "dee383092c3da223fe938c2f06528ca5e6fb801025c5c8317a9cbd42ab5e43b4"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-gravity-101/summary.json",
+        "bytes": 1190,
+        "sha256": "97918279733840452a14382939c4a874b557da45012c29061eb746697da21101"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:00:52.595767+00:00",
+          "endedAt": "2026-09-04T09:00:57.865390+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "e417732ca1e0067221744e18adecfb0cb0ac2f543aae50a6111fb1c0830b5c69",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-gravity-101/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-mass-99",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-mass-99",
+      "evaluationCap": 41,
+      "seed": 241914,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512463.5735428,
+      "completedAt": "2026-09-04T09:01:08.843720+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:01:06.052637+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-99",
+        "seed": 241914,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 48,
+        "evaluatedCreatures": 16,
+        "bestFitness": 3222.774658,
+        "averageFitness": 1333.272634375,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 9.9e-05,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-mass-99/config.json",
+        "bytes": 572651,
+        "sha256": "50705df23a2ee35572a4fd68cbc894d0abbfbc18b22e38a7607c9613e1482ebd"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-mass-99/summary.json",
+        "bytes": 1186,
+        "sha256": "7e98b864624f1750e52e390b6367486f07135e5028b67b733d0689249acdc072"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:01:03.573543+00:00",
+          "endedAt": "2026-09-04T09:01:08.843720+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "41a4889c7479aa2a31b851370fb0b3c3724ed861bf6aae885b43048026820815",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-mass-99/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-mass-101",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-mass-101",
+      "evaluationCap": 41,
+      "seed": 241915,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512474.591327,
+      "completedAt": "2026-09-04T09:01:19.831175+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:01:17.082804+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-101",
+        "seed": 241915,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 52,
+        "evaluatedCreatures": 17,
+        "bestFitness": 2437.352051,
+        "averageFitness": 1229.9350640588236,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.000101,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-mass-101/config.json",
+        "bytes": 584549,
+        "sha256": "0110b6ea4228d04e285aaf85e7b40b0724a85d3a6852fdc3ad4609a68ed9c8f2"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-mass-101/summary.json",
+        "bytes": 1192,
+        "sha256": "e2cb087e822feb807ec961ab3b97442a109909b7ddb37c3b825392bffa375e45"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:01:14.591327+00:00",
+          "endedAt": "2026-09-04T09:01:19.831175+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "5804ae51525cd6076c46a1a5f426962048755ae0483bcd77995365a6b067d3e5",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-mass-101/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-friction-060",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-friction-060",
+      "evaluationCap": 41,
+      "seed": 241916,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512485.770862,
+      "completedAt": "2026-09-04T09:01:31.081354+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:01:28.492353+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-friction-060",
+        "seed": 241916,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 42,
+        "evaluatedCreatures": 17,
+        "bestFitness": 2377.172119,
+        "averageFitness": 1050.7236974705881,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.6,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-friction-060/config.json",
+        "bytes": 580795,
+        "sha256": "b6d38ebba6d4d0e34991a44138f5a8935fa76201dbf2178ad604e2fb05f7590f"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-friction-060/summary.json",
+        "bytes": 1194,
+        "sha256": "2a12fd906bf146d12f42a4655819652f46af7c0ea2dbf4169461e77a74f91bd4"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:01:25.770862+00:00",
+          "endedAt": "2026-09-04T09:01:31.081354+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "94c0ab6062fbf4474a6314f0daceca9d2f1981d6a00aa8a49ff2c44dba50b53a",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-friction-060/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-friction-100",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-friction-100",
+      "evaluationCap": 41,
+      "seed": 241917,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512496.757828,
+      "completedAt": "2026-09-04T09:01:42.005663+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:01:38.924083+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-friction-100",
+        "seed": 241917,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 47,
+        "evaluatedCreatures": 17,
+        "bestFitness": 3439.112305,
+        "averageFitness": 1539.237127,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 1.0,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-friction-100/config.json",
+        "bytes": 583123,
+        "sha256": "d66703ab69fe5655239fe09775b9187f2aae44e73f00d74f352d0a1b022a377a"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-friction-100/summary.json",
+        "bytes": 1187,
+        "sha256": "a3f1f0bf520bb94a077c1a1c74a3fb4767d870244f7e43bd4299f251d5cee707"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:01:36.757828+00:00",
+          "endedAt": "2026-09-04T09:01:42.005663+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "c4e17d1c89aa2a09d44a4e42b9a5e1307f8c4ba72050b5b26a3badc92a30bd7c",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-friction-100/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-gravity-985",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-gravity-985",
+      "evaluationCap": 41,
+      "seed": 241918,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512507.679071,
+      "completedAt": "2026-09-04T09:01:52.928241+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:01:49.951071+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-985",
+        "seed": 241918,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 41,
+        "evaluatedCreatures": 13,
+        "bestFitness": 2369.955322,
+        "averageFitness": 1489.3703423846152,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -98.5,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-gravity-985/config.json",
+        "bytes": 542063,
+        "sha256": "c11da436616d248872cf11def6cd056425191b2b520af5396335fbdfe8478f04"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-gravity-985/summary.json",
+        "bytes": 1194,
+        "sha256": "bdab3525660efe554222dfa7cd4c1e9c8ff9ce73403449cb40cf34b7e9ea88eb"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:01:47.679071+00:00",
+          "endedAt": "2026-09-04T09:01:52.928241+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "6f219b7328a2d425b386e2808b871d23a65b7f32818b7a7fd630854b28129efe",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-gravity-985/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-gravity-1015",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-gravity-1015",
+      "evaluationCap": 41,
+      "seed": 241919,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512518.596066,
+      "completedAt": "2026-09-04T09:02:03.850491+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:02:00.907787+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-1015",
+        "seed": 241919,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 41,
+        "evaluatedCreatures": 17,
+        "bestFitness": 3188.217285,
+        "averageFitness": 1324.6941598823528,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -101.5,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-gravity-1015/config.json",
+        "bytes": 580461,
+        "sha256": "2a14544ef31daec4b0e0604536d63eda2e09b31f4f09e46be8cad9c824ae4e18"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-gravity-1015/summary.json",
+        "bytes": 1196,
+        "sha256": "d5d26b0d3cd32726bef0b31a85b0bf608a129f7dbd60880ca2a956f2c92c99ff"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:01:58.596066+00:00",
+          "endedAt": "2026-09-04T09:02:03.850491+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "d6775ba9ce4cd70083de773f36bdb1246bfe5198a175617e1ea37f52e10239bf",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-gravity-1015/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-mass-985",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-mass-985",
+      "evaluationCap": 41,
+      "seed": 241920,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512529.569427,
+      "completedAt": "2026-09-04T09:02:14.814848+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:02:11.840741+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-985",
+        "seed": 241920,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 46,
+        "evaluatedCreatures": 14,
+        "bestFitness": 3192.22876,
+        "averageFitness": 1370.7545994285715,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 9.85e-05,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-mass-985/config.json",
+        "bytes": 554828,
+        "sha256": "b69782799487cf4b8810fbe702b9af17b2139ab8dd46670bc0638160bfd7768f"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-mass-985/summary.json",
+        "bytes": 1191,
+        "sha256": "6d5513dd6a9f9b86e8bdbbf963462e9b5cfb124aacc1fce6c5dfb4e966dcafbb"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:02:09.569427+00:00",
+          "endedAt": "2026-09-04T09:02:14.814848+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "bcd5e9fd13260b68ddd584c20a00dee450101f11407986841d9ac20d8b03bbc8",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-mass-985/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-mass-1015",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-mass-1015",
+      "evaluationCap": 41,
+      "seed": 241921,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512540.4995232,
+      "completedAt": "2026-09-04T09:02:25.746935+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:02:22.647183+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-1015",
+        "seed": 241921,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 44,
+        "evaluatedCreatures": 15,
+        "bestFitness": 2442.063965,
+        "averageFitness": 1338.1906087333334,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001015,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-mass-1015/config.json",
+        "bytes": 562237,
+        "sha256": "a05c5a8d42e64814131c5273a6e155ea5a632f3ff536ff77023ef476eebee937"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-mass-1015/summary.json",
+        "bytes": 1194,
+        "sha256": "1004082fb384abf46864defa2a49642af435615523756d41723c9a538957a499"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:02:20.499523+00:00",
+          "endedAt": "2026-09-04T09:02:25.746935+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "2b7244f4d8375d93e09af18d2298e8d6883f243afb8cf773201d16fa55e3d969",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-mass-1015/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-gravity-101-mass-101",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-gravity-101-mass-101",
+      "evaluationCap": 41,
+      "seed": 241922,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512551.4294631,
+      "completedAt": "2026-09-04T09:02:36.683261+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:02:33.606207+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-101-mass-101",
+        "seed": 241922,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 45,
+        "evaluatedCreatures": 17,
+        "bestFitness": 2466.269775,
+        "averageFitness": 1166.5153987647059,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -101.0,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.000101,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-gravity-101-mass-101/config.json",
+        "bytes": 581374,
+        "sha256": "c46cc9b72fabf0b819e5c139a2a0acb9ba1e758b89e04bd8b98ca55f1d1ab143"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-gravity-101-mass-101/summary.json",
+        "bytes": 1206,
+        "sha256": "d3436bc250b7372c28d2f5a4a123b60ab91cb088ecb47372650d7c7c390faa0c"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:02:31.429463+00:00",
+          "endedAt": "2026-09-04T09:02:36.683261+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "750135c465a47576d2af60f037862d9a57d9c9cce8ea6aa9e9419c582bbcec4d",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-gravity-101-mass-101/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R5-240911-gravity-99-friction-060",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R5-240911-gravity-99-friction-060",
+      "evaluationCap": 41,
+      "seed": 241923,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512562.3818839,
+      "completedAt": "2026-09-04T09:02:47.629283+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:02:44.617315+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-99-friction-060",
+        "seed": 241923,
+        "workers": 8,
+        "populationSize": 41,
+        "generation": 1,
+        "evaluations": 45,
+        "evaluatedCreatures": 17,
+        "bestFitness": 3232.319824,
+        "averageFitness": 1245.5179532941177,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -99.0,
+          "groundFriction": 0.6,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R5-240911-gravity-99-friction-060/config.json",
+        "bytes": 581384,
+        "sha256": "7f5785c0fa1f6a7a2f82a94a1e1f8afbbdda456628abda184606f9749ab3d7fa"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R5-240911-gravity-99-friction-060/summary.json",
+        "bytes": 1206,
+        "sha256": "d4ee9273b4d81410dc7db4b9466cda57beb2376fabe571101eb07b7fbd843ac2"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:02:42.381884+00:00",
+          "endedAt": "2026-09-04T09:02:47.629283+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "efa9821f55ee02fcc909fdd1ecc122ceb8d7ee0b11a2dfb46b1fdea751787ed5",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R5-240911-gravity-99-friction-060/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-nominal",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-nominal",
+      "evaluationCap": 40,
+      "seed": 241911,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512913.989413,
+      "completedAt": "2026-09-04T09:08:39.268389+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:08:36.516422+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-nominal",
+        "seed": 241911,
+        "workers": 8,
+        "populationSize": 40,
+        "generation": 1,
+        "evaluations": 40,
+        "evaluatedCreatures": 40,
+        "bestFitness": 3485.631104,
+        "averageFitness": 1844.8987794,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240911-nominal/config.json",
+        "bytes": 784038,
+        "sha256": "f9f117e88a20166ffe701365b22c614900d143399fec9c0d83725972f0b44ac0"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240911-nominal/summary.json",
+        "bytes": 1183,
+        "sha256": "03e2c79960178e7b827e96c3f8d66a32832cf13521a52f9257d8c586add33ab2"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:08:33.989413+00:00",
+          "endedAt": "2026-09-04T09:08:39.268389+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "a6c556303b5a8cd9e889d5b5ef34648f86385f91dc74db894a586fc56c87fb69",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-nominal/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-gravity-99",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-gravity-99",
+      "evaluationCap": 40,
+      "seed": 241912,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512925.1101,
+      "completedAt": "2026-09-04T09:08:50.375500+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:08:47.464898+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-99",
+        "seed": 241912,
+        "workers": 8,
+        "populationSize": 40,
+        "generation": 1,
+        "evaluations": 41,
+        "evaluatedCreatures": 15,
+        "bestFitness": 2928.142822,
+        "averageFitness": 1418.694047,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -99.0,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240911-gravity-99/config.json",
+        "bytes": 551180,
+        "sha256": "fc65520b342cc54c81d1b8cf25b4c82f28740a2b0880a9a84143cc18ddf8a3ec"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240911-gravity-99/summary.json",
+        "bytes": 1186,
+        "sha256": "09667d740540b6e50b1dd2dc47a890830fbda74f28a43bd980b9cfff00eedfec"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:08:45.110100+00:00",
+          "endedAt": "2026-09-04T09:08:50.375500+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "6fbb3eaf86a5bf80f3bbbfe5a9dfc9d47f8b27fb21959575ec06da3de2552cf7",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-gravity-99/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-gravity-101",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-gravity-101",
+      "evaluationCap": 40,
+      "seed": 241913,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512936.14534,
+      "completedAt": "2026-09-04T09:09:01.438515+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:08:58.843796+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-101",
+        "seed": 241913,
+        "workers": 8,
+        "populationSize": 40,
+        "generation": 1,
+        "evaluations": 40,
+        "evaluatedCreatures": 16,
+        "bestFitness": 2934.433105,
+        "averageFitness": 1422.6834563749999,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -101.0,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240911-gravity-101/config.json",
+        "bytes": 560761,
+        "sha256": "bc24d3a2c2b1a386aeddd9c54d515ec9907852cb3722d65d0798e807e85df14f"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240911-gravity-101/summary.json",
+        "bytes": 1195,
+        "sha256": "badd309317dc2d5cce8411fb5fa57e9341c3f931810d45972323227135cbaf4b"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:08:56.145340+00:00",
+          "endedAt": "2026-09-04T09:09:01.438515+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "a949864a5fc09674bf011eeb2bd6450a9811ac114d020a8f1a37735589a24377",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-gravity-101/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-mass-99",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-mass-99",
+      "evaluationCap": 40,
+      "seed": 241914,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512947.200099,
+      "completedAt": "2026-09-04T09:09:12.489442+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:09:09.325917+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-99",
+        "seed": 241914,
+        "workers": 8,
+        "populationSize": 40,
+        "generation": 1,
+        "evaluations": 46,
+        "evaluatedCreatures": 17,
+        "bestFitness": 2917.316895,
+        "averageFitness": 1393.828326,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 9.9e-05,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240911-mass-99/config.json",
+        "bytes": 571900,
+        "sha256": "2b978ba125cd51e2b0074cb1cf7c345de886d9265dfe634dc3871bafae5e0417"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240911-mass-99/summary.json",
+        "bytes": 1183,
+        "sha256": "25cd744d56178989c8dcf851521937ce4e2602e085b9cd8e2767e8e11a2e515d"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:09:07.200099+00:00",
+          "endedAt": "2026-09-04T09:09:12.489442+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "94717b32c6351ee79186c066f525cf0703fda1235ae82295e83e88f579744a02",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-mass-99/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-mass-101",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-mass-101",
+      "evaluationCap": 40,
+      "seed": 241915,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512958.2832608,
+      "completedAt": "2026-09-04T09:09:23.590843+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:09:20.854390+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-101",
+        "seed": 241915,
+        "workers": 8,
+        "populationSize": 40,
+        "generation": 1,
+        "evaluations": 40,
+        "evaluatedCreatures": 15,
+        "bestFitness": 2530.138672,
+        "averageFitness": 1239.1115478666666,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.000101,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240911-mass-101/config.json",
+        "bytes": 552226,
+        "sha256": "d33a914754ca226e0417aee5789d27b4ede031b82665b9afb1d5db4533490ccc"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240911-mass-101/summary.json",
+        "bytes": 1192,
+        "sha256": "0167c419063777d4f00bfe269e8d3015e52ac2ea4e563adb833e87a3b586b2c6"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:09:18.283261+00:00",
+          "endedAt": "2026-09-04T09:09:23.590843+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "2bdcd4f3e096e7e075d4de3a5ab08dde668077f5ef6d3cfd99f49366d70eac00",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-mass-101/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-friction-060",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-friction-060",
+      "evaluationCap": 40,
+      "seed": 241916,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512969.396941,
+      "completedAt": "2026-09-04T09:09:34.654147+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:09:31.737839+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-friction-060",
+        "seed": 241916,
+        "workers": 8,
+        "populationSize": 40,
+        "generation": 1,
+        "evaluations": 42,
+        "evaluatedCreatures": 16,
+        "bestFitness": 2146.956055,
+        "averageFitness": 1215.348442125,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.6,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240911-friction-060/config.json",
+        "bytes": 560689,
+        "sha256": "fdae6fd03b865a352ef65bdb99bf786295744492457b4b471e9ec130b6788f39"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240911-friction-060/summary.json",
+        "bytes": 1190,
+        "sha256": "66f3d013fc6e45672f6a4aef1467ad981d1edeed1400c660f065e6e3e98236a4"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:09:29.396941+00:00",
+          "endedAt": "2026-09-04T09:09:34.654147+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "3bf6604c51ac0c76e49d2755dad6e25133728a5c3c900e1f643fb234474734bc",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-friction-060/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-friction-100",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-friction-100",
+      "evaluationCap": 40,
+      "seed": 241917,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512977.8865721,
+      "completedAt": "2026-09-04T09:09:43.138931+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:09:40.197835+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-friction-100",
+        "seed": 241917,
+        "workers": 8,
+        "populationSize": 40,
+        "generation": 1,
+        "evaluations": 40,
+        "evaluatedCreatures": 18,
+        "bestFitness": 3155.16333,
+        "averageFitness": 1418.2201232222224,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 1.0,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240911-friction-100/config.json",
+        "bytes": 578271,
+        "sha256": "ac1f00159aceb867855860d228a53a2241b79a214aba602dbb44c1f3668bd698"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240911-friction-100/summary.json",
+        "bytes": 1193,
+        "sha256": "7d782b0a65880c9bc4939ce71732522bc4c2bc26563b61dacd17d838d6ce7eb1"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:09:37.886572+00:00",
+          "endedAt": "2026-09-04T09:09:43.138931+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "788a33814f5d4ef7d4bc3a1242fa5a9994db76611b1bd24518c96ed51520bf93",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-friction-100/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-gravity-985",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-gravity-985",
+      "evaluationCap": 40,
+      "seed": 241918,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512988.91224,
+      "completedAt": "2026-09-04T09:09:54.171449+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:09:51.251874+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-985",
+        "seed": 241918,
+        "workers": 8,
+        "populationSize": 40,
+        "generation": 1,
+        "evaluations": 44,
+        "evaluatedCreatures": 17,
+        "bestFitness": 3579.952148,
+        "averageFitness": 1353.2614244117647,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -98.5,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240911-gravity-985/config.json",
+        "bytes": 572158,
+        "sha256": "f30ccbb125972be7e565e6d6f4d47e4c3d9924fcadb84227d2346546b7c5e379"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240911-gravity-985/summary.json",
+        "bytes": 1194,
+        "sha256": "7f35a78805a953cdc5888000067ee74d7236cc85e908ed1707827001d0d93fc6"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:09:48.912240+00:00",
+          "endedAt": "2026-09-04T09:09:54.171449+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "b7bd7f0ca27791054b029be6a858b2ccbb1994699bf89e53da2aef7fd5657896",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-gravity-985/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-gravity-1015",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-gravity-1015",
+      "evaluationCap": 40,
+      "seed": 241919,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788512999.9908092,
+      "completedAt": "2026-09-04T09:10:05.244157+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:10:02.391671+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-1015",
+        "seed": 241919,
+        "workers": 8,
+        "populationSize": 40,
+        "generation": 1,
+        "evaluations": 41,
+        "evaluatedCreatures": 15,
+        "bestFitness": 2760.075684,
+        "averageFitness": 1276.7707967333333,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -101.5,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240911-gravity-1015/config.json",
+        "bytes": 551115,
+        "sha256": "015cc4428fc44d846ed9d727618f56ed402106cbc1a0dbfef1ac4bc571c6a885"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240911-gravity-1015/summary.json",
+        "bytes": 1196,
+        "sha256": "7cb4b2c7c4421e273b11ce57361d3c0203cb463fc7cd9562af64b382388217d7"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:09:59.990809+00:00",
+          "endedAt": "2026-09-04T09:10:05.244157+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "d4f2ccad0e03663222bc3e68f1afb93abb8133ef5c5c0b318d5e25420514b44b",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-gravity-1015/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-mass-985",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-mass-985",
+      "evaluationCap": 40,
+      "seed": 241920,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788513011.0328069,
+      "completedAt": "2026-09-04T09:10:16.287866+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:10:13.378498+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-985",
+        "seed": 241920,
+        "workers": 8,
+        "populationSize": 40,
+        "generation": 1,
+        "evaluations": 40,
+        "evaluatedCreatures": 13,
+        "bestFitness": 3509.349854,
+        "averageFitness": 1412.8269559230769,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 9.85e-05,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240911-mass-985/config.json",
+        "bytes": 531915,
+        "sha256": "ec20d7d4395382ecb9e9d86e5c09e6fc4458535c5b16f6ad405419402ca2e010"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240911-mass-985/summary.json",
+        "bytes": 1192,
+        "sha256": "788ae0dcdc5fd8ef6cd8d42b30995e28e953ef360caf45f8753bc1db52c370f7"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:10:11.032807+00:00",
+          "endedAt": "2026-09-04T09:10:16.287866+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "87a9354029c3086bc458988c484bc17006e00def64b815338aa316968f83a268",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-mass-985/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-mass-1015",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-mass-1015",
+      "evaluationCap": 40,
+      "seed": 241921,
+      "ledgerStatus": "completed",
+      "terminalDisposition": "completed",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788513022.0812001,
+      "completedAt": "2026-09-04T09:10:27.349688+00:00",
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:10:24.696368+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-mass-1015",
+        "seed": 241921,
+        "workers": 8,
+        "populationSize": 40,
+        "generation": 1,
+        "evaluations": 48,
+        "evaluatedCreatures": 16,
+        "bestFitness": 2551.309814,
+        "averageFitness": 1307.419153125,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -100,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.0001015,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240911-mass-1015/config.json",
+        "bytes": 565245,
+        "sha256": "284329ec6c3a4e53dd3b2eea7222771f0195c6a1d6356f8fad8427e3f66f79e7"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240911-mass-1015/summary.json",
+        "bytes": 1190,
+        "sha256": "10da2280d8e387da3ce03ce7b470e4b50b67f9eac2e7c5c1776fd64c423cdc5b"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:10:22.081200+00:00",
+          "endedAt": "2026-09-04T09:10:27.349688+00:00",
+          "endReason": "evaluation_cap_reached",
+          "exitCode": 0,
+          "resumeExisting": false,
+          "commandDigest": "d4b4249035066c29bc3fbf51e7a9ec83d919df1207570a340ca8fdd1e28cb0f6",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-mass-1015/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-gravity-101-mass-101",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-gravity-101-mass-101",
+      "evaluationCap": 40,
+      "seed": 241922,
+      "ledgerStatus": "running",
+      "terminalDisposition": "interrupted-at-deadline",
+      "attemptCount": 1,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": 1788513033.0969112,
+      "completedAt": null,
+      "summary": {
+        "status": "completed",
+        "completedAt": "2026-09-04T09:10:35.355400+00:00",
+        "backend": "machine-evolved-bullet-v2",
+        "profile": "two-hour-population-robustness-gravity-101-mass-101",
+        "seed": 241922,
+        "workers": 8,
+        "populationSize": 40,
+        "generation": 1,
+        "evaluations": 45,
+        "evaluatedCreatures": 17,
+        "bestFitness": 3089.168213,
+        "averageFitness": 1443.8754920588235,
+        "objective": {
+          "id": "max-horizontal-distance-v1",
+          "horizonTicks": 3600,
+          "fixedStepHz": 60,
+          "penalties": []
+        },
+        "physics": {
+          "engine": "Bullet",
+          "version": "2.86-v2",
+          "controlRateHz": 60,
+          "physicsRateHz": 120,
+          "solverIterations": 20,
+          "splitImpulse": true,
+          "gravityX": 0,
+          "gravityY": 0,
+          "gravityZ": -101.0,
+          "groundFriction": 0.8,
+          "motorMaxForce": 5000,
+          "motorTargetVelocityLimit": 100,
+          "capsuleFriction": 0.8,
+          "capsuleRollingFriction": 0.02,
+          "capsuleSpinningFriction": 0.02,
+          "capsuleRestitution": 0,
+          "capsuleLinearDamping": 0,
+          "capsuleAngularDamping": 0,
+          "capsuleMassScale": 0.000101,
+          "capsuleCcdEnabled": true,
+          "ccdMotionThresholdRadiusRatio": 0.25,
+          "ccdSweptSphereRadiusRatio": 0.2
+        }
+      },
+      "checkpoint": {
+        "path": "training-runs/followup-validate-fork-R3-240911-gravity-101-mass-101/config.json",
+        "bytes": 571774,
+        "sha256": "db358e472ce0913f8066a65eed2e363d578e73f301bb1c9c784f60d931934afc"
+      },
+      "summaryFile": {
+        "path": "training-runs/followup-validate-fork-R3-240911-gravity-101-mass-101/summary.json",
+        "bytes": 1206,
+        "sha256": "0dfd8661b469cf232778645dde7775d159f3331873d15f754143f231fed733a5"
+      },
+      "attempts": [
+        {
+          "number": 1,
+          "startedAt": "2026-09-04T09:10:33.096911+00:00",
+          "endedAt": null,
+          "endReason": null,
+          "exitCode": null,
+          "resumeExisting": false,
+          "commandDigest": "d020f0289250d1cbcda5749b8209d36983d1756bd3e3d9e3e46607e33187ffa2",
+          "log": "/Users/dag/projects/Machine-Evolved-followup-staged-robustness-2026-09-04/artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/attempts/validate-fork-R3-240911-gravity-101-mass-101/attempt-001.log"
+        }
+      ]
+    },
+    {
+      "id": "validate-fork-R3-240911-gravity-99-friction-060",
+      "phase": "exhaustive-archive-validation",
+      "runName": "followup-validate-fork-R3-240911-gravity-99-friction-060",
+      "evaluationCap": 40,
+      "seed": 241923,
+      "ledgerStatus": "not-started",
+      "terminalDisposition": "not-started",
+      "attemptCount": 0,
+      "lastProgress": null,
+      "lastProgressAtEpochSeconds": null,
+      "completedAt": null,
+      "summary": null,
+      "checkpoint": null,
+      "summaryFile": null,
+      "attempts": []
+    }
+  ],
+  "events": [
+    {
+      "at": "2026-09-04T08:55:53.190411+00:00",
+      "detail": "validate-fork-R3-240910-nominal",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:55:58.652136+00:00",
+      "detail": "validate-fork-R3-240910-gravity-99 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:56:03.928918+00:00",
+      "detail": "validate-fork-R3-240910-gravity-99",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:56:09.390621+00:00",
+      "detail": "validate-fork-R3-240910-gravity-101 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:56:14.668270+00:00",
+      "detail": "validate-fork-R3-240910-gravity-101",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:56:20.149871+00:00",
+      "detail": "validate-fork-R3-240910-mass-99 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:56:25.435104+00:00",
+      "detail": "validate-fork-R3-240910-mass-99",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:56:30.967739+00:00",
+      "detail": "validate-fork-R3-240910-mass-101 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:56:36.262016+00:00",
+      "detail": "validate-fork-R3-240910-mass-101",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:56:41.777029+00:00",
+      "detail": "validate-fork-R3-240910-friction-060 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:56:47.074966+00:00",
+      "detail": "validate-fork-R3-240910-friction-060",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:56:52.623058+00:00",
+      "detail": "validate-fork-R3-240910-friction-100 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:56:57.925608+00:00",
+      "detail": "validate-fork-R3-240910-friction-100",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:57:03.457791+00:00",
+      "detail": "validate-fork-R3-240910-gravity-985 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:57:08.768600+00:00",
+      "detail": "validate-fork-R3-240910-gravity-985",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:57:14.302857+00:00",
+      "detail": "validate-fork-R3-240910-gravity-1015 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:57:19.599203+00:00",
+      "detail": "validate-fork-R3-240910-gravity-1015",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:57:25.238515+00:00",
+      "detail": "validate-fork-R3-240910-mass-985 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:57:30.520006+00:00",
+      "detail": "validate-fork-R3-240910-mass-985",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:57:36.322997+00:00",
+      "detail": "validate-fork-R3-240910-mass-1015 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:57:41.608435+00:00",
+      "detail": "validate-fork-R3-240910-mass-1015",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:57:47.188585+00:00",
+      "detail": "validate-fork-R3-240910-gravity-101-mass-101 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:57:52.456314+00:00",
+      "detail": "validate-fork-R3-240910-gravity-101-mass-101",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:57:58.025447+00:00",
+      "detail": "validate-fork-R3-240910-gravity-99-friction-060 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:58:03.304777+00:00",
+      "detail": "validate-fork-R3-240910-gravity-99-friction-060",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:58:08.870676+00:00",
+      "detail": "validate-fork-R5-240910-nominal attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:58:14.150459+00:00",
+      "detail": "validate-fork-R5-240910-nominal",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:58:19.703972+00:00",
+      "detail": "validate-fork-R5-240910-gravity-99 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:58:24.983667+00:00",
+      "detail": "validate-fork-R5-240910-gravity-99",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:58:30.521353+00:00",
+      "detail": "validate-fork-R5-240910-gravity-101 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:58:35.800757+00:00",
+      "detail": "validate-fork-R5-240910-gravity-101",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:58:41.459833+00:00",
+      "detail": "validate-fork-R5-240910-mass-99 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:58:46.756656+00:00",
+      "detail": "validate-fork-R5-240910-mass-99",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:58:52.351421+00:00",
+      "detail": "validate-fork-R5-240910-mass-101 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:58:57.633759+00:00",
+      "detail": "validate-fork-R5-240910-mass-101",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:59:03.222497+00:00",
+      "detail": "validate-fork-R5-240910-friction-060 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:59:08.515091+00:00",
+      "detail": "validate-fork-R5-240910-friction-060",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:59:14.097140+00:00",
+      "detail": "validate-fork-R5-240910-friction-100 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:59:19.378160+00:00",
+      "detail": "validate-fork-R5-240910-friction-100",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:59:24.991307+00:00",
+      "detail": "validate-fork-R5-240910-gravity-985 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:59:30.295697+00:00",
+      "detail": "validate-fork-R5-240910-gravity-985",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:59:35.917435+00:00",
+      "detail": "validate-fork-R5-240910-gravity-1015 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:59:41.211907+00:00",
+      "detail": "validate-fork-R5-240910-gravity-1015",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:59:46.786244+00:00",
+      "detail": "validate-fork-R5-240910-mass-985 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T08:59:52.124810+00:00",
+      "detail": "validate-fork-R5-240910-mass-985",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T08:59:57.808304+00:00",
+      "detail": "validate-fork-R5-240910-mass-1015 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:00:03.145177+00:00",
+      "detail": "validate-fork-R5-240910-mass-1015",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:00:08.801738+00:00",
+      "detail": "validate-fork-R5-240910-gravity-101-mass-101 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:00:14.084378+00:00",
+      "detail": "validate-fork-R5-240910-gravity-101-mass-101",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:00:19.706088+00:00",
+      "detail": "validate-fork-R5-240910-gravity-99-friction-060 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:00:24.989872+00:00",
+      "detail": "validate-fork-R5-240910-gravity-99-friction-060",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:00:30.602067+00:00",
+      "detail": "validate-fork-R5-240911-nominal attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:00:35.939760+00:00",
+      "detail": "validate-fork-R5-240911-nominal",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:00:41.627106+00:00",
+      "detail": "validate-fork-R5-240911-gravity-99 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:00:46.936883+00:00",
+      "detail": "validate-fork-R5-240911-gravity-99",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:00:52.667273+00:00",
+      "detail": "validate-fork-R5-240911-gravity-101 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:00:57.976065+00:00",
+      "detail": "validate-fork-R5-240911-gravity-101",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:01:03.641094+00:00",
+      "detail": "validate-fork-R5-240911-mass-99 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:01:08.958876+00:00",
+      "detail": "validate-fork-R5-240911-mass-99",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:01:14.653285+00:00",
+      "detail": "validate-fork-R5-240911-mass-101 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:01:19.932548+00:00",
+      "detail": "validate-fork-R5-240911-mass-101",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:01:25.857482+00:00",
+      "detail": "validate-fork-R5-240911-friction-060 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:01:31.181478+00:00",
+      "detail": "validate-fork-R5-240911-friction-060",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:01:36.822216+00:00",
+      "detail": "validate-fork-R5-240911-friction-100 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:01:42.103567+00:00",
+      "detail": "validate-fork-R5-240911-friction-100",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:01:47.743743+00:00",
+      "detail": "validate-fork-R5-240911-gravity-985 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:01:53.024660+00:00",
+      "detail": "validate-fork-R5-240911-gravity-985",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:01:58.667440+00:00",
+      "detail": "validate-fork-R5-240911-gravity-1015 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:02:03.954827+00:00",
+      "detail": "validate-fork-R5-240911-gravity-1015",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:02:09.634404+00:00",
+      "detail": "validate-fork-R5-240911-mass-985 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:02:14.911128+00:00",
+      "detail": "validate-fork-R5-240911-mass-985",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:02:20.564538+00:00",
+      "detail": "validate-fork-R5-240911-mass-1015 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:02:25.839110+00:00",
+      "detail": "validate-fork-R5-240911-mass-1015",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:02:31.496085+00:00",
+      "detail": "validate-fork-R5-240911-gravity-101-mass-101 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:02:36.779260+00:00",
+      "detail": "validate-fork-R5-240911-gravity-101-mass-101",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:02:42.450413+00:00",
+      "detail": "validate-fork-R5-240911-gravity-99-friction-060 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:02:47.738424+00:00",
+      "detail": "validate-fork-R5-240911-gravity-99-friction-060",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:08:34.060483+00:00",
+      "detail": "validate-fork-R3-240911-nominal attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:08:39.377885+00:00",
+      "detail": "validate-fork-R3-240911-nominal",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:08:45.176463+00:00",
+      "detail": "validate-fork-R3-240911-gravity-99 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:08:50.483946+00:00",
+      "detail": "validate-fork-R3-240911-gravity-99",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:08:56.219023+00:00",
+      "detail": "validate-fork-R3-240911-gravity-101 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:09:01.565572+00:00",
+      "detail": "validate-fork-R3-240911-gravity-101",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:09:07.273829+00:00",
+      "detail": "validate-fork-R3-240911-mass-99 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:09:12.595282+00:00",
+      "detail": "validate-fork-R3-240911-mass-99",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:09:18.358611+00:00",
+      "detail": "validate-fork-R3-240911-mass-101 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:09:23.728105+00:00",
+      "detail": "validate-fork-R3-240911-mass-101",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:09:29.465486+00:00",
+      "detail": "validate-fork-R3-240911-friction-060 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:09:34.756981+00:00",
+      "detail": "validate-fork-R3-240911-friction-060",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:09:37.951764+00:00",
+      "detail": "validate-fork-R3-240911-friction-100 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:09:43.237652+00:00",
+      "detail": "validate-fork-R3-240911-friction-100",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:09:48.977860+00:00",
+      "detail": "validate-fork-R3-240911-gravity-985 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:09:54.283569+00:00",
+      "detail": "validate-fork-R3-240911-gravity-985",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:10:00.057188+00:00",
+      "detail": "validate-fork-R3-240911-gravity-1015 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:10:05.344003+00:00",
+      "detail": "validate-fork-R3-240911-gravity-1015",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:10:11.101305+00:00",
+      "detail": "validate-fork-R3-240911-mass-985 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:10:16.393347+00:00",
+      "detail": "validate-fork-R3-240911-mass-985",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:10:22.150621+00:00",
+      "detail": "validate-fork-R3-240911-mass-1015 attempt 1; resume=False",
+      "kind": "route-started"
+    },
+    {
+      "at": "2026-09-04T09:10:27.451718+00:00",
+      "detail": "validate-fork-R3-240911-mass-1015",
+      "kind": "route-completed"
+    },
+    {
+      "at": "2026-09-04T09:10:33.164320+00:00",
+      "detail": "validate-fork-R3-240911-gravity-101-mass-101 attempt 1; resume=False",
+      "kind": "route-started"
+    }
+  ]
+}
