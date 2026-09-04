@@ -50,6 +50,20 @@ class PrepareStagedForksTests(unittest.TestCase):
         self.assertEqual(r5["experiment"]["evaluationDomains"][:3], r3["experiment"]["evaluationDomains"])
         self.assertEqual([domain["id"] for domain in r5["experiment"]["evaluationDomains"][3:]], ["gravity-99", "gravity-101"])
 
+    def test_larger_checkpoint_keeps_all_elites_and_records_omitted_pending_tail(self):
+        source = checkpoint()
+        source["structure"]["creatures"].append({
+            "fitness": None,
+            "data": {"metadata": {"creatureId": "c3", "morphologyId": "m0"}, "opaque": 3},
+        })
+        r3, _, manifest = MODULE.prepare_pair(source, 240910)
+        self.assertEqual(
+            [entry["data"]["metadata"]["creatureId"] for entry in r3["structure"]["creatures"]],
+            ["c0", "c1", "c2"],
+        )
+        self.assertEqual(manifest["omittedPendingControllerCount"], 1)
+        self.assertEqual(manifest["sourceFiniteArchiveEntries"], 2)
+
 
 if __name__ == "__main__":
     unittest.main()

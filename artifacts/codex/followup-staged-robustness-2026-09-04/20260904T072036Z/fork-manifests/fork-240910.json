@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "seed": 240910,
+  "sourceStoredControllerCount": 233,
+  "storedControllerBankCount": 192,
+  "sourceFiniteArchiveEntries": 41,
+  "selectionRule": "first configured population.size entries in saved order; fail if this omits a finite archive elite",
+  "omittedPendingControllerCount": 41,
+  "omittedPendingControllerPayloadSha256": "741f9c8062e92178fc07861e60acab5ec26d2e2919cb349836fb40c6e74b70b5",
+  "canonicalControllerPayloadSha256": "c18f017d05ce41bf79e402141c08cb63e3b3ec9b6aec808a5acd1cf22a41f126",
+  "orderedCreatureIdsSha256": "73e83e53c7a739c1b5180c8778c1867206b4b3c40833bce91f0195009898c3f9",
+  "orderedMorphologyIdsSha256": "87299346d982431e664d7e8cc6a6ddcc25effd9f91be88a6e050e10758e2270a",
+  "pythonRandomStateSha256": "db40771a763026f04df04c828939923905781fc65c0ddd81b2de012ff111ba35",
+  "r3EvaluationDomainsSha256": "9f6dde4a44691820134363daa7f806cadef698aa83b4f2562c57a0dd114a1184",
+  "r5EvaluationDomainsSha256": "22f08844f8a16da4d812430d56ea4b4184249c982e5f4bbad12f860a02a9f37d",
+  "source": "training-runs/followup-warmup-R3-240910/config.json",
+  "r3": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/fork-R3-240910.json",
+  "r5": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/fork-R5-240910.json"
+}

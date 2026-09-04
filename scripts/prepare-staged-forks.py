@@ -40,7 +40,8 @@ def selected_bank(checkpoint: dict) -> tuple[list[dict], dict]:
         raise ValueError("Source checkpoint does not contain the configured bank target")
 
     selected = copy.deepcopy(stored[:target])
-    omitted_finite = [entry for entry in stored[target:] if entry.get("fitness") is not None]
+    omitted = copy.deepcopy(stored[target:])
+    omitted_finite = [entry for entry in omitted if entry.get("fitness") is not None]
     if omitted_finite:
         raise ValueError("A finite archive elite occurs after the configured bank target")
     for entry in selected:
@@ -60,11 +61,11 @@ def selected_bank(checkpoint: dict) -> tuple[list[dict], dict]:
         "evaluationHistory": [],
         "evaluationSimulations": 0,
     }
-    return selected, clean_state
+    return selected, omitted, clean_state
 
 
 def prepare_pair(checkpoint: dict, seed: int) -> tuple[dict, dict, dict]:
-    selected, clean_state = selected_bank(checkpoint)
+    selected, omitted, clean_state = selected_bank(checkpoint)
     base = copy.deepcopy(checkpoint)
     population = base["algorithm"]["arguments"]["population"]
     population["generation"] = 0
@@ -105,6 +106,9 @@ def prepare_pair(checkpoint: dict, seed: int) -> tuple[dict, dict, dict]:
         "sourceFiniteArchiveEntries": sum(
             entry.get("fitness") is not None for entry in checkpoint["structure"]["creatures"]
         ),
+        "selectionRule": "first configured population.size entries in saved order; fail if this omits a finite archive elite",
+        "omittedPendingControllerCount": len(omitted),
+        "omittedPendingControllerPayloadSha256": digest([entry["data"] for entry in omitted]),
         "canonicalControllerPayloadSha256": digest(data),
         "orderedCreatureIdsSha256": digest(ids),
         "orderedMorphologyIdsSha256": digest(morphologies),
