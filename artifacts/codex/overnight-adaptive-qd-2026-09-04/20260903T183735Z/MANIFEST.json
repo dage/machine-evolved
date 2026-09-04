@@ -87,9 +87,20 @@
     "confirmationHoldoutRollingSignatures": 0,
     "duplicateReplayPairsByteIdentical": 2,
     "enabledRoutesMissingSummary": 0,
-    "routeSummariesPromoted": 80
+    "routeSummariesPromoted": 80,
+    "artifactAudits": {
+      "requiredNamedOutputsNonempty": 19,
+      "jsonFilesParsed": 2926,
+      "jsonlFilesParsed": 5,
+      "jsonlNonblankRecordsParsed": 1724,
+      "zeroByteFiles": 0,
+      "taskOwnedTemporaryDirectories": 0,
+      "routeConfigs": 80,
+      "routeSummaries": 80,
+      "enabledRoutesMissingSummary": 0
+    }
   },
-  "updatedAtUtc": "2026-09-04T03:54:58.725843+00:00",
+  "updatedAtUtc": "2026-09-04T04:39:30.571288+00:00",
   "finalArtifactHashesSha256": {
     "comparison-by-evaluations.html": "f361ad514ce40e9c95333739ddb4521e4ae5c47ff05e7185200b515a4088e7f7",
     "comparison-by-domain-simulations.html": "805a58a3fe3a66c52954a18510d0e9ecd663cb1fde9cc8a5ef8b8fde63a20ac1",
@@ -104,22 +115,30 @@
     "winner-motion-dossier.txt": "cd8d3d82fdc1e7f46a552f7f66db12aedbae25f6a863b19f93a8aba7433163da",
     "robust-alternative-motion-dossier.txt": "a65f79598ef72ca4e4866a955929460675830fb1c42a883226457f5be2479155",
     "route-summary-index.json": "e129017abb71245f7e5bf5a3390fea4b2b1ef7cd0dfe1089bba1f7c8a86a490e",
-    "REPORT.md": "d241f39645ca2af50a3d7b220b5e00e063ed30e2575353333b9e1748a882ea40"
+    "REPORT.md": "f68ac234c84ea68837a8dd6a252d1c480f9655646cc8d0cede3be75766f054ba"
   },
   "artifactInventory": {
     "fileCount": 3218,
-    "totalBytes": 833989190,
+    "totalBytes": 834111911,
     "jsonFilesParsed": 2926,
     "jsonlFilesParsed": 5,
     "requiredOutputFilesVerifiedNonempty": 19,
     "zeroByteFiles": 0,
-    "temporaryDirectories": 0
+    "temporaryDirectories": 0,
+    "jsonlNonblankRecordsParsed": 1724
   },
   "closeout": {
-    "status": "awaiting-immutable-hard-deadline",
+    "status": "complete",
     "hardDeadlineUtc": "2026-09-04T04:37:35Z",
-    "launchAgentActive": true,
-    "heartbeatActive": true,
+    "supervisorDeadlineStateAtUtc": "2026-09-04T04:37:40.169203Z",
+    "supervisorReason": "hard_deadline",
+    "launchAgentActive": false,
+    "launchAgentPlistPresent": false,
+    "heartbeatActive": false,
+    "heartbeatStatus": "PAUSED",
+    "port9999ListenerPresent": false,
+    "trainerProcesses": 0,
+    "shellworkerProcesses": 0,
     "newLongTrainingAllowed": false
   },
   "promotionDecision": {
@@ -145,5 +164,15 @@
       "holdoutMotionPassCases": 7,
       "holdoutCaseCount": 7
     }
+  },
+  "finalizedAtUtc": "2026-09-04T04:39:30.571288+00:00",
+  "terminalEvidenceHashesSha256": {
+    "orchestrator-state.json": "8788f83c67897f6d1d3fe1e10d307e896a76d88caa556410016f0d941dde8d27",
+    "heartbeats.jsonl": "78dce55d6afff6dda405195cd48797c3c8adb4479e10f9774714518517fe54a8",
+    "decisions.jsonl": "2fb6db1ee61b8643eb0670418463735439c5039532ff3e11db6d51c7f74602f3",
+    "failures.jsonl": "c481ff0d978192d68d5513f9fe93b03bd2a7bf2c5dfd3473703deb8386d50e6a",
+    "route-summary-index.json": "e129017abb71245f7e5bf5a3390fea4b2b1ef7cd0dfe1089bba1f7c8a86a490e",
+    "untouched-confirmation-result.json": "cbceef2148c4a1fc2202b5b087753c7dc055d4c594a0e986a8ddb91ab6a0c957",
+    "final-holdout-results.json": "c86e9d9f1c1407c60026bf0bc48ba3dab17a23648ab9834e6efe92624d921f04"
   }
 }

@@ -1,6 +1,6 @@
 # Machine Evolved overnight adaptive-QD experiment
 
-Status: **in progress**. This report is completed at the immutable hard deadline; interim values below are retained as measured evidence rather than final conclusions.
+Status: **complete**. The supervisor reached the immutable hard deadline without extending it; all final claims below use only accepted evidence.
 
 ## Experiment identity
 
@@ -199,4 +199,6 @@ The adaptive selector consumes only flat controller parameters/signature, morpho
 
 ## Artifact verification
 
-Required comparison charts, compact controllers, duplicate replay hashes, movement dossiers, corrected confirmation summaries, and final holdout evidence are present in this timestamped directory. Final full-suite tests, artifact hashes, Git publication, and owned-process/heartbeat cleanup are performed at the immutable deadline and recorded in `MANIFEST.json`.
+Required comparison charts, compact controllers, duplicate replay hashes, movement dossiers, corrected confirmation summaries, and final holdout evidence are present in this timestamped directory. Final regressions passed: 52 trainer, 31 script, and 31 supervisor tests, 114 total with zero failures. All 2,926 JSON files and five JSONL logs (1,724 nonblank records) parse; all required named outputs are nonempty and there are no zero-byte or task-owned temporary files.
+
+At `2026-09-04T04:37:40.169203Z` the persisted supervisor state was `deadline_reached` with reason `hard_deadline`, no active route, no Trainer, no ShellWorker, and no port-9999 listener. The exact LaunchAgent was unloaded, its task-owned plist removed, and the orchestration heartbeat paused. The local evidence bundle contains 3,218 files and approximately 795.5 MiB. The narrow tracked payload is published on `codex/overnight-adaptive-qd-2026-09-04`; the massive run tree remains local and untracked as required.
