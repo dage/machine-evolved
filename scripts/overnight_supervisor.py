@@ -634,7 +634,14 @@ class Supervisor:
         })
         verified = set(priority.get("verifiedIdentities", []))
         failed = set(priority.get("failedIdentities", []))
-        for record in live:
+        priority_roles = {"launcher", "trainer", "shellworker", "capture", "caffeinate"}
+        priority_records = [record for record in live if record.get("role") in priority_roles]
+        active_identities = {
+            "{}:{}".format(record["pid"], record.get("startedAt", "unknown"))
+            for record in priority_records
+        }
+        failed.intersection_update(active_identities)
+        for record in priority_records:
             identity = "{}:{}".format(record["pid"], record.get("startedAt", "unknown"))
             if identity in verified:
                 continue
