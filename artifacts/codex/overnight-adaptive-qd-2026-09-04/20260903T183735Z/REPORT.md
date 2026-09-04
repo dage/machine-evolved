@@ -20,7 +20,7 @@ All primary optimizer comparisons use gravity -100, population 192, `max-horizon
 
 ## Measurements: historical audit
 
-The strongest preserved historical -100 archive ended at 295,362 candidate evaluations and 886,123 domain simulations. Its best robust fitness was 3,067.627554 at evaluation 168,978; 48 archive cells were occupied. The source archive is `review-data/three-route-snapshot-2026-09-03/three-route-raw-snapshot.tar.xz`, SHA-256 `f20a2c912c8525ac319f3b9a55e3d4c199b1cc8bf4ea74788197e3f6249ef3d3`, member `raw-snapshot/runs/original-gravity-100/config.json`.
+The strongest preserved historical -100 archive ended at 295,362 candidate evaluations and 886,123 domain simulations. Its best robust fitness was 3,067.627554 at evaluation 168,978; 48 archive cells were occupied. The source record is directly readable at `review-data/three-route-snapshot-2026-09-03/raw-snapshot/runs/original-gravity-100/config.json`; all snapshot files are bound by `review-data/three-route-snapshot-2026-09-03/raw-snapshot/SHA256SUMS` (manifest SHA-256 `e23f2a4e219054d0bf1103f3ec56e4e49c42f6a9c412cbbda997b6813f52fbdb`).
 
 Historical generator attribution was audited from the archived trainer records and is recorded in `historical-audit.md`.
 

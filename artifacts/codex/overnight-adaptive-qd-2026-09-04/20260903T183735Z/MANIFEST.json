@@ -19,7 +19,7 @@
     "scripts/run-training.sh": "cba9ff861f8c290a5847960f4f6ae7b02a71335c566d1ad49f3d91022bd40d82",
     "build/shellworker": "cbdfac841720b9a2cd94aa2ab5549cf7978c4289a63e0338d3755013478dfbfe",
     "build/replayworker": "f9dadb77e8fdd9097490cbc411e46b6147d5e14448ad4f2b3a66e265b7bc59d0",
-    "review-data/three-route-snapshot-2026-09-03/three-route-raw-snapshot.tar.xz": "f20a2c912c8525ac319f3b9a55e3d4c199b1cc8bf4ea74788197e3f6249ef3d3",
+    "review-data/three-route-snapshot-2026-09-03/raw-snapshot/SHA256SUMS": "e23f2a4e219054d0bf1103f3ec56e4e49c42f6a9c412cbbda997b6813f52fbdb",
     "machine-evolved-trainer/AdaptiveEmitterSelector.py": "ba3b7353b03f643aefc254038355ea33743b27a1ef909b3eabe4e9f0fae4d7a4",
     "scripts/overnight_supervisor.py": "9219e74e20974a38b847c2318a19a26a83606b84ba02f2a05d32f53d54c63232",
     "scripts/compare-supervisor-qd.py": "9c11c2701aa3cb756257c4cddd768f7118feb625614526352f6de8a0ddaeae9a",
@@ -56,7 +56,7 @@
     },
     "port9999InitiallyFree": true,
     "oldTrainerOrWorkerProcessesInitiallyPresent": false,
-    "reviewArchiveHashVerified": true,
+    "reviewSnapshotManifestVerified": true,
     "populationBanksVerified": 6,
     "finalTestSuites": {
       "trainer": {

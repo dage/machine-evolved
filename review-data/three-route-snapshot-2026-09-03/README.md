@@ -2,27 +2,28 @@
 
 This package is an immutable data snapshot prepared for an external GitHub reviewer. It covers the three directly comparable harmonic MAP-Elites routes below, including their complete saved run directories, raw progress histories, terminal trainer states, worker/trainer logs, and prior analysis artifacts relevant to the original route.
 
-The repository at this branch supplies the corresponding source code, training launch scripts, committed configuration templates, tests, and Git history. The snapshot archive preserves ignored, generated run state that Git would otherwise omit.
+The repository at this branch supplies the corresponding source code, training launch scripts, committed configuration templates, tests, and Git history. The uncompressed `raw-snapshot/` directory preserves ignored, generated run state that Git would otherwise omit.
 
-## Plain-text review set (no archive extraction required)
+## Compact review set
 
-Use this first if the reviewing environment cannot unpack `tar.xz`. It is 738,682 bytes of ordinary Git files:
+Use this first when the full mutable trainer state and logs are unnecessary. It is 738,682 bytes of ordinary Git files:
 
 - `run-summary.json` — static configuration for all three routes plus the first archive snapshot's terminal records.
 - `plain/progress/` — the complete, uncompressed `progress.jsonl` history for every route. The 384-population file was refreshed at 2026-09-03T17:45:36Z (generation 867 / 333,021 evaluations); the other two are stopped.
 - `plain/prior-analysis/` — the original-run ledger, result records, attempt manifest, motion analyses, and robustness record.
 - `plain/runtime-notes/double-gravity-192-worker-shutdown-tail.log` — the relevant tail from the stopped 192-population route. It records workers losing the trainer connection after that route was terminated.
 
-All static physics, objective, domain, seed, mutation, archive, and population settings are present directly in `run-summary.json`. The archive is only needed for full mutable trainer state, all worker/trainer logs, phase-local checkpoint data, and full replay traces.
+All static physics, objective, domain, seed, mutation, archive, and population settings are present directly in `run-summary.json`. The uncompressed `raw-snapshot/` tree adds full mutable trainer state, all worker/trainer logs, phase-local checkpoint data, and full replay traces.
 
 ## Snapshot identity
 
 - Captured: 2026-09-03T16:57:06Z
 - Source revision at capture: `288c031621aa2c0f43b97e02a73d207ee1c123cd`
-- Archive: `three-route-raw-snapshot.tar.xz`
-- Archive SHA-256: `f20a2c912c8525ac319f3b9a55e3d4c199b1cc8bf4ea74788197e3f6249ef3d3`
-- Archive size: 5,829,548 bytes
-- Archive members: 39 files
+- Full snapshot: `raw-snapshot/`
+- Snapshot checksum manifest: `raw-snapshot/SHA256SUMS`
+- Checksum-manifest SHA-256: `e23f2a4e219054d0bf1103f3ec56e4e49c42f6a9c412cbbda997b6813f52fbdb`
+- Snapshot files: 33 evidence files plus `SHA256SUMS`, approximately 40 MiB
+- Capture provenance: the files were verified before extraction against source payload SHA-256 `f20a2c912c8525ac319f3b9a55e3d4c199b1cc8bf4ea74788197e3f6249ef3d3`; the compressed payload is intentionally not retained in Git
 
 The 384-population route was still running when this snapshot was made. Its data is therefore a frozen partial record, not a terminal result. The two other routes were stopped before the snapshot.
 
@@ -39,12 +40,13 @@ All three use Bullet v2, the three-capsule controller/morphology family, the `ma
 ## Contents
 
 ```text
-three-route-raw-snapshot.tar.xz  full frozen source records
-run-summary.json                  compact machine-readable configuration and final progress records
-README.md                         this index
+raw-snapshot/    full frozen source records, directly readable
+run-summary.json compact machine-readable configuration and final progress records
+plain/           compact progress, analysis, and runtime-note subset
+README.md        this index
 ```
 
-The archive expands to `raw-snapshot/`:
+The full snapshot is already present in `raw-snapshot/`:
 
 - `runs/original-gravity-100/`
 - `runs/double-gravity-200-population-192/`
@@ -57,14 +59,11 @@ The three run directories each contain their full saved `config.json` (including
 ## Verify and inspect
 
 ```sh
-cd review-data/three-route-snapshot-2026-09-03
-shasum -a 256 three-route-raw-snapshot.tar.xz
-tar -tJf three-route-raw-snapshot.tar.xz
-mkdir extracted
-tar -xJf three-route-raw-snapshot.tar.xz -C extracted
+cd <repository-root>
+shasum -a 256 -c review-data/three-route-snapshot-2026-09-03/raw-snapshot/SHA256SUMS
 ```
 
-The calculated SHA-256 must equal the value in “Snapshot identity.” The archive is intentionally not a live feed: use the repository's current ignored `training-runs/` only when evaluating the state after this snapshot.
+Every file must report `OK`. The snapshot is intentionally not a live feed: use the repository's current ignored `training-runs/` only when evaluating the state after this snapshot.
 
 ## Requested external evaluation
 

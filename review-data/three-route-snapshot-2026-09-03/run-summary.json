@@ -1,7 +1,10 @@
 {
   "capturedAt": "2026-09-03T16:57:06Z",
   "sourceCommit": "288c031621aa2c0f43b97e02a73d207ee1c123cd",
-  "archiveSha256": "f20a2c912c8525ac319f3b9a55e3d4c199b1cc8bf4ea74788197e3f6249ef3d3",
+  "snapshotRoot": "raw-snapshot",
+  "snapshotChecksumManifest": "raw-snapshot/SHA256SUMS",
+  "snapshotChecksumManifestSha256": "e23f2a4e219054d0bf1103f3ec56e4e49c42f6a9c412cbbda997b6813f52fbdb",
+  "sourcePayloadSha256": "f20a2c912c8525ac319f3b9a55e3d4c199b1cc8bf4ea74788197e3f6249ef3d3",
   "units": {
     "rawFitness": "centimeters",
     "displayDistance": "metres (= rawFitness / 100)"
