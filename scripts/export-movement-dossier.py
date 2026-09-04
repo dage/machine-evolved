@@ -91,7 +91,7 @@ def build_report(replay_path):
 		"PURPOSE",
 		"This is a machine-readable and human-readable account of one full movement",
 		"episode for the selected creature. It includes every recorded",
-		"60 Hz pose; no frames are omitted. It is intended to let an external model",
+		f"{sample_hz:g} Hz pose; no frames are omitted. It is intended to let an external model",
 		"inspect the gait numerically without watching the Three.js preview.",
 		"",
 		"IDENTITY AND INTEGRITY",
@@ -185,7 +185,7 @@ def build_report(replay_path):
 		columns.extend(pose_columns(f"c{index}"))
 	lines.extend([
 		"",
-		"COMPLETE 60 HZ POSE TRACE",
+		f"COMPLETE {sample_hz:g} HZ POSE TRACE",
 		"Each following CSV row is one replay frame. Position fields are DU. Quaternion",
 		"fields use (qx,qy,qz,qw). Four decimal places bound position rounding to 0.00005",
 		"DU and quaternion-component rounding to 0.00005. Capsule definitions above plus",

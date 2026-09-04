@@ -72,6 +72,8 @@ class ExportMovementDossierTests(unittest.TestCase):
 			}))
 			report = MODULE.build_report(path)
 			self.assertIn("selected creature", report)
+			self.assertIn("1 Hz pose", report)
+			self.assertIn("COMPLETE 1 HZ POSE TRACE", report)
 			self.assertIn("without classifying the gait", report.replace("\n", " "))
 			self.assertNotIn("current raw-distance champion", report)
 			self.assertNotIn("About 72.9%", report)
