@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "selectionRule": "every finite MAP-Elites archive entry from each completed matched continuation",
+  "evaluationMode": "one deterministic single-domain evaluation per archive entry and case",
+  "caseCount": 13,
+  "cases": [
+    {
+      "id": "nominal",
+      "physicsOverrides": {}
+    },
+    {
+      "id": "gravity-99",
+      "physicsOverrides": {
+        "gravityZ": -99.0
+      }
+    },
+    {
+      "id": "gravity-101",
+      "physicsOverrides": {
+        "gravityZ": -101.0
+      }
+    },
+    {
+      "id": "mass-99",
+      "physicsOverrides": {
+        "capsuleMassScale": 9.9e-05
+      }
+    },
+    {
+      "id": "mass-101",
+      "physicsOverrides": {
+        "capsuleMassScale": 0.000101
+      }
+    },
+    {
+      "id": "friction-060",
+      "physicsOverrides": {
+        "groundFriction": 0.6
+      }
+    },
+    {
+      "id": "friction-100",
+      "physicsOverrides": {
+        "groundFriction": 1.0
+      }
+    },
+    {
+      "id": "gravity-985",
+      "physicsOverrides": {
+        "gravityZ": -98.5
+      }
+    },
+    {
+      "id": "gravity-1015",
+      "physicsOverrides": {
+        "gravityZ": -101.5
+      }
+    },
+    {
+      "id": "mass-985",
+      "physicsOverrides": {
+        "capsuleMassScale": 9.85e-05
+      }
+    },
+    {
+      "id": "mass-1015",
+      "physicsOverrides": {
+        "capsuleMassScale": 0.0001015
+      }
+    },
+    {
+      "id": "gravity-101-mass-101",
+      "physicsOverrides": {
+        "gravityZ": -101.0,
+        "capsuleMassScale": 0.000101
+      }
+    },
+    {
+      "id": "gravity-99-friction-060",
+      "physicsOverrides": {
+        "gravityZ": -99.0,
+        "groundFriction": 0.6
+      }
+    }
+  ],
+  "sources": [
+    {
+      "routeId": "fork-R3-240910",
+      "runName": "followup-fork-R3-240910",
+      "checkpoint": "training-runs/followup-fork-R3-240910/config.json",
+      "checkpointSha256": "6a1e3145f2abf8537416c76a96970936cc90ff82489bc0d84df610d1c0b84278",
+      "archiveEntryCount": 44,
+      "sourceEvaluations": 40005,
+      "validationRoutes": [
+        {
+          "id": "validate-fork-R3-240910-nominal",
+          "case": "nominal",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-nominal.json",
+          "configSha256": "29d0dee9e2faf57706f2c204085d39f63efbd8ad7a067954d9116ef654124153",
+          "evaluationCap": 44
+        },
+        {
+          "id": "validate-fork-R3-240910-gravity-99",
+          "case": "gravity-99",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-gravity-99.json",
+          "configSha256": "5f2209140582319ea7039fc6a8907719dfa8ceaefe6e75a793222e961a620f91",
+          "evaluationCap": 44
+        },
+        {
+          "id": "validate-fork-R3-240910-gravity-101",
+          "case": "gravity-101",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-gravity-101.json",
+          "configSha256": "def1cfec2ef42e67984369760df420e5872b637f6a16c104889914d348f1fe7d",
+          "evaluationCap": 44
+        },
+        {
+          "id": "validate-fork-R3-240910-mass-99",
+          "case": "mass-99",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-mass-99.json",
+          "configSha256": "e63a0df2d3d3d6c57e6b69cbd72dec01eb8e144029fcf655d21af6c1a94c5d43",
+          "evaluationCap": 44
+        },
+        {
+          "id": "validate-fork-R3-240910-mass-101",
+          "case": "mass-101",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-mass-101.json",
+          "configSha256": "546b19e500c79d7748ca3a9af2697d74123ecfeb548027298763eba4456472d5",
+          "evaluationCap": 44
+        },
+        {
+          "id": "validate-fork-R3-240910-friction-060",
+          "case": "friction-060",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-friction-060.json",
+          "configSha256": "81aa4d6676f4e10a41ad54fa772e669fbaed25a6a54ddeccda72f76721922b55",
+          "evaluationCap": 44
+        },
+        {
+          "id": "validate-fork-R3-240910-friction-100",
+          "case": "friction-100",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-friction-100.json",
+          "configSha256": "adcbb5d312419db26ed80919b770f0545305877047ee17440339662839578165",
+          "evaluationCap": 44
+        },
+        {
+          "id": "validate-fork-R3-240910-gravity-985",
+          "case": "gravity-985",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-gravity-985.json",
+          "configSha256": "5d0221e20469e8c9cefe5ac359c31ee8664169b9414465e2362705e15e0fe991",
+          "evaluationCap": 44
+        },
+        {
+          "id": "validate-fork-R3-240910-gravity-1015",
+          "case": "gravity-1015",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-gravity-1015.json",
+          "configSha256": "1ec99de353baaced451dfbfcd388875b5dbe518cbd7b10f272ba89edfa89bf2c",
+          "evaluationCap": 44
+        },
+        {
+          "id": "validate-fork-R3-240910-mass-985",
+          "case": "mass-985",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-mass-985.json",
+          "configSha256": "4c2c85adb3df8cf8558187a10c4b0726a35f4bdf070c5afcab348d85d368496e",
+          "evaluationCap": 44
+        },
+        {
+          "id": "validate-fork-R3-240910-mass-1015",
+          "case": "mass-1015",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-mass-1015.json",
+          "configSha256": "eef901f54e08eee1b1f2bec1bbced294e04f369304b73f07c1c2e9afa5e0f5d2",
+          "evaluationCap": 44
+        },
+        {
+          "id": "validate-fork-R3-240910-gravity-101-mass-101",
+          "case": "gravity-101-mass-101",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-gravity-101-mass-101.json",
+          "configSha256": "a69fd563b33c6a967f84354e9473a5c569fe1c1fee2d1c628236e645f057e20d",
+          "evaluationCap": 44
+        },
+        {
+          "id": "validate-fork-R3-240910-gravity-99-friction-060",
+          "case": "gravity-99-friction-060",
+          "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/validate-fork-R3-240910-gravity-99-friction-060.json",
+          "configSha256": "2f8e5100165716adec721f265d80f8f0835a3113e460bad6834aaff6f3751c00",
+          "evaluationCap": 44
+        }
+      ]
+    }
+  ],
+  "preparedSourceCount": 1,
+  "preparedValidationRouteCount": 13
+}
