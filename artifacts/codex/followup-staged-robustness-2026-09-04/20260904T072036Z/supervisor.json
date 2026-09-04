@@ -19,7 +19,7 @@
   "minimumDiskFreeBytes": 10737418240,
   "requiredWorkers": 8,
   "port": 9999,
-  "requireACPower": true,
+  "requireACPower": false,
   "qdNormalizationReferenceFitness": 3152.3614591203545,
   "pilotThroughputCandidatesPerMinute": 2640.0
 }
