@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "followup-staged-robustness-2026-09-04",
+  "banks": {
+    "240910": {
+      "file": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/population-banks/initial-bank-240910.json",
+      "fileSha256": "7a7dd80121a320fe5bc5bc20c02ea8a6d0d291cf7e3ea1bd93dc0d8d552a7115",
+      "canonicalControllerPayloadSha256": "47c7f3e0f36b8a1d1cced435ed920c79f15f75e8ac1148b68e48ad24bc8d55ee",
+      "orderedCreatureIdsSha256": "5ef2e655cd72e6f46ac70de21e221798df05d777930b92318b56e2f3cba186a6",
+      "orderedMorphologyIdsSha256": "ebd3ad07ea7417ffffc3b6448628e07199aaa84879aec43aec959b3874406fcf",
+      "pythonRandomStateSha256": "3489538e5630fc250659e1e7227b87cb2f78efcfcf535652d3ee73bceba0d5eb",
+      "configuredInitialPendingTarget": 192,
+      "storedControllerBankCount": 192
+    },
+    "240911": {
+      "file": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/population-banks/initial-bank-240911.json",
+      "fileSha256": "bad88e4f0aee34c9daf35602c458fab4b11473e3bc7945c708b8bac195b83440",
+      "canonicalControllerPayloadSha256": "54380a58ba140dbeddbfa9a806609f1d653e1a3244f870a62008b6665569788a",
+      "orderedCreatureIdsSha256": "d4d93c49220fcff86ddd05fc2691491effbbedd8309fa4d060311ffb605da7c3",
+      "orderedMorphologyIdsSha256": "ebd3ad07ea7417ffffc3b6448628e07199aaa84879aec43aec959b3874406fcf",
+      "pythonRandomStateSha256": "ab4ee01f30493f1881d75ba8df340847673820b03df0682a4759b1e39f71d2c7",
+      "configuredInitialPendingTarget": 192,
+      "storedControllerBankCount": 192
+    }
+  }
+}

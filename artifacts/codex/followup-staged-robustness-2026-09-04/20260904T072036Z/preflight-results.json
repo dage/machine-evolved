@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUtc": "2026-09-04T07:25:31Z",
+  "startingCommit": "3cc8db794682b438724d2d14fb1c3bade1705df2",
+  "powerSource": "AC Power",
+  "diskFreeGiB": 66,
+  "port9999InitiallyFree": true,
+  "previousOwnedTrainingProcessesInitiallyPresent": false,
+  "releaseBuild": {
+    "shellworker": "passed",
+    "replayworker": "passed"
+  },
+  "tests": {
+    "trainer": {"passed": 52, "failed": 0},
+    "scripts": {"passed": 31, "failed": 0},
+    "supervisor": {"passed": 31, "failed": 0},
+    "stagedForkUtility": {"passed": 2, "failed": 0},
+    "totalPassed": 116,
+    "totalFailed": 0
+  },
+  "eightWorkerSmoke": {
+    "status": "passed",
+    "acceptedEvaluations": 2,
+    "replayParity": "passed",
+    "configuredWorkerThreads": 8
+  },
+  "firstRoute": {
+    "id": "warmup-R3-240910",
+    "startedAtUtc": "2026-09-04T07:25:31.963266Z",
+    "secondsAfterT0": 295.963266,
+    "configuredWorkerThreads": 8
+  }
+}

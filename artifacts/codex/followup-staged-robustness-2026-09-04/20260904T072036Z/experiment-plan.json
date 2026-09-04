@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "followup-staged-robustness-2026-09-04",
+  "branch": "codex/followup-staged-robustness-2026-09-04",
+  "requestedStartingCommit": "cd0ff56ae64fb4a87faa30f36c90ed692176728f",
+  "actualStartingCommit": "3cc8db794682b438724d2d14fb1c3bade1705df2",
+  "startingCommitReason": "The actual start includes the completed raw, uncompressed evidence repair requested after the reviewed snapshot.",
+  "t0Utc": "2026-09-04T07:20:36Z",
+  "t0EpochSeconds": 1788506436.0,
+  "t0MonotonicSeconds": 502967.9116185056,
+  "durationSeconds": 6600,
+  "stopStartingRoutesAfterSeconds": 5400,
+  "hardDeadlineUtc": "2026-09-04T09:10:36Z",
+  "workers": 8,
+  "port": 9999,
+  "mission": "Compare matched R3 continuation with R5 robustness fine-tuning after shared R3 discovery.",
+  "warmups": [
+    {
+      "seed": 240910,
+      "id": "warmup-R3-240910",
+      "evaluationCap": 25000
+    },
+    {
+      "seed": 240911,
+      "id": "warmup-R3-240911",
+      "evaluationCap": 25000
+    }
+  ],
+  "continuations": {
+    "order": [
+      "fork-R3-240910",
+      "fork-R5-240910",
+      "fork-R5-240911",
+      "fork-R3-240911"
+    ],
+    "normalCaps": {
+      "R3": 40000,
+      "R5": 24000
+    },
+    "fallbackCaps": {
+      "R3": 30000,
+      "R5": 18000
+    }
+  },
+  "comparisonAxes": [
+    "candidate-evaluations",
+    "domain-simulations",
+    "wall-time"
+  ]
+}

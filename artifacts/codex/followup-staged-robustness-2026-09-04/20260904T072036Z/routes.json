@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "routes": [
+    {
+      "id": "warmup-R3-240910",
+      "phase": "shared-r3-discovery",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/warmup-R3-240910.json",
+      "runName": "followup-warmup-R3-240910",
+      "evaluationCap": 25000,
+      "seed": 240910,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    },
+    {
+      "id": "warmup-R3-240911",
+      "phase": "shared-r3-discovery",
+      "config": "artifacts/codex/followup-staged-robustness-2026-09-04/20260904T072036Z/route-configs/warmup-R3-240911.json",
+      "runName": "followup-warmup-R3-240911",
+      "evaluationCap": 25000,
+      "seed": 240911,
+      "retainFiles": [
+        "trainer.log",
+        "shellworker.log",
+        "summary.json",
+        "config.json"
+      ]
+    }
+  ]
+}
